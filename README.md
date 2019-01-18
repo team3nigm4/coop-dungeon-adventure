@@ -4,7 +4,7 @@ Un jeu d'énigmes/aventure coopératif initié par Maxence Bazin et Alexandre Bo
 
 Présentation
 ------------
-Rendez-vous sur [https://www.coop-dungeon-adventure.tk](https://www.coop-dungeon-adventure) pour la présentation du projet.
+Rendez-vous sur [https://www.coop-dungeon-adventure.tk](https://www.coop-dungeon-adventure.tk) pour la présentation du projet.
 
 Contributeurs
 --------------
