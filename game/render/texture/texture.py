@@ -2,7 +2,6 @@ from game.render.texture import textureid as textureId
 from game.screen import gamemanager as gameManager
 
 import OpenGL.GL as gl
-import numpy
 from PIL import Image as img
 
 class Texture:
@@ -14,8 +13,6 @@ class Texture:
 		self.correctLoaded = False
 
 	def load(self):
-		image = img.open(self.texId.getPath())
-		self.loadImage(image)
 		try:
 			image = img.open(self.texId.getPath())
 			self.loadImage(image)
@@ -51,7 +48,7 @@ class Texture:
 			self.error()
 			
 
-	def error():
+	def error(self):
 		print("Error on loading the texture " + str(self.texId.getId()) + " :\n" + self.texId.getPath())
 		self.correctLoaded = False
 		self.texId.setId(gameManager.GameManager.texManager.error.texId.getId())
@@ -64,7 +61,7 @@ class Texture:
 		return self.correctLoaded
 
 	def unload(self):
-		# Security to had with the textureless texture
+		# Security when error with unloaded textures
 		if self.correctLoaded:
 			gl.glDeleteTextures(self.texId.getId())
 			gameManager.GameManager.texManager.remove(self.texId)
