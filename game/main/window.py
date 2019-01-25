@@ -55,7 +55,7 @@ def create():
 	gl.glMatrixMode(gl.GL_PROJECTION)
 	gl.glMatrixMode(gl.GL_MODELVIEW)
 	gl.glEnable(gl.GL_DEPTH_TEST)
-    # Enable Anti-aliasing
+	# Enable Anti-aliasing
 	gl.glEnable(gl.GL_MULTISAMPLE)
 
 

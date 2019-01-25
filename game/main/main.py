@@ -1,7 +1,7 @@
 from game.main import config as Config
 from game.main import window as Window 
 
-# search from the global environnement variable
+# search from the global environment variable
 Config.debug = True
 
 
