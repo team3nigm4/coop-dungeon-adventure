@@ -22,7 +22,7 @@ def init():
 
 	create() # the window
 
-	from game.screen import gameManager as gm
+	from game.screen import gamemanager as gm
 	global gameManager
 	gameManager = gm.GameManager()
 
