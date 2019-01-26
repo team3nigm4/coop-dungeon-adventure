@@ -1,3 +1,5 @@
+# Create the texture from image
+
 import OpenGL.GL as gl
 from PIL import Image as img
 
@@ -51,6 +53,7 @@ class Texture:
 			self.error()
 
 	def error(self):
+		# When error, replace the current texture by the error texture
 		print("Error on loading the texture " + str(self.texId.getId()) + " :\n" + self.texId.getPath())
 		self.correctLoaded = False
 		self.texId.setId(gameManager.GameManager.texManager.error.texId.getId())
