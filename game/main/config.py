@@ -56,22 +56,30 @@ class Config:
 		Config.debug = True
 
 	@staticmethod
-	def createDefaultConfig(overwrite = True):
+	def createDefaultConfig(overwrite=True):
 
 		# We retrieve the user's screen resolution
-		import glfw; glfw.init(); vm = glfw.get_video_modes(glfw.get_primary_monitor()); nvm = len(vm)-1; monitorResolution = [vm[nvm][0][0], vm[nvm][0][1]]
+		import glfw
+		glfw.init()
+		vm = glfw.get_video_modes(glfw.get_primary_monitor())
+		nvm = len(vm) - 1
+		monitorResolution = [vm[nvm][0][0], vm[nvm][0][1]]
 		# We choose the highest resolution that can support the screen
 		baseResolution = [576, 384]  # The minimum game display resolution
 		for factor in range(1, 10):
-			if (baseResolution[0]*factor < monitorResolution[0] and baseResolution[1]*factor < monitorResolution[1]): width = baseResolution[0]*factor; height = baseResolution[1]*factor
+			if (baseResolution[0] * factor < monitorResolution[0] and baseResolution[1] * factor < monitorResolution[
+				1]): width = baseResolution[0] * factor; height = baseResolution[1] * factor
 
 		# We retrieve the user's locale
-		import locale; userLanguage = locale.getdefaultlocale()[0][:2]; languages = [['en', 'English'], ['fr', 'Français']]; language = "en"
+		import locale
+		userLanguage = locale.getdefaultlocale()[0][:2]
+		languages = [['en', 'English'], ['fr', 'Français']]
+		language = "en"
 		# We choose the locale if present in the game, otherwise, we take the default one (English)
 		for lang in languages:
 			if lang[0] == userLanguage: language = lang[0]
 
-		Config.values =  {
+		Config.values = {
 			"general": {
 				"language": language
 			},
@@ -91,7 +99,7 @@ class Config:
 			Config.saveConfig()
 
 	@staticmethod
-	def createDefaultInputs(overwrite = True):
+	def createDefaultInputs(overwrite=True):
 
 		Config.inputs = [[0, 256], [0, 81], [0, 87], [0, 65], [0, 68], [1, 1], [1, 0], [0, 70], [0, 82]]
 
@@ -129,7 +137,8 @@ class Config:
 			configFile = json.load(open(Config.CONFIG_PATH))['config']
 			Config.values = configFile
 		except json.decoder.JSONDecodeError:
-			Config.createDefaultConfig(Config.yes("[CONFIG] Failed to parse the config file ! Do you want to recreate it and delete the old one ?"))
+			Config.createDefaultConfig(Config.yes(
+				"[CONFIG] Failed to parse the config file ! Do you want to recreate it and delete the old one ?"))
 
 	@staticmethod
 	def loadInputs():
@@ -138,12 +147,13 @@ class Config:
 			inputsFile = json.load(open(Config.INPUTS_PATH))['inputs']
 			Config.inputs = inputsFile
 		except json.decoder.JSONDecodeError:
-			Config.createDefaultInputs(Config.yes("[CONFIG] Failed to parse the key config file ! Do you want to recreate it and delete the old one ?"))
+			Config.createDefaultInputs(Config.yes(
+				"[CONFIG] Failed to parse the key config file ! Do you want to recreate it and delete the old one ?"))
 
 	@staticmethod
 	def yes(sentence):
 		choice = input(sentence + " (Answer \"yes\") : ").lower()
 		if choice == "yes":
-		   return True
+			return True
 		else:
 			return False
