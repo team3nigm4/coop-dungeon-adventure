@@ -7,20 +7,19 @@ import glfw
 
 from game.main.config import Config
 
-SECOND = 1000000000
-TPS = 60.0
-TICK_TIME = SECOND / TPS
-beginTime = 0
-ratio = 0
-
 
 class Window:
+	SECOND = 1000000000
+	TPS = 60.0
+	TICK_TIME = SECOND / TPS
+	beginTime = 0
+
 	window = None
 
 	@staticmethod
 	def init():
 		Config.load()
-		beginTime = time.time()
+		Window.beginTime = time.time()
 
 		# Initializing GLFW
 		if not glfw.init():
@@ -38,7 +37,7 @@ class Window:
 		glfw.window_hint(glfw.RESIZABLE, 0)  # 0 = false
 
 		Window.window = glfw.create_window(Config.values["window"]["width"], Config.values["window"]["height"],
-									"Coop Dungeon Adventure", None, None)
+										   "Coop Dungeon Adventure", None, None)
 
 		if not Window.window:
 			glfw.terminate()
@@ -83,7 +82,7 @@ class Window:
 			lag += time.time_ns() - frameTime
 			frameTime = time.time_ns()
 
-			if time.time_ns() - secondTime >= SECOND:
+			if time.time_ns() - secondTime >= Window.SECOND:
 				if Config.debug:
 					glfw.set_window_title(Window.window,
 										  "Coop Dungeon Adventure | FPS:" + str(frames) + "; TPS:" + str(ticks))
@@ -91,10 +90,10 @@ class Window:
 				frames = 0
 				secondTime = time.time_ns()
 
-			while lag >= TICK_TIME:
+			while lag >= Window.TICK_TIME:
 				gameManager.update()
 
-				lag -= TICK_TIME
+				lag -= Window.TICK_TIME
 				ticks += 1
 
 			gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
