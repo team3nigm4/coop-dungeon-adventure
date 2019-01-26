@@ -1,7 +1,11 @@
+# Create and manage the shader object
+
 import OpenGL.GL as gl
+
 
 class Shader:
 	PATH = "game/resources/shader/"
+
 	def __init__(self, vertexPath, fragmentPath):
 		self.vertexPath = vertexPath
 		self.fragmentPath = fragmentPath
@@ -9,7 +13,7 @@ class Shader:
 		self.links = {}
 
 	def load(self):
-		shaderId  = gl.glCreateProgram()
+		shaderId = gl.glCreateProgram()
 		vertexId = gl.glCreateShader(gl.GL_VERTEX_SHADER)
 		fragmentId = gl.glCreateShader(gl.GL_FRAGMENT_SHADER)
 
@@ -17,9 +21,9 @@ class Shader:
 		vertexCode = vertexFile.read()       
 		vertexFile.close()                                 
 
-		fragmentfile = open(Shader.PATH + self.fragmentPath, 'r')
-		fragmentCode = fragmentfile.read()
-		fragmentfile.close()
+		fragmentFile = open(Shader.PATH + self.fragmentPath, 'r')
+		fragmentCode = fragmentFile.read()
+		fragmentFile.close()
 
 		gl.glShaderSource(vertexId, vertexCode)
 		gl.glShaderSource(fragmentId, fragmentCode)
@@ -49,7 +53,6 @@ class Shader:
 		gl.glDeleteShader(fragmentId)
 		self.shaderId = shaderId
 
-
 	def addLink(self, valueName):
 		self.links[valueName] = gl.glGetUniformLocation(self.shaderId, valueName)
 
@@ -63,4 +66,4 @@ class Shader:
 		return self.shaderId
 
 	def unload(self):
-		gl.glDeleteProgram(self.shaderId)	
+		gl.glDeleteProgram(self.shaderId)

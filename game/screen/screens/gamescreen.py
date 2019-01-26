@@ -1,14 +1,13 @@
+# This class performs the display and the update of the client
+
 from game.screen.screens import screen
 from game.render.texture import texture
-from game.render.shader import shader
 from game.render.shape import shape
 from game.render.shader import gluniforms as glU
 from game.screen import gamemanager as gameManager
 from game.inputs import keyboardmanager as key
 
-import OpenGL.GL as gl
 import pyrr
-import numpy
 import glfw
 
 
@@ -36,7 +35,7 @@ class GameScreen(screen.Screen):
 
 		self.tex.bind()
 		self.shape.shader.addLink("model")
-		self.modelMtx = pyrr.matrix44.Matrix44.identity()
+		self.modelMtx = pyrr.Matrix44.identity()
 		glU.glUniformv(self.shape.shader, "model", self.modelMtx)
 
 	def update(self):
@@ -52,7 +51,6 @@ class GameScreen(screen.Screen):
 		self.shape.view()
 
 		self.shape.draw()
-
 
 	def unload(self):
 		self.shape.unload()

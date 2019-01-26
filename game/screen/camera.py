@@ -1,13 +1,16 @@
+# Manages the projection and view (position of cam) matrices
+
 import pyrr
 
-class Camera :
+
+class Camera:
 	NEAR = 0.01
 	FAR = 1000
 
 	def __init__(self, fov, pos):
 		self.camPos = pos
-		from game.main import config
-		self.projection = pyrr.matrix44.create_perspective_projection_matrix(fov, config.ratio, Camera.NEAR, Camera.FAR)
+		from game.main import config as Config
+		self.projection = pyrr.matrix44.create_perspective_projection_matrix(fov, Config.ratio, Camera.NEAR, Camera.FAR)
 		self.view = pyrr.Matrix44.identity()
 		self.updateView()
 
