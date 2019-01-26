@@ -1,6 +1,6 @@
 # Game's initialisation : get the config, create the window, create gameManager, and init openGL / glfw
 
-from game.main import config as Config
+from game.main.config import Config
 import time
 import OpenGL.GL as gl
 import glfw
@@ -47,7 +47,7 @@ def create():
     else:
         glfw.swap_interval(0)
 
-    gl.glViewport(0, 0, Config.width, Config.height);
+    gl.glViewport(0, 0, Config.width, Config.height)
 
     gl.glEnable(gl.GL_TEXTURE_2D)
     gl.glActiveTexture(gl.GL_TEXTURE0)
@@ -58,6 +58,7 @@ def create():
     gl.glEnable(gl.GL_DEPTH_TEST)
     # Enable Anti-aliasing
     gl.glEnable(gl.GL_MULTISAMPLE)
+
 
 def run():
     loop()

@@ -9,7 +9,7 @@ class Camera:
 
 	def __init__(self, fov, pos):
 		self.camPos = pos
-		from game.main import config as Config
+		from game.main.config import Config
 		self.projection = pyrr.matrix44.create_perspective_projection_matrix(fov, Config.ratio, Camera.NEAR, Camera.FAR)
 		self.view = pyrr.Matrix44.identity()
 		self.updateView()

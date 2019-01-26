@@ -6,25 +6,26 @@ from game.render.shape import shape
 from game.render.shader import gluniforms as glU
 from game.screen import gamemanager as gameManager
 from game.inputs import keyboardmanager as key
+from game.inputs.inputmanager import InputManager as im
 
 import pyrr
 import glfw
 
 
 class GameScreen(screen.Screen):
-	
+
 	def __init__(self):
 		super(GameScreen, self).__init__()
 		width = 18
 		height = 12
 
-		quad = [-width/2, -height/2, 0.0,  0.0, 0.0,
-				width/2, -height/2, 0.0,  1.0, 0.0,
-				width/2, height/2, 0.0,  1.0, 1.0,
-				-width/2, height/2, 0.0,  0.0, 1.0]
+		quad = [-width / 2, -height / 2, 0.0, 0.0, 0.0,
+				width / 2, -height / 2, 0.0, 1.0, 0.0,
+				width / 2, height / 2, 0.0, 1.0, 1.0,
+				-width / 2, height / 2, 0.0, 0.0, 1.0]
 
 		indices = [0, 1, 2,
-					2, 3, 0]
+				   2, 3, 0]
 		self.shape = shape.Shape("texVert.glsl", "texFrag.glsl")
 		self.shape.setEbo(indices)
 		self.shape.setVertices(quad, [3, 2])
@@ -39,17 +40,19 @@ class GameScreen(screen.Screen):
 		glU.glUniformv(self.shape.shader, "model", self.modelMtx)
 
 	def update(self):
-		if key.getKey(glfw.KEY_Z) == 1:	
+		if key.getKey(glfw.KEY_Z) == 1:
 			gameManager.GameManager.cam.addPos([0.0, 0.0, +0.01])
-		
-		if key.getKey(glfw.KEY_P) == 1:	
+
+		if key.getKey(glfw.KEY_P) == 1:
 			print(gameManager.GameManager.cam.camPos[2])
+
+		if im.input(im.GO_UP) and im.inputPressed(im.ITEM):
+			print("hey")
 
 	def display(self):
 		self.shape.applyShader()
 		self.shape.bind()
 		self.shape.view()
-
 		self.shape.draw()
 
 	def unload(self):
