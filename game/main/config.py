@@ -4,12 +4,13 @@
 CONFIG_PATH = "data/config/config.json"
 INPUTS_PATH = "data/config/inputs.json"
 
+
 def check():
 	import os
 
 	# Verification of the existence of the "data" folder
 	path = "data"
-	if (not(os.path.exists(path)) and not(os.path.isdir(path))):
+	if not(os.path.exists(path)) and not(os.path.isdir(path)):
 		print("Creating '%s' folder..." % path)
 		try:
 			os.mkdir(path)
@@ -19,7 +20,7 @@ def check():
 
 	# Verification of the existence of the "data/config" folder
 	path = "data/config"
-	if (not(os.path.exists(path)) and not(os.path.isdir(path))):
+	if not(os.path.exists(path)) and not(os.path.isdir(path)):
 		print("Creating '%s' folder..." % path)
 		try:
 			os.mkdir(path)
@@ -29,7 +30,7 @@ def check():
 
 	# Verification of the existence of the user-specific config file
 	path = CONFIG_PATH
-	if (not(os.path.exists(path))):
+	if not(os.path.exists(path)):
 		print("Copying original config to new one...")
 		import shutil
 		try:
@@ -40,7 +41,7 @@ def check():
 
 	# Verify the existence of the user-specific key config file
 	path = INPUTS_PATH
-	if (not(os.path.exists(path))):
+	if not(os.path.exists(path)):
 		print("Copying original key config file to new one...")
 		import shutil
 		try:
@@ -49,13 +50,15 @@ def check():
 			print("Can't find original key config file !")
 			exit()
 
+
 def load():
-	# Default Values 
+	global debug, width, height, ratio, fullScreen, limFrameRate, inputs, language, noiseVolume, musicVolume
+	# Default Values
 	debug = True
 	width = 1152
 	height = 200
 	ratio = width / height
-	fullscreen = False
+	fullScreen = False
 	limFrameRate = False
 	ratio = 1
 	inputs = []
@@ -68,6 +71,7 @@ def load():
 	Reader.loadConfig() 
 	ratio = width / height
 			
+
 def close():
-	# Not implemented yet
-	1
+	pass
+	# TODO: implements
