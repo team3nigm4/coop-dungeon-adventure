@@ -1,3 +1,5 @@
+# This file loads the config and input files
+
 import game.main.config as Config
 
 import json
@@ -11,7 +13,7 @@ def loadConfig():
 	Config.width = configFile['window']['width']
 	Config.height = configFile['window']['height']
 	Config.ratio = Config.width / Config.height
-	Config.fullscreen = configFile['window']['fullscreen']
+	Config.fullScreen = configFile['window']['fullscreen']
 	Config.limFrameRate = configFile['window']['framerate']
 
 	Config.musicVolume = configFile['audio']['music']/100
