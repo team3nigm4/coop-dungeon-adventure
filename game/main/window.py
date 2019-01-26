@@ -13,7 +13,6 @@ ratio = 0
 
 
 def init():
-    Config.check()
     Config.load()
     beginTime = time.time()
 
@@ -34,7 +33,7 @@ def create():
     glfw.default_window_hints()
     glfw.window_hint(glfw.RESIZABLE, 0)  # 0 = false
 
-    window = glfw.create_window(Config.width, Config.height, "Coop Dungeon Adventure", None, None)
+    window = glfw.create_window(Config.values["window"]["width"], Config.values["window"]["height"], "Coop Dungeon Adventure", None, None)
 
     if not window:
         glfw.terminate()
@@ -42,12 +41,12 @@ def create():
 
     glfw.make_context_current(window)
 
-    if Config.limFrameRate:
+    if Config.values["window"]["limFrameRate"]:
         glfw.swap_interval(1)
     else:
         glfw.swap_interval(0)
 
-    gl.glViewport(0, 0, Config.width, Config.height)
+    gl.glViewport(0, 0, Config.values["window"]["width"], Config.values["window"]["height"])
 
     gl.glEnable(gl.GL_TEXTURE_2D)
     gl.glActiveTexture(gl.GL_TEXTURE0)
@@ -102,6 +101,5 @@ def loop():
 
 
 def exit():
-    Config.close()
     gameManager.unload()
     glfw.terminate()
