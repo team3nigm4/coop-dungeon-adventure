@@ -1,7 +1,9 @@
+# Manages all textures to know which ones are loaded
+
 from game.render.texture import texture
 
-class TextureManager: 
 
+class TextureManager:
 	def __init__(self):
 		self.texIds = []
 		self.error = "null"
