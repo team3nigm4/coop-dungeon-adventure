@@ -59,7 +59,6 @@ def create():
     # Enable Anti-aliasing
     gl.glEnable(gl.GL_MULTISAMPLE)
 
-
 def run():
     loop()
     exit()
