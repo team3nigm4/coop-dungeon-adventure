@@ -3,20 +3,21 @@
 from game.render.texture import texturemanager as textureManager
 from game.screen import camera
 
-class GameManager:
-	currentScreen = "null"
 
+class GameManager:
 	MENUSCREEN = 0
 	GAMESCREEN = 1
-	texManager = "null"
-	cam = "null"
+
+	currentScreen = None
+	texManager = None
+	cam = None
 
 	def __init__(self):
 
-		#Init systems
+		# Init systems
 		GameManager.texManager = textureManager.TextureManager()
 		GameManager.texManager.init()
-		GameManager.cam = camera.Camera(70.0, [0, 0, -8.572]) # Precise position of cam to render 18 * 12 tiles
+		GameManager.cam = camera.Camera(70.0, [0, 0, -8.572])  # Precise position of cam to render 18 * 12 tiles
 
 		self.setCurrentScreen(GameManager.GAMESCREEN)
 		
