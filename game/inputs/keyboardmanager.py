@@ -1,11 +1,12 @@
 # Manages key states
 
-from game.main import window
+
+from game.main.window import Window
 import glfw
 
 
 def getKey(key):
-	return glfw.get_key(window.window, key) == 1
+	return glfw.get_key(Window.window, key) == 1
 
 
 # TODO: create the keyboardManager's functions keyPressed and keyReleased

@@ -1,10 +1,12 @@
+# Manages mouse states
+
 import glfw
 
-from game.main import window
+from game.main.window import Window
 
 
 def getButton(key):
-	return glfw.get_mouse_button(window.window, key) == 1
+	return glfw.get_mouse_button(Window.window, key) == 1
 
 
 class MouseManager:

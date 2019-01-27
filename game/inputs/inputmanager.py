@@ -1,3 +1,5 @@
+# Manage every input from the player
+
 from game.inputs import keyboardmanager as kbm
 from game.inputs import mousemanager as mm
 
@@ -19,12 +21,12 @@ class InputManager:
 	mouseManager = None
 
 	@staticmethod
-	def init(input):
+	def init(inpt):
 		InputManager.inputs = []
 		InputManager.type = []
-		for i in range(0, len(input)):
-			InputManager.inputs.append(input[i][1])
-			InputManager.type.append(input[i][0])
+		for i in range(0, len(inpt)):
+			InputManager.inputs.append(inpt[i][1])
+			InputManager.type.append(inpt[i][0])
 
 		InputManager.keyBoardManager = kbm.KeyBoardManager()
 		InputManager.mouseManager = mm.MouseManager()
@@ -37,18 +39,18 @@ class InputManager:
 			return mm.getButton(InputManager.inputs[inpt])
 
 	@staticmethod
-	def inputReleased(input):
-		if InputManager.type[input] == 0:
-			return InputManager.keyBoardManager.keyReleased(InputManager.inputs[input])
+	def inputReleased(inpt):
+		if InputManager.type[inpt] == 0:
+			return InputManager.keyBoardManager.keyReleased(InputManager.inputs[inpt])
 		else:
-			return InputManager.mouseManager.buttonReleased(InputManager.inputs[input])
+			return InputManager.mouseManager.buttonReleased(InputManager.inputs[inpt])
 
 	@staticmethod
-	def inputPressed(input):
-		if InputManager.type[input] == 0:
-			return InputManager.keyBoardManager.keyPressed(InputManager.inputs[input])
+	def inputPressed(inpt):
+		if InputManager.type[inpt] == 0:
+			return InputManager.keyBoardManager.keyPressed(InputManager.inputs[inpt])
 		else:
-			return InputManager.mouseManager.buttonPressed(InputManager.inputs[input])
+			return InputManager.mouseManager.buttonPressed(InputManager.inputs[inpt])
 
 	@staticmethod
 	def dispose():

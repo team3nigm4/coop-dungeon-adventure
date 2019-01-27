@@ -1,9 +1,6 @@
-from game.main import config as Config
-from game.main import window as Window 
+# main file of the game
 
-# search from the global environment variable
-Config.debug = True
-
+from game.main.window import Window
 
 Window.init()
 Window.run()
