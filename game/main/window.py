@@ -59,7 +59,8 @@ class Window:
 		gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA)
 		gl.glMatrixMode(gl.GL_PROJECTION)
 		gl.glMatrixMode(gl.GL_MODELVIEW)
-		#gl.glEnable(gl.GL_DEPTH_TEST)
+
+		# gl.glEnable(gl.GL_DEPTH_TEST)
 		# Enable Anti-aliasing
 		# gl.glEnable(gl.GL_MULTISAMPLE)
 
@@ -109,3 +110,6 @@ class Window:
 	def exit():
 		gameManager.unload()
 		glfw.terminate()
+		Config.saveConfig()
+		Config.saveInputs()
+		exit()

@@ -23,6 +23,10 @@ class Camera:
 		self.camPos[2] += add[2]
 		self.updateView()
 
+	def setPos(self, newPos):
+		self.camPos = newPos
+		self.updateView()
+
 	def updateView(self):
 		self.view[3][0] = self.camPos[0]
 		self.view[3][1] = self.camPos[1]

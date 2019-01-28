@@ -21,6 +21,7 @@ class Shape:
 
 	def load(self):
 		self.vao = gl.glGenVertexArrays(1)
+		self.bind()
 		self.vbo = gl.glGenBuffers(1)
 
 	def setVertices(self, vertices, info):
@@ -56,10 +57,11 @@ class Shape:
 
 	def bind(self):
 		gl.glBindVertexArray(self.vao)
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, self.vbo)
 
 	def draw(self):
 		gl.glDrawElements(gl.GL_TRIANGLES, self.verticesNumber, gl.GL_UNSIGNED_INT, None)
 
 	def unload(self):
+		self.bind()
 		gl.glDeleteBuffers(self.vbo, 1)
+		gl.glDeleteVertexArrays(self.vao, 1)

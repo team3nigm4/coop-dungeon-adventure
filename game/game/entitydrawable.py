@@ -1,27 +1,31 @@
-from game.game import entity
-from game.render.texture import texture
-from game.render.shape import shape
-from game.render.shader.shadermanager import ShaderManager as sm
+# Entity class to display something
 
 import pyrr
 
-class EntityDrawable(entity.Entity):
+from game.game import entity
+from game.render.shader.shadermanager import ShaderManager as sm
+from game.render.shape import shape
+from game.render.texture import texture
 
+
+class EntityDrawable(entity.Entity):
 	ARGS_SIZE = 2
 	ARGS_PATH = 3
+	ARGS_GAP = 4
 
 	def __init__(self, args):
 		super().__init__(args)
 		self.size = args[EntityDrawable.ARGS_SIZE]
 
-		self.tex  = texture.Texture(args[EntityDrawable.ARGS_PATH])
+		self.tex = texture.Texture(args[EntityDrawable.ARGS_PATH])
 		self.tex.load()
 
 		size = self.size
-		quad = [-size[0] / 2, -size[1] / 2, 0.0, 0.0, 0.0,
-				size[0] / 2, -size[1] / 2, 0.0, 1.0, 0.0,
-				size[0] / 2, size[1] / 2, 0.0, 1.0, 1.0,
-				-size[0] / 2, size[1] / 2, 0.0, 0.0, 1.0]
+		quad = [0 - args[EntityDrawable.ARGS_GAP][0], 0 - args[EntityDrawable.ARGS_GAP][1], 0.0, 0.0, 0.0,
+				size[0] - args[EntityDrawable.ARGS_GAP][0], 0 - args[EntityDrawable.ARGS_GAP][1], 0.0, 1.0, 0.0,
+				size[0] - args[EntityDrawable.ARGS_GAP][0], size[1] - args[EntityDrawable.ARGS_GAP][1], 0.0, 1.0,
+				1.0,
+				0 - args[EntityDrawable.ARGS_GAP][0], size[1] - args[EntityDrawable.ARGS_GAP][1], 0.0, 0.0, 1.0]
 
 		indices = [0, 1, 2,
 				   2, 3, 0]
@@ -33,6 +37,7 @@ class EntityDrawable(entity.Entity):
 		self.modelMtx = pyrr.Matrix44.identity()
 
 	def display(self):
+
 		sm.updateLink(sm.TEXTURE, "model", self.modelMtx)
 		self.tex.bind()
 		self.shape.display()

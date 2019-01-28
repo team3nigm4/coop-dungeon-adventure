@@ -1,6 +1,9 @@
-from game.render.shader import shader
+# Manager every shader using by the game
+
 from game.render.shader import gluniforms as glU
+from game.render.shader import shader
 from game.screen import gamemanager as gm
+
 
 class ShaderManager:
 	TEXTURE = 0
@@ -17,7 +20,6 @@ class ShaderManager:
 		glU.glUniformv(ShaderManager.shaders[0], "projection", gm.GameManager.cam.getProjection())
 
 		ShaderManager.shaders[0].addLink("view")
-		glU.glUniformv (ShaderManager.shaders[0], "view", gm.GameManager.cam.getView())
 		ShaderManager.shaders[0].addLink("model")
 
 	@staticmethod
