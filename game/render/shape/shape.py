@@ -3,29 +3,24 @@
 from game.render.shader import shader as shad
 from game.render.shader import gluniforms as glU
 from game.screen import gamemanager as gameManager
+from game.render.shader.shadermanager import ShaderManager as sm
 
 import OpenGL.GL as gl
 import numpy
 
 
 class Shape:
-	def __init__(self, vertexPath, fragmentPath):
+	def __init__(self, shaderID):
 		# Instance variables
-		self.shader = shad.Shader(vertexPath, fragmentPath)
 		self.ebo = None
 		self.vbo = None
 		self.verticesNumber = None
+		self.shaderId = shaderID
 
-		self.shader.load()
 		self.load()
 
 	def load(self):
-		self.shader.addLink("projection")
-		glU.glUniformv(self.shader, "projection",  gameManager.GameManager.cam.getProjection())
-
-		self.shader.addLink("view")
-		glU.glUniformv(self.shader, "view", gameManager.GameManager.cam.getView())
-
+		self.vao = gl.glGenVertexArrays(1)
 		self.vbo = gl.glGenBuffers(1)
 
 	def setVertices(self, vertices, info):
@@ -54,21 +49,17 @@ class Shape:
 	def display(self):
 		self.applyShader()
 		self.bind()
-		self.view()
 		self.draw()
 
+	def applyShader(self):
+		sm.shaders[self.shaderId].use()
+
 	def bind(self):
+		gl.glBindVertexArray(self.vao)
 		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, self.vbo)
 
 	def draw(self):
 		gl.glDrawElements(gl.GL_TRIANGLES, self.verticesNumber, gl.GL_UNSIGNED_INT, None)
 
-	def applyShader(self):
-		self.shader.use()
-
-	def view(self):
-		glU.glUniformv(self.shader, "view", gameManager.GameManager.cam.getView())
-
 	def unload(self):
 		gl.glDeleteBuffers(self.vbo, 1)
-		self.shader.unload()

@@ -8,9 +8,11 @@ from game.screen import gamemanager as gameManager
 
 
 class Texture:
+	PATH = "game/resources/textures/"
+
 	def __init__(self, path):
 		# Default values
-		self.texId = textureId.TextureId(path)
+		self.texId = textureId.TextureId(Texture.PATH + path)
 		self.width = 1
 		self.height = 1
 		self.correctLoaded = False
