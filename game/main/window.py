@@ -30,6 +30,7 @@ class Window:
 		from game.screen import gamemanager as gm
 		global gameManager
 		gameManager = gm.GameManager()
+		gameManager.begin()
 
 	@staticmethod
 	def create():
@@ -58,9 +59,9 @@ class Window:
 		gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA)
 		gl.glMatrixMode(gl.GL_PROJECTION)
 		gl.glMatrixMode(gl.GL_MODELVIEW)
-		gl.glEnable(gl.GL_DEPTH_TEST)
+		#gl.glEnable(gl.GL_DEPTH_TEST)
 		# Enable Anti-aliasing
-		gl.glEnable(gl.GL_MULTISAMPLE)
+		# gl.glEnable(gl.GL_MULTISAMPLE)
 
 	@staticmethod
 	def run():
