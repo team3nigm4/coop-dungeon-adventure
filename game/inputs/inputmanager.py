@@ -34,9 +34,9 @@ class InputManager:
 	@staticmethod
 	def input(inpt):
 		if InputManager.type[inpt] == 0:
-			return kbm.getKey(InputManager.inputs[inpt])
+			return kbm.KeyBoardManager.getKey(InputManager.inputs[inpt])
 		else:
-			return mm.getButton(InputManager.inputs[inpt])
+			return mm.MouseManager.getButton(InputManager.inputs[inpt])
 
 	@staticmethod
 	def inputReleased(inpt):
@@ -51,6 +51,29 @@ class InputManager:
 			return InputManager.keyBoardManager.keyPressed(InputManager.inputs[inpt])
 		else:
 			return InputManager.mouseManager.buttonPressed(InputManager.inputs[inpt])
+
+	@staticmethod
+	def getState():
+		import math
+		values = []
+		for i in range(1, len(InputManager.inputs)):
+			key = 0
+			if InputManager.type[i] == 0:
+				if InputManager.keyBoardManager.state[InputManager.inputs[i]]:
+					key += 3
+				if InputManager.keyBoardManager.tempState[InputManager.inputs[i]]:
+					key -= 1
+					key = math.fabs(key)
+			else:
+				if InputManager.mouseManager.state[InputManager.inputs[i]]:
+					key += 3
+				if InputManager.mouseManager.tempState[InputManager.inputs[i]]:
+					key -= 1
+					key = math.fabs(key)
+
+			values.append(key)
+		return values
+
 
 	@staticmethod
 	def dispose():
