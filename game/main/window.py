@@ -110,6 +110,4 @@ class Window:
 	def exit():
 		gameManager.unload()
 		glfw.terminate()
-		Config.saveConfig()
-		Config.saveInputs()
 		exit()
