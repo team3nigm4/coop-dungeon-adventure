@@ -116,7 +116,7 @@ class Config:
 
 		with open(Config.CONFIG_PATH, 'w') as outfile:
 			json.dump(ConfigToSave, outfile, indent="	")
-			print("[CONFIG] Default configuration file created successfully !")
+			print("[CONFIG] Configuration file saved successfully !")
 
 	@staticmethod
 	def saveInputs():
@@ -128,7 +128,7 @@ class Config:
 
 		with open(Config.INPUTS_PATH, 'w') as outfile:
 			json.dump(InputsToSave, outfile, indent="	")
-			print("[CONFIG] Default key configuration file created successfully !")
+			print("[CONFIG] Key configuration file saved successfully !")
 
 	@staticmethod
 	def loadConfig():
