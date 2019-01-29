@@ -21,7 +21,18 @@ class MapManager:
 
 	@staticmethod
 	def init():
-		MapManager.shape = shape.Shape(0)
+
+		quad = [0, 0, 0.0, 				0.0, 0.0,
+				1, 0, 0.0, 			1.0, 0.0,
+				1, 0, 0.0, 	1.0, 1.0,
+				0, 0, 0.0, 		0.0, 1.0]
+
+
+		indices = [0, 1, 2,
+				   2, 3, 0]
+
+		MapManager.shape = shape.Shape(0, True)
+		MapManager.shape.setVertices(quad, [3, 2], indices)
 
 		MapManager.modelMtx = pyrr.Matrix44.identity()
 		sm.updateLink(sm.TEXTURE, "model", MapManager.modelMtx)
@@ -36,13 +47,14 @@ class MapManager:
 		for i in range(0, len(MapManager.tex)):
 			MapManager.tex[i].bind()
 			MapManager.shape.draw()
+		MapManager.shape.unbind()
 
 	@staticmethod
 	def checkCollisionX(position, speed, colBoxSize):
 		half = colBoxSize[0] / 2
 		nextPos = position[0] + speed
 		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.width:
-			posY = [math.floor(position[1] - colBoxSize[1]/2), math.floor(position[1] + colBoxSize[1]/2)]
+			posY = [math.floor(position[1] - colBoxSize[1] / 2), math.floor(position[1] + colBoxSize[1] / 2)]
 
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
@@ -63,7 +75,7 @@ class MapManager:
 		half = colBoxSize[1] / 2
 		nextPos = position[1] + speed
 		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.height:
-			posX = [math.floor(position[0] - colBoxSize[0]/2), math.floor(position[0] + colBoxSize[0]/2)]
+			posX = [math.floor(position[0] - colBoxSize[0] / 2), math.floor(position[0] + colBoxSize[0] / 2)]
 
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
@@ -79,6 +91,7 @@ class MapManager:
 			return position[1]
 		return position[1] + speed
 
+	# noinspection PyTypeChecker
 	@staticmethod
 	def changeRoom():
 		# Clear the game before changing
@@ -92,22 +105,20 @@ class MapManager:
 
 		MapManager.collision = values[2]
 
-		quad = [0, 0, 0.0, 0.0, 0.0,
-				width, 0, 0.0, 1.0, 0.0,
-				width, height, 0.0, 1.0, 1.0,
-				0, height, 0.0, 0.0, 1.0]
-
+		# Set the camera position
 		if width <= 18 and height <= 12:
 			gm.cam.setPos([0, 0, gm.cam.camPos[2]])
 			gm.cam.addPos([-width / 2, -height / 2, 0])
 
+		quad = [0, 0, 0.0, 				0.0, 0.0,
+				width, 0, 0.0, 			1.0, 0.0,
+				width, height, 0.0, 	1.0, 1.0,
+				0, height, 0.0, 		0.0, 1.0]
+
 		sm.updateLink(sm.TEXTURE, "view", gm.cam.getView())
 
-		indices = [0, 1, 2,
-					2, 3, 0]
 
-		MapManager.shape.setEbo(indices)
-		MapManager.shape.setVertices(quad, [3, 2])
+		MapManager.shape.resetVBO(quad)
 
 		MapManager.tex = [None] * len(values[3])
 		for i in range(0, len(values[3])):
@@ -122,5 +133,9 @@ class MapManager:
 	@staticmethod
 	def unload():
 		MapManager.shape.unload()
+		MapManager.unloadImages()
+
+	@staticmethod
+	def unloadImages():
 		for i in range(0, len(MapManager.tex)):
 			MapManager.tex[i].unload()
