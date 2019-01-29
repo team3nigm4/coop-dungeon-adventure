@@ -1,8 +1,5 @@
 # Create a shape as you want and manage it
 
-from game.render.shader import shader as shad
-from game.render.shader import gluniforms as glU
-from game.screen import gamemanager as gameManager
 from game.render.shader.shadermanager import ShaderManager as sm
 
 import OpenGL.GL as gl
@@ -62,6 +59,8 @@ class Shape:
 		gl.glDrawElements(gl.GL_TRIANGLES, self.verticesNumber, gl.GL_UNSIGNED_INT, None)
 
 	def unload(self):
-		self.bind()
-		gl.glDeleteBuffers(self.vbo, 1)
+		print("vao : ", self.vao, ", vbo : ", self.vbo, ", ebo : ", self.ebo)
 		gl.glDeleteVertexArrays(self.vao, 1)
+		gl.glDeleteBuffers(self.vbo, 1)
+		gl.glDeleteBuffers(self.ebo, 1)
+
