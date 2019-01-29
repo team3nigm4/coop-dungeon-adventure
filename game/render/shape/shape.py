@@ -7,47 +7,58 @@ import numpy
 
 
 class Shape:
-	def __init__(self, shaderID):
+	def __init__(self, shaderID, useEBO):
 		# Instance variables
-		self.ebo = None
-		self.vbo = None
 		self.verticesNumber = None
+
 		self.shaderId = shaderID
 
-		self.load()
-
-	def load(self):
+		self.useEBO = useEBO
 		self.vao = gl.glGenVertexArrays(1)
 		self.bind()
 		self.vbo = gl.glGenBuffers(1)
+		if useEBO:
+			self.ebo = gl.glGenBuffers(1)
+			print("vao ", self.vao, ", ebo", self.ebo, ", vbo", self.vbo)
+		self.unbind()
 
-	def setVertices(self, vertices, info):
+
+	def setVertices(self, vertices, info, indices=None):
 		self.bind()
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, self.vbo)
-		vertices = numpy.array(vertices, dtype=numpy.float32)
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, vertices.itemsize * len(vertices), vertices, gl.GL_STATIC_DRAW)
+		if self.useEBO:
+			if indices == None :
+				print("(shape-setVertices) using EBO without providing indices(None)")
+				exit(1)
+
+			self.verticesNumber = len(indices)
+
+			indices = numpy.array(indices, dtype=numpy.uint32)
+
+			gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, self.ebo)
+			gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, indices.itemsize * len(indices), indices, gl.GL_STATIC_DRAW)
+
+		self.resetVBO(vertices)
 
 		for i in range(0, len(info)):
 			gl.glVertexAttribPointer(i, info[i], gl.GL_FLOAT, gl.GL_FALSE, len(vertices), gl.ctypes.c_void_p(i*12))
 			gl.glEnableVertexAttribArray(i)
 
-	def setEbo(self, indices):
+		if not self.useEBO:
+			self.verticesNumber = len(vertices) / sum(info)
+
+		self.unbind()
+
+	def resetVBO(self, vertices):
 		self.bind()
-		self.ebo = gl.glGenBuffers(1)
-		self.verticesNumber = len(indices)
-
-		indices = numpy.array(indices, dtype=numpy.uint32)
-
-		gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, self.ebo)
-		gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, indices.itemsize * len(indices), indices, gl.GL_STATIC_DRAW)
-
-	def defaultEbo(self, size):
-		self.setEbo([i for i in numpy.arange(0, size, 1)])
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, self.vbo)
+		vertices = numpy.array(vertices, dtype=numpy.float32)
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, vertices.itemsize * len(vertices), vertices, gl.GL_STATIC_DRAW)
 
 	def display(self):
 		self.applyShader()
 		self.bind()
 		self.draw()
+		self.unbind()
 
 	def applyShader(self):
 		sm.shaders[self.shaderId].use()
@@ -55,12 +66,18 @@ class Shape:
 	def bind(self):
 		gl.glBindVertexArray(self.vao)
 
+	def unbind(self):
+		gl.glBindVertexArray(0)
+
 	def draw(self):
-		gl.glDrawElements(gl.GL_TRIANGLES, self.verticesNumber, gl.GL_UNSIGNED_INT, None)
+		if self.useEBO:
+			gl.glDrawElements(gl.GL_TRIANGLES, self.verticesNumber, gl.GL_UNSIGNED_INT, None)
+		else:
+			gl.glDrawArrays(gl.GL_TRIANGLES, 0, self.verticesNumber)
 
 	def unload(self):
-		print("vao : ", self.vao, ", vbo : ", self.vbo, ", ebo : ", self.ebo)
-		gl.glDeleteVertexArrays(self.vao, 1)
 		gl.glDeleteBuffers(self.vbo, 1)
-		gl.glDeleteBuffers(self.ebo, 1)
+		if self.useEBO:
+			gl.glDeleteBuffers(self.ebo, 1)
+		gl.glDeleteVertexArrays(self.vao, 1)
 
