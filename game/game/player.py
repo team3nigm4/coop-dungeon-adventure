@@ -9,9 +9,9 @@ class Player(entitydrawable.EntityDrawable):
 	SPEED = 0.08
 
 	def __init__(self, args):
-		self.colBoxSize = [0.7, 0.4]
-		args.append([self.colBoxSize[0] / 2, self.colBoxSize[1] / 2])
 		super().__init__(args)
+		self.colBoxSize = [0.7, 0.4]
+		self.entityDisplayer.setImage([0.8, 1.2], "perso.png", [0.4, 0.2])
 
 	def update(self):
 		if im.input(im.GO_LEFT):
@@ -22,8 +22,3 @@ class Player(entitydrawable.EntityDrawable):
 			self.setPos([mam.checkCollisionX(self.pos, Player.SPEED, self.colBoxSize), self.pos[1]])
 		if im.input(im.GO_DOWN):
 			self.setPos([self.pos[0], mam.checkCollisionY(self.pos, -Player.SPEED, self.colBoxSize)])
-
-	def addPos(self, addPos):
-		self.pos[0] += addPos[0]
-		self.pos[1] += addPos[1]
-		self.updateModel()
