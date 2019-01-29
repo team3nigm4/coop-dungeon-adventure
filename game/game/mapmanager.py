@@ -39,10 +39,10 @@ class MapManager:
 
 	@staticmethod
 	def checkCollisionX(position, speed, colBoxSize):
-		half = colBoxSize / 2
+		half = colBoxSize[0] / 2
 		nextPos = position[0] + speed
 		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.width:
-			posY = [math.floor(position[1] - half), math.floor(position[1] + half)]
+			posY = [math.floor(position[1] - colBoxSize[1]/2), math.floor(position[1] + colBoxSize[1]/2)]
 
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
@@ -60,10 +60,10 @@ class MapManager:
 
 	@staticmethod
 	def checkCollisionY(position, speed, colBoxSize):
-		half = colBoxSize / 2
+		half = colBoxSize[1] / 2
 		nextPos = position[1] + speed
 		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.height:
-			posX = [math.floor(position[0] - half), math.floor(position[0] + half)]
+			posX = [math.floor(position[0] - colBoxSize[0]/2), math.floor(position[0] + colBoxSize[0]/2)]
 
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
