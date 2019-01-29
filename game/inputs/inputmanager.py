@@ -74,7 +74,6 @@ class InputManager:
 			values.append(key)
 		return values
 
-
 	@staticmethod
 	def dispose():
 		for i in range(0, len(InputManager.inputs)):

@@ -1,16 +1,14 @@
 # Entity class to display something
 
-import pyrr
-
 from game.game import entity
-from game.game import entitydisplayer as ed
+from game.game import entityrenderer as ed
 
 
 class EntityDrawable(entity.Entity):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.entityDisplayer = ed.EntityDisplayer()
+		self.entityDisplayer = ed.EntityRenderer()
 
 	def display(self):
 		self.entityDisplayer.display()

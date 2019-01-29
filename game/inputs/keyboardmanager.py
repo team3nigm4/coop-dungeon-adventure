@@ -4,6 +4,7 @@
 from game.main.window import Window
 import glfw
 
+
 class KeyBoardManager:
 	def __init__(self):
 		self.state = [False] * 350

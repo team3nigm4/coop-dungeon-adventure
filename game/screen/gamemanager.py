@@ -5,6 +5,7 @@ from game.screen import camera
 from game.inputs.inputmanager import InputManager as im
 from game.render.shader.shadermanager import ShaderManager as sm
 
+
 class GameManager:
 	MENUSCREEN = 0
 	GAMESCREEN = 1
@@ -38,8 +39,8 @@ class GameManager:
 	def begin(self):
 		self.setCurrentScreen(GameManager.GAMESCREEN)
 
-		# if GameManager.server:
-		# 	Server.init()
+	# if GameManager.server:
+	# 	Server.init()
 
 	def update(self):
 		# if GameManager.server:
@@ -58,8 +59,8 @@ class GameManager:
 		if value == GameManager.GAMESCREEN:
 			from game.screen.screens import gamescreen as ga
 			GameManager.currentScreen = ga.GameScreen()
-			# if GameManager.server:
-			# 	Server.init()
+		# if GameManager.server:
+		# 	Server.init()
 
 	def unload(self):
 		GameManager.currentScreen.unload()

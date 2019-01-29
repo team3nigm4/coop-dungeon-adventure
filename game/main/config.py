@@ -59,6 +59,8 @@ class Config:
 	def createDefaultConfig(overwrite=True):
 
 		# We retrieve the user's screen resolution
+		width = 0
+		height = 0
 		import glfw
 		glfw.init()
 		vm = glfw.get_video_modes(glfw.get_primary_monitor())
@@ -95,7 +97,7 @@ class Config:
 			}
 		}
 
-		if overwrite == True:
+		if overwrite:
 			Config.saveConfig()
 
 	@staticmethod

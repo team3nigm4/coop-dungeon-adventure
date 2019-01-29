@@ -1,5 +1,4 @@
 class Entity:
-
 	ARGS_TYPE = 0
 	ARGS_POSITION = 1
 

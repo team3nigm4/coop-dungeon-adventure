@@ -4,6 +4,7 @@ import glfw
 
 from game.main.window import Window
 
+
 class MouseManager:
 	def __init__(self):
 		self.state = [False] * 10

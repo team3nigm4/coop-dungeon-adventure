@@ -1,7 +1,7 @@
 from game.game import entity
 
-class EntityManager:
 
+class EntityManager:
 	PLAYER_1 = 0
 	PLAYER_2 = 0
 
@@ -32,7 +32,7 @@ class EntityManager:
 	@staticmethod
 	def clear():
 		size = len(EntityManager.entities)
-		if  size > 2:
+		if size > 2:
 			for i in range(3, size):
 				EntityManager.entities.remove(3)
 
