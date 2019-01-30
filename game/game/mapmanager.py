@@ -16,17 +16,25 @@ class MapManager:
 	height = None
 	shape = None
 	modelMtx = None
-	tex = [None]
-	collision = [None]
+	tex = []
+	interaction = []
+	id = "null"
+
+	DATA_MAP_ID = 0
+	DATA_IMAGES = 1
+	DATA_INTERACTIONS = 2
+	DATA_ENTRIES = 3
+	DATA_ENTITIES = 4
+
+	INTERACTION_SOLID = 1
 
 	@staticmethod
 	def init():
 
-		quad = [0, 0, 0.0, 				0.0, 0.0,
-				1, 0, 0.0, 			1.0, 0.0,
-				1, 0, 0.0, 	1.0, 1.0,
-				0, 0, 0.0, 		0.0, 1.0]
-
+		quad = [0.0, 0.0, 0.0, 		0.0, 0.0,
+				1.0, 0.0, 0.0, 		1.0, 0.0,
+				1.0, 1.0, 0.0, 		1.0, 1.0,
+				0.0, 1.0, 0.0, 		0.0, 1.0]
 
 		indices = [0, 1, 2,
 				   2, 3, 0]
@@ -58,13 +66,13 @@ class MapManager:
 
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
-				if MapManager.collision[MapManager.height - 1 - posY[0]][nextPos] == 1 or \
-						MapManager.collision[MapManager.height - 1 - posY[1]][nextPos] == 1:
+				if MapManager.interaction[MapManager.height - 1 - posY[0]][nextPos] == MapManager.INTERACTION_SOLID or \
+						MapManager.interaction[MapManager.height - 1 - posY[1]][nextPos] == MapManager.INTERACTION_SOLID:
 					return nextPos - half - 0.001
 			else:
 				nextPos = math.floor(nextPos - half)
-				if MapManager.collision[MapManager.height - 1 - posY[0]][nextPos] == 1 or \
-						MapManager.collision[MapManager.height - 1 - posY[1]][nextPos] == 1:
+				if MapManager.interaction[MapManager.height - 1 - posY[0]][nextPos] == MapManager.INTERACTION_SOLID or \
+						MapManager.interaction[MapManager.height - 1 - posY[1]][nextPos] == MapManager.INTERACTION_SOLID:
 					return nextPos + 1 + half + 0.001
 		else:
 			return position[0]
@@ -79,53 +87,57 @@ class MapManager:
 
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
-				if MapManager.collision[MapManager.height - 1 - nextPos][posX[0]] == 1 or \
-						MapManager.collision[MapManager.height - 1 - nextPos][posX[1]] == 1:
+				if MapManager.interaction[MapManager.height - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
+						MapManager.interaction[MapManager.height - 1 - nextPos][posX[1]] == MapManager.INTERACTION_SOLID:
 					return nextPos - half - 0.001
 			else:
 				nextPos = math.floor(nextPos - half)
-				if MapManager.collision[MapManager.height - 1 - nextPos][posX[0]] == 1 or \
-						MapManager.collision[MapManager.height - 1 - nextPos][posX[1]] == 1:
+				if MapManager.interaction[MapManager.height - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
+						MapManager.interaction[MapManager.height - 1 - nextPos][posX[1]] == MapManager.INTERACTION_SOLID:
 					return nextPos + 1 + half + 0.001
 		else:
 			return position[1]
 		return position[1] + speed
 
-	# noinspection PyTypeChecker
 	@staticmethod
 	def changeRoom():
 		# Clear the game before changing
 		em.clear()
-		from game.game import mapfunctions
 
 		# Load new room
+		from game.game import mapfunctions
 		values = mapfunctions.createMap()
-		width = values[0][0]
-		height = values[0][1]
 
-		MapManager.collision = values[2]
+		# Apply values
 
-		# Set the camera position
-		if width <= 18 and height <= 12:
-			gm.cam.setPos([0, 0, gm.cam.camPos[2]])
-			gm.cam.addPos([-width / 2, -height / 2, 0])
+		MapManager.id = values[MapManager.DATA_MAP_ID]
+
+		for i in range(0, len(values[MapManager.DATA_IMAGES])):
+			MapManager.tex.append(texture.Texture("map1"))
+			len(MapManager.tex)
+			MapManager.tex[i].loadImage(values[MapManager.DATA_IMAGES][i])
+
+		MapManager.interaction = values[MapManager.DATA_INTERACTIONS]
+
+		em.entities[em.PLAYER_1].setPos(values[MapManager.DATA_ENTRIES])
+
+		width = len(MapManager.interaction[0])
+		height = len(MapManager.interaction)
+
+		# Work with values
 
 		quad = [0, 0, 0.0, 				0.0, 0.0,
 				width, 0, 0.0, 			1.0, 0.0,
 				width, height, 0.0, 	1.0, 1.0,
 				0, height, 0.0, 		0.0, 1.0]
 
-		sm.updateLink(sm.TEXTURE, "view", gm.cam.getView())
-
-
 		MapManager.shape.resetVBO(quad)
 
-		MapManager.tex = [None] * len(values[3])
-		for i in range(0, len(values[3])):
-			MapManager.tex[i] = texture.Texture("map1")
-			MapManager.tex[i].loadImage(values[3][i])
-
-		em.entities[em.PLAYER_1].setPos(values[1])
+		# Set the camera position
+		if width <= 18 and height <= 12:
+			gm.cam.setPos([0, 0, gm.cam.camPos[2]])
+			gm.cam.addPos([-width / 2, -height / 2, 0])
+		sm.updateLink(sm.TEXTURE, "view", gm.cam.getView())
 
 		MapManager.width = width
 		MapManager.height = height

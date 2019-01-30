@@ -22,8 +22,8 @@ map = [[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
 
 	   [[3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-		[3, 3, 3, 0, 0, 0, 0, 0, 4, 3, 0, 0, 0, 3],
-		[3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 3],
+		[3, 3, 3, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 3],
+		[3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
 		[3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -43,18 +43,15 @@ collision = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 			 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
 			 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
 
-tiles = ['ground.png', 'ground2.png', 'obstacle.png', 'plaque de pression.png', 'bloc glissant.png']
+tiles = ['ground.png', 'ground2.png', 'obstacle.png']
 
 
 def createMap():
 	returnValues = []
-	returnValues.append([len(map[0][0]), len(map[0])])
-	returnValues.append([1.5, 4])
+	returnValues.append("Map Test")
 
 	width = len(map[0][0])
 	height = len(map[0])
-
-	returnValues.append(collision)
 
 	images = []
 	gap = 32
@@ -66,7 +63,9 @@ def createMap():
 					im = Image.open("game/resources/textures/tiles/" + tiles[map[z][y][x] - 1])
 					new_im.paste(im, (x * gap, y * gap))
 		images.append(new_im)
-
-	# Show the map if you want
 	returnValues.append(images)
+
+	returnValues.append(collision)
+	returnValues.append([1.5, 4])
+
 	return returnValues
