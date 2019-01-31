@@ -5,6 +5,7 @@ class Entity:
 	def __init__(self, args):
 		self.type = args[Entity.ARGS_TYPE]
 		self.pos = args[Entity.ARGS_POSITION]
+		self.id = 0
 
 	def setPos(self, position):
 		self.pos = position
@@ -14,6 +15,9 @@ class Entity:
 
 	def display(self):
 		pass
+
+	def setId(self, id):
+		self.id = id
 
 	def unload(self):
 		pass
