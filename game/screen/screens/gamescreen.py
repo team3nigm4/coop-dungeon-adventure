@@ -2,9 +2,9 @@
 
 import time
 
-from game.game import player as pl
-from game.game.entitymanager import EntityManager as em
-from game.game.mapmanager import MapManager as mam
+from game.game.entitymodel import player as pl
+from game.game.entityclass.entitymanager import EntityManager as em
+from game.game.map.mapmanager import MapManager as mam
 from game.inputs.inputmanager import InputManager as im
 from game.screen.gamemanager import GameManager
 from game.screen.screens import screen

@@ -2,7 +2,7 @@
 
 import time
 
-from game.game.entitymanager import EntityManager as EM
+from game.game.entityclass.entitymanager import EntityManager as EM
 
 
 class Server:

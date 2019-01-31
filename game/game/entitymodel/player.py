@@ -1,7 +1,7 @@
 # Entity class player, embodies one of the players
 
-from game.game import entitydrawable
-from game.game.mapmanager import MapManager as mam
+from game.game.entityclass import entitydrawable
+from game.game.map.mapmanager import MapManager as mam
 from game.inputs.inputmanager import InputManager as im
 
 
@@ -10,7 +10,7 @@ class Player(entitydrawable.EntityDrawable):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.colBoxSize = [0.7, 0.4]
+		self.setColBox([0.7, 0.4], True)
 		self.entityDisplayer.setImage([0.8, 1.2], "perso.png", [0.4, 0.2])
 
 	def update(self):

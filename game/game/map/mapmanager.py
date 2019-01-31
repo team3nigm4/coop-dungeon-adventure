@@ -4,7 +4,7 @@ import math
 
 import pyrr
 
-from game.game.entitymanager import EntityManager as em
+from game.game.entityclass.entitymanager import EntityManager as em
 from game.render.shader.shadermanager import ShaderManager as sm
 from game.render.shape import shape
 from game.render.texture import texture
@@ -105,7 +105,7 @@ class MapManager:
 		em.clear()
 
 		# Load new room
-		from game.game import mapfunctions
+		from game.game.map import mapfunctions
 		values = mapfunctions.createMap()
 
 		# Apply values
@@ -151,3 +151,4 @@ class MapManager:
 	def unloadImages():
 		for i in range(0, len(MapManager.tex)):
 			MapManager.tex[i].unload()
+		MapManager.tex = []
