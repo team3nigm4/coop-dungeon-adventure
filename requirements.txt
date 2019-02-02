@@ -1,0 +1,4 @@
+PyOpenGL
+glfw
+pillow
+pyrr
