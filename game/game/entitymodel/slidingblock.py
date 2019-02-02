@@ -33,17 +33,19 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 
 	def active(self, ent):
 
-		if ent.attributes["collision"] != 2 or ent.inMov[0] == True or ent.inMov[0] == True:
+		if ent.attributes["collision"] != 2 or ent.inMov[0] == True or ent.inMov[1] == True:
 			# Move in x
 			if (ent.inMov[0] and not ent.inMov[1]):
+				tempDir = 0
 				if ent.speed[0] > 0:
 					ent.setPos([self.pos[0] - self.halfColSize[0] - ent.halfColSize[0] - 0.001, ent.pos[1]])
 					tempDir = 1
-				else:
+				elif ent.speed[0] < 0:
 					ent.setPos([self.pos[0] + self.halfColSize[0] + ent.halfColSize[0] + 0.001, ent.pos[1]])
 					tempDir = -1
-				ent.inMov[0] = False
 
+				if ent.type == "SlidingBlock":
+					ent.inMov[0] = 0
 
 				# interaction attribute
 				if ent.type == "Player":
@@ -52,16 +54,18 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 						self.speed[0] = SlidingBlock.SPEED * tempDir
 
 
-
 			# Move in y
 			elif(ent.inMov[1] and not ent.inMov[0]):
+				tempDir = 0
 				if ent.speed[1] < 0:
 					ent.setPos([ent.pos[0], self.pos[1] + self.halfColSize[1] + ent.halfColSize[1] + 0.001])
 					tempDir = -1
-				else:
+				elif ent.speed[1] > 0:
 					ent.setPos([ent.pos[0], self.pos[1] - self.halfColSize[1] - ent.halfColSize[1] - 0.001])
 					tempDir = 1
-				ent.inMov[1] = False
+
+				if ent.type == "SlidingBlock":
+					ent.inMov[1] = 0
 
 				# interaction attribute
 				if ent.type == "Player":
