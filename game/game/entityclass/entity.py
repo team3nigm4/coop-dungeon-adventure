@@ -5,7 +5,9 @@ class Entity:
 	def __init__(self, args):
 		self.type = args[Entity.ARGS_TYPE]
 		self.pos = args[Entity.ARGS_POSITION]
-		self.id = 0
+
+		from game.game.entityclass.entitymanager import EntityManager
+		self.id = EntityManager.checkPlace()
 
 	def setPos(self, position):
 		self.pos = position

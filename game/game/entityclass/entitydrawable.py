@@ -8,14 +8,16 @@ class EntityDrawable(entitycollision.EntityCollision):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.entityDisplayer = ed.EntityRenderer()
+		self.entityRenderer = ed.EntityRenderer()
+		self.setPos(self.pos)
 
 	def display(self):
-		self.entityDisplayer.display()
+		self.entityRenderer.display()
 
 	def setPos(self, position):
 		super().setPos(position)
-		self.entityDisplayer.updateModel(self.pos)
+		self.entityRenderer.updateModel(self.pos)
 
 	def unload(self):
-		self.entityDisplayer.unload()
+		print(self.type)
+		self.entityRenderer.unload()

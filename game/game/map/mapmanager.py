@@ -59,10 +59,10 @@ class MapManager:
 
 	@staticmethod
 	def checkCollisionX(position, speed, colBoxSize):
-		half = colBoxSize[0] / 2
+		half = colBoxSize[0]
 		nextPos = position[0] + speed
 		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.width:
-			posY = [math.floor(position[1] - colBoxSize[1] / 2), math.floor(position[1] + colBoxSize[1] / 2)]
+			posY = [math.floor(position[1] - colBoxSize[1]), math.floor(position[1] + colBoxSize[1])]
 
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
@@ -80,10 +80,10 @@ class MapManager:
 
 	@staticmethod
 	def checkCollisionY(position, speed, colBoxSize):
-		half = colBoxSize[1] / 2
+		half = colBoxSize[1]
 		nextPos = position[1] + speed
 		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.height:
-			posX = [math.floor(position[0] - colBoxSize[0] / 2), math.floor(position[0] + colBoxSize[0] / 2)]
+			posX = [math.floor(position[0] - colBoxSize[0]), math.floor(position[0] + colBoxSize[0])]
 
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
@@ -121,6 +121,11 @@ class MapManager:
 
 		em.entities[em.PLAYER_1].setPos(values[MapManager.DATA_ENTRIES])
 
+		# Add test entity
+		from game.game.entitymodel import slidingblock
+		entity = slidingblock.SlidingBlock(["SlidingBlock", [10.5, 7.5]])
+		em.add(entity)
+
 		width = len(MapManager.interaction[0])
 		height = len(MapManager.interaction)
 
@@ -146,6 +151,11 @@ class MapManager:
 	def unload():
 		MapManager.shape.unload()
 		MapManager.unloadImages()
+
+	@staticmethod
+	def setInteractionBloc(position, id):
+		MapManager.interaction[MapManager.height - 1 - math.floor(position[1])][math.floor(position[0])] = id
+
 
 	@staticmethod
 	def unloadImages():

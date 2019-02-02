@@ -47,6 +47,7 @@ class GameManager:
 		# 	Server.update()
 		self.currentScreen.update()
 		im.dispose()
+
 		sm.updateLink(sm.TEXTURE, "view", GameManager.cam.getView())
 
 	def display(self):

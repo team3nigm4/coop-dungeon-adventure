@@ -28,6 +28,8 @@ class GameScreen(screen.Screen):
 		clientData = im.getState()
 
 		em.update()
+		em.collision()
+
 
 		if im.inputPressed(im.ESCAPE):
 			from game.main.window import Window

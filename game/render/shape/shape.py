@@ -76,8 +76,8 @@ class Shape:
 			gl.glDrawArrays(gl.GL_TRIANGLES, 0, self.verticesNumber)
 
 	def unload(self):
-		gl.glDeleteBuffers(self.vbo, 1)
+		gl.glDeleteBuffers(1, int(self.vbo))
 		if self.useEBO:
-			gl.glDeleteBuffers(self.ebo, 1)
-		gl.glDeleteVertexArrays(self.vao, 1)
+			gl.glDeleteBuffers(1, int(self.ebo))
+		gl.glDeleteVertexArrays(1, int(self.vao))
 
