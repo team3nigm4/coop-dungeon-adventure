@@ -30,6 +30,9 @@ class GameScreen(screen.Screen):
 		em.update()
 		em.collision()
 
+		if im.inputPressed(im.ITEM):
+			from game.game.map.eventmanager import EventManager
+			print(EventManager.event)
 
 		if im.inputPressed(im.ESCAPE):
 			from game.main.window import Window

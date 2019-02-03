@@ -22,6 +22,7 @@ class EntityCollision(entity.Entity):
 			"interaction": 0,
 			"heavy": 0,
 			"damage": 0,
+			"door": 0
 		}
 
 	def setColBox(self, size, test):

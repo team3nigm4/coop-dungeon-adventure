@@ -21,6 +21,7 @@ class Player(entitydrawable.EntityDrawable):
 		self.attributes["damage"] = 2
 		self.attributes["heavy"] = 1
 		self.attributes["interaction"] = 1
+		self.attributes["door"] = 1
 
 	def update(self):
 		dir = [0, 0]

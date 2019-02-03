@@ -31,10 +31,10 @@ class MapManager:
 	@staticmethod
 	def init():
 
-		quad = [0.0, 0.0, 0.0, 		0.0, 0.0,
-				1.0, 0.0, 0.0, 		1.0, 0.0,
-				1.0, 1.0, 0.0, 		1.0, 1.0,
-				0.0, 1.0, 0.0, 		0.0, 1.0]
+		quad = [0.0, 0.0, 0.0, 0.0, 0.0,
+				1.0, 0.0, 0.0, 1.0, 0.0,
+				1.0, 1.0, 0.0, 1.0, 1.0,
+				0.0, 1.0, 0.0, 0.0, 1.0]
 
 		indices = [0, 1, 2,
 				   2, 3, 0]
@@ -67,12 +67,14 @@ class MapManager:
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
 				if MapManager.interaction[MapManager.height - 1 - posY[0]][nextPos] == MapManager.INTERACTION_SOLID or \
-						MapManager.interaction[MapManager.height - 1 - posY[1]][nextPos] == MapManager.INTERACTION_SOLID:
+						MapManager.interaction[MapManager.height - 1 - posY[1]][
+							nextPos] == MapManager.INTERACTION_SOLID:
 					return nextPos - half - 0.001
 			else:
 				nextPos = math.floor(nextPos - half)
 				if MapManager.interaction[MapManager.height - 1 - posY[0]][nextPos] == MapManager.INTERACTION_SOLID or \
-						MapManager.interaction[MapManager.height - 1 - posY[1]][nextPos] == MapManager.INTERACTION_SOLID:
+						MapManager.interaction[MapManager.height - 1 - posY[1]][
+							nextPos] == MapManager.INTERACTION_SOLID:
 					return nextPos + 1 + half + 0.001
 		else:
 			return position[0]
@@ -88,12 +90,14 @@ class MapManager:
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
 				if MapManager.interaction[MapManager.height - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
-						MapManager.interaction[MapManager.height - 1 - nextPos][posX[1]] == MapManager.INTERACTION_SOLID:
+						MapManager.interaction[MapManager.height - 1 - nextPos][
+							posX[1]] == MapManager.INTERACTION_SOLID:
 					return nextPos - half - 0.001
 			else:
 				nextPos = math.floor(nextPos - half)
 				if MapManager.interaction[MapManager.height - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
-						MapManager.interaction[MapManager.height - 1 - nextPos][posX[1]] == MapManager.INTERACTION_SOLID:
+						MapManager.interaction[MapManager.height - 1 - nextPos][
+							posX[1]] == MapManager.INTERACTION_SOLID:
 					return nextPos + 1 + half + 0.001
 		else:
 			return position[1]
@@ -121,24 +125,32 @@ class MapManager:
 
 		em.entities[em.PLAYER_1].setPos(values[MapManager.DATA_ENTRIES])
 
+		# Setup the event Manager
+		from game.game.map.eventmanager import EventManager
+		EventManager.setupEvent(1)
+
 		# Add test entity
 		from game.game.entitymodel import slidingblock
 		entity1 = slidingblock.SlidingBlock(["SlidingBlock", [10.5, 7.5]])
 		em.add(entity1)
 
 		from game.game.entitymodel import pressureplate
-		entity2 = pressureplate.PressurePlate(["PressurePlate", [8.5, 8.5]])
+		entity2 = pressureplate.PressurePlate(["PressurePlate", [8.5, 8.5], 0])
 		em.add(entity2)
+
+		from game.game.entitymodel import door
+		entity3 = door.Door(["PressurePlate", [0.25, 5], [0.5, 2], True, 0, 1, 1])
+		em.add(entity3)
 
 		width = len(MapManager.interaction[0])
 		height = len(MapManager.interaction)
 
 		# Work with values
 
-		quad = [0, 0, 0.0, 				0.0, 0.0,
-				width, 0, 0.0, 			1.0, 0.0,
-				width, height, 0.0, 	1.0, 1.0,
-				0, height, 0.0, 		0.0, 1.0]
+		quad = [0, 0, 0.0, 0.0, 0.0,
+				width, 0, 0.0, 1.0, 0.0,
+				width, height, 0.0, 1.0, 1.0,
+				0, height, 0.0, 0.0, 1.0]
 
 		MapManager.shape.resetVBO(quad)
 
@@ -159,7 +171,6 @@ class MapManager:
 	@staticmethod
 	def setInteractionBloc(position, id):
 		MapManager.interaction[MapManager.height - 1 - math.floor(position[1])][math.floor(position[0])] = id
-
 
 	@staticmethod
 	def unloadImages():

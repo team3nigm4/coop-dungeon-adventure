@@ -1,5 +1,4 @@
-from game.inputs.inputmanager import InputManager as im
-
+# Manage every entity of the game
 
 class EntityManager:
 	PLAYER_1 = 0
@@ -22,10 +21,10 @@ class EntityManager:
 
 	@staticmethod
 	def display():
-		e = EntityManager.len -1
-		while e >= 0 :
+		e = EntityManager.len - 1
+		while e >= 0:
 			EntityManager.entities[e].display()
-			e-=1
+			e -= 1
 
 	@staticmethod
 	def collision():
@@ -41,7 +40,7 @@ class EntityManager:
 	def testCollision(ent1, ent2):
 		if ent2.pos[0] - ent2.halfColSize[0] >= ent1.pos[0] + ent1.halfColSize[0] or \
 				ent2.pos[0] + ent2.halfColSize[0] <= ent1.pos[0] - ent1.halfColSize[0] or \
-				ent2.pos[1] - ent2.halfColSize[1] >=  ent1.halfColSize[1] + ent1.pos[1] or \
+				ent2.pos[1] - ent2.halfColSize[1] >= ent1.halfColSize[1] + ent1.pos[1] or \
 				ent2.pos[1] + ent2.halfColSize[1] <= ent1.pos[1] - ent1.halfColSize[1]:
 
 			pass
@@ -49,10 +48,9 @@ class EntityManager:
 			# print("Collision with :", ent1.type, "(" + str(ent1.id) + ") and", ent2.type + "(" + str(ent2.id) + ")")
 			for i in ent1.attributes:
 				if ent2.attributes[i] == 2 and ent1.attributes[i] > 0:
-					ent2.active(ent1)
+					ent2.collision(ent1)
 				if ent1.attributes[i] == 2 and ent2.attributes[i] > 0:
-					ent1.active(ent2)
-
+					ent1.collision(ent2)
 
 	@staticmethod
 	def canCol(ent1, ent2):
@@ -75,12 +73,12 @@ class EntityManager:
 
 	@staticmethod
 	def remove(id):
+		# Unload the entity
 		EntityManager.entities[id].unload()
-		if EntityManager.entities[id].entCol:
-			EntityManager.entitiesCol.remove(id)
 
 		if id == len(EntityManager.entities) - 1:
 			del EntityManager.entities[id]
+			EntityManager.entities.remove(id)
 		else:
 			from game.game.entityclass import entity
 			EntityManager.entities[id] = entity.Entity([0, [0, 0]])
@@ -90,10 +88,15 @@ class EntityManager:
 
 	@staticmethod
 	def clear():
-		size = len(EntityManager.entities)
-		if size > 2:
-			for i in range(2, size):
-				EntityManager.remove(2)
+		# Delete h
+		if EntityManager.len > 1:
+			for i in range(1, EntityManager.len):
+				print(i, len(EntityManager.entities))
+				EntityManager.entities[1].unload()
+				EntityManager.entities.remove(EntityManager.entities[1])
+
+		EntityManager.entitiesCol = [0]
+		EntityManager.len = len(EntityManager.entities)
 
 	@staticmethod
 	def unload():

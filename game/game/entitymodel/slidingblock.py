@@ -1,3 +1,5 @@
+# Class sliding block
+
 from game.game.entityclass import entitydrawable
 from game.game.map.mapmanager import MapManager as mam
 from game.inputs.inputmanager import InputManager as im
@@ -31,10 +33,11 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 			else:
 				self.setPos(newPos)
 
-	def active(self, ent):
-
-		if ent.attributes["collision"] != 2 or ent.inMov[0] == True or ent.inMov[1] == True:
-			# Move in x
+	def collision(self, ent):
+		# If we apply the collision
+		if ent.attributes["collision"] != 2 or ent.inMov[0] or ent.inMov[1]:
+			
+			# Just move in x
 			if (ent.inMov[0] and not ent.inMov[1]):
 				tempDir = 0
 				if ent.speed[0] > 0:
@@ -53,8 +56,7 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 						self.inMov[0] = True
 						self.speed[0] = SlidingBlock.SPEED * tempDir
 
-
-			# Move in y
+			# Just move in y
 			elif (ent.inMov[1] and not ent.inMov[0]):
 				tempDir = 0
 				if ent.speed[1] < 0:
@@ -73,13 +75,12 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 						self.inMov[1] = True
 						self.speed[1] = SlidingBlock.SPEED * tempDir
 
-			# Move in x and y
+			# Move in both coordinates
 			elif ent.inMov[0] and ent.inMov[1]:
 				oldPos = [ent.pos[0] - ent.speed[0], ent.pos[1] - ent.speed[1]]
 
 				# what ent's position to replace
-
-				if ent.inMov[0] == True:
+				if ent.inMov[0]:
 					# left
 					if oldPos[0] + ent.halfColSize[0] < self.pos[0] - self.halfColSize[0]:
 						ent.setPos([self.pos[0] - self.halfColSize[0] - ent.halfColSize[0] - 0.001, ent.pos[1]])
