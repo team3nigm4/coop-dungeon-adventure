@@ -9,7 +9,7 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 	def __init__(self, args):
 		super().__init__(args)
 		self.setColBox([0.998, 0.998], True)
-		self.entityRenderer.setImage([1, 1], "entities/sliding-block.png", [0.5, 0.5])
+		self.entityRenderer.setImagePath([1, 1], "entities/sliding-block.png", [0.5, 0.5])
 
 		self.attributes["collision"] = 2
 		self.attributes["heavy"] = 1
@@ -24,7 +24,7 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 			else:
 				self.setPos(newPos)
 		elif self.inMov[1]:
-			newPos = [self.pos[0], mam.checkCollisionY(self.pos, self.speed[1] , self.halfColSize)]
+			newPos = [self.pos[0], mam.checkCollisionY(self.pos, self.speed[1], self.halfColSize)]
 			if newPos == self.pos:
 				self.inMov[1] = False
 				self.speed[1] = 0
@@ -55,7 +55,7 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 
 
 			# Move in y
-			elif(ent.inMov[1] and not ent.inMov[0]):
+			elif (ent.inMov[1] and not ent.inMov[0]):
 				tempDir = 0
 				if ent.speed[1] < 0:
 					ent.setPos([ent.pos[0], self.pos[1] + self.halfColSize[1] + ent.halfColSize[1] + 0.001])

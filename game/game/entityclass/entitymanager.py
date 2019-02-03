@@ -8,9 +8,11 @@ class EntityManager:
 	entities = []
 	entitiesCol = []
 
+	len = 0
+
 	@staticmethod
 	def init():
-		pass
+		EntityManager.len = 0
 
 	@staticmethod
 	def update():
@@ -20,8 +22,10 @@ class EntityManager:
 
 	@staticmethod
 	def display():
-		for e in EntityManager.entities:
-			e.display()
+		e = EntityManager.len -1
+		while e >= 0 :
+			EntityManager.entities[e].display()
+			e-=1
 
 	@staticmethod
 	def collision():
@@ -62,10 +66,12 @@ class EntityManager:
 	@staticmethod
 	def add(entity):
 
-		if entity.id == len(EntityManager.entities):
+		if entity.id == EntityManager.len:
 			EntityManager.entities.append(entity)
 		else:
 			EntityManager.entities[entity.id] = entity
+
+		EntityManager.len = len(EntityManager.entities)
 
 	@staticmethod
 	def remove(id):
@@ -79,6 +85,8 @@ class EntityManager:
 			from game.game.entityclass import entity
 			EntityManager.entities[id] = entity.Entity([0, [0, 0]])
 			EntityManager.entities[id].setId(-1)
+
+		EntityManager.len = len(EntityManager.entities)
 
 	@staticmethod
 	def clear():
@@ -96,7 +104,7 @@ class EntityManager:
 
 	@staticmethod
 	def checkPlace():
-		for i in range(0, len(EntityManager.entities)):
+		for i in range(0, EntityManager.len):
 			if EntityManager.entities[i].id == -1:
 				return i
 		return len(EntityManager.entities)

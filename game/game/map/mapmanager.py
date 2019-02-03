@@ -123,8 +123,12 @@ class MapManager:
 
 		# Add test entity
 		from game.game.entitymodel import slidingblock
-		entity = slidingblock.SlidingBlock(["SlidingBlock", [10.5, 7.5]])
-		em.add(entity)
+		entity1 = slidingblock.SlidingBlock(["SlidingBlock", [10.5, 7.5]])
+		em.add(entity1)
+
+		from game.game.entitymodel import pressureplate
+		entity2 = pressureplate.PressurePlate(["PressurePlate", [8.5, 8.5]])
+		em.add(entity2)
 
 		width = len(MapManager.interaction[0])
 		height = len(MapManager.interaction)
