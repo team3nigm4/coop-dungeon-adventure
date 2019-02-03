@@ -125,6 +125,11 @@ class MapManager:
 
 		em.entities[em.PLAYER_1].setPos(values[MapManager.DATA_ENTRIES])
 
+		width = len(MapManager.interaction[0])
+		height = len(MapManager.interaction)
+		MapManager.width = width
+		MapManager.height = height
+
 		# Setup the event Manager
 		from game.game.map.eventmanager import EventManager
 		EventManager.setupEvent(1)
@@ -139,11 +144,8 @@ class MapManager:
 		em.add(entity2)
 
 		from game.game.entitymodel import door
-		entity3 = door.Door(["PressurePlate", [0.25, 5], [0.5, 2], True, 0, 1, 1])
+		entity3 = door.Door(["PressurePlate", [0.25, 5], [0.5, 1.998], True, 0, 1, 1])
 		em.add(entity3)
-
-		width = len(MapManager.interaction[0])
-		height = len(MapManager.interaction)
 
 		# Work with values
 
@@ -160,17 +162,26 @@ class MapManager:
 			gm.cam.addPos([-width / 2, -height / 2, 0])
 		sm.updateLink(sm.TEXTURE, "view", gm.cam.getView())
 
-		MapManager.width = width
-		MapManager.height = height
-
 	@staticmethod
 	def unload():
 		MapManager.shape.unload()
 		MapManager.unloadImages()
 
 	@staticmethod
-	def setInteractionBloc(position, id):
+	# Change one bloc of the interaction map
+	def changeInterMap(position, id):
 		MapManager.interaction[MapManager.height - 1 - math.floor(position[1])][math.floor(position[0])] = id
+
+	# Change a zone of the interaction map
+	@staticmethod
+	def changeInterMapSize(position, size,  id):
+		posX = [math.floor(position[0] - size[0]), math.floor(position[0] + size[0])]
+		posY = [math.floor(position[1] - size[1]), math.floor(position[1] + size[1])]
+		print(posX, posY)
+
+		for x in range(posX[0], posX[1]+1):
+			for y in range(posY[0], posY[1]+1):
+				MapManager.interaction[MapManager.height - 1 - y][x] = id
 
 	@staticmethod
 	def unloadImages():

@@ -36,7 +36,7 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 	def collision(self, ent):
 		# If we apply the collision
 		if ent.attributes["collision"] != 2 or ent.inMov[0] or ent.inMov[1]:
-			
+
 			# Just move in x
 			if (ent.inMov[0] and not ent.inMov[1]):
 				tempDir = 0
