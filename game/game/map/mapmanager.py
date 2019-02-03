@@ -12,21 +12,25 @@ from game.screen.gamemanager import GameManager as gm
 
 
 class MapManager:
-	width = None
-	height = None
-	shape = None
-	modelMtx = None
-	tex = []
-	interaction = []
-	id = "null"
 
-	DATA_MAP_ID = 0
+	DATA_MAP_INFO = 0
 	DATA_IMAGES = 1
 	DATA_INTERACTIONS = 2
 	DATA_ENTRIES = 3
 	DATA_ENTITIES = 4
 
 	INTERACTION_SOLID = 1
+
+	width = None
+	height = None
+	shape = None
+	modelMtx = None
+	tex = []
+	interaction = []
+
+	zone = "null"
+	id = "null"
+	defaultEntry = 0
 
 	@staticmethod
 	def init():
@@ -44,7 +48,8 @@ class MapManager:
 
 		MapManager.modelMtx = pyrr.Matrix44.identity()
 		sm.updateLink(sm.TEXTURE, "model", MapManager.modelMtx)
-		MapManager.changeRoom()
+
+		MapManager.changeRoom("test", "map2", 0)
 
 	@staticmethod
 	def display():
@@ -104,17 +109,18 @@ class MapManager:
 		return position[1] + speed
 
 	@staticmethod
-	def changeRoom():
+	def changeRoom(zone, map, entry):
 		# Clear the game before changing
 		em.clear()
 
 		# Load new room
 		from game.game.map import mapfunctions
-		values = mapfunctions.createMap()
+		values = mapfunctions.loadMap(zone, map, entry)
 
 		# Apply values
-
-		MapManager.id = values[MapManager.DATA_MAP_ID]
+		MapManager.zone = values[MapManager.DATA_MAP_INFO][0]
+		MapManager.id = values[MapManager.DATA_MAP_INFO][1]
+		MapManager.defaultEntry = values[MapManager.DATA_MAP_INFO][2]
 
 		for i in range(0, len(values[MapManager.DATA_IMAGES])):
 			MapManager.tex.append(texture.Texture("map1"))
@@ -123,32 +129,24 @@ class MapManager:
 
 		MapManager.interaction = values[MapManager.DATA_INTERACTIONS]
 
-		em.entities[em.PLAYER_1].setPos(values[MapManager.DATA_ENTRIES])
+		# Setup the event Manager
+		from game.game.map.eventmanager import EventManager
+		EventManager.setupEvent(values[MapManager.DATA_MAP_INFO][3])
 
+		# Set the size of the current map
 		width = len(MapManager.interaction[0])
 		height = len(MapManager.interaction)
 		MapManager.width = width
 		MapManager.height = height
 
-		# Setup the event Manager
-		from game.game.map.eventmanager import EventManager
-		EventManager.setupEvent(1)
+		# Create instance of entities and place players
+		em.entities[em.PLAYER_1].setPos(values[MapManager.DATA_ENTRIES])
 
-		# Add test entity
-		from game.game.entitymodel import slidingblock
-		entity1 = slidingblock.SlidingBlock(["SlidingBlock", [10.5, 7.5]])
-		em.add(entity1)
-
-		from game.game.entitymodel import pressureplate
-		entity2 = pressureplate.PressurePlate(["PressurePlate", [8.5, 8.5], 0])
-		em.add(entity2)
-
-		from game.game.entitymodel import door
-		entity3 = door.Door(["PressurePlate", [0.25, 5], [0.5, 1.998], True, 0, 1, 1])
-		em.add(entity3)
+		from game.game.map import loadentity
+		for i in range(0, len(values[MapManager.DATA_ENTITIES])):
+			em.add(loadentity.LoadEntity.instance(values[MapManager.DATA_ENTITIES][str(i)]))
 
 		# Work with values
-
 		quad = [0, 0, 0.0, 0.0, 0.0,
 				width, 0, 0.0, 1.0, 0.0,
 				width, height, 0.0, 1.0, 1.0,
@@ -177,7 +175,6 @@ class MapManager:
 	def changeInterMapSize(position, size,  id):
 		posX = [math.floor(position[0] - size[0]), math.floor(position[0] + size[0])]
 		posY = [math.floor(position[1] - size[1]), math.floor(position[1] + size[1])]
-		print(posX, posY)
 
 		for x in range(posX[0], posX[1]+1):
 			for y in range(posY[0], posY[1]+1):

@@ -30,17 +30,13 @@ class GameScreen(screen.Screen):
 		em.update()
 		em.collision()
 
-		if im.inputPressed(im.ITEM):
-			from game.game.map.eventmanager import EventManager
-			print(EventManager.event)
-
 		if im.inputPressed(im.ESCAPE):
 			from game.main.window import Window
 			Window.exit()
 
 		if im.inputPressed(im.RESET):
 			mam.unloadImages()
-			mam.changeRoom()
+			mam.changeRoom(mam.zone, mam.id, mam.defaultEntry)
 
 		# Return data
 		clientData.append(time.time_ns())

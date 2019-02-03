@@ -91,7 +91,6 @@ class EntityManager:
 		# Delete h
 		if EntityManager.len > 1:
 			for i in range(1, EntityManager.len):
-				print(i, len(EntityManager.entities))
 				EntityManager.entities[1].unload()
 				EntityManager.entities.remove(EntityManager.entities[1])
 

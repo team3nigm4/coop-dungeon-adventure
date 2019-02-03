@@ -19,5 +19,4 @@ class EntityDrawable(entitycollision.EntityCollision):
 		self.entityRenderer.updateModel(self.pos)
 
 	def unload(self):
-		print(self.type)
 		self.entityRenderer.unload()

@@ -1,27 +1,32 @@
 # Class used to change rooms
 
 from game.game.entityclass import entitycollision
-from game.game.map import mapmanager
+from game.game.map.mapmanager import MapManager as mam
 
 
 class Door(entitycollision.EntityCollision):
 
 	ARGS_COL_BOX_SIZE = 2
-	ARGS_IS_EVENT = 3
-	ARGS_EVENT = 4
-	ARGS_MAP_ID = 5
-	ARGS_MAP_ENTRY_POINT = 6
+	ARGS_ZONE_NAME = 3
+	ARGS_MAP_ID = 4
+	ARGS_MAP_ENTRY_POINT = 5
+	ARGS_IS_EVENT = 6
+	ARGS_EVENT = 7
 
 	def __init__(self, args):
 		super().__init__(args)
 		self.setColBox(args[Door.ARGS_COL_BOX_SIZE], True)
 
+		self.zone = args[Door.ARGS_ZONE_NAME]
+		self.map = args[Door.ARGS_MAP_ID]
+		self.entry = args[Door.ARGS_MAP_ENTRY_POINT]
+
+
 		if args[Door.ARGS_IS_EVENT]:
 			from game.game.map.eventmanager import EventManager
 			self.isActive = False
-			print(args[Door.ARGS_EVENT])
 			EventManager.addActive(args[Door.ARGS_EVENT], self.id)
-			mapmanager.MapManager.changeInterMapSize(self.pos, self.halfColSize, 1)
+			mam.changeInterMapSize(self.pos, self.halfColSize, 1)
 
 		else:
 			self.isActive = True
@@ -36,16 +41,17 @@ class Door(entitycollision.EntityCollision):
 		if self.isActive:
 			if not self.isTwo:
 				self.isTwo = True
-				print("collision")
 				# Temp system without both players
+				mam.unloadImages()
+				mam.changeRoom(self.zone, self.map, self.entry)
 			else:
 				pass
 				# Change the map with its id
 
 	def activate(self):
 		self.isActive = True
-		mapmanager.MapManager.changeInterMapSize(self.pos, self.halfColSize, 0)
+		mam.changeInterMapSize(self.pos, self.halfColSize, 0)
 
 	def deactivate(self):
 		self.isActive = False
-		mapmanager.MapManager.changeInterMapSize(self.pos, self.halfColSize, 1)
+		mam.changeInterMapSize(self.pos, self.halfColSize, 1)
