@@ -32,6 +32,8 @@ class MapManager:
 	id = "null"
 	defaultEntry = 0
 
+	changeValues = None
+
 	@staticmethod
 	def init():
 
@@ -49,7 +51,7 @@ class MapManager:
 		MapManager.modelMtx = pyrr.Matrix44.identity()
 		sm.updateLink(sm.TEXTURE, "model", MapManager.modelMtx)
 
-		MapManager.changeRoom("test", "map2", 0)
+		MapManager.changeRoom("test", "map1", 0)
 
 	@staticmethod
 	def display():
@@ -112,6 +114,7 @@ class MapManager:
 	def changeRoom(zone, map, entry):
 		# Clear the game before changing
 		em.clear()
+		MapManager.changeValues = None
 
 		# Load new room
 		from game.game.map import mapfunctions
@@ -179,6 +182,17 @@ class MapManager:
 		for x in range(posX[0], posX[1]+1):
 			for y in range(posY[0], posY[1]+1):
 				MapManager.interaction[MapManager.height - 1 - y][x] = id
+
+	@staticmethod
+	def reserveChange(values):
+		MapManager.changeValues = values
+
+	@staticmethod
+	def checkChangeMap():
+		if not MapManager.changeValues == None:
+			MapManager.unloadImages()
+			MapManager.changeRoom(MapManager.changeValues[0], MapManager.changeValues[1], MapManager.changeValues[2])
+
 
 	@staticmethod
 	def unloadImages():

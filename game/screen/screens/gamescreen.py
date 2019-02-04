@@ -35,8 +35,9 @@ class GameScreen(screen.Screen):
 			Window.exit()
 
 		if im.inputPressed(im.RESET):
-			mam.unloadImages()
-			mam.changeRoom(mam.zone, mam.id, mam.defaultEntry)
+			mam.reserveChange([mam.zone, mam.id, mam.defaultEntry])
+
+		mam.checkChangeMap()
 
 		# Return data
 		clientData.append(time.time_ns())
