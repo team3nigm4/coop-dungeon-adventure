@@ -41,10 +41,10 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 			if (ent.inMov[0] and not ent.inMov[1]):
 				tempDir = 0
 				if ent.speed[0] > 0:
-					ent.setPos([self.pos[0] - self.halfColSize[0] - ent.halfColSize[0] - 0.001, ent.pos[1]])
+					ent.setPos([self.pos[0] - self.halfColSize[0] - ent.halfColSize[0] - 0.002, ent.pos[1]])
 					tempDir = 1
 				elif ent.speed[0] < 0:
-					ent.setPos([self.pos[0] + self.halfColSize[0] + ent.halfColSize[0] + 0.001, ent.pos[1]])
+					ent.setPos([self.pos[0] + self.halfColSize[0] + ent.halfColSize[0] + 0.002, ent.pos[1]])
 					tempDir = -1
 
 				if ent.type == "SlidingBlock":
@@ -60,10 +60,10 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 			elif (ent.inMov[1] and not ent.inMov[0]):
 				tempDir = 0
 				if ent.speed[1] < 0:
-					ent.setPos([ent.pos[0], self.pos[1] + self.halfColSize[1] + ent.halfColSize[1] + 0.001])
+					ent.setPos([ent.pos[0], self.pos[1] + self.halfColSize[1] + ent.halfColSize[1] + 0.002])
 					tempDir = -1
 				elif ent.speed[1] > 0:
-					ent.setPos([ent.pos[0], self.pos[1] - self.halfColSize[1] - ent.halfColSize[1] - 0.001])
+					ent.setPos([ent.pos[0], self.pos[1] - self.halfColSize[1] - ent.halfColSize[1] - 0.002])
 					tempDir = 1
 
 				if ent.type == "SlidingBlock":
@@ -83,15 +83,15 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 				if ent.inMov[0]:
 					# left
 					if oldPos[0] + ent.halfColSize[0] < self.pos[0] - self.halfColSize[0]:
-						ent.setPos([self.pos[0] - self.halfColSize[0] - ent.halfColSize[0] - 0.001, ent.pos[1]])
+						ent.setPos([self.pos[0] - self.halfColSize[0] - ent.halfColSize[0] - 0.002, ent.pos[1]])
 					# right
 					elif oldPos[0] - ent.halfColSize[0] > self.pos[0] + self.halfColSize[0]:
-						ent.setPos([self.pos[0] + self.halfColSize[0] + ent.halfColSize[0] + 0.001, ent.pos[1]])
+						ent.setPos([self.pos[0] + self.halfColSize[0] + ent.halfColSize[0] + 0.002, ent.pos[1]])
 
 				if ent.inMov[1] == True:
 					# up
 					if oldPos[1] - ent.halfColSize[1] > self.pos[1] + self.halfColSize[1]:
-						ent.setPos([ent.pos[0], self.pos[1] + self.halfColSize[1] + ent.halfColSize[1] + 0.001])
+						ent.setPos([ent.pos[0], self.pos[1] + self.halfColSize[1] + ent.halfColSize[1] + 0.002])
 					# down
 					elif oldPos[1] + ent.halfColSize[1] < self.pos[1] - self.halfColSize[1]:
-						ent.setPos([ent.pos[0], self.pos[1] - self.halfColSize[1] - ent.halfColSize[1] - 0.001])
+						ent.setPos([ent.pos[0], self.pos[1] - self.halfColSize[1] - ent.halfColSize[1] - 0.002])

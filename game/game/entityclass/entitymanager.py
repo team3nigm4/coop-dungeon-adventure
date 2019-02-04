@@ -1,5 +1,7 @@
 # Manage every entity of the game
 
+import time
+
 class EntityManager:
 	PLAYER_1 = 0
 	PLAYER_2 = 1
@@ -27,7 +29,7 @@ class EntityManager:
 			e -= 1
 
 	@staticmethod
-	def collision():
+	def collision():	
 		for i in range(0, len(EntityManager.entitiesCol) - 1):
 			for a in range(1 + i, len(EntityManager.entitiesCol)):
 				if EntityManager.canCol(EntityManager.entities[EntityManager.entitiesCol[i]],
@@ -58,7 +60,6 @@ class EntityManager:
 			if ent1.attributes[i] > 0:
 				if ent2.attributes[i] > 0:
 					return True
-
 		return False
 
 	@staticmethod

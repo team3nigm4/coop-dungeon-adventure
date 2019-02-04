@@ -23,8 +23,8 @@ class EntityRenderer:
 		self.shape = shape.Shape(0, True)
 		self.shape.setVertices(quad, [3, 2], indices)
 
-		self.tex = texture.Texture("no error (\"entityDisplayer\")")
-		self.tex.load()
+		self.tex = texture.Texture("")
+		self.tex.defaultInit()
 		self.modelMtx = pyrr.Matrix44.identity()
 
 	def display(self):

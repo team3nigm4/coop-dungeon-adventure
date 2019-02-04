@@ -17,6 +17,11 @@ class Texture:
 		self.height = 1
 		self.correctLoaded = False
 
+	def defaultInit(self):
+		self.correctLoaded = False
+		self.texId.setId(gameManager.GameManager.texManager.error.texId.getId())
+		self.texId.setPath(gameManager.GameManager.texManager.error.texId.getPath())
+
 	def load(self):
 		try:
 			image = img.open(self.texId.getPath())
@@ -57,9 +62,7 @@ class Texture:
 	def error(self):
 		# When error, replace the current texture by the error texture
 		print("Error on loading the texture " + str(self.texId.getId()) + " :\n" + self.texId.getPath())
-		self.correctLoaded = False
-		self.texId.setId(gameManager.GameManager.texManager.error.texId.getId())
-		self.texId.setPath(gameManager.GameManager.texManager.error.texId.getPath())
+		self.defaultInit()
 
 	def bind(self):
 		gl.glBindTexture(gl.GL_TEXTURE_2D, self.texId.getId())
