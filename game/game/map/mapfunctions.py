@@ -19,8 +19,8 @@ def loadMap(zone, name, entry):
 
 		# Load graphic
 		map = []
-		for i in range(0, len(getValues["layers"])-1):
-			map.append(getValues["layers"][str(i)])
+		for i in range(0, len(getValues["layers"])):
+			map.append(getValues["layers"][i])
 
 		# Create images
 		width = len(map[0][0])
@@ -39,7 +39,7 @@ def loadMap(zone, name, entry):
 			images.append(new_im)
 		returnValues.append(images)
 
-		returnValues.append(getValues["layers"]["collision"])
+		returnValues.append(getValues["collision"])
 		returnValues.append(getValues["entries"][str(entry)])
 
 
