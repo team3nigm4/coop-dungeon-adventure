@@ -37,3 +37,8 @@ class EntityCollision(entity.Entity):
 		else:
 			em.removeToTest(self.id)
 
+	def setSpeed(self, speed):
+		self.speed = speed
+
+	def collision(self, ent):
+		pass

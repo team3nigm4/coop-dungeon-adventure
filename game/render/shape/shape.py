@@ -19,7 +19,6 @@ class Shape:
 		self.vbo = gl.glGenBuffers(1)
 		if useEBO:
 			self.ebo = gl.glGenBuffers(1)
-			print("vao ", self.vao, ", ebo", self.ebo, ", vbo", self.vbo)
 		self.unbind()
 
 

@@ -32,10 +32,8 @@ class EntityManager:
 	def collision():	
 		for i in range(0, len(EntityManager.entitiesCol) - 1):
 			for a in range(1 + i, len(EntityManager.entitiesCol)):
-				if EntityManager.canCol(EntityManager.entities[EntityManager.entitiesCol[i]],
-										EntityManager.entities[EntityManager.entitiesCol[a]]):
-					EntityManager.testCollision(EntityManager.entities[EntityManager.entitiesCol[i]],
-												EntityManager.entities[EntityManager.entitiesCol[a]])
+				EntityManager.testCollision(EntityManager.entities[EntityManager.entitiesCol[i]],
+											EntityManager.entities[EntityManager.entitiesCol[a]])
 
 	@staticmethod
 	# Collision rect aabb
@@ -47,20 +45,8 @@ class EntityManager:
 
 			pass
 		else:
-			# print("Collision with :", ent1.type, "(" + str(ent1.id) + ") and", ent2.type + "(" + str(ent2.id) + ")")
-			for i in ent1.attributes:
-				if ent2.attributes[i] == 2 and ent1.attributes[i] > 0:
-					ent2.collision(ent1)
-				if ent1.attributes[i] == 2 and ent2.attributes[i] > 0:
-					ent1.collision(ent2)
-
-	@staticmethod
-	def canCol(ent1, ent2):
-		for i in ent1.attributes:
-			if ent1.attributes[i] > 0:
-				if ent2.attributes[i] > 0:
-					return True
-		return False
+			ent2.collision(ent1)
+			ent1.collision(ent2)
 
 	@staticmethod
 	def add(entity):

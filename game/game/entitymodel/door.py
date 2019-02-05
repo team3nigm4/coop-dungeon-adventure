@@ -38,6 +38,7 @@ class Door(entitycollision.EntityCollision):
 		self.isTwo = False
 
 	def collision(self, ent):
+		print("col")
 		if self.isActive:
 			if not self.isTwo:
 				self.isTwo = True

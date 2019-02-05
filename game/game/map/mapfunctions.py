@@ -25,7 +25,6 @@ def loadMap(zone, name, entry):
 		# Create images
 		width = len(map[0][0])
 		height = len(map[0])
-		print(height)
 
 		images = []
 		gap = 32
@@ -44,7 +43,6 @@ def loadMap(zone, name, entry):
 
 
 		returnValues.append(getValues["entities"])
-		print(returnValues[4])
 
 		return returnValues
 	except json.decoder.JSONDecodeError:
