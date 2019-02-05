@@ -6,7 +6,7 @@ from game.game.entitymodel import player as pl
 from game.game.entityclass.entitymanager import EntityManager as em
 from game.game.map.mapmanager import MapManager as mam
 from game.inputs.inputmanager import InputManager as im
-from game.screen.gamemanager import GameManager
+from game.screen.gamemanager import GameManager as gm
 from game.screen.screens import screen
 
 
@@ -24,7 +24,7 @@ class GameScreen(screen.Screen):
 
 	def update(self):
 		# Receive and create data
-		serverData = GameManager.serverData
+		serverData = gm.serverData
 		clientData = im.getState()
 
 		em.update()
@@ -39,9 +39,11 @@ class GameScreen(screen.Screen):
 
 		mam.checkChangeMap()
 
+		gm.cam.goToEntity()
+
 		# Return data
 		clientData.append(time.time_ns())
-		GameManager.clientData = clientData
+		gm.clientData = clientData
 
 	def display(self):
 		mam.display()

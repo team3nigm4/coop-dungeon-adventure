@@ -88,7 +88,7 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 					elif oldPos[0] - ent.halfColSize[0] > self.pos[0] + self.halfColSize[0]:
 						ent.setPos([self.pos[0] + self.halfColSize[0] + ent.halfColSize[0] + 0.002, ent.pos[1]])
 
-				if ent.inMov[1] == True:
+				if ent.inMov[1]:
 					# up
 					if oldPos[1] - ent.halfColSize[1] > self.pos[1] + self.halfColSize[1]:
 						ent.setPos([ent.pos[0], self.pos[1] + self.halfColSize[1] + ent.halfColSize[1] + 0.002])

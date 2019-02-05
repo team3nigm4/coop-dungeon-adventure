@@ -51,6 +51,8 @@ class MapManager:
 		MapManager.modelMtx = pyrr.Matrix44.identity()
 		sm.updateLink(sm.TEXTURE, "model", MapManager.modelMtx)
 
+		gm.cam.trackEntity(em.PLAYER_1)
+
 		MapManager.changeRoom("test", "map1", 0)
 
 	@staticmethod
@@ -158,10 +160,23 @@ class MapManager:
 		MapManager.shape.resetVBO(quad)
 
 		# Set the camera position
-		if width <= 18 and height <= 12:
-			gm.cam.setPos([0, 0, gm.cam.camPos[2]])
-			gm.cam.addPos([-width / 2, -height / 2, 0])
+		gm.cam.setPos([0, 0, gm.cam.pos[2]])
+
+		if width > 18:
+			gm.cam.track[0] = True
+		else:
+			gm.cam.track[0] = False
+			gm.cam.addPos([-width / 2, 0 , 0])
+
+		if height > 12:
+			gm.cam.track[1] = True
+		else:
+			gm.cam.track[1] = False
+			gm.cam.addPos([0, -height / 2, 0])	
+
+		gm.cam.goToEntity()
 		sm.updateLink(sm.TEXTURE, "view", gm.cam.getView())
+		
 
 	@staticmethod
 	def unload():
