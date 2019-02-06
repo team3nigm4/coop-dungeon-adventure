@@ -103,7 +103,17 @@ class Config:
 	@staticmethod
 	def createDefaultInputs(overwrite=True):
 
-		Config.inputs = [[0, 256], [0, 65], [0, 87], [0, 68], [0, 83], [1, 1], [1, 0], [0, 70], [0, 82]]
+		Config.inputs = {
+			"ECHAP": [[0, 256]],
+			"GO_LEFT": [[0, 65]],
+			"GO_UP": [[0, 87]],
+			"GO_RIGHT": [[0, 68]],
+			"GO_DOWN": [[0, 83]],
+			"INTERACT": [[1, 1]],
+			"ITEM": [[1, 0]],
+			"ITEM2": [[0, 70]],
+			"RESET": [[0, 82]]
+		}
 
 		if overwrite == True:
 			Config.saveInputs()
