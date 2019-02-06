@@ -9,7 +9,7 @@ class TextureManager:
 		self.error = None
 
 	def init(self):
-		self.error = texture.Texture("game/resources/textures/error.png")
+		self.error = texture.Texture("error.png")
 		self.error.load()
 
 	def add(self, texId):

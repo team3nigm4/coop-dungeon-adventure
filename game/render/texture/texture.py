@@ -8,12 +8,19 @@ from game.screen import gamemanager as gameManager
 
 
 class Texture:
+	PATH = "game/resources/textures/"
+
 	def __init__(self, path):
 		# Default values
-		self.texId = textureId.TextureId(path)
+		self.texId = textureId.TextureId(Texture.PATH + path)
 		self.width = 1
 		self.height = 1
 		self.correctLoaded = False
+
+	def defaultInit(self):
+		self.correctLoaded = False
+		self.texId.setId(gameManager.GameManager.texManager.error.texId.getId())
+		self.texId.setPath(gameManager.GameManager.texManager.error.texId.getPath())
 
 	def load(self):
 		try:
@@ -55,9 +62,7 @@ class Texture:
 	def error(self):
 		# When error, replace the current texture by the error texture
 		print("Error on loading the texture " + str(self.texId.getId()) + " :\n" + self.texId.getPath())
-		self.correctLoaded = False
-		self.texId.setId(gameManager.GameManager.texManager.error.texId.getId())
-		self.texId.setPath(gameManager.GameManager.texManager.error.texId.getPath())
+		self.defaultInit()
 
 	def bind(self):
 		gl.glBindTexture(gl.GL_TEXTURE_2D, self.texId.getId())

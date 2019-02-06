@@ -22,11 +22,13 @@ class InputManager:
 
 	@staticmethod
 	def init(inpt):
+		actions = ["ECHAP", "GO_LEFT", "GO_UP", "GO_RIGHT", "GO_DOWN", "INTERACT", "ITEM", "ITEM2", "RESET"]
+
 		InputManager.inputs = []
 		InputManager.type = []
-		for i in range(0, len(inpt)):
-			InputManager.inputs.append(inpt[i][1])
-			InputManager.type.append(inpt[i][0])
+		for i in range(0, len(actions)):
+			InputManager.inputs.append(inpt[actions[i]][0][1])
+			InputManager.type.append(inpt[actions[i]][0][0])
 
 		InputManager.keyBoardManager = kbm.KeyBoardManager()
 		InputManager.mouseManager = mm.MouseManager()
@@ -34,9 +36,9 @@ class InputManager:
 	@staticmethod
 	def input(inpt):
 		if InputManager.type[inpt] == 0:
-			return kbm.getKey(InputManager.inputs[inpt])
+			return kbm.KeyBoardManager.getKey(InputManager.inputs[inpt])
 		else:
-			return mm.getButton(InputManager.inputs[inpt])
+			return mm.MouseManager.getButton(InputManager.inputs[inpt])
 
 	@staticmethod
 	def inputReleased(inpt):
@@ -51,6 +53,28 @@ class InputManager:
 			return InputManager.keyBoardManager.keyPressed(InputManager.inputs[inpt])
 		else:
 			return InputManager.mouseManager.buttonPressed(InputManager.inputs[inpt])
+
+	@staticmethod
+	def getState():
+		import math
+		values = []
+		for i in range(1, len(InputManager.inputs)):
+			key = 0
+			if InputManager.type[i] == 0:
+				if InputManager.keyBoardManager.state[InputManager.inputs[i]]:
+					key += 3
+				if InputManager.keyBoardManager.tempState[InputManager.inputs[i]]:
+					key -= 1
+					key = math.fabs(key)
+			else:
+				if InputManager.mouseManager.state[InputManager.inputs[i]]:
+					key += 3
+				if InputManager.mouseManager.tempState[InputManager.inputs[i]]:
+					key -= 1
+					key = math.fabs(key)
+
+			values.append(key)
+		return values
 
 	@staticmethod
 	def dispose():

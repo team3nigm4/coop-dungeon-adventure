@@ -5,12 +5,6 @@ from game.main.window import Window
 import glfw
 
 
-def getKey(key):
-	return glfw.get_key(Window.window, key) == 1
-
-
-# TODO: create the keyboardManager's functions keyPressed and keyReleased
-
 class KeyBoardManager:
 	def __init__(self):
 		self.state = [False] * 350
@@ -28,6 +22,10 @@ class KeyBoardManager:
 		else:
 			return False
 
+	@staticmethod
+	def getKey(key):
+		return glfw.get_key(Window.window, key) == 1
+
 	def dispose(self, keyId):
 		self.tempState[keyId] = self.state[keyId]
-		self.state[keyId] = getKey(keyId)
+		self.state[keyId] = KeyBoardManager.getKey(keyId)

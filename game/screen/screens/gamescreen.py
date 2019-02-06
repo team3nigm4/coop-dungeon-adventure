@@ -1,60 +1,54 @@
 # This class performs the display and the update of the client
 
-from game.screen.screens import screen
-from game.render.texture import texture
-from game.render.shape import shape
-from game.render.shader import gluniforms as glU
-from game.screen import gamemanager as gameManager
-from game.inputs import keyboardmanager as key
-from game.inputs.inputmanager import InputManager as im
+import time
 
-import pyrr
-import glfw
+from game.game.entitymodel import player as pl
+from game.game.entityclass.entitymanager import EntityManager as em
+from game.game.map.mapmanager import MapManager as mam
+from game.inputs.inputmanager import InputManager as im
+from game.screen.gamemanager import GameManager as gm
+from game.screen.screens import screen
 
 
 class GameScreen(screen.Screen):
 
 	def __init__(self):
 		super(GameScreen, self).__init__()
-		width = 18
-		height = 12
 
-		quad = [-width / 2, -height / 2, 0.0, 0.0, 0.0,
-				width / 2, -height / 2, 0.0, 1.0, 0.0,
-				width / 2, height / 2, 0.0, 1.0, 1.0,
-				-width / 2, height / 2, 0.0, 0.0, 1.0]
+		em.init()
 
-		indices = [0, 1, 2,
-				   2, 3, 0]
-		self.shape = shape.Shape("texVert.glsl", "texFrag.glsl")
-		self.shape.setEbo(indices)
-		self.shape.setVertices(quad, [3, 2])
+		player = pl.Player(["Player", [0, 0], [0.90, 1.2], "perso.png"])
+		em.add(player)
 
-		self.tex = texture.Texture("map1")
-		from game.render import mapfunctions as mapFunctions
-		self.tex.loadImage(mapFunctions.createMap(width, height, 32))
-
-		self.tex.bind()
-		self.shape.shader.addLink("model")
-		self.modelMtx = pyrr.Matrix44.identity()
-		glU.glUniformv(self.shape.shader, "model", self.modelMtx)
+		mam.init()
 
 	def update(self):
-		if key.getKey(glfw.KEY_Z) == 1:
-			gameManager.GameManager.cam.addPos([0.0, 0.0, +0.01])
+		# Receive and create data
+		serverData = gm.serverData
+		clientData = im.getState()
 
-		if key.getKey(glfw.KEY_P) == 1:
-			print(gameManager.GameManager.cam.camPos[2])
+		em.update()
+		em.collision()
 
-		if im.input(im.GO_UP) and im.inputPressed(im.ITEM):
-			print("hey")
+		if im.inputPressed(im.ESCAPE):
+			from game.main.window import Window
+			Window.exit()
+
+		if im.inputPressed(im.RESET):
+			mam.reserveChange([mam.zone, mam.id, mam.defaultEntry])
+
+		mam.checkChangeMap()
+
+		gm.cam.goToEntity()
+
+		# Return data
+		clientData.append(time.time_ns())
+		gm.clientData = clientData
 
 	def display(self):
-		self.shape.applyShader()
-		self.shape.bind()
-		self.shape.view()
-		self.shape.draw()
+		mam.display()
+		em.display()
 
 	def unload(self):
-		self.shape.unload()
-		self.tex.unload()
+		mam.unload()
+		em.unload()

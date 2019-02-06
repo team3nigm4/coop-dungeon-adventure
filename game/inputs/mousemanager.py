@@ -5,10 +5,6 @@ import glfw
 from game.main.window import Window
 
 
-def getButton(key):
-	return glfw.get_mouse_button(Window.window, key) == 1
-
-
 class MouseManager:
 	def __init__(self):
 		self.state = [False] * 10
@@ -26,6 +22,10 @@ class MouseManager:
 		else:
 			return False
 
+	@staticmethod
+	def getButton(button):
+		return glfw.get_mouse_button(Window.window, button) == 1
+
 	def dispose(self, buttonId):
 		self.tempState[buttonId] = self.state[buttonId]
-		self.state[buttonId] = getButton(buttonId)
+		self.state[buttonId] = MouseManager.getButton(buttonId)

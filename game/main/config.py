@@ -59,6 +59,8 @@ class Config:
 	def createDefaultConfig(overwrite=True):
 
 		# We retrieve the user's screen resolution
+		width = 0
+		height = 0
 		import glfw
 		glfw.init()
 		vm = glfw.get_video_modes(glfw.get_primary_monitor())
@@ -95,13 +97,23 @@ class Config:
 			}
 		}
 
-		if overwrite == True:
+		if overwrite:
 			Config.saveConfig()
 
 	@staticmethod
 	def createDefaultInputs(overwrite=True):
 
-		Config.inputs = [[0, 256], [0, 81], [0, 87], [0, 65], [0, 68], [1, 1], [1, 0], [0, 70], [0, 82]]
+		Config.inputs = {
+			"ECHAP": [[0, 256]],
+			"GO_LEFT": [[0, 65]],
+			"GO_UP": [[0, 87]],
+			"GO_RIGHT": [[0, 68]],
+			"GO_DOWN": [[0, 83]],
+			"INTERACT": [[1, 1]],
+			"ITEM": [[1, 0]],
+			"ITEM2": [[0, 70]],
+			"RESET": [[0, 82]]
+		}
 
 		if overwrite == True:
 			Config.saveInputs()
@@ -116,7 +128,7 @@ class Config:
 
 		with open(Config.CONFIG_PATH, 'w') as outfile:
 			json.dump(ConfigToSave, outfile, indent="	")
-			print("[CONFIG] Default configuration file created successfully !")
+			print("[CONFIG] Configuration file saved successfully !")
 
 	@staticmethod
 	def saveInputs():
@@ -128,7 +140,7 @@ class Config:
 
 		with open(Config.INPUTS_PATH, 'w') as outfile:
 			json.dump(InputsToSave, outfile, indent="	")
-			print("[CONFIG] Default key configuration file created successfully !")
+			print("[CONFIG] Key configuration file saved successfully !")
 
 	@staticmethod
 	def loadConfig():
