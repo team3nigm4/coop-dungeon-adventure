@@ -1,6 +1,6 @@
 # Manage every entity of the game
 
-import time
+import  math
 
 class EntityManager:
 	PLAYER_1 = 0
@@ -17,9 +17,10 @@ class EntityManager:
 
 	@staticmethod
 	def update():
-
-		for e in EntityManager.entities:
-			e.update()
+		e = EntityManager.len - 1
+		while e >= 0:
+			EntityManager.entities[e].update()
+			e -= 1
 
 	@staticmethod
 	def display():
@@ -31,20 +32,33 @@ class EntityManager:
 	@staticmethod
 	def collision():	
 		for i in range(0, len(EntityManager.entitiesCol) - 1):
+			nbEntity = len(EntityManager.entitiesCol) - (1 + i)
+			list = []
 			for a in range(1 + i, len(EntityManager.entitiesCol)):
+				dist = math.sqrt((EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[0] -
+								  EntityManager.entities[EntityManager.entitiesCol[a]].oldPos[0]) ** 2 +
+								 (EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[1] -
+								  EntityManager.entities[EntityManager.entitiesCol[a]].oldPos[1]) ** 2)
+
+				j = 0
+				while j < len(list):
+					if dist < list[j][0]:
+						break
+					else:
+						j +=1
+				list.insert(j, [dist , EntityManager.entitiesCol[a], j, len(list)])
+
+			for a in list:
 				EntityManager.testCollision(EntityManager.entities[EntityManager.entitiesCol[i]],
-											EntityManager.entities[EntityManager.entitiesCol[a]])
+											EntityManager.entities[EntityManager.entitiesCol[a[1]]])
 
 	@staticmethod
 	# Collision rect aabb
 	def testCollision(ent1, ent2):
-		if ent2.pos[0] - ent2.halfColSize[0] >= ent1.pos[0] + ent1.halfColSize[0] or \
-				ent2.pos[0] + ent2.halfColSize[0] <= ent1.pos[0] - ent1.halfColSize[0] or \
-				ent2.pos[1] - ent2.halfColSize[1] >= ent1.halfColSize[1] + ent1.pos[1] or \
-				ent2.pos[1] + ent2.halfColSize[1] <= ent1.pos[1] - ent1.halfColSize[1]:
-
-			pass
-		else:
+		if not(ent2.pos[0] - ent2.halfColSize[0] >= ent1.pos[0] + ent1.halfColSize[0] or
+			ent2.pos[0] + ent2.halfColSize[0] <= ent1.pos[0] - ent1.halfColSize[0] or
+			ent2.pos[1] - ent2.halfColSize[1] >= ent1.halfColSize[1] + ent1.pos[1] or
+			ent2.pos[1] + ent2.halfColSize[1] <= ent1.pos[1] - ent1.halfColSize[1]):
 			ent2.collision(ent1)
 			ent1.collision(ent2)
 

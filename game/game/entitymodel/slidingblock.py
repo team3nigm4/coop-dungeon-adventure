@@ -18,6 +18,7 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 		self.attributes["interaction"] = 2
 
 	def update(self):
+		super().update()
 		if self.inMov[0]:
 			newPos = [mam.checkCollisionX(self.pos, self.speed[0], self.halfColSize), self.pos[1]]
 			if newPos == self.pos:

@@ -24,6 +24,8 @@ class Player(entitydrawable.EntityDrawable):
 		self.attributes["door"] = 1
 
 	def update(self):
+		super().update()
+
 		dir = [0, 0]
 		if im.input(im.GO_LEFT):
 			dir[0] -=1

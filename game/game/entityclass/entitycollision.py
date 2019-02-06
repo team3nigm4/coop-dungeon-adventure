@@ -17,6 +17,8 @@ class EntityCollision(entity.Entity):
 		self.inMov = [False, False]
 		self.speed = [0,0]
 
+		self.oldPos = self.pos
+
 		self.attributes = {
 			"collision": 0,
 			"interaction": 0,
@@ -24,6 +26,9 @@ class EntityCollision(entity.Entity):
 			"damage": 0,
 			"door": 0
 		}
+
+	def update(self):
+		self.oldPos = self.pos
 
 	def setColBox(self, size, test):
 		self.colSize = size
