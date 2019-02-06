@@ -48,7 +48,7 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 					ent.setPos([self.pos[0] + self.halfColSize[0] + ent.halfColSize[0] + 0.002, ent.pos[1]])
 					tempDir = -1
 
-				if ent.type == "SlidingBlock":
+				if ent.attributes["collision"] == 2:
 					ent.inMov[0] = 0
 
 				# interaction attribute
@@ -67,7 +67,7 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 					ent.setPos([ent.pos[0], self.pos[1] - self.halfColSize[1] - ent.halfColSize[1] - 0.002])
 					tempDir = 1
 
-				if ent.type == "SlidingBlock":
+				if ent.attributes["collision"] == 2:
 					ent.inMov[1] = 0
 
 				# interaction attribute

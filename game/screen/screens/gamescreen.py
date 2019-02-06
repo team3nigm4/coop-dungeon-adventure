@@ -40,6 +40,7 @@ class GameScreen(screen.Screen):
 		mam.checkChangeMap()
 
 		gm.cam.goToEntity()
+		em.dispose()
 
 		# Return data
 		clientData.append(time.time_ns())

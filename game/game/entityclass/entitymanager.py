@@ -8,6 +8,7 @@ class EntityManager:
 
 	entities = []
 	entitiesCol = []
+	wantRemove = []
 
 	len = 0
 
@@ -73,9 +74,11 @@ class EntityManager:
 		EntityManager.len = len(EntityManager.entities)
 
 	@staticmethod
-	def remove(id):
+	def rem(id):
 		# Unload the entity
 		EntityManager.entities[id].unload()
+		if EntityManager.entities[id].entCol:
+			EntityManager.entitiesCol.remove(id)
 
 		if id == len(EntityManager.entities) - 1:
 			del EntityManager.entities[id]
@@ -86,6 +89,18 @@ class EntityManager:
 			EntityManager.entities[id].setId(-1)
 
 		EntityManager.len = len(EntityManager.entities)
+		print("remove", len(EntityManager.entities), " and ", len(EntityManager.entitiesCol))
+
+	@staticmethod
+	def remove(id):
+		EntityManager.wantRemove.append(id)
+
+	@staticmethod
+	def dispose():
+		for a in EntityManager.wantRemove:
+			EntityManager.rem(a)
+		EntityManager.wantRemove = []
+
 
 	@staticmethod
 	def clear():
@@ -97,13 +112,6 @@ class EntityManager:
 
 		EntityManager.entitiesCol = [0]
 		EntityManager.len = len(EntityManager.entities)
-
-	@staticmethod
-	def unload():
-		print("\nUnload EntityManager :")
-		for e in EntityManager.entities:
-			e.unload()
-		print("\n")
 
 	@staticmethod
 	def checkPlace():
@@ -119,3 +127,11 @@ class EntityManager:
 	@staticmethod
 	def removeToTest(id):
 		EntityManager.entitiesCol.remove(id)
+
+
+	@staticmethod
+	def unload():
+		print("\nUnload EntityManager :")
+		for e in EntityManager.entities:
+			e.unload()
+		print("\n")

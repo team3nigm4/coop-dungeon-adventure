@@ -11,8 +11,8 @@ class PressurePlate(entitydrawable.EntityDrawable):
 	def __init__(self, args):
 		super().__init__(args)
 		self.setColBox([1, 1], True)
-		self.images = [img.open("game/resources/textures/entities/pressure-plate.png"),
-					   img.open("game/resources/textures/entities/pressed-pressure-plate.png")]
+		self.images = [img.open("game/resources/textures/entities/pressure-plate-released.png"),
+					img.open("game/resources/textures/entities/pressure-plate-press.png")]
 
 		self.entityRenderer.setImage([1, 1], self.images[0], [0.5, 0.5])
 

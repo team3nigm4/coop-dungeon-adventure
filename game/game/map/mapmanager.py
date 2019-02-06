@@ -53,7 +53,7 @@ class MapManager:
 
 		gm.cam.trackEntity(em.PLAYER_1)
 
-		MapManager.changeRoom("test", "map2", 0)
+		MapManager.changeRoom("test", "map1", 0)
 
 	@staticmethod
 	def display():
