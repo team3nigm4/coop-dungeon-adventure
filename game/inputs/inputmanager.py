@@ -22,11 +22,13 @@ class InputManager:
 
 	@staticmethod
 	def init(inpt):
+		actions = ["ECHAP", "GO_LEFT", "GO_UP", "GO_RIGHT", "GO_DOWN", "INTERACT", "ITEM", "ITEM2", "RESET"]
+
 		InputManager.inputs = []
 		InputManager.type = []
-		for i in range(0, len(inpt)):
-			InputManager.inputs.append(inpt[i][1])
-			InputManager.type.append(inpt[i][0])
+		for i in range(0, len(actions)):
+			InputManager.inputs.append(inpt[actions[i]][0][1])
+			InputManager.type.append(inpt[actions[i]][0][0])
 
 		InputManager.keyBoardManager = kbm.KeyBoardManager()
 		InputManager.mouseManager = mm.MouseManager()
