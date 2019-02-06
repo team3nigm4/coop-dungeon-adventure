@@ -2,7 +2,6 @@
 
 from game.game.entitymodel import pressureplate
 from game.game.map.eventmanager import EventManager
-from game.game.entityclass.entitymanager import EntityManager as em
 
 from PIL import Image as img
 

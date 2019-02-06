@@ -47,6 +47,7 @@
 	"entities" : {
 		"0": ["ActivationBlock", [10.5, 7.5]],
 		"1": ["ActivationPlate", [8.5, 8.5], 0],
-		"2": ["Door", [13.5, 5], [0.5, 1.998], "test", "map2", 0, true, 0]
+		"2": ["Door", [13.5, 5], [0.5, 1.998], "test", "map2", 0, true, 0],
+		"3": ["TogglePlate", [8.5, 2.5], 0]
 	}
 }
