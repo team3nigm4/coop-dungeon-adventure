@@ -4,3 +4,4 @@
 # User-specific data files
 data/
 .idea/
+venv/
