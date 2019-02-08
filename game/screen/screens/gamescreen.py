@@ -38,7 +38,7 @@ class GameScreen(screen.Screen):
 			mam.reserveChange([mam.zone, mam.id, mam.defaultEntry])
 
 		if im.inputPressed(im.ITEM2):
-			em.status()
+			pass
 
 		mam.checkChangeMap()
 

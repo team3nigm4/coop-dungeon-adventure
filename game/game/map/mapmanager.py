@@ -149,7 +149,12 @@ class MapManager:
 
 		from game.game.map import loadentity
 		for i in range(0, len(values[MapManager.DATA_ENTITIES])):
-			em.add(loadentity.LoadEntity.instance(values[MapManager.DATA_ENTITIES][str(i)]))
+			args = values[MapManager.DATA_ENTITIES][i][1]
+			print(args)
+			args.insert(0, (values[MapManager.DATA_ENTITIES][i][0]))
+			temp = loadentity.LoadEntity.instance(args)
+			if not temp == False:
+				em.add(temp)
 
 		# Work with values
 		quad = [0, 0, 0.0, 0.0, 0.0,
