@@ -15,21 +15,15 @@ class Door(entitycollision.EntityCollision):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox(args[Door.ARGS_COL_BOX_SIZE], True)
+		self.setColBox(args[Door.ARGS_COL_BOX_SIZE], False)
 
 		self.zone = args[Door.ARGS_ZONE_NAME]
 		self.map = args[Door.ARGS_MAP_ID]
 		self.entry = args[Door.ARGS_MAP_ENTRY_POINT]
 
-
-		if args[Door.ARGS_IS_EVENT]:
-			from game.game.map.eventmanager import EventManager
-			self.isActive = False
-			EventManager.addActive(args[Door.ARGS_EVENT], self.id)
-			mam.changeInterMapSize(self.pos, self.halfColSize, 1)
-
-		else:
-			self.isActive = True
+		self.isEvent = args[Door.ARGS_IS_EVENT]
+		if self.isEvent:
+			self.event = args[Door.ARGS_EVENT]
 
 		self.isTwo = False
 		self.attributes["door"] = 2
@@ -38,7 +32,6 @@ class Door(entitycollision.EntityCollision):
 		self.isTwo = False
 
 	def collision(self, ent):
-		print("col")
 		if self.isActive:
 			if not self.isTwo:
 				self.isTwo = True
@@ -51,8 +44,21 @@ class Door(entitycollision.EntityCollision):
 
 	def activate(self):
 		self.isActive = True
+		self.setColBox(self.colSize, True)
 		mam.changeInterMapSize(self.pos, self.halfColSize, 0)
 
 	def deactivate(self):
 		self.isActive = False
+		self.setColBox(self.colSize, False)
 		mam.changeInterMapSize(self.pos, self.halfColSize, 1)
+
+	def setId(self, id):
+		super().setId(id)
+		if self.isEvent:
+			from game.game.map.eventmanager import EventManager
+			self.isActive = False
+			EventManager.addActive(self.event, self.id)
+			mam.changeInterMapSize(self.pos, self.halfColSize, 1)
+
+		else:
+			self.isActive = True

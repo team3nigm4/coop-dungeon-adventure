@@ -20,7 +20,6 @@ class TogglePlate(entitydrawable.EntityDrawable):
 		self.attributes["heavy"] = 2
 		self.press = False
 
-
 		self.eventId = args[TogglePlate.ARGS_EVENT_ID]
 		EventManager.deactivate(self.eventId)
 

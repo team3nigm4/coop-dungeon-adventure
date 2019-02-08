@@ -1,6 +1,10 @@
 # Manage every entity of the game
 
-import  math
+
+import math
+
+from game.game.entityclass import entitycollision
+
 
 class EntityManager:
 	PLAYER_1 = 0
@@ -31,7 +35,7 @@ class EntityManager:
 			e -= 1
 
 	@staticmethod
-	def collision():	
+	def collision():
 		for i in range(0, len(EntityManager.entitiesCol) - 1):
 			nbEntity = len(EntityManager.entitiesCol) - (1 + i)
 			list = []
@@ -46,9 +50,8 @@ class EntityManager:
 					if dist < list[j][0]:
 						break
 					else:
-						j +=1
-				list.insert(j, [dist , EntityManager.entitiesCol[a], j, len(list)])
-
+						j += 1
+				list.insert(j, [dist, EntityManager.entitiesCol.index(EntityManager.entitiesCol[a])])
 			for a in list:
 				EntityManager.testCollision(EntityManager.entities[EntityManager.entitiesCol[i]],
 											EntityManager.entities[EntityManager.entitiesCol[a[1]]])
@@ -56,20 +59,25 @@ class EntityManager:
 	@staticmethod
 	# Collision rect aabb
 	def testCollision(ent1, ent2):
-		if not(ent2.pos[0] - ent2.halfColSize[0] >= ent1.pos[0] + ent1.halfColSize[0] or
-			ent2.pos[0] + ent2.halfColSize[0] <= ent1.pos[0] - ent1.halfColSize[0] or
-			ent2.pos[1] - ent2.halfColSize[1] >= ent1.halfColSize[1] + ent1.pos[1] or
-			ent2.pos[1] + ent2.halfColSize[1] <= ent1.pos[1] - ent1.halfColSize[1]):
+		if not (ent2.pos[0] - ent2.halfColSize[0] >= ent1.pos[0] + ent1.halfColSize[0] or
+				ent2.pos[0] + ent2.halfColSize[0] <= ent1.pos[0] - ent1.halfColSize[0] or
+				ent2.pos[1] - ent2.halfColSize[1] >= ent1.halfColSize[1] + ent1.pos[1] or
+				ent2.pos[1] + ent2.halfColSize[1] <= ent1.pos[1] - ent1.halfColSize[1]):
 			ent2.collision(ent1)
 			ent1.collision(ent2)
 
 	@staticmethod
 	def add(entity):
-
+		id = EntityManager.checkPlace()
+		entity.setId(id)
 		if entity.id == EntityManager.len:
 			EntityManager.entities.append(entity)
 		else:
 			EntityManager.entities[entity.id] = entity
+
+		if isinstance(entity, entitycollision.EntityCollision):
+			if entity.testCol:
+				EntityManager.addToTest(entity.id)
 
 		EntityManager.len = len(EntityManager.entities)
 
@@ -77,19 +85,21 @@ class EntityManager:
 	def rem(id):
 		# Unload the entity
 		EntityManager.entities[id].unload()
-		if EntityManager.entities[id].entCol:
-			EntityManager.entitiesCol.remove(id)
+
+		if isinstance(EntityManager.entities[id], entitycollision.EntityCollision):
+			if EntityManager.entities[id].testCol:
+				EntityManager.entitiesCol.remove(id)
 
 		if id == len(EntityManager.entities) - 1:
 			del EntityManager.entities[id]
 			EntityManager.entities.remove(id)
 		else:
 			from game.game.entityclass import entity
-			EntityManager.entities[id] = entity.Entity([0, [0, 0]])
+			EntityManager.entities[id] = entity.Entity(["NULL", [0, 0]])
 			EntityManager.entities[id].setId(-1)
 
 		EntityManager.len = len(EntityManager.entities)
-		print("remove", len(EntityManager.entities), " and ", len(EntityManager.entitiesCol))
+		print("Remove the entity,", id)
 
 	@staticmethod
 	def remove(id):
@@ -100,7 +110,6 @@ class EntityManager:
 		for a in EntityManager.wantRemove:
 			EntityManager.rem(a)
 		EntityManager.wantRemove = []
-
 
 	@staticmethod
 	def clear():
@@ -122,11 +131,24 @@ class EntityManager:
 
 	@staticmethod
 	def addToTest(id):
-		EntityManager.entitiesCol.append(id)
+		if not id in EntityManager.entitiesCol:
+			EntityManager.entitiesCol.append(id)
+		else:
+			print("(EntityManager - addToTest() ) Error two entities with same id want to be place on entityCol, id :",
+				  id)
 
 	@staticmethod
 	def removeToTest(id):
-		EntityManager.entitiesCol.remove(id)
+		if id in EntityManager.entitiesCol:
+			EntityManager.entitiesCol.remove(id)
+		else:
+			print("(EntityManager - removeToTest()) Error none entity want to be remove from entityCol, id : ", id)
+
+	@staticmethod
+	def status():
+		print("\nEntityManager status:\n")
+		for i in range(0, EntityManager.len):
+			print("Entity", EntityManager.entities[i].id, ", entityType",  EntityManager.entities[i].type)
 
 
 	@staticmethod

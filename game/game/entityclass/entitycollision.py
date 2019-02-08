@@ -13,7 +13,7 @@ class EntityCollision(entity.Entity):
 		self.colSize = [1,1]
 		self.halfColSize = [0.5,0.5]
 
-		self.entCol = False
+		self.testCol = False
 		self.inMov = [False, False]
 		self.speed = [0,0]
 
@@ -36,12 +36,13 @@ class EntityCollision(entity.Entity):
 		self.halfColSize[0] = self.colSize[0]/2
 		self.halfColSize[1] = self.colSize[1]/2
 
-		self.entCol = test
-		from game.game.entityclass.entitymanager import EntityManager as em
-		if self.entCol:
-			em.addToTest(self.id)
-		else:
-			em.removeToTest(self.id)
+		self.testCol = test
+		if not self.id == -1:
+			from game.game.entityclass.entitymanager import EntityManager as em
+			if self.testCol:
+				em.addToTest(self.id)
+			else:
+				em.removeToTest(self.id)
 
 	def setSpeed(self, speed):
 		self.speed = speed

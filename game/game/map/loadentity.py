@@ -5,14 +5,18 @@ class LoadEntity:
 	from game.game.entitymodel import activationblock
 	from game.game.entitymodel import activationplate
 	from game.game.entitymodel import toggleplate
+	from game.game.entitymodel import spawn
+	from game.game.entitymodel import player
 
 	entities = {
+		"Player" : player.Player,
 		"SlidingBlock": slidingblock.SlidingBlock,
 		"Door": door.Door,
 		"PressurePlate": pressureplate.PressurePlate,
 		"ActivationBlock": activationblock.ActivationBlock,
 		"TogglePlate": toggleplate.TogglePlate,
-		"ActivationPlate": activationplate.ActivationPlate
+		"ActivationPlate": activationplate.ActivationPlate,
+		"Spawn" : spawn.Spawn
 	}
 
 	@staticmethod

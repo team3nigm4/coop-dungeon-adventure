@@ -37,6 +37,9 @@ class GameScreen(screen.Screen):
 		if im.inputPressed(im.RESET):
 			mam.reserveChange([mam.zone, mam.id, mam.defaultEntry])
 
+		if im.inputPressed(im.ITEM2):
+			em.status()
+
 		mam.checkChangeMap()
 
 		gm.cam.goToEntity()

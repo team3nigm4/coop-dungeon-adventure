@@ -15,6 +15,7 @@ class Player(entitydrawable.EntityDrawable):
 	def __init__(self, args):
 		super().__init__(args)
 		self.setColBox([0.7, 0.4], True)
+
 		self.entityRenderer.setImagePath([0.8, 1.2], "perso.png", [0.4, 0.2])
 
 		self.attributes["collision"] = 1
