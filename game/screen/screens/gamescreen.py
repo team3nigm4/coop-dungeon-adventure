@@ -37,8 +37,8 @@ class GameScreen(screen.Screen):
 		if im.inputPressed(im.RESET):
 			mam.reserveChange([mam.zone, mam.id, mam.defaultEntry])
 
-		if im.inputPressed(im.ITEM2):
-			pass
+		if im.keyBoardManager.getKey(290):
+			print(hasattr(em.entities[0], 'updute'))
 
 		mam.checkChangeMap()
 

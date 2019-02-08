@@ -53,7 +53,7 @@ class MapManager:
 
 		gm.cam.trackEntity(em.PLAYER_1)
 
-		MapManager.changeRoom("test", "map1", 0)
+		MapManager.changeRoom("test", "map4", 0)
 
 	@staticmethod
 	def display():
@@ -165,6 +165,7 @@ class MapManager:
 
 		# Set the camera position
 		gm.cam.setPos([0, 0, gm.cam.pos[2]])
+		gm.cam.setMaximum([width, height])
 
 		if width > 18:
 			gm.cam.track[0] = True
