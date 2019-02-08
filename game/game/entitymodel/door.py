@@ -23,7 +23,11 @@ class Door(entitycollision.EntityCollision):
 
 		self.isEvent = args[Door.ARGS_IS_EVENT]
 		if self.isEvent:
+			self.isActive = False
 			self.event = args[Door.ARGS_EVENT]
+		else:
+			self.isActive = True
+			self.setColBox(self.colSize, True)
 
 		self.isTwo = False
 		self.attributes["door"] = 2
