@@ -9,7 +9,6 @@ class EventManager:
 	@staticmethod
 	# Define how much events there are
 	def setupEvent(number):
-		print("number", number)
 		EventManager.event = [0] * number
 		EventManager.toActive = []
 		for i in range(0, number):
@@ -19,9 +18,7 @@ class EventManager:
 	# Add a entity the to the list of entities to call when an event is true
 	def addActive(eventIndex, id):
 		if not id in EventManager.toActive[eventIndex]:
-			print("Add the id", id, "to event", eventIndex)
 			EventManager.toActive[eventIndex].append(id)
-			print(EventManager.toActive)
 		else:
 			print("(EventManager - addActive()) Error two entities with same id want to be place on table", eventIndex,", with id :", id)
 

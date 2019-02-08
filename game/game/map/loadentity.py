@@ -21,4 +21,7 @@ class LoadEntity:
 
 	@staticmethod
 	def instance(args):
-		return LoadEntity.entities[args[0]](args)
+		if (args[0] in LoadEntity.entities):
+			return LoadEntity.entities[args[0]](args)
+		else: 
+			return False
