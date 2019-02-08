@@ -2,7 +2,7 @@
     "map": {
         "zone": "test",
         "id": "map1",
-        "events": 2
+        "events": 1
     },
     "layers": [
         [

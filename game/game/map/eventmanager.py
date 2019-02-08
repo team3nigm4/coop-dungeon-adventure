@@ -34,7 +34,6 @@ class EventManager:
 	@staticmethod
 	def activate(eventIndex):
 		EventManager.event[eventIndex] -= 1
-		print("index", EventManager.event[eventIndex])
 		if EventManager.event[eventIndex] == 0:
 			from game.game.entityclass.entitymanager import EntityManager
 			for i in EventManager.toActive[eventIndex]:
