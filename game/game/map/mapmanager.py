@@ -12,7 +12,6 @@ from game.screen.gamemanager import GameManager as gm
 
 
 class MapManager:
-
 	DATA_MAP_INFO = 0
 	DATA_IMAGES = 1
 	DATA_INTERACTIONS = 2
@@ -171,17 +170,16 @@ class MapManager:
 			gm.cam.track[0] = True
 		else:
 			gm.cam.track[0] = False
-			gm.cam.addPos([-width / 2, 0 , 0])
+			gm.cam.addPos([-width / 2, 0, 0])
 
 		if height > 12:
 			gm.cam.track[1] = True
 		else:
 			gm.cam.track[1] = False
-			gm.cam.addPos([0, -height / 2, 0])	
+			gm.cam.addPos([0, -height / 2, 0])
 
 		gm.cam.goToEntity()
 		sm.updateLink(sm.TEXTURE, "view", gm.cam.getView())
-		
 
 	@staticmethod
 	def unload():
@@ -195,12 +193,12 @@ class MapManager:
 
 	# Change a zone of the interaction map
 	@staticmethod
-	def changeInterMapSize(position, size,  id):
+	def changeInterMapSize(position, size, id):
 		posX = [math.floor(position[0] - size[0]), math.floor(position[0] + size[0])]
 		posY = [math.floor(position[1] - size[1]), math.floor(position[1] + size[1])]
 
-		for x in range(posX[0], posX[1]+1):
-			for y in range(posY[0], posY[1]+1):
+		for x in range(posX[0], posX[1] + 1):
+			for y in range(posY[0], posY[1] + 1):
 				MapManager.interaction[MapManager.height - 1 - y][x] = id
 
 	@staticmethod
@@ -212,7 +210,6 @@ class MapManager:
 		if not MapManager.changeValues == None:
 			MapManager.unloadImages()
 			MapManager.changeRoom(MapManager.changeValues[0], MapManager.changeValues[1], MapManager.changeValues[2])
-
 
 	@staticmethod
 	def unloadImages():

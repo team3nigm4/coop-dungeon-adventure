@@ -52,10 +52,9 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 					ent.inMov[0] = 0
 
 				# interaction attribute
-				if ent.type == "Player":
-					if im.inputPressed(im.INTERACT):
-						self.inMov[0] = True
-						self.speed[0] = SlidingBlock.SPEED * tempDir
+				if ent.attributes["interaction"] == 1:
+					self.inMov[0] = True
+					self.speed[0] = SlidingBlock.SPEED * tempDir
 
 			# Just move in y
 			elif (ent.inMov[1] and not ent.inMov[0]):
@@ -71,10 +70,9 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 					ent.inMov[1] = 0
 
 				# interaction attribute
-				if ent.type == "Player":
-					if im.inputPressed(im.INTERACT):
-						self.inMov[1] = True
-						self.speed[1] = SlidingBlock.SPEED * tempDir
+				if ent.attributes["interaction"] == 1:
+					self.inMov[1] = True
+					self.speed[1] = SlidingBlock.SPEED * tempDir
 
 			# Move in both coordinates
 			elif ent.inMov[0] and ent.inMov[1]:
@@ -96,3 +94,23 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 					# down
 					elif oldPos[1] + ent.halfColSize[1] < self.pos[1] - self.halfColSize[1]:
 						ent.setPos([ent.pos[0], self.pos[1] - self.halfColSize[1] - ent.halfColSize[1] - 0.002])
+
+	def left(self, input):
+		if input > 1:
+			self.inMov[0] = True
+			self.speed[0] = -SlidingBlock.SPEED
+
+	def up(self, input):
+		if input > 1:
+			self.inMov[1] = True
+			self.speed[1] = SlidingBlock.SPEED
+
+	def right(self, input):
+		if input > 1:
+			self.inMov[0] = True
+			self.speed[0] = SlidingBlock.SPEED
+
+	def down(self, input):
+		if input > 1:
+			self.inMov[1] = True
+			self.speed[1] = -SlidingBlock.SPEED

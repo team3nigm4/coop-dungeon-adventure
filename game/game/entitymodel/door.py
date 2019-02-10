@@ -37,14 +37,15 @@ class Door(entitycollision.EntityCollision):
 
 	def collision(self, ent):
 		if self.isActive:
-			if not self.isTwo:
-				self.isTwo = True
-				# Temp system without both players
-				mam.unloadImages()
-				mam.reserveChange([self.zone, self.map, self.entry])
-			else:
-				pass
-				# Change the map with its id
+			if ent.attributes["door"] == 1:
+				if not self.isTwo:
+					self.isTwo = True
+					# Temp system without both players
+					mam.unloadImages()
+					mam.reserveChange([self.zone, self.map, self.entry])
+				else:
+					pass
+					# Change the map with its id
 
 	def activate(self):
 		self.isActive = True

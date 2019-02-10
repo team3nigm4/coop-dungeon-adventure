@@ -22,11 +22,17 @@ class GameScreen(screen.Screen):
 
 		mam.init()
 
+		from game.inputs import playercontroler as plc
+		self.controlPlay1 = plc.PlayerController()
+		self.controlPlay1.setPlayer(0)
+		self.controlPlay1.setEntity(em.entities[0])
+
 	def update(self):
 		# Receive and create data
 		serverData = gm.serverData
 		clientData = im.getState()
 
+		self.controlPlay1.update()
 		em.update()
 		em.collision()
 
@@ -38,7 +44,8 @@ class GameScreen(screen.Screen):
 			mam.reserveChange([mam.zone, mam.id, mam.defaultEntry])
 
 		if im.keyBoardManager.getKey(290):
-			print(hasattr(em.entities[0], 'updute'))
+			self.controlPlay1.setEntity(em.entities[2])
+			gm.cam.trackEntity(2)
 
 		mam.checkChangeMap()
 

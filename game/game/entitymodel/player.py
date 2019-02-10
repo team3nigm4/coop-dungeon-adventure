@@ -21,24 +21,37 @@ class Player(entitydrawable.EntityDrawable):
 		self.attributes["collision"] = 1
 		self.attributes["damage"] = 2
 		self.attributes["heavy"] = 1
-		self.attributes["interaction"] = 1
 		self.attributes["door"] = 1
+
+		self.wantDirection = [0, 0]
+
+	def left(self, input):
+		if input > 1:
+			self.wantDirection[0] -=1
+
+	def up(self, input):
+		if input > 1:
+			self.wantDirection[1] +=1
+
+	def right(self, input):
+		if input > 1:
+			self.wantDirection[0] +=1
+
+	def down(self, input):
+		if input > 1:
+			self.wantDirection[1] -=1
+
+	def interact(self, input):
+		if input > 1:
+			self.attributes["interaction"] = 1
+		else:
+			self.attributes["interaction"] = 0
 
 	def update(self):
 		super().update()
 
-		dir = [0, 0]
-		if im.input(im.GO_LEFT):
-			dir[0] -=1
-		if im.input(im.GO_UP):
-			dir[1] += 1
-		if im.input(im.GO_RIGHT):
-			dir[0] += 1
-		if im.input(im.GO_DOWN):
-			dir[1] -= 1
-
-		for i in range(0,2):
-			if dir[i] == 0:
+		for i in range(2):
+			if self.wantDirection[i] == 0:
 				if self.speed[i] < 0:
 					self.speed[i] += Player.SPEED_DECREASE
 					if self.speed[i] > 0:
@@ -51,9 +64,9 @@ class Player(entitydrawable.EntityDrawable):
 						self.inMov[i] = False
 			else:
 				self.inMov[i] = True
-				self.speed[i] += dir[i] * Player.SPEED_ADD
+				self.speed[i] += self.wantDirection[i] * Player.SPEED_ADD
 				if math.fabs(self.speed[i]) > Player.SPEED_MAX:
-					self.speed[i] = dir[i] * Player.SPEED_MAX
+					self.speed[i] = self.wantDirection[i] * Player.SPEED_MAX
 
 		if not self.speed[0] == 0:
 			self.setPos([mam.checkCollisionX(self.pos, self.speed[0], self.halfColSize),
@@ -61,3 +74,5 @@ class Player(entitydrawable.EntityDrawable):
 		if not self.speed[1] == 0:
 			self.setPos([self.pos[0],
 				mam.checkCollisionY(self.pos, self.speed[1], self.halfColSize)])
+
+		self.wantDirection = [0, 0]
