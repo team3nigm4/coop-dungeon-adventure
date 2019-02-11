@@ -2,7 +2,6 @@
 
 from game.game.entityclass import entitydrawable
 from game.game.map.mapmanager import MapManager as mam
-from game.inputs.inputmanager import InputManager as im
 
 import  math
 

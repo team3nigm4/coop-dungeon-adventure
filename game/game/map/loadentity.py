@@ -7,6 +7,7 @@ class LoadEntity:
 	from game.game.entitymodel import toggleplate
 	from game.game.entitymodel import spawn
 	from game.game.entitymodel import player
+	from game.game.entitymodel import bridge
 
 	entities = {
 		"Player" : player.Player,
@@ -16,7 +17,8 @@ class LoadEntity:
 		"ActivationBlock": activationblock.ActivationBlock,
 		"TogglePlate": toggleplate.TogglePlate,
 		"ActivationPlate": activationplate.ActivationPlate,
-		"Spawn" : spawn.Spawn
+		"Spawn" : spawn.Spawn,
+		"Bridge": bridge.Bridge
 	}
 
 	@staticmethod
