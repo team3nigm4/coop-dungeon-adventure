@@ -105,14 +105,21 @@ class Config:
 
 		Config.inputs = {
 			"ECHAP": [[0, 256]],
-			"GO_LEFT": [[0, 65]],
-			"GO_UP": [[0, 87]],
-			"GO_RIGHT": [[0, 68]],
-			"GO_DOWN": [[0, 83]],
-			"INTERACT": [[1, 1]],
-			"ITEM": [[1, 0]],
-			"ITEM2": [[0, 70]],
-			"RESET": [[0, 82]]
+			"RESET": [[0, 82]],
+			"GO_LEFT_0": [[0, 65]],
+			"GO_UP_0": [[0, 87]],
+			"GO_RIGHT_0": [[0, 68]],
+			"GO_DOWN_0": [[0, 83]],
+			"INTERACT_0": [[0, 69]],
+			"ITEM_0": [[0, 32]],
+			"ITEM2_0": [[0, 70]],
+			"GO_LEFT_1": [[0, 263]],
+			"GO_UP_1": [[0, 265]],
+			"GO_RIGHT_1": [[0, 262]],
+			"GO_DOWN_1": [[0, 264]],
+			"INTERACT_1": [[1, 1]],
+			"ITEM_1": [[1, 0]],
+			"ITEM2_1": [[0, 48]],
 		}
 
 		if overwrite == True:

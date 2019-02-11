@@ -2,13 +2,13 @@
 from game.inputs.inputmanager import InputManager as im
 
 class PlayerController:
-	VARIABLES = [[1, 9, "left"],
-				 [2, 10, "up"],
-				 [3, 11, "right"],
-				 [4, 12, "down"],
-				 [5, 13, "interact"],
-				 [6, 14, "item"],
-				 [7, 15, "item2"]]
+	VARIABLES = [[2, 9, "left"],
+				 [3, 10, "up"],
+				 [4, 11, "right"],
+				 [5, 12, "down"],
+				 [6, 13, "interact"],
+				 [7, 14, "item"],
+				 [8, 15, "item2"]]
 
 	def __init__(self):
 		self.states =  [[False, getattr(NameError, "mro")] for i in range(len(PlayerController.VARIABLES))]
@@ -26,9 +26,9 @@ class PlayerController:
 				if im.input(self.VARIABLES[i][self.player]):
 					# No error
 					if im.inputPressed(self.VARIABLES[i][self.player]):
-						self.states[i][1](3)
-					else:
 						self.states[i][1](2)
+					else:
+						self.states[i][1](3)
 				else:
 					if im.inputReleased(self.VARIABLES[i][self.player]):
 						self.states[i][1](1)

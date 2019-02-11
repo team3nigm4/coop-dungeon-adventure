@@ -115,11 +115,11 @@ class EntityManager:
 	def clear():
 		# Delete h
 		if EntityManager.len > 1:
-			for i in range(1, EntityManager.len):
-				EntityManager.entities[1].unload()
-				EntityManager.entities.remove(EntityManager.entities[1])
+			for i in range(2, EntityManager.len):
+				EntityManager.entities[2].unload()
+				EntityManager.entities.remove(EntityManager.entities[2])
 
-		EntityManager.entitiesCol = [0]
+		EntityManager.entitiesCol = [EntityManager.PLAYER_1, EntityManager.PLAYER_2]
 		EntityManager.len = len(EntityManager.entities)
 
 	@staticmethod

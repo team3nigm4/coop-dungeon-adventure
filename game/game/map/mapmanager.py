@@ -50,8 +50,6 @@ class MapManager:
 		MapManager.modelMtx = pyrr.Matrix44.identity()
 		sm.updateLink(sm.TEXTURE, "model", MapManager.modelMtx)
 
-		gm.cam.trackEntity(em.PLAYER_1)
-
 		MapManager.changeRoom("test", "map4", 0)
 
 	@staticmethod
@@ -145,6 +143,7 @@ class MapManager:
 
 		# Create instance of entities and place players
 		em.entities[em.PLAYER_1].setPos(values[MapManager.DATA_ENTRIES])
+		em.entities[em.PLAYER_2].setPos(values[MapManager.DATA_ENTRIES])
 
 		from game.game.map import loadentity
 		for i in range(0, len(values[MapManager.DATA_ENTITIES])):

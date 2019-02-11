@@ -42,7 +42,7 @@ class Player(entitydrawable.EntityDrawable):
 			self.wantDirection[1] -=1
 
 	def interact(self, input):
-		if input > 1:
+		if input == 2:
 			self.attributes["interaction"] = 1
 		else:
 			self.attributes["interaction"] = 0
