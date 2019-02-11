@@ -55,6 +55,10 @@ class GameScreen(screen.Screen):
 		if im.inputPressed(im.ITEM2_0):
 			gm.cam.trackEntity(1 - gm.cam.entityId)
 
+		if im.keyBoardManager.getKey(290):
+			from game.game.command import Command
+			Command.command(input('Command : '))
+
 		mam.checkChangeMap()
 
 		gm.cam.goToEntity()
