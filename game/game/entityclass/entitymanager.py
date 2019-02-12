@@ -35,15 +35,14 @@ class EntityManager:
 			e -= 1
 
 	@staticmethod
-	def collision():
-		for i in range(0, len(EntityManager.entitiesCol) - 1):
-			nbEntity = len(EntityManager.entitiesCol) - (1 + i)
-			list = []
-			for a in range(1 + i, len(EntityManager.entitiesCol)):
-				dist = math.sqrt((EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[0] -
-								  EntityManager.entities[EntityManager.entitiesCol[a]].oldPos[0]) ** 2 +
-								 (EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[1] -
-								  EntityManager.entities[EntityManager.entitiesCol[a]].oldPos[1]) ** 2)
+	def collision(entityId):
+		list = []
+		for i in range(0, len(EntityManager.entitiesCol)):
+			if not EntityManager.entitiesCol[i] == entityId:
+				dist = math.sqrt((EntityManager.entities[EntityManager.entitiesCol[entityId]].oldPos[0] -
+								EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[0]) ** 2 +
+								(EntityManager.entities[EntityManager.entitiesCol[entityId]].oldPos[1] -
+								EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[1]) ** 2)
 
 				j = 0
 				while j < len(list):
@@ -51,10 +50,11 @@ class EntityManager:
 						break
 					else:
 						j += 1
-				list.insert(j, [dist, EntityManager.entitiesCol.index(EntityManager.entitiesCol[a])])
-			for a in list:
-				EntityManager.testCollision(EntityManager.entities[EntityManager.entitiesCol[i]],
-											EntityManager.entities[EntityManager.entitiesCol[a[1]]])
+				list.insert(j, [dist, EntityManager.entitiesCol.index(EntityManager.entitiesCol[i])])
+
+		for a in list:
+			EntityManager.testCollision(EntityManager.entities[EntityManager.entitiesCol[entityId]],
+										EntityManager.entities[EntityManager.entitiesCol[a[1]]])
 
 	@staticmethod
 	# Collision rect aabb

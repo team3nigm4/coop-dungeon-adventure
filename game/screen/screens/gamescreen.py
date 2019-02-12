@@ -43,7 +43,6 @@ class GameScreen(screen.Screen):
 		self.controlPlay1.update()
 		self.controlPlay2.update()
 		em.update()
-		em.collision()
 
 		if im.inputPressed(im.ESCAPE):
 			from game.main.window import Window
