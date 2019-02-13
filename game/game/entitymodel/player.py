@@ -77,5 +77,4 @@ class Player(entitydrawable.EntityDrawable):
 		if not self.speed[1] == 0:
 			self.setPos([self.pos[0],
 				mam.checkCollisionY(self.pos, self.speed[1], self.halfColSize)])
-
 		self.wantDirection = [0, 0]

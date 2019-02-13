@@ -25,6 +25,8 @@ class EntityManager:
 		e = EntityManager.len - 1
 		while e >= 0:
 			EntityManager.entities[e].update()
+			if EntityManager.entities[e].testCol:
+				EntityManager.collision(e)
 			e -= 1
 
 	@staticmethod
@@ -39,9 +41,9 @@ class EntityManager:
 		list = []
 		for i in range(0, len(EntityManager.entitiesCol)):
 			if not EntityManager.entitiesCol[i] == entityId:
-				dist = math.sqrt((EntityManager.entities[EntityManager.entitiesCol[entityId]].oldPos[0] -
+				dist = math.sqrt((EntityManager.entities[entityId].oldPos[0] -
 								EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[0]) ** 2 +
-								(EntityManager.entities[EntityManager.entitiesCol[entityId]].oldPos[1] -
+								(EntityManager.entities[entityId].oldPos[1] -
 								EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[1]) ** 2)
 
 				j = 0
@@ -53,7 +55,7 @@ class EntityManager:
 				list.insert(j, [dist, EntityManager.entitiesCol.index(EntityManager.entitiesCol[i])])
 
 		for a in list:
-			EntityManager.testCollision(EntityManager.entities[EntityManager.entitiesCol[entityId]],
+			EntityManager.testCollision(EntityManager.entities[entityId],
 										EntityManager.entities[EntityManager.entitiesCol[a[1]]])
 
 	@staticmethod
@@ -64,7 +66,6 @@ class EntityManager:
 				ent2.pos[1] - ent2.halfColSize[1] >= ent1.halfColSize[1] + ent1.pos[1] or
 				ent2.pos[1] + ent2.halfColSize[1] <= ent1.pos[1] - ent1.halfColSize[1]):
 			ent2.collision(ent1)
-			ent1.collision(ent2)
 
 	@staticmethod
 	def add(entity):

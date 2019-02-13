@@ -10,12 +10,10 @@ class EntityCollision(entity.Entity):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.colSize = [1,1]
-		self.halfColSize = [0.5,0.5]
-
-		self.testCol = False
+		self.colSize = [1, 1]
+		self.halfColSize = [0.5, 0.5]
 		self.inMov = [False, False]
-		self.speed = [0,0]
+		self.speed = [0, 0]
 
 		self.oldPos = self.pos
 
@@ -33,8 +31,8 @@ class EntityCollision(entity.Entity):
 
 	def setColBox(self, size, test):
 		self.colSize = size
-		self.halfColSize[0] = self.colSize[0]/2
-		self.halfColSize[1] = self.colSize[1]/2
+		self.halfColSize[0] = self.colSize[0] / 2
+		self.halfColSize[1] = self.colSize[1] / 2
 
 		self.testCol = test
 		if not self.id == -1:
