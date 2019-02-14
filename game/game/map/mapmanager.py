@@ -230,24 +230,19 @@ class MapManager:
 		sm.updateLink(sm.TEXTURE, "view", gm.cam.getView())
 
 	@staticmethod
-	def unload():
-		MapManager.shape.unload()
-		MapManager.unloadImages()
-
-	@staticmethod
 	# Change one bloc of the interaction map
-	def changeInterMap(position, id):
+	def setTile(position, id):
 		MapManager.interaction[MapManager.height - 1 - math.floor(position[1])][math.floor(position[0])] = id
 
 	# Change a zone of the interaction map
 	@staticmethod
-	def changeInterMapSize(position, size, id):
+	def setTileSize(position, size, id):
 		posX = [math.floor(position[0] - size[0]), math.floor(position[0] + size[0])]
 		posY = [math.floor(position[1] - size[1]), math.floor(position[1] + size[1])]
 
 		for x in range(posX[0], posX[1] + 1):
 			for y in range(posY[0], posY[1] + 1):
-				MapManager.interaction[MapManager.height - 1 - y][x] = id
+				MapManager.setTile([x, y], id)
 
 	@staticmethod
 	def reserveChange(values):
@@ -255,7 +250,7 @@ class MapManager:
 
 	@staticmethod
 	def checkChangeMap():
-		if not MapManager.changeValues == None:
+		if MapManager.changeValues is not None:
 			MapManager.unloadImages()
 			MapManager.changeRoom(MapManager.changeValues[0], MapManager.changeValues[1], MapManager.changeValues[2])
 
@@ -264,3 +259,8 @@ class MapManager:
 		for i in range(0, len(MapManager.tex)):
 			MapManager.tex[i].unload()
 		MapManager.tex = []
+
+	@staticmethod
+	def unload():
+		MapManager.shape.unload()
+		MapManager.unloadImages()
