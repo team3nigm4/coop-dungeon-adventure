@@ -20,26 +20,27 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 	def update(self):
 		super().update()
 		if self.inMov[0]:
-			newPos = [mam.checkCollisionX(self.pos, self.speed[0], self.halfColSize), self.pos[1]]
-			if newPos == self.pos:
+			mam.checkCollisionX(self)
+
+			if self.oldPos == self.pos:
 				self.inMov[0] = False
 				self.speed[0] = 0
-			else:
-				self.setPos(newPos)
+
 		elif self.inMov[1]:
-			newPos = [self.pos[0], mam.checkCollisionY(self.pos, self.speed[1], self.halfColSize)]
-			if newPos == self.pos:
+			mam.checkCollisionY(self)
+
+			if self.oldPos == self.pos:
 				self.inMov[1] = False
 				self.speed[1] = 0
-			else:
-				self.setPos(newPos)
+
+		mam.checkEmpty(self)
 
 	def collision(self, ent):
 		# If we apply the collision
 		if ent.attributes["collision"] != 2 or ent.inMov[0] or ent.inMov[1]:
 
 			# Just move in x
-			if (ent.inMov[0] and not ent.inMov[1]):
+			if ent.inMov[0] and not ent.inMov[1]:
 				tempDir = 0
 				if ent.speed[0] > 0:
 					ent.setPos([self.pos[0] - self.halfColSize[0] - ent.halfColSize[0] - 0.002, ent.pos[1]])
@@ -48,17 +49,16 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 					ent.setPos([self.pos[0] + self.halfColSize[0] + ent.halfColSize[0] + 0.002, ent.pos[1]])
 					tempDir = -1
 
-				if ent.type == "SlidingBlock":
+				if ent.attributes["collision"] == 2:
 					ent.inMov[0] = 0
 
 				# interaction attribute
-				if ent.type == "Player":
-					if im.inputPressed(im.INTERACT):
-						self.inMov[0] = True
-						self.speed[0] = SlidingBlock.SPEED * tempDir
+				if ent.attributes["interaction"] == 1:
+					self.inMov[0] = True
+					self.speed[0] = SlidingBlock.SPEED * tempDir
 
 			# Just move in y
-			elif (ent.inMov[1] and not ent.inMov[0]):
+			elif ent.inMov[1] and not ent.inMov[0]:
 				tempDir = 0
 				if ent.speed[1] < 0:
 					ent.setPos([ent.pos[0], self.pos[1] + self.halfColSize[1] + ent.halfColSize[1] + 0.002])
@@ -67,14 +67,13 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 					ent.setPos([ent.pos[0], self.pos[1] - self.halfColSize[1] - ent.halfColSize[1] - 0.002])
 					tempDir = 1
 
-				if ent.type == "SlidingBlock":
+				if ent.attributes["collision"] == 2:
 					ent.inMov[1] = 0
 
 				# interaction attribute
-				if ent.type == "Player":
-					if im.inputPressed(im.INTERACT):
-						self.inMov[1] = True
-						self.speed[1] = SlidingBlock.SPEED * tempDir
+				if ent.attributes["interaction"] == 1:
+					self.inMov[1] = True
+					self.speed[1] = SlidingBlock.SPEED * tempDir
 
 			# Move in both coordinates
 			elif ent.inMov[0] and ent.inMov[1]:
@@ -96,3 +95,23 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 					# down
 					elif oldPos[1] + ent.halfColSize[1] < self.pos[1] - self.halfColSize[1]:
 						ent.setPos([ent.pos[0], self.pos[1] - self.halfColSize[1] - ent.halfColSize[1] - 0.002])
+
+	def left(self, input):
+		if input > 1:
+			self.inMov[0] = True
+			self.speed[0] = -SlidingBlock.SPEED
+
+	def up(self, input):
+		if input > 1:
+			self.inMov[1] = True
+			self.speed[1] = SlidingBlock.SPEED
+
+	def right(self, input):
+		if input > 1:
+			self.inMov[0] = True
+			self.speed[0] = SlidingBlock.SPEED
+
+	def down(self, input):
+		if input > 1:
+			self.inMov[1] = True
+			self.speed[1] = -SlidingBlock.SPEED

@@ -38,11 +38,11 @@ def loadMap(zone, name, entry):
 			images.append(new_im)
 		returnValues.append(images)
 
-		returnValues.append(getValues["collision"])
+		returnValues.append(getValues["collision"][0])
 		returnValues.append(getValues["entries"][str(entry)])
 
 
-		returnValues.append(getValues["entities"])
+		returnValues.append(getValues["entities"][0])
 
 		return returnValues
 	except json.decoder.JSONDecodeError:

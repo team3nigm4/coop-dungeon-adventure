@@ -6,14 +6,22 @@ from game.inputs import mousemanager as mm
 
 class InputManager:
 	ESCAPE = 0
-	GO_LEFT = 1
-	GO_UP = 2
-	GO_RIGHT = 3
-	GO_DOWN = 4
-	INTERACT = 5
-	ITEM = 6
-	ITEM2 = 7
-	RESET = 8
+	RESET = 1
+	GO_LEFT_0 = 2
+	GO_UP_0 = 3
+	GO_RIGHT_0 = 4
+	GO_DOWN_0 = 5
+	INTERACT_0 = 6
+	ITEM_0 = 7
+	ITEM2_0 = 8
+	GO_LEFT_1 = 9
+	GO_UP_1 = 10
+	GO_RIGHT_1 = 11
+	GO_DOWN_1 = 12
+	INTERACT_1 = 13
+	ITEM_1 = 14
+	ITEM2_1 = 15
+	
 
 	inputs = None
 	type = None
@@ -22,7 +30,8 @@ class InputManager:
 
 	@staticmethod
 	def init(inpt):
-		actions = ["ECHAP", "GO_LEFT", "GO_UP", "GO_RIGHT", "GO_DOWN", "INTERACT", "ITEM", "ITEM2", "RESET"]
+		actions = ["ECHAP", "RESET", "GO_LEFT_0", "GO_UP_0", "GO_RIGHT_0", "GO_DOWN_0", "INTERACT_0", "ITEM_0", "ITEM2_0",
+		 "GO_LEFT_1", "GO_UP_1", "GO_RIGHT_1", "GO_DOWN_1", "INTERACT_1", "ITEM_1", "ITEM2_1"]
 
 		InputManager.inputs = []
 		InputManager.type = []
