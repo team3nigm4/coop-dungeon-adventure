@@ -234,6 +234,22 @@ class MapManager:
 	def setTile(position, id):
 		MapManager.interaction[MapManager.height - 1 - math.floor(position[1])][math.floor(position[0])] = id
 
+		# Check if entity with collision in the change
+		if id == MapManager.INTERACTION_SOLID:
+			for i in em.entitiesCol:
+				if not em.entities[i].attributes["collision"] == 0:
+					e = em.entities[i]
+					# Collision Test
+					if math.floor(e.pos[0] - e.halfColSize[0]) <= position[0] <= math.floor(e.pos[0] + e.halfColSize[0]) and \
+							math.floor(e.pos[1] - e.halfColSize[1]) <= position[1] <= math.floor(e.pos[1] + e.halfColSize[1]):
+
+						if not e.type == "Player":
+							em.remove(e.id)
+						else:
+							e.setPos(MapManager.entryPos)
+							e.setSpeed([0, 0])
+
+
 	# Change a zone of the interaction map
 	@staticmethod
 	def setTileSize(position, size, id):
