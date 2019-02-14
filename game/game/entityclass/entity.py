@@ -6,7 +6,6 @@ class Entity:
 		self.type = args[Entity.ARGS_TYPE]
 		self.pos = args[Entity.ARGS_POSITION]
 		self.id = -1
-		self.testCol = False
 
 	def setPos(self, position):
 		self.pos = position

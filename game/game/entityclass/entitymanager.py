@@ -42,9 +42,9 @@ class EntityManager:
 		for i in range(0, len(EntityManager.entitiesCol)):
 			if not EntityManager.entitiesCol[i] == entityId:
 				dist = math.sqrt((EntityManager.entities[entityId].oldPos[0] -
-								EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[0]) ** 2 +
-								(EntityManager.entities[entityId].oldPos[1] -
-								EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[1]) ** 2)
+								  EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[0]) ** 2 +
+								 (EntityManager.entities[entityId].oldPos[1] -
+								  EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[1]) ** 2)
 
 				j = 0
 				while j < len(list):
@@ -95,8 +95,7 @@ class EntityManager:
 			del EntityManager.entities[id]
 			EntityManager.entities.remove(id)
 		else:
-			from game.game.entityclass import entity
-			EntityManager.entities[id] = entity.Entity(["NULL", [0, 0]])
+			EntityManager.entities[id] = entitycollision.EntityCollision(["NULL", [0, 0]])
 			EntityManager.entities[id].setId(-1)
 
 		EntityManager.len = len(EntityManager.entities)
@@ -149,8 +148,7 @@ class EntityManager:
 	def status():
 		print("\nEntityManager status:\n")
 		for i in range(0, EntityManager.len):
-			print("Entity", EntityManager.entities[i].id, ", entityType",  EntityManager.entities[i].type)
-
+			print("Entity", EntityManager.entities[i].id, ", entityType", EntityManager.entities[i].type)
 
 	@staticmethod
 	def unload():

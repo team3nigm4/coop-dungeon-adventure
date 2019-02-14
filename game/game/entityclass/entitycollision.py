@@ -14,8 +14,8 @@ class EntityCollision(entity.Entity):
 		self.halfColSize = [0.5, 0.5]
 		self.inMov = [False, False]
 		self.speed = [0, 0]
-
 		self.oldPos = self.pos
+		self.testCol = False
 
 		self.attributes = {
 			"collision": 0,
@@ -41,6 +41,9 @@ class EntityCollision(entity.Entity):
 				em.addToTest(self.id)
 			else:
 				em.removeToTest(self.id)
+
+	def finalPos(self):
+		pass
 
 	def setSpeed(self, speed):
 		self.speed = speed

@@ -11,9 +11,6 @@ class EventManager:
 	def setupEvent(number):
 		EventManager.event = [0] * number
 		EventManager.toActive = [[] for i in range(number)]
-		# EventManager.toActive = []
-		# for i in range(0, number):
-		# 	EventManager.toActive.append([])
 
 	@staticmethod
 	# Add a entity the to the list of entities to call when an event is true

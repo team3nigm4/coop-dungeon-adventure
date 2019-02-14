@@ -65,9 +65,9 @@ class Bridge(entitydrawable.EntityDrawable):
 
 	def deactivate(self):
 		if self.direction:
-			self.counters.append([0, self.pos[0], 1])
+			self.counters.append([0, self.pos[0], 2])
 		else:
-			self.counters.append([0, self.pos[1], 1])
+			self.counters.append([0, self.pos[1], 2])
 
 	def setId(self, id):
 		super().setId(id)
