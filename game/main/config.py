@@ -110,7 +110,7 @@ class Config:
 			"GO_UP_0": [[0, 87]],
 			"GO_RIGHT_0": [[0, 68]],
 			"GO_DOWN_0": [[0, 83]],
-			"INTERACT_0": [[0, 69]],
+			"INTERACT_0": [[0, 340]],
 			"ITEM_0": [[0, 32]],
 			"ITEM2_0": [[0, 70]],
 			"GO_LEFT_1": [[0, 263]],
@@ -122,7 +122,7 @@ class Config:
 			"ITEM2_1": [[0, 48]],
 		}
 
-		if overwrite == True:
+		if overwrite:
 			Config.saveInputs()
 
 	@staticmethod
