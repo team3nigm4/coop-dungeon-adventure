@@ -72,10 +72,9 @@ class Player(entitydrawable.EntityDrawable):
 					self.speed[i] = self.wantDirection[i] * Player.SPEED_MAX
 
 		if not self.speed[0] == 0:
-			self.setPos([mam.checkCollisionX(self.pos, self.speed[0], self.halfColSize),
-				self.pos[1]])
+			mam.checkCollisionX(self)
 		if not self.speed[1] == 0:
-			self.setPos([self.pos[0],
-				mam.checkCollisionY(self.pos, self.speed[1], self.halfColSize)])
-
+			mam.checkCollisionY(self)
 		self.wantDirection = [0, 0]
+
+		mam.checkEmpty(self)

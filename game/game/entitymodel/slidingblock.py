@@ -20,26 +20,27 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 	def update(self):
 		super().update()
 		if self.inMov[0]:
-			newPos = [mam.checkCollisionX(self.pos, self.speed[0], self.halfColSize), self.pos[1]]
-			if newPos == self.pos:
+			mam.checkCollisionX(self)
+
+			if self.oldPos == self.pos:
 				self.inMov[0] = False
 				self.speed[0] = 0
-			else:
-				self.setPos(newPos)
+
 		elif self.inMov[1]:
-			newPos = [self.pos[0], mam.checkCollisionY(self.pos, self.speed[1], self.halfColSize)]
-			if newPos == self.pos:
+			mam.checkCollisionY(self)
+
+			if self.oldPos == self.pos:
 				self.inMov[1] = False
 				self.speed[1] = 0
-			else:
-				self.setPos(newPos)
+
+		mam.checkEmpty(self)
 
 	def collision(self, ent):
 		# If we apply the collision
 		if ent.attributes["collision"] != 2 or ent.inMov[0] or ent.inMov[1]:
 
 			# Just move in x
-			if (ent.inMov[0] and not ent.inMov[1]):
+			if ent.inMov[0] and not ent.inMov[1]:
 				tempDir = 0
 				if ent.speed[0] > 0:
 					ent.setPos([self.pos[0] - self.halfColSize[0] - ent.halfColSize[0] - 0.002, ent.pos[1]])
@@ -57,7 +58,7 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 					self.speed[0] = SlidingBlock.SPEED * tempDir
 
 			# Just move in y
-			elif (ent.inMov[1] and not ent.inMov[0]):
+			elif ent.inMov[1] and not ent.inMov[0]:
 				tempDir = 0
 				if ent.speed[1] < 0:
 					ent.setPos([ent.pos[0], self.pos[1] + self.halfColSize[1] + ent.halfColSize[1] + 0.002])

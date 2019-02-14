@@ -15,6 +15,8 @@ class Bridge(entitydrawable.EntityDrawable):
 	def __init__(self, args):
 		super().__init__(args)
 
+		self.entityRenderer.setImagePath([1, 1], "entities/pontV.png", [0, 0])
+
 		self.direction = args[Bridge.ARGS_DIRECTION]
 		self.size = args[Bridge.ARGS_SIZE]
 		if self.size > 0:
@@ -29,6 +31,7 @@ class Bridge(entitydrawable.EntityDrawable):
 
 		# 0 is the counter, 1 is the case linked, 2 the value to change
 		self.counters = []
+		self.state = False
 
 	def update(self):
 		toRemove = []
@@ -56,6 +59,9 @@ class Bridge(entitydrawable.EntityDrawable):
 			for i in toRemove:
 				del self.counters[i]
 
+	def display(self):
+		if self.state:
+			super().display()
 
 	def activate(self):
 		if self.direction:
@@ -63,11 +69,15 @@ class Bridge(entitydrawable.EntityDrawable):
 		else:
 			self.counters.append([0, self.pos[1], 0])
 
+		self.state = True
+
 	def deactivate(self):
 		if self.direction:
-			self.counters.append([0, self.pos[0], 1])
+			self.counters.append([0, self.pos[0], 2])
 		else:
-			self.counters.append([0, self.pos[1], 1])
+			self.counters.append([0, self.pos[1], 2])
+
+		self.state = False
 
 	def setId(self, id):
 		super().setId(id)
