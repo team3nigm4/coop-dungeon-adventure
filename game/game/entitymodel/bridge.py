@@ -20,8 +20,10 @@ class Bridge(entitydrawable.EntityDrawable):
 		self.direction = args[Bridge.ARGS_DIRECTION]
 		self.size = args[Bridge.ARGS_SIZE]
 		if self.size > 0:
+			self.size -= 1
 			self.append = 1
 		else:
+			self.size +=1
 			self.append = -1
 
 		self.size = int(math.fabs(self.size))

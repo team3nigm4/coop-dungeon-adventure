@@ -7,8 +7,8 @@ class PlayerController:
 				 [4, 11, "right"],
 				 [5, 12, "down"],
 				 [6, 13, "interact"],
-				 [7, 14, "item"],
-				 [8, 15, "item2"]]
+				 [7, 14, "useItem"],
+				 [8, 15, "useItem2"]]
 
 	def __init__(self):
 		self.states =  [[False, getattr(NameError, "mro")] for i in range(len(PlayerController.VARIABLES))]

@@ -28,6 +28,8 @@ class Player(entitycomplex.EntityComplex):
 
 		self.wantDirection = [0, 0]
 		self.direction = 3
+		from game.game.gameplay import item
+		self.item = item.Item(self, "null")
 
 	def left(self, input):
 		if input > 1:
@@ -45,14 +47,13 @@ class Player(entitycomplex.EntityComplex):
 		if input > 1:
 			self.wantDirection[1] -=1
 
-	def item(self, input):
+	def useItem(self, input):
 		if input == 2:
-			from game.game.entitymodel import triggerbox
+			self.item.useItem()
 
-			entity = triggerbox.TriggerBox(["TriggerBox", [self.pos[0] + self.halfColSize[0] + 0.15, self.pos[1]], 0.01])
-			entity.attributes["key"] = 1
-			entity.setColBox([0.3, 0.01], True)
-			self.em.add(entity)
+	def useItem2(self, input):
+		if input == 2:
+			self.item.useItem2()
 
 	def interact(self, input):
 		if input == 2:
@@ -88,3 +89,6 @@ class Player(entitycomplex.EntityComplex):
 		self.wantDirection = [0, 0]
 
 		mam.checkEmpty(self)
+
+	def triggerBox(self):
+		self.item.used()
