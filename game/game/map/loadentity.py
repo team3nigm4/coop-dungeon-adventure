@@ -3,7 +3,7 @@ class LoadEntity:
 	from game.game.entitymodel import activationplate
 	from game.game.entitymodel import bridge
 	from game.game.entitymodel import door
-	from game.game.entitymodel import keydoor
+	from game.game.entitymodel import lockeddoor
 	from game.game.entitymodel import player
 	from game.game.entitymodel import pressureplate
 	from game.game.entitymodel import slidingblock
@@ -15,7 +15,7 @@ class LoadEntity:
 		"ActivationPlate": activationplate.ActivationPlate,
 		"Bridge": bridge.Bridge,
 		"Door": door.Door,
-		"KeyDoor": keydoor.KeyDoor,
+		"LockedDoor": lockeddoor.LockedDoor,
 		"Player": player.Player,
 		"PressurePlate": pressureplate.PressurePlate,
 		"Spawn" : spawn.Spawn,
