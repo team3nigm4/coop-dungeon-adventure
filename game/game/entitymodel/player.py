@@ -1,13 +1,13 @@
 # Entity class player, embodies one of the players
 
-from game.game.entityclass import entitydrawable
+from game.game.entityclass import entitycomplex
 from game.game.map.mapmanager import MapManager as mam
 
 import  math
 
 
-class Player(entitydrawable.EntityDrawable):
-	SPEED_ADD = 0.02
+class Player(entitycomplex.EntityComplex):
+	SPEED_ADD = 0.015
 	SPEED_MAX = 0.09
 	SPEED_DECREASE = 0.025
 
@@ -27,6 +27,7 @@ class Player(entitydrawable.EntityDrawable):
 		self.attributes["door"] = 1
 
 		self.wantDirection = [0, 0]
+		self.direction = 3
 
 	def left(self, input):
 		if input > 1:
@@ -43,6 +44,15 @@ class Player(entitydrawable.EntityDrawable):
 	def down(self, input):
 		if input > 1:
 			self.wantDirection[1] -=1
+
+	def item(self, input):
+		if input == 2:
+			from game.game.entitymodel import triggerbox
+
+			entity = triggerbox.TriggerBox(["TriggerBox", [self.pos[0] + self.halfColSize[0] + 0.15, self.pos[1]], 0.01])
+			entity.attributes["key"] = 1
+			entity.setColBox([0.3, 0.01], True)
+			self.em.add(entity)
 
 	def interact(self, input):
 		if input == 2:

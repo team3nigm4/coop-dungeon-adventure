@@ -93,7 +93,6 @@ class EntityManager:
 
 		if id == len(EntityManager.entities) - 1:
 			del EntityManager.entities[id]
-			EntityManager.entities.remove(id)
 		else:
 			EntityManager.entities[id] = entitycollision.EntityCollision(["NULL", [0, 0]])
 			EntityManager.entities[id].setId(-1)

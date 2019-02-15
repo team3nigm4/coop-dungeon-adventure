@@ -23,7 +23,8 @@ class EntityCollision(entity.Entity):
 			"heavy": 0,
 			"damage": 0,
 			"door": 0,
-			"energy": 0
+			"energy": 0,
+			"key": 0
 		}
 
 	def update(self):
