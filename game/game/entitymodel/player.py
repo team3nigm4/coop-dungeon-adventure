@@ -28,8 +28,8 @@ class Player(entitycomplex.EntityComplex):
 
 		self.wantDirection = [0, 0]
 		self.direction = 3
-		from game.game.gameplay import item
-		self.item = item.Item(self, "null")
+		from game.game.gameplay import itemkey
+		self.item = itemkey.ItemKey(self)
 
 	def left(self, input):
 		if input > 1:
@@ -63,6 +63,16 @@ class Player(entitycomplex.EntityComplex):
 
 	def update(self):
 		super().update()
+
+		if (self.wantDirection[0] != 0 and self.wantDirection[1] == 0) or (self.wantDirection[1] != 0 and self.wantDirection[0] == 0):
+			if self.wantDirection[0] == -1:
+				self.direction = 0
+			elif self.wantDirection[1] == 1:
+				self.direction = 1
+			elif self.wantDirection[0] == 1:
+				self.direction = 2
+			else:
+				self.direction = 3
 
 		for i in range(2):
 			if self.wantDirection[i] == 0:
