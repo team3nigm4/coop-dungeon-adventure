@@ -7,8 +7,9 @@ class Command:
 		try:
 			args = command.split(" ")
 			getattr(Command, args[0])(args)
-		except :
+		except Exception as e:
 			print("\nError on command :" +  command)
+			print(e)
 
 
 	@staticmethod
@@ -43,3 +44,15 @@ class Command:
 	def tpE(args):
 		from game.game.entityclass.entitymanager import EntityManager as em
 		em.entities[int(args[1])].setPos(em.entities[int(args[2])].pos)
+
+	@staticmethod
+	# 1 = zone
+	# 2 = map name
+	# 3 = entry point
+	def changeMap(args):
+		from game.game.map.mapmanager import MapManager as mam
+		mam.reserveChange([args[1], args[2], int(args[3])])
+
+	@staticmethod
+	def cm(args):
+		Command.changeMap(args)
