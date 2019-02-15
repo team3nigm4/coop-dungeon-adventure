@@ -16,3 +16,8 @@ class Command:
 	def tpE(args):
 		from game.game.entityclass.entitymanager import EntityManager as em
 		em.entities[int(args[1])].setPos(em.entities[int(args[2])].pos)
+
+	@staticmethod
+	def emStatus(args):
+		from game.game.entityclass.entitymanager import EntityManager as em
+		em.status()

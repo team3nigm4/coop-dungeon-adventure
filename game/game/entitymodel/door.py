@@ -49,12 +49,12 @@ class Door(entitycollision.EntityCollision):
 	def activate(self):
 		self.isActive = True
 		self.setColBox(self.colSize, True)
-		mam.changeInterMapSize(self.pos, self.halfColSize, 0)
+		mam.setTileSize(self.pos, self.halfColSize, 0)
 
 	def deactivate(self):
 		self.isActive = False
 		self.setColBox(self.colSize, False)
-		mam.changeInterMapSize(self.pos, self.halfColSize, 1)
+		mam.setTileSize(self.pos, self.halfColSize, 1)
 
 	def setId(self, id):
 		super().setId(id)
@@ -62,7 +62,7 @@ class Door(entitycollision.EntityCollision):
 			from game.game.map.eventmanager import EventManager
 			self.isActive = False
 			EventManager.addActive(self.event, self.id)
-			mam.changeInterMapSize(self.pos, self.halfColSize, 1)
+			mam.setTileSize(self.pos, self.halfColSize, 1)
 
 		else:
 			self.isActive = True
