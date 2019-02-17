@@ -83,7 +83,9 @@ class EntityManager:
 		EntityManager.len = len(EntityManager.entities)
 
 	@staticmethod
-	def rem(id):
+	def rem(entity):
+		id = entity[0]
+
 		# Unload the entity
 		EntityManager.entities[id].unload()
 
@@ -98,11 +100,12 @@ class EntityManager:
 			EntityManager.entities[id].setId(-1)
 
 		EntityManager.len = len(EntityManager.entities)
-		print("Remove the entity,", id)
+		if entity[1]:
+			print("Remove the entity,", id)
 
 	@staticmethod
-	def remove(id):
-		EntityManager.wantRemove.append(id)
+	def remove(id, display=True):
+		EntityManager.wantRemove.append([id, display])
 
 	@staticmethod
 	def dispose():

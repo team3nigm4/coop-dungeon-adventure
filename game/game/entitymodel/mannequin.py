@@ -6,6 +6,7 @@ from game.game.map.mapmanager import MapManager as mam
 
 class Mannequin(entitycomplex.EntityComplex):
 	ARGS_LIFE = 2
+	INVINCIBILITY_TIME = 60
 
 	def __init__(self, args):
 		super().__init__(args)
@@ -19,6 +20,9 @@ class Mannequin(entitycomplex.EntityComplex):
 
 		self.setDrawCol(True)
 		self.colRenderer.setAttributes(self.colSize, [0, 1, 0, 1])
+
+		self.invincibilityTime = Mannequin.INVINCIBILITY_TIME
+
 
 	def collision(self, ent):
 		if ent.attributes["playerSword"] == 1 or ent.attributes["playerBow"] == 1:

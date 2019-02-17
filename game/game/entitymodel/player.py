@@ -14,12 +14,12 @@ class Player(entitycomplex.EntityComplex):
 	ARGS_PLAYER_NUMBER = 2
 	ARGS_PLAYER_TEXTURE = 3
 
+	INVINCIBILITY_TIME = 180
+
 	def __init__(self, args):
 		super().__init__(args)
 		self.setColBox([0.6, 0.4], True)
 		self.playerNumber = args[Player.ARGS_PLAYER_NUMBER]
-
-		self.entityRenderer.setImagePath([1, 1.5], args[Player.ARGS_PLAYER_TEXTURE], [0.45, 0.2])
 
 		self.attributes["collision"] = 1
 		self.attributes["enemyDamage"] = 2
@@ -28,15 +28,18 @@ class Player(entitycomplex.EntityComplex):
 
 		self.wantDirection = [0, 0]
 		self.direction = 3
-
 		self.damage = 1
-		self.setDrawCol(True)
-		self.colRenderer.setAttributes(self.colSize, [0, 1, 0, 1])
-
 		self.maxSpeed = Player.SPEED_MAX
+		self.invincibilityTime = Player.INVINCIBILITY_TIME
 
 		from game.game.gameplay import itemweapon
 		self.item = itemweapon.ItemWeapon(self)
+
+		self.setDrawCol(True)
+		self.colRenderer.setAttributes(self.colSize, [0, 1, 0, 1])
+
+		self.entityRenderer.setImagePath([1, 1.5], args[Player.ARGS_PLAYER_TEXTURE], [0.45, 0.2])
+
 
 	def left(self, input):
 		if input > 1:

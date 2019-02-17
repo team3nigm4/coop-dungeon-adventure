@@ -17,8 +17,7 @@ class TriggerBox(entitycollision.EntityCollision):
 	def update(self):
 		super().update()
 		if self.count >= self.maxCount:
-			print(self.id)
-			self.em.remove(self.id)
+			self.em.remove(self.id, False)
 
 		self.count +=1
 
