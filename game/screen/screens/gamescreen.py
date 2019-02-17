@@ -17,9 +17,9 @@ class GameScreen(screen.Screen):
 
 		em.init()
 
-		player1 = pl.Player(["Player", [0, 0], 0, "entities/player/perso1.png"])
+		player1 = pl.Player(["Player", [0, 0], 0, "entities/player/player1.png"])
 		em.add(player1)
-		player2 = pl.Player(["Player", [0, 0], 1, "entities/player/perso2.png"])
+		player2 = pl.Player(["Player", [0, 0], 1, "entities/player/player2.png"])
 		em.add(player2)
 
 		mam.init()

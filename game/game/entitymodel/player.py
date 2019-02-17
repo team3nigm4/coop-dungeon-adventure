@@ -16,20 +16,27 @@ class Player(entitycomplex.EntityComplex):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox([0.7, 0.4], True)
+		self.setColBox([0.6, 0.4], True)
 		self.playerNumber = args[Player.ARGS_PLAYER_NUMBER]
 
-		self.entityRenderer.setImagePath([0.8, 1.2], args[Player.ARGS_PLAYER_TEXTURE], [0.4, 0.2])
+		self.entityRenderer.setImagePath([1, 1.5], args[Player.ARGS_PLAYER_TEXTURE], [0.45, 0.2])
 
 		self.attributes["collision"] = 1
-		self.attributes["damage"] = 2
+		self.attributes["enemyDamage"] = 2
 		self.attributes["heavy"] = 1
 		self.attributes["door"] = 1
 
 		self.wantDirection = [0, 0]
 		self.direction = 3
-		from game.game.gameplay import itemkey
-		self.item = itemkey.ItemKey(self)
+
+		self.damage = 1
+		self.setDrawCol(True)
+		self.colRenderer.setAttributes(self.colSize, [0, 1, 0, 1])
+
+		self.maxSpeed = Player.SPEED_MAX
+
+		from game.game.gameplay import itemweapon
+		self.item = itemweapon.ItemWeapon(self)
 
 	def left(self, input):
 		if input > 1:
@@ -63,6 +70,8 @@ class Player(entitycomplex.EntityComplex):
 
 	def update(self):
 		super().update()
+		self.item.update()
+
 
 		if (self.wantDirection[0] != 0 and self.wantDirection[1] == 0) or (self.wantDirection[1] != 0 and self.wantDirection[0] == 0):
 			if self.wantDirection[0] == -1:
@@ -89,8 +98,8 @@ class Player(entitycomplex.EntityComplex):
 			else:
 				self.inMov[i] = True
 				self.speed[i] += self.wantDirection[i] * Player.SPEED_ADD
-				if math.fabs(self.speed[i]) > Player.SPEED_MAX:
-					self.speed[i] = self.wantDirection[i] * Player.SPEED_MAX
+				if math.fabs(self.speed[i]) > self.maxSpeed:
+					self.speed[i] = self.wantDirection[i] * self.maxSpeed
 
 		if not self.speed[0] == 0:
 			mam.checkCollisionX(self)
@@ -99,6 +108,3 @@ class Player(entitycomplex.EntityComplex):
 		self.wantDirection = [0, 0]
 
 		mam.checkEmpty(self)
-
-	def triggerBox(self):
-		self.item.used()

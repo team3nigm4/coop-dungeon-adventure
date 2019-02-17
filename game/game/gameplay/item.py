@@ -5,11 +5,14 @@ class Item:
         self.player = player
         self.name = name
 
+    def update(self):
+        pass
+
     def useItem(self):
-       pass
+        pass
 
     def useItem2(self):
         pass
 
-    def used(self):
+    def triggerBox(self, ent):
         pass

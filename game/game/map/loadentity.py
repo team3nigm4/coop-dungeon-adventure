@@ -4,6 +4,7 @@ class LoadEntity:
 	from game.game.entitymodel import bridge
 	from game.game.entitymodel import door
 	from game.game.entitymodel import lockeddoor
+	from game.game.entitymodel import mannequin
 	from game.game.entitymodel import player
 	from game.game.entitymodel import pressureplate
 	from game.game.entitymodel import slidingblock
@@ -16,6 +17,7 @@ class LoadEntity:
 		"Bridge": bridge.Bridge,
 		"Door": door.Door,
 		"LockedDoor": lockeddoor.LockedDoor,
+		"Mannequin": mannequin.Mannequin,
 		"Player": player.Player,
 		"PressurePlate": pressureplate.PressurePlate,
 		"Spawn" : spawn.Spawn,

@@ -19,16 +19,30 @@ class EntityCollision(entity.Entity):
 
 		self.attributes = {
 			"collision": 0,
-			"interaction": 0,
-			"heavy": 0,
-			"damage": 0,
 			"door": 0,
+			"enemyDamage": 0,
 			"energy": 0,
-			"key": 0
+			"heavy": 0,
+			"interaction": 0,
+			"key": 0,
+			"playerSword": 0,
+			"playerBow": 0
 		}
+
+		from game.render.shape import boxrenderer
+		self.drawCol = False
+		color = [0.1, 0.1, 0.1,  0.4]
+		self.colRenderer = boxrenderer.BoxRenderer(self.colSize, color)
+
+	def setDrawCol(self, state):
+		self.drawCol = state
 
 	def update(self):
 		self.oldPos = self.pos
+
+	def display(self):
+		if self.drawCol:
+			self.colRenderer.display()
 
 	def setColBox(self, size, test):
 		self.colSize = size
@@ -43,8 +57,13 @@ class EntityCollision(entity.Entity):
 			else:
 				em.removeToTest(self.id)
 
-	def finalPos(self):
-		pass
+	def updateColRenderer(self):
+		self.colRenderer.setAttributes(self.colSize, self.colRenderer.color)
+
+	def setPos(self, position):
+		super().setPos(position)
+		if self.drawCol:
+			self.colRenderer.updateModel(self.pos)
 
 	def setSpeed(self, speed):
 		self.speed = speed

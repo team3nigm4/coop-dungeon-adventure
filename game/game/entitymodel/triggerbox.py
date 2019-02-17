@@ -7,17 +7,20 @@ class TriggerBox(entitycollision.EntityCollision):
 
 	def __init__(self, entity, args):
 		super().__init__(args)
-		self.maxCount = args[TriggerBox.ARGS_COUNTER] * 60
+		self.maxCount = args[TriggerBox.ARGS_COUNTER]
 		self.count = 0
 		self.entity = entity
 
+		self.setDrawCol(True)
+		self.colRenderer.setAttributes(self.colSize, [0, 0, 1, 1])
+
 	def update(self):
 		super().update()
-		if self.count >= self.maxCount :
+		if self.count >= self.maxCount:
 			print(self.id)
 			self.em.remove(self.id)
 
 		self.count +=1
 
-	def triggerBox(self):
-		self.entity.triggerBox()
+	def triggerBox(self, ent):
+		self.entity.triggerBox(ent)

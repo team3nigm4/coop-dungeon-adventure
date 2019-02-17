@@ -5,9 +5,10 @@ class EntityComplex(entitydrawable.EntityDrawable):
         super().__init__(args)
         self.life = 6
         self.damage = 1
+        self.maxSpeed = 1
 
     def setLife(self, newLife):
         if newLife <= 0:
-            em.remove(self.id)
+            self.em.remove(self.id)
 
         self.life = newLife
