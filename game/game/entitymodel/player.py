@@ -14,7 +14,7 @@ class Player(entitycomplex.EntityComplex):
 	ARGS_PLAYER_NUMBER = 2
 	ARGS_PLAYER_TEXTURE = 3
 
-	INVINCIBILITY_TIME = 180
+	INVINCIBILITY_TIME = 60
 
 	def __init__(self, args):
 		super().__init__(args)
@@ -111,3 +111,9 @@ class Player(entitycomplex.EntityComplex):
 		self.wantDirection = [0, 0]
 
 		mam.checkEmpty(self)
+
+	def collision(self, ent):
+		if ent.attributes["enemyDamage"] == 1:
+			self.applyDamage(ent.damage)
+
+		super().collision(ent)
