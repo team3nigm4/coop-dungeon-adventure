@@ -4,7 +4,7 @@
 import math
 
 from game.game.entityclass import entitycollision
-
+from game.util import math as mathcda
 
 class EntityManager:
 	PLAYER_1 = 0
@@ -41,10 +41,7 @@ class EntityManager:
 		list = []
 		for i in range(0, len(EntityManager.entitiesCol)):
 			if not EntityManager.entitiesCol[i] == entityId:
-				dist = math.sqrt((EntityManager.entities[entityId].oldPos[0] -
-								  EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[0]) ** 2 +
-								 (EntityManager.entities[entityId].oldPos[1] -
-								  EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[1]) ** 2)
+				dist = mathcda.distOldE(EntityManager.entities[entityId], EntityManager.entities[EntityManager.entitiesCol[i]])
 
 				j = 0
 				while j < len(list):
