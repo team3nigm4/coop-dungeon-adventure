@@ -112,6 +112,26 @@ class Player(entitycomplex.EntityComplex):
 
 		mam.checkEmpty(self)
 
+	def setLife(self, newLife, death=False):
+		super().setLife(newLife, death)
+
+	def applyDamage(self, damage, death=False):
+		if self.life == 0:
+			if self.em.entities[1-self.playerNumber].life > 0:
+				self.em.entities[1 - self.playerNumber].applyDamage(damage)
+			else:
+				print("Two players are dead !!")
+				exit()
+		else:
+			super().applyDamage(damage, death)
+			if self.life <= 0:
+				self.life = 0
+				if self.em.entities[1 - self.playerNumber].life <= 0:
+					print("Two players are dead !!")
+					exit()
+
+
+
 	def collision(self, ent):
 		if ent.attributes["enemyDamage"] == 1:
 			self.applyDamage(ent.damage)

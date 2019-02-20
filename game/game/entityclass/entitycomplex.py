@@ -22,14 +22,14 @@ class EntityComplex(entitydrawable.EntityDrawable):
             else:
                 self.invincibilityCounter +=1
 
-    def setLife(self, newLife):
-        if newLife <= 0:
+    def setLife(self, newLife, death=True):
+        if newLife <= 0 and death:
             self.em.remove(self.id)
 
         self.life = newLife
 
-    def applyDamage(self, damage):
+    def applyDamage(self, damage, death=True):
         if self.takeDamage:
             print(self.type, "take", str(damage), "damages")
-            self.setLife(self.life - damage)
+            self.setLife(self.life - damage, death)
             self.takeDamage = False
