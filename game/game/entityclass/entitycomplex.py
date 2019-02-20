@@ -5,7 +5,7 @@ class EntityComplex(entitydrawable.EntityDrawable):
         super().__init__(args)
         self.maxSpeed = 1
 
-        self.life = 6
+        self.life = 1
         self.damage = 1
 
         # In frame
@@ -30,6 +30,6 @@ class EntityComplex(entitydrawable.EntityDrawable):
 
     def applyDamage(self, damage, death=True):
         if self.takeDamage:
-            print(self.type, "take", str(damage), "damages")
+            print(self.type, "take", str(damage), "damage(s)")
             self.setLife(self.life - damage, death)
             self.takeDamage = False

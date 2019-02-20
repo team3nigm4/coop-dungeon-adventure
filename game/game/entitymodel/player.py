@@ -1,9 +1,9 @@
 # Entity class player, embodies one of the players
 
+import math
+
 from game.game.entityclass import entitycomplex
 from game.game.map.mapmanager import MapManager as mam
-
-import  math
 
 
 class Player(entitycomplex.EntityComplex):
@@ -29,6 +29,7 @@ class Player(entitycomplex.EntityComplex):
 		self.wantDirection = [0, 0]
 		self.direction = 3
 		self.damage = 1
+		self.life = 6
 		self.maxSpeed = Player.SPEED_MAX
 		self.invincibilityTime = Player.INVINCIBILITY_TIME
 
@@ -40,22 +41,21 @@ class Player(entitycomplex.EntityComplex):
 
 		self.entityRenderer.setImagePath([1, 1.5], args[Player.ARGS_PLAYER_TEXTURE], [0.45, 0.2])
 
-
 	def left(self, input):
 		if input > 1:
-			self.wantDirection[0] -=1
+			self.wantDirection[0] -= 1
 
 	def up(self, input):
 		if input > 1:
-			self.wantDirection[1] +=1
+			self.wantDirection[1] += 1
 
 	def right(self, input):
 		if input > 1:
-			self.wantDirection[0] +=1
+			self.wantDirection[0] += 1
 
 	def down(self, input):
 		if input > 1:
-			self.wantDirection[1] -=1
+			self.wantDirection[1] -= 1
 
 	def useItem(self, input):
 		if input == 2:
@@ -75,8 +75,8 @@ class Player(entitycomplex.EntityComplex):
 		super().update()
 		self.item.update()
 
-
-		if (self.wantDirection[0] != 0 and self.wantDirection[1] == 0) or (self.wantDirection[1] != 0 and self.wantDirection[0] == 0):
+		if (self.wantDirection[0] != 0 and self.wantDirection[1] == 0) or (
+				self.wantDirection[1] != 0 and self.wantDirection[0] == 0):
 			if self.wantDirection[0] == -1:
 				self.direction = 0
 			elif self.wantDirection[1] == 1:
@@ -117,7 +117,7 @@ class Player(entitycomplex.EntityComplex):
 
 	def applyDamage(self, damage, death=False):
 		if self.life == 0:
-			if self.em.entities[1-self.playerNumber].life > 0:
+			if self.em.entities[1 - self.playerNumber].life > 0:
 				self.em.entities[1 - self.playerNumber].applyDamage(damage)
 			else:
 				print("Two players are dead !!")
@@ -129,8 +129,6 @@ class Player(entitycomplex.EntityComplex):
 				if self.em.entities[1 - self.playerNumber].life <= 0:
 					print("Two players are dead !!")
 					exit()
-
-
 
 	def collision(self, ent):
 		if ent.attributes["enemyDamage"] == 1:

@@ -32,22 +32,21 @@ class Bat(entitycomplex.EntityComplex):
 
 		self.target = None
 
-
 	def left(self, input):
 		if input > 1:
-			self.wantDirection[0] -=1
+			self.wantDirection[0] -= 1
 
 	def up(self, input):
 		if input > 1:
-			self.wantDirection[1] +=1
+			self.wantDirection[1] += 1
 
 	def right(self, input):
 		if input > 1:
-			self.wantDirection[0] +=1
+			self.wantDirection[0] += 1
 
 	def down(self, input):
 		if input > 1:
-			self.wantDirection[1] -=1
+			self.wantDirection[1] -= 1
 
 	def update(self):
 		super().update()

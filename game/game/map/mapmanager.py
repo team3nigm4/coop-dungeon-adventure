@@ -153,6 +153,7 @@ class MapManager:
 				if not entity.type == "Player":
 					em.remove(entity.id)
 				else:
+					entity.applyDamage(1)
 					entity.setPos(MapManager.entryPos)
 					entity.setSpeed([0, 0])
 
@@ -246,6 +247,7 @@ class MapManager:
 						if not e.type == "Player":
 							em.remove(e.id)
 						else:
+							e.applyDamage(1)
 							e.setPos(MapManager.entryPos)
 							e.setSpeed([0, 0])
 
