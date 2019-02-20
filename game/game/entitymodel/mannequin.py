@@ -14,7 +14,6 @@ class Mannequin(entitycomplex.EntityComplex):
 
 		self.attributes["playerSword"] = 2
 		self.attributes["playerBow"] = 2
-		self.attributes["enemyDamage"] = 1
 
 		self.setDrawCol(True)
 		self.colRenderer.setAttributes(self.colSize, [0, 1, 0, 1])
