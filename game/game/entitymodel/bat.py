@@ -32,22 +32,6 @@ class Bat(entitycomplex.EntityComplex):
 
 		self.target = None
 
-	def left(self, input):
-		if input > 1:
-			self.wantDirection[0] -= 1
-
-	def up(self, input):
-		if input > 1:
-			self.wantDirection[1] += 1
-
-	def right(self, input):
-		if input > 1:
-			self.wantDirection[0] += 1
-
-	def down(self, input):
-		if input > 1:
-			self.wantDirection[1] -= 1
-
 	def update(self):
 		super().update()
 
@@ -93,8 +77,6 @@ class Bat(entitycomplex.EntityComplex):
 					self.speed[i] = self.wantDirection[i] * self.maxSpeed
 
 		self.setPos([self.pos[0] + self.speed[0], self.pos[1] + self.speed[1]])
-
-		self.wantDirection = [0, 0]
 
 	def collision(self, ent):
 		if ent.attributes["playerSword"] == 1 or ent.attributes["playerBow"] == 1:

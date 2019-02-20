@@ -41,22 +41,6 @@ class Player(entitycomplex.EntityComplex):
 
 		self.entityRenderer.setImagePath([1, 1.5], args[Player.ARGS_PLAYER_TEXTURE], [0.45, 0.2])
 
-	def left(self, input):
-		if input > 1:
-			self.wantDirection[0] -= 1
-
-	def up(self, input):
-		if input > 1:
-			self.wantDirection[1] += 1
-
-	def right(self, input):
-		if input > 1:
-			self.wantDirection[0] += 1
-
-	def down(self, input):
-		if input > 1:
-			self.wantDirection[1] -= 1
-
 	def useItem(self, input):
 		if input == 2:
 			self.item.useItem()

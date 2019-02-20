@@ -11,7 +11,7 @@ class PlayerController:
 				 [8, 15, "useItem2"]]
 
 	def __init__(self):
-		self.states =  [[False, getattr(NameError, "mro")] for i in range(len(PlayerController.VARIABLES))]
+		self.states = [[False, getattr(NameError, "mro")] for i in range(len(PlayerController.VARIABLES))]
 		self.player = 0
 
 	def setPlayer(self, num):
