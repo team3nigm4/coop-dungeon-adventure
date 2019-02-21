@@ -19,11 +19,4 @@ class ActivationPlate(pressureplate.PressurePlate):
 
 	def collision(self, ent):
 		if ent.attributes["energy"] == 1:
-			if not self.press:
-				# em.remove(ent.id)
-				self.entityRenderer.setImage([1, 1], self.images[1], [0.5, 0.5])
-				self.charge = False
-				self.press = True
-				self.ev.activate(self.eventId)
-
-			self.alwaysPressed = True
+			super().collision(ent)

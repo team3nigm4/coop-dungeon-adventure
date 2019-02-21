@@ -35,7 +35,7 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 
 	def collision(self, ent):
 		# If we apply the collision
-		if ent.attributes["collision"]> 0 and (ent.attributes["collision"] != 2 or ent.inMov[0] or ent.inMov[1]):
+		if ent.attributes["collision"] > 0 and (ent.attributes["collision"] != 2 or ent.inMov[0] or ent.inMov[1]):
 
 			# Just move in x
 			if ent.inMov[0] and not ent.inMov[1]:
@@ -93,23 +93,3 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 					# down
 					elif oldPos[1] + ent.halfColSize[1] < self.pos[1] - self.halfColSize[1]:
 						ent.setPos([ent.pos[0], self.pos[1] - self.halfColSize[1] - ent.halfColSize[1] - 0.002])
-
-	def left(self, input):
-		if input > 1:
-			self.inMov[0] = True
-			self.speed[0] = -SlidingBlock.SPEED
-
-	def up(self, input):
-		if input > 1:
-			self.inMov[1] = True
-			self.speed[1] = SlidingBlock.SPEED
-
-	def right(self, input):
-		if input > 1:
-			self.inMov[0] = True
-			self.speed[0] = SlidingBlock.SPEED
-
-	def down(self, input):
-		if input > 1:
-			self.inMov[1] = True
-			self.speed[1] = -SlidingBlock.SPEED
