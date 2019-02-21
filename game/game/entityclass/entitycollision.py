@@ -51,11 +51,10 @@ class EntityCollision(entity.Entity):
 
 		self.testCol = test
 		if not self.id == -1:
-			from game.game.entityclass.entitymanager import EntityManager as em
 			if self.testCol:
-				em.addToTest(self.id)
+				self.em.addToTest(self.id)
 			else:
-				em.removeToTest(self.id)
+				self.em.removeToTest(self.id)
 
 	def updateColRenderer(self):
 		self.colRenderer.setAttributes(self.colSize, self.colRenderer.color)

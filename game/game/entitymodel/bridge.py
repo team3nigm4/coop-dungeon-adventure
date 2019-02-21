@@ -1,7 +1,6 @@
 # Class pressure plate
 
 from game.game.entityclass import entitydrawable
-from game.game.map.mapmanager import MapManager as mam
 
 import math
 
@@ -42,13 +41,13 @@ class Bridge(entitydrawable.EntityDrawable):
 				# Apply change
 				toRemove.append(i)
 				if self.direction:
-					mam.setTile([self.counters[i][1], self.pos[1]], self.counters[i][2])
+					self.mam.setTile([self.counters[i][1], self.pos[1]], self.counters[i][2])
 
 					# Next case
 					if not math.fabs(math.fabs(self.pos[0]) - math.fabs(self.counters[i][1])) == self.size:
 						self.counters.append([0, self.counters[i][1] + self.append, self.counters[i][2]])
 				else:
-					mam.setTile([self.pos[0], self.counters[i][1]], self.counters[i][2])
+					self.mam.setTile([self.pos[0], self.counters[i][1]], self.counters[i][2])
 					# Next case
 					if not math.fabs(math.fabs(self.pos[1]) - math.fabs(self.counters[i][1])) == self.size:
 						self.counters.append([0, self.counters[i][1] + self.append, self.counters[i][2]])
@@ -83,5 +82,4 @@ class Bridge(entitydrawable.EntityDrawable):
 
 	def setId(self, id):
 		super().setId(id)
-		from game.game.map.eventmanager import EventManager
-		EventManager.addActive(self.event, self.id)
+		self.ev.addActive(self.event, self.id)

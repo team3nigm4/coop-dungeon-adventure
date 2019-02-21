@@ -1,7 +1,6 @@
 # Class pressure plate
 
 from game.game.entitymodel import pressureplate
-from game.game.map.eventmanager import EventManager
 
 from PIL import Image as img
 
@@ -21,12 +20,10 @@ class ActivationPlate(pressureplate.PressurePlate):
 	def collision(self, ent):
 		if ent.attributes["energy"] == 1:
 			if not self.press:
-
 				# em.remove(ent.id)
-
 				self.entityRenderer.setImage([1, 1], self.images[1], [0.5, 0.5])
 				self.charge = False
 				self.press = True
-				EventManager.activate(self.eventId)
+				self.ev.activate(self.eventId)
 
 			self.alwaysPressed = True

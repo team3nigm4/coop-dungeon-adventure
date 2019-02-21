@@ -4,11 +4,10 @@ import math
 
 import pyrr
 
-from game.game.entityclass.entitymanager import EntityManager as em
+from game.game.entityclass import entitymanager as em
 from game.render.shader.shadermanager import ShaderManager as sm
 from game.render.shape import shape
 from game.render.texture import texture
-from game.screen.gamemanager import GameManager as gm
 
 
 class MapManager:
@@ -27,8 +26,6 @@ class MapManager:
 	modelMtx = None
 	tex = []
 	interaction = []
-
-
 
 	zone = "null"
 	id = "null"
@@ -122,7 +119,7 @@ class MapManager:
 				if MapManager.interaction[MapManager.height - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
 						MapManager.interaction[MapManager.height - 1 - nextPos][
 							posX[1]] == MapManager.INTERACTION_SOLID:
-					entity.setPos([entity.pos[0],  nextPos + 1 + half + 0.001])
+					entity.setPos([entity.pos[0], nextPos + 1 + half + 0.001])
 					return
 		else:
 			return
@@ -130,7 +127,8 @@ class MapManager:
 
 	@staticmethod
 	def checkEmpty(entity):
-		if 	MapManager.interaction[MapManager.height - 1 - math.floor(entity.pos[1])][math.floor(entity.pos[0])] == MapManager.INTERACTION_EMPTY:
+		if MapManager.interaction[MapManager.height - 1 - math.floor(entity.pos[1])][
+			math.floor(entity.pos[0])] == MapManager.INTERACTION_EMPTY:
 			side = [math.floor(entity.pos[0] - entity.halfColSize[0]),
 					math.floor(entity.pos[1] + entity.halfColSize[1]),
 					math.floor(entity.pos[0] + entity.halfColSize[0]),
@@ -138,20 +136,20 @@ class MapManager:
 
 			empty = 0
 			if MapManager.interaction[MapManager.height - 1 - side[1]][side[0]] == MapManager.INTERACTION_EMPTY:
-				empty +=1
+				empty += 1
 
 			if MapManager.interaction[MapManager.height - 1 - side[1]][side[2]] == MapManager.INTERACTION_EMPTY:
-				empty +=1
+				empty += 1
 
 			if MapManager.interaction[MapManager.height - 1 - side[3]][side[2]] == MapManager.INTERACTION_EMPTY:
-				empty +=1
+				empty += 1
 
 			if MapManager.interaction[MapManager.height - 1 - side[3]][side[0]] == MapManager.INTERACTION_EMPTY:
-				empty +=1
+				empty += 1
 
 			if empty > 1:
 				if not entity.type == "Player":
-					em.remove(entity.id)
+					em.EntityManager.remove(entity.id)
 				else:
 					entity.applyDamage(1)
 					entity.setPos(MapManager.entryPos)
@@ -160,7 +158,7 @@ class MapManager:
 	@staticmethod
 	def changeRoom(zone, map, entry):
 		# Clear the game before changing
-		em.clear()
+		em.EntityManager.clear()
 		MapManager.changeValues = None
 
 		# Load new room
@@ -192,8 +190,8 @@ class MapManager:
 		# Create instance of entities and place players
 		MapManager.entry = entry
 		MapManager.entryPos = values[MapManager.DATA_ENTRIES]
-		em.entities[em.PLAYER_1].setPos(values[MapManager.DATA_ENTRIES])
-		em.entities[em.PLAYER_2].setPos(values[MapManager.DATA_ENTRIES])
+		em.EntityManager.entities[em.EntityManager.PLAYER_1].setPos(values[MapManager.DATA_ENTRIES])
+		em.EntityManager.entities[em.EntityManager.PLAYER_2].setPos(values[MapManager.DATA_ENTRIES])
 
 		from game.game.map import loadentity
 		for i in range(0, len(values[MapManager.DATA_ENTITIES])):
@@ -201,7 +199,7 @@ class MapManager:
 			args.insert(0, (values[MapManager.DATA_ENTITIES][i][0]))
 			temp = loadentity.LoadEntity.instance(args)
 			if not temp == False:
-				em.add(temp)
+				em.EntityManager.add(temp)
 
 		# Work with values
 		quad = [0, 0, 0.0, 0.0, 0.0,
@@ -212,23 +210,27 @@ class MapManager:
 		MapManager.shape.resetVBO(quad)
 
 		# Set the camera position
-		gm.cam.setPos([0, 0, gm.cam.pos[2]])
-		gm.cam.setMaximum([width, height])
+
+		from game.screen import gamemanager
+		cam = gamemanager.GameManager.cam
+
+		cam.setPos([0, 0, cam.pos[2]])
+		cam.setMaximum([width, height])
 
 		if width > 18:
-			gm.cam.track[0] = True
+			cam.track[0] = True
 		else:
-			gm.cam.track[0] = False
-			gm.cam.addPos([-width / 2, 0, 0])
+			cam.track[0] = False
+			cam.addPos([-width / 2, 0, 0])
 
 		if height > 12:
-			gm.cam.track[1] = True
+			cam.track[1] = True
 		else:
-			gm.cam.track[1] = False
-			gm.cam.addPos([0, -height / 2, 0])
+			cam.track[1] = False
+			cam.addPos([0, -height / 2, 0])
 
-		gm.cam.goToEntity()
-		sm.updateLink(sm.TEXTURE, "view", gm.cam.getView())
+		cam.goToEntity()
+		sm.updateLink(sm.TEXTURE, "view", cam.getView())
 
 	@staticmethod
 	# Change one bloc of the interaction map
@@ -237,20 +239,21 @@ class MapManager:
 
 		# Check if entity with collision in the change
 		if id == MapManager.INTERACTION_SOLID:
-			for i in em.entitiesCol:
-				if not em.entities[i].attributes["collision"] == 0:
-					e = em.entities[i]
+			for i in em.EntityManager.entitiesCol:
+				if not em.EntityManager.entities[i].attributes["collision"] == 0:
+					e = em.EntityManager.entities[i]
 					# Collision Test
-					if math.floor(e.pos[0] - e.halfColSize[0]) <= position[0] <= math.floor(e.pos[0] + e.halfColSize[0]) and \
-							math.floor(e.pos[1] - e.halfColSize[1]) <= position[1] <= math.floor(e.pos[1] + e.halfColSize[1]):
+					if math.floor(e.pos[0] - e.halfColSize[0]) <= position[0] <= math.floor(
+							e.pos[0] + e.halfColSize[0]) and \
+							math.floor(e.pos[1] - e.halfColSize[1]) <= position[1] <= math.floor(
+						e.pos[1] + e.halfColSize[1]):
 
 						if not e.type == "Player":
-							em.remove(e.id)
+							em.EntityManager.remove(e.id)
 						else:
 							e.applyDamage(1)
 							e.setPos(MapManager.entryPos)
 							e.setSpeed([0, 0])
-
 
 	# Change a zone of the interaction map
 	@staticmethod

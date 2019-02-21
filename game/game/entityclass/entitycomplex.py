@@ -44,10 +44,11 @@ class EntityComplex(entitydrawable.EntityDrawable):
         super().display()
 
     def setLife(self, newLife, death=True):
-        if newLife <= 0 and death:
+        self.life = newLife
+        if self.life <= 0 and death:
             self.em.remove(self.id)
 
-        self.life = newLife
+
 
     def applyDamage(self, damage, death=True):
         if self.takeDamage:

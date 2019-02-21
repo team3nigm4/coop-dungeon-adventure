@@ -3,8 +3,6 @@
 import math
 
 from game.game.entityclass import entitycomplex
-from game.game.map.mapmanager import MapManager as mam
-
 
 class Player(entitycomplex.EntityComplex):
 	SPEED_ADD = 0.015
@@ -89,12 +87,12 @@ class Player(entitycomplex.EntityComplex):
 					self.speed[i] = self.wantDirection[i] * self.maxSpeed
 
 		if not self.speed[0] == 0:
-			mam.checkCollisionX(self)
+			self.mam.checkCollisionX(self)
 		if not self.speed[1] == 0:
-			mam.checkCollisionY(self)
+			self.mam.checkCollisionY(self)
 		self.wantDirection = [0, 0]
 
-		mam.checkEmpty(self)
+		self.mam.checkEmpty(self)
 
 	def setLife(self, newLife, death=False):
 		super().setLife(newLife, death)

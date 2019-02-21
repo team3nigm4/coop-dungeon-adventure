@@ -1,9 +1,10 @@
 # Entity class player, embodies one of the players
 
-from game.game.entityclass import entitycomplex
+from game.game.entityclass import enemy
 
-class Mannequin(entitycomplex.EntityComplex):
-	ARGS_LIFE = 2
+class Mannequin(enemy.Enemy):
+	ARGS_LIFE = 4
+
 	INVINCIBILITY_TIME = 60
 
 	def __init__(self, args):
@@ -15,6 +16,7 @@ class Mannequin(entitycomplex.EntityComplex):
 		self.attributes["playerSword"] = 2
 		self.attributes["playerBow"] = 2
 
+		self.life = args[Mannequin.ARGS_LIFE]
 		self.setDrawCol(True)
 		self.colRenderer.setAttributes(self.colSize, [0, 1, 0, 1])
 

@@ -1,12 +1,12 @@
 # Entity class player, embodies one of the players
 
-from game.game.entityclass import entitycomplex
+from game.game.entityclass import enemy
 from game.util import math as mathcda
 
 import math
 
 
-class Bat(entitycomplex.EntityComplex):
+class Bat(enemy.Enemy):
 	SPEED_ADD = 0.003
 	SPEED_MAX = 0.03
 	SPEED_DECREASE = 0.003
@@ -20,10 +20,13 @@ class Bat(entitycomplex.EntityComplex):
 		self.setColBox([0.9, 0.9], True)
 
 		self.attributes["enemyDamage"] = 1
+		self.attributes["playerSword"] = 2
 
 		self.direction = 3
 		self.damage = 1
 		self.maxSpeed = Bat.SPEED_MAX
+		self.life = 4
+
 
 		self.entityRenderer.setImagePath([1, 1], "entities/bat.png", [0.5, 0.5])
 
@@ -77,9 +80,3 @@ class Bat(entitycomplex.EntityComplex):
 					self.speed[i] = self.wantDirection[i] * self.maxSpeed
 
 		self.setPos([self.pos[0] + self.speed[0], self.pos[1] + self.speed[1]])
-
-	def collision(self, ent):
-		if ent.attributes["playerSword"] == 1 or ent.attributes["playerBow"] == 1:
-			ent.triggerBox(self)
-
-		super().collision(ent)

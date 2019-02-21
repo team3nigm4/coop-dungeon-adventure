@@ -1,8 +1,6 @@
 # Class sliding block
 
 from game.game.entityclass import entitydrawable
-from game.game.map.mapmanager import MapManager as mam
-from game.inputs.inputmanager import InputManager as im
 
 
 class SlidingBlock(entitydrawable.EntityDrawable):
@@ -20,20 +18,20 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 	def update(self):
 		super().update()
 		if self.inMov[0]:
-			mam.checkCollisionX(self)
+			self.mam.checkCollisionX(self)
 
 			if self.oldPos == self.pos:
 				self.inMov[0] = False
 				self.speed[0] = 0
 
 		elif self.inMov[1]:
-			mam.checkCollisionY(self)
+			self.mam.checkCollisionY(self)
 
 			if self.oldPos == self.pos:
 				self.inMov[1] = False
 				self.speed[1] = 0
 
-		mam.checkEmpty(self)
+		self.mam.checkEmpty(self)
 
 	def collision(self, ent):
 		# If we apply the collision
