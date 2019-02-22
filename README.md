@@ -16,6 +16,6 @@ Installation & Lancement
 Contributeurs
 --------------
 - Alexandre Boin ([alexboin](https://github.com/alexboin/)) 
-<<alex.boin@lyceesudmedoc.fr>>
+<<contact@alexandre-boinfr>>
 - Maxence Bazin ([MightyCode](https://github.com/MightyCode/)) 
-<<maxe.bazin1@lyceesudmedoc.fr>>
+<<contact@bazin-maxence.tk>>
