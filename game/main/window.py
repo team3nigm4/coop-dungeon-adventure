@@ -83,6 +83,8 @@ class Window:
 			lag += time.time_ns() - frameTime
 			frameTime = time.time_ns()
 
+			gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
+
 			if time.time_ns() - secondTime >= Window.SECOND:
 				if Config.debug:
 					glfw.set_window_title(Window.window,
@@ -96,8 +98,6 @@ class Window:
 
 				lag -= Window.TICK_TIME
 				ticks += 1
-
-			gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
 
 			gameManager.display()
 			frames += 1

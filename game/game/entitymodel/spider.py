@@ -7,14 +7,14 @@ import random, math
 
 
 class Spider(enemy.Enemy):
-	SPEED_ADD = 0.003
+	SPEED_ADD = 0.0027
 	SPEED_MAX = 0.07
 	SPEED_DECREASE = 0.003
 
-	MOVE_RANGE = 2
-	MOVE_TIME = 60
+	MOVE_RANGE = 1.5
+	MOVE_TIME = 40
 
-	DETECTION_RANGE = 4
+	DETECTION_RANGE = 3
 
 	INVINCIBILITY_TIME = 30
 
