@@ -10,6 +10,7 @@ class LoadEntity:
 	from game.game.entitymodel import pressureplate
 	from game.game.entitymodel import slidingblock
 	from game.game.entitymodel import spawn
+	from game.game.entitymodel import spider
 	from game.game.entitymodel import toggleplate
 
 	entities = {
@@ -22,8 +23,9 @@ class LoadEntity:
 		"Mannequin": mannequin.Mannequin,
 		"Player": player.Player,
 		"PressurePlate": pressureplate.PressurePlate,
-		"Spawn" : spawn.Spawn,
 		"SlidingBlock": slidingblock.SlidingBlock,
+		"Spawn": spawn.Spawn,
+		"Spider": spider.Spider,
 		"TogglePlate": toggleplate.TogglePlate
 	}
 

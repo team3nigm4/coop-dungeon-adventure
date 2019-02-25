@@ -24,7 +24,7 @@ class Bat(enemy.Enemy):
 
 		self.direction = 3
 		self.damage = 1
-		self.maxSpeed = Bat.SPEED_MAX
+		self.maxSpeed = [Bat.SPEED_MAX,Bat.SPEED_MAX]
 		self.life = 4
 
 
@@ -39,9 +39,9 @@ class Bat(enemy.Enemy):
 		super().update()
 
 		if self.target == None:
-			if mathcda.distE(self, self.em.entities[0]) < Bat.DETECTION_RANGE:
+			if mathcda.distE(self, self.em.entities[self.em.PLAYER_1]) < Bat.DETECTION_RANGE:
 				self.target = 0
-			elif mathcda.distE(self, self.em.entities[1]) < Bat.DETECTION_RANGE:
+			elif mathcda.distE(self, self.em.entities[self.em.PLAYER_2]) < Bat.DETECTION_RANGE:
 				self.target = 1
 
 		else:
@@ -76,7 +76,7 @@ class Bat(enemy.Enemy):
 			else:
 				self.inMov[i] = True
 				self.speed[i] += self.wantDirection[i] * Bat.SPEED_ADD
-				if math.fabs(self.speed[i]) > self.maxSpeed:
-					self.speed[i] = self.wantDirection[i] * self.maxSpeed
+				if math.fabs(self.speed[i]) > self.maxSpeed[i]:
+					self.speed[i] = self.wantDirection[i] * self.maxSpeed[i]
 
 		self.setPos([self.pos[0] + self.speed[0], self.pos[1] + self.speed[1]])
