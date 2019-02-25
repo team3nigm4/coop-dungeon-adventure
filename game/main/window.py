@@ -23,6 +23,7 @@ class Window:
 
 		# Initializing GLFW
 		if not glfw.init():
+			print("glfw not init")
 			exit()
 
 		Window.create()  # the window

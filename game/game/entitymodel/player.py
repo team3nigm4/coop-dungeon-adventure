@@ -23,6 +23,7 @@ class Player(entitycomplex.EntityComplex):
 		self.attributes["enemyDamage"] = 2
 		self.attributes["heavy"] = 1
 		self.attributes["door"] = 1
+		self.attributes["blockDamage"] = 1
 
 		self.wantDirection = [0, 0]
 		self.direction = 3

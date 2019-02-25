@@ -26,7 +26,8 @@ class EntityCollision(entity.Entity):
 			"interaction": 0,
 			"key": 0,
 			"playerSword": 0,
-			"playerBow": 0
+			"playerBow": 0,
+			"blockDamage": 0,
 		}
 
 		from game.render.shape import boxrenderer
