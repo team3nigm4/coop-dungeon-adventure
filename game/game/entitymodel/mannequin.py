@@ -21,9 +21,3 @@ class Mannequin(enemy.Enemy):
 		self.colRenderer.setAttributes(self.colSize, [0, 1, 0, 1])
 
 		self.invincibilityTime = Mannequin.INVINCIBILITY_TIME
-
-	def collision(self, ent):
-		if ent.attributes["playerSword"] == 1 or ent.attributes["playerBow"] == 1:
-			ent.triggerBox(self)
-
-		super().collision(ent)

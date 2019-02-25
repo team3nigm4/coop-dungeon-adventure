@@ -48,8 +48,6 @@ class EntityComplex(entitydrawable.EntityDrawable):
         if self.life <= 0 and death:
             self.em.remove(self.id)
 
-
-
     def applyDamage(self, damage, death=True):
         if self.takeDamage:
             print(self.type, "take", str(damage), "damage(s)")

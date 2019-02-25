@@ -24,6 +24,7 @@ class Spider(enemy.Enemy):
 
 		self.attributes["enemyDamage"] = 1
 		self.attributes["playerSword"] = 2
+		self.attributes["playerBow"] = 2
 		self.attributes["collision"] = 1
 		self.attributes["heavy"] = 1
 		self.attributes["blockDamage"] = 1
