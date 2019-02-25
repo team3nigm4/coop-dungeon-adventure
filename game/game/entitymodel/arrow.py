@@ -39,6 +39,9 @@ class Arrow(entitycomplex.EntityComplex):
 			self.em.remove(self.id)
 		self.wantDirection = [0, 0]
 
+	def collision(self, ent):
+		if ent.attributes["collision"] == 2:
+			self.setLife(0)
 
 	def triggerBox(self, ent):
 		ent.applyDamage(self.DAMAGE)
