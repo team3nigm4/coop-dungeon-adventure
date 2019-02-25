@@ -17,7 +17,15 @@ class ItemWeapon(item.Item):
 		self.useCounter = 0
 		self.trigBox = triggerbox.TriggerBox(self, ["TriggerBox",[0,0], 0])
 		# True sword, False bow
+
 		self.arm = True
+		if self.player.em.len > 0:
+			if self.player.em.entities[1 - self.player.playerNumber].item.name == "Weapon":
+				if self.player.em.entities[1 - self.player.playerNumber].item.arm:
+					self.arm = False
+				else:
+					self.arm = True
+
 
 	def useItem(self):
 		if not self.used:
@@ -32,8 +40,10 @@ class ItemWeapon(item.Item):
 					size = [0.5, 0.6]
 
 				entity = triggerbox.TriggerBox(self, ["TriggerBox", self.triggerPos(), ItemWeapon.SWORD_ATTACK_TIME])
-				entity.setColBox(size, True)
-				entity.updateColRenderer()
+
+				# entity.setColBox(size, True)
+				# entity.updateColRenderer()
+
 				entity.attributes["playerSword"] = 1
 				self.trigBox = entity
 
@@ -41,19 +51,20 @@ class ItemWeapon(item.Item):
 				self.player.maxSpeed /= ItemWeapon.LOW_SPEED_COEF
 
 			else:
-				entity = arrow.Arrow(["Arrow", self.player.pos, self.player.direction])
+				entity = arrow.Arrow(["Arrow", [self.player.pos[0], self.player.pos[1] + 0.5], self.player.direction])
 				self.player.em.add(entity)
 
 			self.used = True
 
 	def useItem2(self):
 		if not self.used:
-			if self.arm:
-				self.arm = False
-				print("Switch arm to bow")
-			else:
-				self.arm = True
-				print("Switch arm to sword")
+			if not self.player.em.entities[1-self.player.playerNumber].item.name == "Weapon":
+				if self.arm:
+					self.arm = False
+					print("Player", str(self.player.playerNumber), "switch arm to bow")
+				else:
+					self.arm = True
+					print("Player", str(self.player.playerNumber), "Switch arm to sword")
 
 	def update(self):
 		if self.used:

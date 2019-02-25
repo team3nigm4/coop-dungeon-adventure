@@ -12,7 +12,7 @@ class EntityManager:
 
 	entities = []
 	entitiesCol = []
-	wantRemove = []
+	entitiesRemove = []
 
 	len = 0
 
@@ -102,13 +102,14 @@ class EntityManager:
 
 	@staticmethod
 	def remove(id, display=True):
-		EntityManager.wantRemove.append([id, display])
+		EntityManager.entitiesRemove.append([id, display])
 
 	@staticmethod
 	def dispose():
-		for a in EntityManager.wantRemove:
+		EntityManager.entitiesRemove.sort(reverse=True)
+		for a in EntityManager.entitiesRemove:
 			EntityManager.rem(a)
-		EntityManager.wantRemove = []
+		EntityManager.entitiesRemove = []
 
 	@staticmethod
 	def clear():
