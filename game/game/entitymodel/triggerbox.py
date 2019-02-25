@@ -11,8 +11,8 @@ class TriggerBox(entitycollision.EntityCollision):
 		self.count = 0
 		self.entity = entity
 
-		self.setDrawCol(True)
-		self.colRenderer.setAttributes(self.colSize, [0, 0, 1, 1])
+		# self.setDrawCol(True)
+		# self.colRenderer.setAttributes(self.colSize, [0, 0, 1, 1])
 
 	def update(self):
 		super().update()
