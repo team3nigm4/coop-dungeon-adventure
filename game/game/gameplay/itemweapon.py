@@ -41,8 +41,8 @@ class ItemWeapon(item.Item):
 
 				entity = triggerbox.TriggerBox(self, ["TriggerBox", self.triggerPos(), ItemWeapon.SWORD_ATTACK_TIME])
 
-				# entity.setColBox(size, True)
-				# entity.updateColRenderer()
+				entity.setColBox(size, True)
+				#entity.updateColRenderer()
 
 				entity.attributes["playerSword"] = 1
 				self.trigBox = entity

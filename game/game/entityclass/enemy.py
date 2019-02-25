@@ -3,7 +3,6 @@
 import math
 
 from game.game.entityclass import entitycomplex
-from game.game.map.mapmanager import MapManager as mam
 
 
 class Enemy(entitycomplex.EntityComplex):

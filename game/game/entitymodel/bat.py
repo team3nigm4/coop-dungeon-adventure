@@ -49,13 +49,13 @@ class Bat(enemy.Enemy):
 			if self.em.entities[self.target].id == -1:
 				self.target = None
 			else:
-				if mathcda.distEx(self, target) > self.maxSpeed:
+				if mathcda.distEx(self, target) > self.maxSpeed[0]:
 					if self.pos[0] > target.pos[0]:
 						self.left(2)
 					else:
 						self.right(2)
 
-				if mathcda.distEy(self, target) > self.maxSpeed:
+				if mathcda.distEy(self, target) > self.maxSpeed[1]:
 					if self.pos[1] > target.pos[1]:
 						self.down(2)
 					else:
