@@ -9,7 +9,7 @@ class Shader:
 	def __init__(self, vertexPath, fragmentPath):
 		self.vertexPath = vertexPath
 		self.fragmentPath = fragmentPath
-		self.shaderId = 1
+		self.shaderId = 0
 		self.links = {}
 
 	def load(self):

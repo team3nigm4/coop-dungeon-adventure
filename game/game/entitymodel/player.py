@@ -35,8 +35,8 @@ class Player(entitycomplex.EntityComplex):
 		from game.game.gameplay import itemweapon
 		self.item = itemweapon.ItemWeapon(self)
 
-		# self.setDrawCol(True)
-		# self.colRenderer.setAttributes(self.colSize, [0, 1, 0, 1])
+		self.setDrawCol(True)
+		self.colRenderer.setAttributes(self.colSize, [1, 1, 0, 0.5])
 
 		self.entityRenderer.setImagePath([1, 1.5], args[Player.ARGS_PLAYER_TEXTURE], [0.45, 0.2])
 

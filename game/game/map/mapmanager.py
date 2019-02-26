@@ -46,17 +46,17 @@ class MapManager:
 		indices = [0, 1, 2,
 				   2, 3, 0]
 
-		MapManager.shape = shape.Shape(0, True)
+		MapManager.shape = shape.Shape("texture", True)
 		MapManager.shape.setVertices(quad, [3, 2], indices)
 
 		MapManager.modelMtx = pyrr.Matrix44.identity()
-		sm.updateLink(sm.TEXTURE, "model", MapManager.modelMtx)
+		sm.updateLink("texture", "model", MapManager.modelMtx)
 
 		MapManager.changeRoom("test", "map1", 0)
 
 	@staticmethod
 	def display():
-		sm.updateLink(sm.TEXTURE, "model", MapManager.modelMtx)
+		sm.updateLink("texture", "model", MapManager.modelMtx)
 		MapManager.shape.applyShader()
 		MapManager.shape.bind()
 
@@ -230,7 +230,7 @@ class MapManager:
 			cam.addPos([0, -height / 2, 0])
 
 		cam.goToEntity()
-		sm.updateLink(sm.TEXTURE, "view", cam.getView())
+		sm.updateLink("texture", "view", cam.getView())
 
 	@staticmethod
 	# Change one bloc of the interaction map

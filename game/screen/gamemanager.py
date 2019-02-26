@@ -23,7 +23,6 @@ class GameManager:
 	clientData = [0]
 
 	def __init__(self):
-
 		# Init systems
 		GameManager.texManager = textureManager.TextureManager()
 		GameManager.texManager.init()
@@ -33,7 +32,6 @@ class GameManager:
 		im.init(Config.inputs)
 
 		GameManager.cam = camera.Camera(70.0, [0, 0, -8.572])  # Precise position of cam to render 18 * 12 tiles
-
 		sm.init()
 
 	def begin(self):
@@ -47,8 +45,7 @@ class GameManager:
 		# 	Server.update()
 		self.currentScreen.update()
 		im.dispose()
-
-		sm.updateLink(sm.TEXTURE, "view", GameManager.cam.getView())
+		sm.dispose()
 
 	def display(self):
 		GameManager.currentScreen.display()
