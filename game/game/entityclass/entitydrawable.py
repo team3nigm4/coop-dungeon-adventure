@@ -1,7 +1,8 @@
 # Entity class to display something
 
 from game.game.entityclass import entitycollision
-from game.game import entityrenderer as ed
+from game.render.shape import entityrenderer as ed
+
 
 class EntityDrawable(entitycollision.EntityCollision):
 
@@ -12,6 +13,7 @@ class EntityDrawable(entitycollision.EntityCollision):
 
 	def display(self):
 		self.entityRenderer.display()
+		super().display()
 
 	def setPos(self, position):
 		super().setPos(position)

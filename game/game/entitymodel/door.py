@@ -1,7 +1,6 @@
 # Class used to change rooms
 
 from game.game.entityclass import entitycollision
-from game.game.map.mapmanager import MapManager as mam
 
 
 class Door(entitycollision.EntityCollision):
@@ -42,27 +41,26 @@ class Door(entitycollision.EntityCollision):
 					self.isTwo = True
 					# Temp system without both players
 				else:
-					mam.unloadImages()
-					mam.reserveChange([self.zone, self.map, self.entry])
+					self.mam.unloadImages()
+					self.mam.reserveChange([self.zone, self.map, self.entry])
 					# Change the map with its id
 
 	def activate(self):
 		self.isActive = True
 		self.setColBox(self.colSize, True)
-		mam.setTileSize(self.pos, self.halfColSize, 0)
+		self.mam.setTileSize(self.pos, self.halfColSize, 0)
 
 	def deactivate(self):
 		self.isActive = False
 		self.setColBox(self.colSize, False)
-		mam.setTileSize(self.pos, self.halfColSize, 1)
+		self.mam.setTileSize(self.pos, self.halfColSize, 1)
 
 	def setId(self, id):
 		super().setId(id)
 		if self.isEvent:
-			from game.game.map.eventmanager import EventManager
 			self.isActive = False
-			EventManager.addActive(self.event, self.id)
-			mam.setTileSize(self.pos, self.halfColSize, 1)
+			self.ev.addActive(self.event, self.id)
+			self.mam.setTileSize(self.pos, self.halfColSize, 1)
 
 		else:
 			self.isActive = True

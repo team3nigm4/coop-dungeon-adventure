@@ -1,6 +1,5 @@
 from game.game.map import loadentity
 from game.game.entityclass import entity
-from game.game.entityclass.entitymanager import EntityManager as em
 
 class Spawn(entity.Entity):
 
@@ -18,8 +17,8 @@ class Spawn(entity.Entity):
 	def activate(self):
 		if not self.hasSpawn:
 			from game.game.map.eventmanager import EventManager as ev
-			em.remove(self.id)
-			em.add(loadentity.LoadEntity.instance(self.entityInfo))
+			self.em.remove(self.id)
+			self.em.add(loadentity.LoadEntity.instance(self.entityInfo))
 			ev.removeActive(self.event, self.id)
 			self.hasSpawn = True
 

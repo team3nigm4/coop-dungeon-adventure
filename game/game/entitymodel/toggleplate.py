@@ -1,7 +1,6 @@
 # Class pressure plate
 
 from game.game.entityclass import entitydrawable
-from game.game.map.eventmanager import EventManager
 
 from PIL import Image as img
 
@@ -21,10 +20,11 @@ class TogglePlate(entitydrawable.EntityDrawable):
 		self.press = False
 
 		self.eventId = args[TogglePlate.ARGS_EVENT_ID]
-		EventManager.deactivate(self.eventId)
+		self.ev.deactivate(self.eventId)
 
 	def collision(self, ent):
-		if not self.press:
-			self.entityRenderer.setImage([1, 1], self.images[1], [0.5, 0.5])
-			self.press = True
-			EventManager.activate(self.eventId)
+		if ent.attributes["heavy"] == 1:
+			if not self.press:
+				self.entityRenderer.setImage([1, 1], self.images[1], [0.5, 0.5])
+				self.press = True
+				self.ev.activate(self.eventId)

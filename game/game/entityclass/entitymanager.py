@@ -4,7 +4,7 @@
 import math
 
 from game.game.entityclass import entitycollision
-
+from game.util import math as mathcda
 
 class EntityManager:
 	PLAYER_1 = 0
@@ -12,7 +12,7 @@ class EntityManager:
 
 	entities = []
 	entitiesCol = []
-	wantRemove = []
+	entitiesRemove = []
 
 	len = 0
 
@@ -41,10 +41,7 @@ class EntityManager:
 		list = []
 		for i in range(0, len(EntityManager.entitiesCol)):
 			if not EntityManager.entitiesCol[i] == entityId:
-				dist = math.sqrt((EntityManager.entities[entityId].oldPos[0] -
-								  EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[0]) ** 2 +
-								 (EntityManager.entities[entityId].oldPos[1] -
-								  EntityManager.entities[EntityManager.entitiesCol[i]].oldPos[1]) ** 2)
+				dist = mathcda.distOldE(EntityManager.entities[entityId], EntityManager.entities[EntityManager.entitiesCol[i]])
 
 				j = 0
 				while j < len(list):
@@ -83,7 +80,9 @@ class EntityManager:
 		EntityManager.len = len(EntityManager.entities)
 
 	@staticmethod
-	def rem(id):
+	def rem(entity):
+		id = entity[0]
+
 		# Unload the entity
 		EntityManager.entities[id].unload()
 
@@ -93,23 +92,24 @@ class EntityManager:
 
 		if id == len(EntityManager.entities) - 1:
 			del EntityManager.entities[id]
-			EntityManager.entities.remove(id)
 		else:
 			EntityManager.entities[id] = entitycollision.EntityCollision(["NULL", [0, 0]])
 			EntityManager.entities[id].setId(-1)
 
 		EntityManager.len = len(EntityManager.entities)
-		print("Remove the entity,", id)
+		if entity[1]:
+			print("Remove the entity,", id)
 
 	@staticmethod
-	def remove(id):
-		EntityManager.wantRemove.append(id)
+	def remove(id, display=True):
+		EntityManager.entitiesRemove.append([id, display])
 
 	@staticmethod
 	def dispose():
-		for a in EntityManager.wantRemove:
+		EntityManager.entitiesRemove.sort(reverse=True)
+		for a in EntityManager.entitiesRemove:
 			EntityManager.rem(a)
-		EntityManager.wantRemove = []
+		EntityManager.entitiesRemove = []
 
 	@staticmethod
 	def clear():

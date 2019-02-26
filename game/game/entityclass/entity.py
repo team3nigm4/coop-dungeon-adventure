@@ -1,3 +1,7 @@
+from game.game.entityclass import entitymanager
+from game.game.map import eventmanager
+from game.game.map import mapmanager
+
 class Entity:
 	ARGS_TYPE = 0
 	ARGS_POSITION = 1
@@ -6,6 +10,10 @@ class Entity:
 		self.type = args[Entity.ARGS_TYPE]
 		self.pos = args[Entity.ARGS_POSITION]
 		self.id = -1
+
+		self.em = entitymanager.EntityManager
+		self.ev = eventmanager.EventManager
+		self.mam = mapmanager.MapManager
 
 	def setPos(self, position):
 		self.pos = position

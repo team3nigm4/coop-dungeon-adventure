@@ -1,12 +1,12 @@
 # Class sliding block
 
 from game.game.entityclass import entitydrawable
-from game.game.map.mapmanager import MapManager as mam
-from game.inputs.inputmanager import InputManager as im
 
 
 class SlidingBlock(entitydrawable.EntityDrawable):
 	SPEED = 0.20
+
+	DAMAGE = 2
 
 	def __init__(self, args):
 		super().__init__(args)
@@ -20,25 +20,24 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 	def update(self):
 		super().update()
 		if self.inMov[0]:
-			mam.checkCollisionX(self)
+			self.mam.checkCollisionX(self)
 
 			if self.oldPos == self.pos:
 				self.inMov[0] = False
 				self.speed[0] = 0
 
 		elif self.inMov[1]:
-			mam.checkCollisionY(self)
+			self.mam.checkCollisionY(self)
 
 			if self.oldPos == self.pos:
 				self.inMov[1] = False
 				self.speed[1] = 0
 
-		mam.checkEmpty(self)
+		self.mam.checkEmpty(self)
 
 	def collision(self, ent):
 		# If we apply the collision
-		if ent.attributes["collision"] != 2 or ent.inMov[0] or ent.inMov[1]:
-
+		if ent.attributes["collision"] > 0 and (ent.attributes["collision"] != 2 or ent.inMov[0] or ent.inMov[1]):
 			# Just move in x
 			if ent.inMov[0] and not ent.inMov[1]:
 				tempDir = 0
@@ -96,22 +95,19 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 					elif oldPos[1] + ent.halfColSize[1] < self.pos[1] - self.halfColSize[1]:
 						ent.setPos([ent.pos[0], self.pos[1] - self.halfColSize[1] - ent.halfColSize[1] - 0.002])
 
-	def left(self, input):
-		if input > 1:
-			self.inMov[0] = True
-			self.speed[0] = -SlidingBlock.SPEED
-
-	def up(self, input):
-		if input > 1:
-			self.inMov[1] = True
-			self.speed[1] = SlidingBlock.SPEED
-
-	def right(self, input):
-		if input > 1:
-			self.inMov[0] = True
-			self.speed[0] = SlidingBlock.SPEED
-
-	def down(self, input):
-		if input > 1:
-			self.inMov[1] = True
-			self.speed[1] = -SlidingBlock.SPEED
+		if self.inMov[0] or self.inMov[1]:
+			if ent.attributes["blockDamage"] == 1:
+				if self.inMov[0]:
+					if self.speed[0] > 0:
+						if ent.pos[0] > self.pos[0]:
+							ent.applyDamage(SlidingBlock.DAMAGE)
+					else:
+						if ent.pos[0] < self.pos[0]:
+							ent.applyDamage(SlidingBlock.DAMAGE)
+				else:
+					if self.speed[1] > 0:
+						if ent.pos[1] > self.pos[1]:
+							ent.applyDamage(SlidingBlock.DAMAGE)
+					else:
+						if ent.pos[1] < self.pos[1]:
+							ent.applyDamage(SlidingBlock.DAMAGE)

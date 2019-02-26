@@ -15,12 +15,12 @@ class EntityRenderer:
 		quad = [0, 0, 0.0, 	0.0, 0.0,
 				1, 0, 0.0, 	1.0, 0.0,
 				1, 1, 0.0, 	1.0, 1.0,
-				0, 0, 0.0, 	0.0, 1.0]
+				0, 1, 0.0, 	0.0, 1.0]
 
 		indices = [0, 1, 2,
 				2, 3, 0]
 
-		self.shape = shape.Shape(0, True)
+		self.shape = shape.Shape("texture", True)
 		self.shape.setVertices(quad, [3, 2], indices)
 
 		self.tex = texture.Texture("")
@@ -28,7 +28,7 @@ class EntityRenderer:
 		self.modelMtx = pyrr.Matrix44.identity()
 
 	def display(self):
-		sm.updateLink(sm.TEXTURE, "model", self.modelMtx)
+		sm.updateLink("texture", "model", self.modelMtx)
 		self.tex.bind()
 		self.shape.display()
 

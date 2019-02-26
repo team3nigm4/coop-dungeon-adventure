@@ -1,7 +1,6 @@
 # Class pressure plate
 
 from game.game.entitymodel import toggleplate
-from game.game.map.eventmanager import EventManager
 
 from PIL import Image as img
 
@@ -23,7 +22,7 @@ class PressurePlate(toggleplate.TogglePlate):
 				self.press = False
 				self.entityRenderer.setImage([1, 1], self.images[0], [0.5, 0.5])
 				self.charge = True
-				EventManager.deactivate(self.eventId)
+				self.ev.deactivate(self.eventId)
 		self.alwaysPressed = False
 
 	def collision(self, ent):
