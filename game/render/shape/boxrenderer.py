@@ -1,7 +1,6 @@
-import pyrr
-
 from game.render.shape import shape
 from game.render.shader.shadermanager import ShaderManager as sm
+from game.util import matrix4f
 
 
 class BoxRenderer:
@@ -19,11 +18,10 @@ class BoxRenderer:
 
 		self.shape = shape.Shape("box", True)
 		self.shape.setVertices(quad, [3, 4], indices)
-
-		self.modelMtx = pyrr.Matrix44.identity()
+		self.model = matrix4f.Matrix4f(True)
 
 	def display(self):
-		sm.updateLink("box", "model", self.modelMtx)
+		sm.updateLink("box", "model", self.model.matrix)
 		self.shape.display()
 
 	def setAttributes(self, size, color):
@@ -38,8 +36,8 @@ class BoxRenderer:
 		self.shape.resetVBO(quad)
 
 	def updateModel(self, newPos):
-		self.modelMtx[3][0] = newPos[0] - self.size[0] / 2
-		self.modelMtx[3][1] = newPos[1] - self.size[1] / 2
+		self.model.matrix[3][0] = newPos[0] - self.size[0] / 2
+		self.model.matrix[3][1] = newPos[1] - self.size[1] / 2
 
 	def unload(self):
 		self.shape.unload()
