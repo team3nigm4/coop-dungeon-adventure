@@ -34,6 +34,24 @@ class Bridge(entitydrawable.EntityDrawable):
 		self.counters = []
 		self.state = False
 
+		self.setDrawCol(True)
+		if self.direction:
+			if self.size < 0:
+				self.colSize = [self.size - 1 , 1]
+				self.colRenderer.updateModel([self.pos[0] - 0.5  + self.colSize[0] / 2, self.pos[1] + 0.5])
+			else:
+				self.colSize = [self.size + 1 , 1]
+				self.colRenderer.updateModel([self.pos[0] + 0.5  - self.colSize[0] / 2, self.pos[1] + 0.5])
+		else:
+			if self.size < 0:
+				self.colSize = [1, self.size - 1]
+				self.colRenderer.updateModel([self.pos[0] + 0.5, self.pos[1] - 0.5 + self.colSize[1] / 2])
+			else:
+				print(self.size)
+				self.colSize = [1, self.size + 1]
+				self.colRenderer.updateModel([self.pos[0] + 0.5 , self.pos[1] + 0.5 - self.colSize[1] / 2])
+		self.colRenderer.setAttributes(self.colSize, [0, 0.7725, 0.258, 0.5])
+
 	def update(self):
 		toRemove = []
 		for i in range(len(self.counters)):

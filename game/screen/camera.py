@@ -5,11 +5,11 @@ from game.game.entityclass.entitymanager import EntityManager as em
 from game.util import matrix4f
 
 class Camera:
-	NEAR = 0.01
-	FAR = 1000
+	NEAR = 8
+	FAR = 9
 
-	width = 9
-	height = 6
+	WIDTH_MIN = 9
+	HEIGHT_MIN = 6
 
 	def __init__(self, fov, pos):
 		self.pos = pos
@@ -25,8 +25,8 @@ class Camera:
 		self.setMaximum([18, 12])
 
 	def setMaximum(self, maximum):
-		self.posMax[0] = -(maximum[0] - Camera.width)
-		self.posMax[1] = -(maximum[1] - Camera.height)
+		self.posMax[0] = -(maximum[0] - Camera.WIDTH_MIN)
+		self.posMax[1] = -(maximum[1] - Camera.HEIGHT_MIN)
 
 	def addPos(self, add):
 		self.pos[0] += add[0]
@@ -43,15 +43,15 @@ class Camera:
 		
 	def goToEntity(self):
 		if self.track[0]:
-			if -em.entities[self.entityId].pos[0] > - Camera.width:
-				self.setPos([-Camera.width, self.pos[1], self.pos[2]])
+			if -em.entities[self.entityId].pos[0] > - Camera.WIDTH_MIN:
+				self.setPos([-Camera.WIDTH_MIN, self.pos[1], self.pos[2]])
 			elif -em.entities[self.entityId].pos[0] < self.posMax[0]:
 				self.setPos([self.posMax[0], self.pos[1], self.pos[2]])
 			else:	
 				self.setPos([round(-em.entities[self.entityId].pos[0] * 32) / 32, self.pos[1], self.pos[2]])
 		if self.track[1]:
-			if -em.entities[self.entityId].pos[1] > - Camera.height:
-				self.setPos([self.pos[0], -Camera.height, self.pos[2]])
+			if -em.entities[self.entityId].pos[1] > - Camera.HEIGHT_MIN:
+				self.setPos([self.pos[0], -Camera.HEIGHT_MIN, self.pos[2]])
 			elif -em.entities[self.entityId].pos[1] < self.posMax[1]:
 				self.setPos([self.pos[0], self.posMax[1], self.pos[2]])
 			else:

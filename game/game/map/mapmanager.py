@@ -52,7 +52,7 @@ class MapManager:
 		MapManager.modelMtx = pyrr.Matrix44.identity()
 		sm.updateLink("texture", "model", MapManager.modelMtx)
 
-		MapManager.changeRoom("test", "map1", 0)
+		MapManager.changeRoom("test", "map4", 0)
 
 	@staticmethod
 	def display():
