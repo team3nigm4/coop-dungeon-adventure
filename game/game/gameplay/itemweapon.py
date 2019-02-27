@@ -31,18 +31,18 @@ class ItemWeapon(item.Item):
 		if not self.used:
 			if self.arm:
 				if self.player.direction == 0:
-					size = [0.5, 0.5]
+					size = [1, 1]
 				elif self.player.direction == 1:
-					size = [0.5, 0.6]
+					size = [1, 1]
 				elif self.player.direction == 2:
-					size = [0.5, 0.5]
+					size = [1, 1]
 				else:
-					size = [0.5, 0.6]
+					size = [1, 1]
 
 				entity = triggerbox.TriggerBox(self, ["TriggerBox", self.triggerPos(), ItemWeapon.SWORD_ATTACK_TIME])
 
 				entity.setColBox(size, True)
-				#entity.updateColRenderer()
+				entity.updateColRenderer()
 
 				entity.attributes["playerSword"] = 1
 				self.trigBox = entity
@@ -89,13 +89,13 @@ class ItemWeapon(item.Item):
 
 	def triggerPos(self):
 		if self.player.direction == 0:
-			return [self.player.pos[0] - self.player.halfColSize[0] - 0.26, self.player.pos[1]]
+			return [self.player.pos[0] - self.player.halfColSize[0] - 0.26, self.player.pos[1] + 0.3]
 
 		elif self.player.direction == 1:
-			return [self.player.pos[0],  self.player.pos[1] + self.player.halfColSize[1] + 0.3]
+			return [self.player.pos[0],  self.player.pos[1] + self.player.halfColSize[1] + 0.4]
 
 		elif self.player.direction == 2:
-			return [self.player.pos[0] + self.player.halfColSize[0] + 0.26, self.player.pos[1]]
+			return [self.player.pos[0] + self.player.halfColSize[0] + 0.26, self.player.pos[1] + 0.3]
 		else:
 			return [self.player.pos[0], self.player.pos[1] - self.player.halfColSize[0] - 0.31]
 
