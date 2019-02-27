@@ -26,7 +26,6 @@ class ItemWeapon(item.Item):
 				else:
 					self.arm = True
 
-
 	def useItem(self):
 		if not self.used:
 			if self.arm:
@@ -42,7 +41,6 @@ class ItemWeapon(item.Item):
 				entity = triggerbox.TriggerBox(self, ["TriggerBox", self.triggerPos(), ItemWeapon.SWORD_ATTACK_TIME])
 
 				entity.setColBox(size, True)
-				entity.updateColRenderer()
 
 				entity.attributes["playerSword"] = 1
 				self.trigBox = entity
@@ -59,15 +57,18 @@ class ItemWeapon(item.Item):
 	def useItem2(self):
 		if not self.used:
 			if not self.player.em.entities[1-self.player.playerNumber].item.name == "Weapon":
+				# Sword
 				if self.arm:
 					self.arm = False
 					print("Player", str(self.player.playerNumber), "switch arm to bow")
+				# Bow
 				else:
 					self.arm = True
 					print("Player", str(self.player.playerNumber), "Switch arm to sword")
 
 	def update(self):
 		if self.used:
+			# Sword
 			if self.arm:
 				if self.useCounter <= ItemWeapon.SWORD_ATTACK_TIME:
 					self.trigBox.setPos(self.triggerPos())
@@ -79,6 +80,7 @@ class ItemWeapon(item.Item):
 					self.used = False
 				else:
 					self.useCounter += 1
+			# Bow
 			else:
 				if self.useCounter < ItemWeapon.BOW_RELOAD_TIME:
 					self.useCounter += 1
@@ -86,16 +88,15 @@ class ItemWeapon(item.Item):
 					self.used = False
 					self.useCounter = 0
 
-
 	def triggerPos(self):
 		if self.player.direction == 0:
-			return [self.player.pos[0] - self.player.halfColSize[0] - 0.26, self.player.pos[1] + 0.3]
+			return [self.player.pos[0] - self.player.halfColSize[0] - self.trigBox.halfColSize[0], self.player.pos[1] + 0.3]
 
 		elif self.player.direction == 1:
 			return [self.player.pos[0],  self.player.pos[1] + self.player.halfColSize[1] + 0.4]
 
 		elif self.player.direction == 2:
-			return [self.player.pos[0] + self.player.halfColSize[0] + 0.26, self.player.pos[1] + 0.3]
+			return [self.player.pos[0] + self.player.halfColSize[0] + self.trigBox.halfColSize[0], self.player.pos[1] + 0.3]
 		else:
 			return [self.player.pos[0], self.player.pos[1] - self.player.halfColSize[0] - 0.31]
 

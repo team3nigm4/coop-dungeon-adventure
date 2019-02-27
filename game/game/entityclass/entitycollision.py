@@ -38,6 +38,9 @@ class EntityCollision(entity.Entity):
 
 	def setDrawCol(self, state):
 		self.drawCol = state
+		if self.drawCol:
+			self.colRenderer.setAttributes(self.colSize, self.colRenderer.color)
+			self.colRenderer.updateModel([round(self.pos[0] * 32) / 32, round(self.pos[1] * 32) / 32])
 
 	def update(self):
 		self.oldPos = self.pos
@@ -58,11 +61,9 @@ class EntityCollision(entity.Entity):
 			else:
 				self.em.removeToTest(self.id)
 
-		self.updateColRenderer()
-		self.colRenderer.updateModel([round(self.pos[0] * 32) / 32, round(self.pos[1] * 32) / 32])
-
-	def updateColRenderer(self):
-		self.colRenderer.setAttributes(self.colSize, self.colRenderer.color)
+		if self.drawCol:
+			self.colRenderer.setAttributes(self.colSize, self.colRenderer.color)
+			self.colRenderer.updateModel([round(self.pos[0] * 32) / 32, round(self.pos[1] * 32) / 32])
 
 	def setPos(self, position):
 		super().setPos(position)
