@@ -2,6 +2,7 @@
 
 import pyrr
 from game.game.entityclass.entitymanager import EntityManager as em
+from game.util import matrix4f
 
 class Camera:
 	NEAR = 0.01
@@ -14,7 +15,7 @@ class Camera:
 		self.pos = pos
 		from game.main.config import Config
 		self.projection = pyrr.matrix44.create_perspective_projection_matrix(fov, Config.ratio, Camera.NEAR, Camera.FAR)
-		self.view = pyrr.Matrix44.identity()
+		self.view = matrix4f.Matrix4f(True)
 		self.updateView()
 
 		# Track
@@ -22,9 +23,6 @@ class Camera:
 		self.entityId = 0
 		self.posMax = [0, 0]
 		self.setMaximum([18, 12])
-
-	def getView(self):
-		return self.view
 
 	def setMaximum(self, maximum):
 		self.posMax[0] = -(maximum[0] - Camera.width)
@@ -59,11 +57,13 @@ class Camera:
 			else:
 				self.setPos([self.pos[0], round(-em.entities[self.entityId].pos[1] * 32) / 32, self.pos[2]])
 
-
 	def updateView(self):
-		self.view[3][0] = self.pos[0]
-		self.view[3][1] = self.pos[1]
-		self.view[3][2] = self.pos[2]
+		self.view.matrix[3][0] = self.pos[0]
+		self.view.matrix[3][1] = self.pos[1]
+		self.view.matrix[3][2] = self.pos[2]
+
+	def getView(self):
+		return self.view.matrix
 
 	def getProjection(self):
 		return self.projection
