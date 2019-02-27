@@ -17,7 +17,5 @@ class Mannequin(enemy.Enemy):
 		self.attributes["playerBow"] = 2
 
 		self.life = args[Mannequin.ARGS_LIFE]
-		# self.setDrawCol(True)
-		# self.colRenderer.setAttributes(self.colSize, [0, 1, 0, 1])
 
 		self.invincibilityTime = Mannequin.INVINCIBILITY_TIME

@@ -38,8 +38,8 @@ class BoxRenderer:
 		self.shape.resetVBO(quad)
 
 	def updateModel(self, newPos):
-		self.modelMtx[3][0] = newPos[0] - self.size[0]/2
-		self.modelMtx[3][1] = newPos[1] - self.size[1]/2
+		self.modelMtx[3][0] = newPos[0] - self.size[0] / 2
+		self.modelMtx[3][1] = newPos[1] - self.size[1] / 2
 
 	def unload(self):
 		self.shape.unload()

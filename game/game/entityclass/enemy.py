@@ -1,7 +1,5 @@
 # Entity class player, embodies one of the players
 
-import math
-
 from game.game.entityclass import entitycomplex
 
 
@@ -18,6 +16,11 @@ class Enemy(entitycomplex.EntityComplex):
 		if self.isEvent:
 			self.eventID = args[Enemy.ARGS_EVENT]
 			self.ev.deactivate(self.eventID)
+
+		import random
+		self.setDrawCol(True)
+		self.colRenderer.setAttributes(self.colSize, [1 - random.random()/3, random.random()/5, random.random()/5, 0.5])
+		self.colRenderer.updateModel(self.pos)
 
 	def collision(self, ent):
 		if (ent.attributes["playerSword"] == 1 and self.attributes["playerSword"] == 2) or\
