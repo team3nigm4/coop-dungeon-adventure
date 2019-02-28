@@ -3,7 +3,7 @@
 from game.game.entityclass import enemy
 
 class Mannequin(enemy.Enemy):
-	ARGS_LIFE = 4
+	ARGS_LIFE = 5
 
 	INVINCIBILITY_TIME = 60
 

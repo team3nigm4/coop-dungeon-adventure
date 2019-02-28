@@ -3,7 +3,7 @@ from game.game.entityclass import entitycollision
 
 class TriggerBox(entitycollision.EntityCollision):
 
-	ARGS_COUNTER = 2
+	ARGS_COUNTER = 3
 
 	def __init__(self, entity, args):
 		super().__init__(args)

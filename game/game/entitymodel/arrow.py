@@ -8,7 +8,7 @@ class Arrow(entitycomplex.EntityComplex):
 	SPEED = 0.2
 	DAMAGE = 1
 
-	ARGS_DIRECTION = 2
+	ARGS_DIRECTION = 3
 
 	def __init__(self, args):
 		super().__init__(args)
@@ -26,6 +26,7 @@ class Arrow(entitycomplex.EntityComplex):
 			self.speed[1] = -Arrow.SPEED
 
 		self.entityRenderer.setImagePath([1, 1], "entities/arrow.png", [0.5, 0.5])
+		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)
 
 	def update(self):
 		super().update()

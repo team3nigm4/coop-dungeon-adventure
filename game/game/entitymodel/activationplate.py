@@ -5,7 +5,7 @@ from game.game.entitymodel import pressureplate
 from PIL import Image as img
 
 class ActivationPlate(pressureplate.PressurePlate):
-	ARGS_EVENT_ID = 2
+	ARGS_EVENT_ID = 3
 
 	def __init__(self, args):
 		super().__init__(args)

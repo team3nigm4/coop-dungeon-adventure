@@ -5,12 +5,12 @@ from game.game.entityclass import entitycollision
 
 class Door(entitycollision.EntityCollision):
 
-	ARGS_COL_BOX_SIZE = 2
-	ARGS_ZONE_NAME = 3
-	ARGS_MAP_ID = 4
-	ARGS_MAP_ENTRY_POINT = 5
-	ARGS_IS_EVENT = 6
-	ARGS_EVENT = 7
+	ARGS_COL_BOX_SIZE = 3
+	ARGS_ZONE_NAME = 4
+	ARGS_MAP_ID = 5
+	ARGS_MAP_ENTRY_POINT = 6
+	ARGS_IS_EVENT = 7
+	ARGS_EVENT = 8
 
 	def __init__(self, args):
 		super().__init__(args)

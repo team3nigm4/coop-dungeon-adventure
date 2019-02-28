@@ -1,7 +1,5 @@
 from game.game.gameplay import item
 from game.game.entitymodel import triggerbox
-from game.game.entitymodel import arrow
-
 
 class ItemWeapon(item.Item):
 	SWORD_ATTACK_TIME = 24
@@ -15,7 +13,7 @@ class ItemWeapon(item.Item):
 		super().__init__(player, "Weapon")
 		self.used = False
 		self.useCounter = 0
-		self.trigBox = triggerbox.TriggerBox(self, ["TriggerBox",[0,0], 0])
+		self.trigBox = triggerbox.TriggerBox(self, ["TriggerBox", -1, [0,0], 0])
 		# True sword, False bow
 
 		self.arm = True
@@ -38,19 +36,16 @@ class ItemWeapon(item.Item):
 				else:
 					size = [1, 1]
 
-				entity = triggerbox.TriggerBox(self, ["TriggerBox", self.triggerPos(), ItemWeapon.SWORD_ATTACK_TIME])
+				self.trigBox = triggerbox.TriggerBox(self, ["TriggerBox", self.player.em.checkPlace(), self.triggerPos(), ItemWeapon.SWORD_ATTACK_TIME])
+				self.trigBox.setColBox(size, True)
 
-				entity.setColBox(size, True)
+				self.trigBox.attributes["playerSword"] = 1
 
-				entity.attributes["playerSword"] = 1
-				self.trigBox = entity
-
-				self.player.em.add(entity)
+				self.player.em.addWithId(self.trigBox)
 				self.player.maxSpeed /= ItemWeapon.LOW_SPEED_COEF
 
 			else:
-				entity = arrow.Arrow(["Arrow", [self.player.pos[0], self.player.pos[1] + 0.5], self.player.direction])
-				self.player.em.add(entity)
+				self.player.em.addA(["Arrow", [self.player.pos[0], self.player.pos[1] + 0.5], self.player.direction])
 
 			self.used = True
 

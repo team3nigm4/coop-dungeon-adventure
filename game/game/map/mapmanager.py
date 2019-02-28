@@ -193,13 +193,10 @@ class MapManager:
 		em.EntityManager.entities[em.EntityManager.PLAYER_1].setPos(values[MapManager.DATA_ENTRIES])
 		em.EntityManager.entities[em.EntityManager.PLAYER_2].setPos(values[MapManager.DATA_ENTRIES])
 
-		from game.game.map import loadentity
 		for i in range(0, len(values[MapManager.DATA_ENTITIES])):
 			args = values[MapManager.DATA_ENTITIES][i][1]
 			args.insert(0, (values[MapManager.DATA_ENTITIES][i][0]))
-			temp = loadentity.LoadEntity.instance(args)
-			if not temp == False:
-				em.EntityManager.add(temp)
+			em.EntityManager.addA(args)
 
 		# Work with values
 		quad = [0, 0, 0.0, 0.0, 0.0,

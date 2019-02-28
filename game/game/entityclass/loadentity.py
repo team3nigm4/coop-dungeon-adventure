@@ -1,6 +1,7 @@
 class LoadEntity:
 	from game.game.entitymodel import activationblock
 	from game.game.entitymodel import activationplate
+	from game.game.entitymodel import arrow
 	from game.game.entitymodel import bat
 	from game.game.entitymodel import bridge
 	from game.game.entitymodel import door
@@ -16,6 +17,7 @@ class LoadEntity:
 	entities = {
 		"ActivationBlock": activationblock.ActivationBlock,
 		"ActivationPlate": activationplate.ActivationPlate,
+		"Arrow": arrow.Arrow,
 		"Bat": bat.Bat,
 		"Bridge": bridge.Bridge,
 		"Door": door.Door,

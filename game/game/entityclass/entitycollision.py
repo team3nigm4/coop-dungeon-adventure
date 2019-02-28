@@ -45,7 +45,7 @@ class EntityCollision(entity.Entity):
 	def update(self):
 		self.oldPos = self.pos
 
-	def display(self):
+	def displayBox(self):
 		if self.drawCol:
 			self.colRenderer.display()
 

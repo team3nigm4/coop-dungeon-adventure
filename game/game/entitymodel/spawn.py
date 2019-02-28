@@ -1,10 +1,10 @@
-from game.game.map import loadentity
-from game.game.entityclass import entity
+from game.game.entityclass import entity, loadentity
+
 
 class Spawn(entity.Entity):
 
-	ARGS_EVENT = 1
-	ARGS_ENTITY_INFO = 2
+	ARGS_EVENT = 3
+	ARGS_ENTITY_INFO = 4
 
 	def __init__(self, args):
 		super().__init__([args[0], [0, 0]])
