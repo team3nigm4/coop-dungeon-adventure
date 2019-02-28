@@ -53,6 +53,8 @@ class Bridge(entitydrawable.EntityDrawable):
 
 		self.colRenderer.setAttributes(self.colSize, [0, 0.7725, 0.258, 0.5])
 
+		self.ev.addActive(self.event, self.id)
+
 	def update(self):
 		toRemove = []
 		for i in range(len(self.counters)):
@@ -100,7 +102,3 @@ class Bridge(entitydrawable.EntityDrawable):
 
 		self.state = False
 		self.setDrawCol(False)
-
-	def setId(self, id):
-		super().setId(id)
-		self.ev.addActive(self.event, self.id)

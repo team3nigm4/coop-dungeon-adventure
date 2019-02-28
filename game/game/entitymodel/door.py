@@ -34,6 +34,13 @@ class Door(entitycollision.EntityCollision):
 
 		self.colRenderer.setAttributes(self.colSize, [0.7725, 0.956, 0.258, 0.5])
 
+		if self.isEvent:
+			self.isActive = False
+			self.ev.addActive(self.event, self.id)
+			self.mam.setTileSize(self.pos, self.halfColSize, 1)
+
+		else:
+			self.isActive = True
 
 	def update(self):
 		self.isTwo = False
@@ -60,13 +67,3 @@ class Door(entitycollision.EntityCollision):
 		self.setColBox(self.colSize, False)
 		self.mam.setTileSize(self.pos, self.halfColSize, 1)
 		self.setDrawCol(False)
-
-	def setId(self, id):
-		super().setId(id)
-		if self.isEvent:
-			self.isActive = False
-			self.ev.addActive(self.event, self.id)
-			self.mam.setTileSize(self.pos, self.halfColSize, 1)
-
-		else:
-			self.isActive = True

@@ -14,6 +14,9 @@ class Spawn(entity.Entity):
 		self.entityInfo = args[Spawn.ARGS_ENTITY_INFO]
 		self.hasSpawn = False
 
+		from game.game.map.eventmanager import EventManager
+		EventManager.addActive(self.event, self.id)
+
 	def activate(self):
 		if not self.hasSpawn:
 			from game.game.map.eventmanager import EventManager as ev
@@ -21,11 +24,6 @@ class Spawn(entity.Entity):
 			self.em.add(loadentity.LoadEntity.instance(self.entityInfo))
 			ev.removeActive(self.event, self.id)
 			self.hasSpawn = True
-
-	def setId(self, id):
-		super().setId(id)
-		from game.game.map.eventmanager import EventManager
-		EventManager.addActive(self.event, self.id)
 
 	def deactivate(self):
 		pass
