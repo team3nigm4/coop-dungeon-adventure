@@ -35,23 +35,23 @@ class Bridge(entitydrawable.EntityDrawable):
 		self.counters = []
 		self.state = False
 
-		self.setDrawCol(False)
 		if self.direction:
-			if self.size < 0:
-				self.colSize = [self.size - 1, 1]
-				self.colRenderer.updateModel([self.pos[0] - 0.5 + self.colSize[0] / 2, self.pos[1] + 0.5])
+			if self.append < 0:
+				self.colSize = [self.size + 1, 1]
+				self.valueRender = [self.pos[0] + 1 - self.colSize[0] / 2, self.pos[1] + 0.5]
 			else:
 				self.colSize = [self.size + 1, 1]
-				self.colRenderer.updateModel([self.pos[0] + 0.5 - self.colSize[0] / 2, self.pos[1] + 0.5])
+				self.valueRender = [self.pos[0]  + self.colSize[0] / 2, self.pos[1] + 0.5]
 		else:
-			if self.size < 0:
-				self.colSize = [1, self.size - 1]
-				self.colRenderer.updateModel([self.pos[0] + 0.5, self.pos[1] - 0.5 + self.colSize[1] / 2])
+			if self.append < 0:
+				self.colSize = [1, self.size + 1]
+				self.valueRender = [self.pos[0] + 0.5, self.pos[1] + 1 - self.colSize[1] / 2]
 			else:
 				self.colSize = [1, self.size + 1]
-				self.colRenderer.updateModel([self.pos[0] + 0.5, self.pos[1] + 0.5 - self.colSize[1] / 2])
+				self.valueRender = [self.pos[0] + 0.5, self.pos[1] + self.colSize[1] / 2]
 
 		self.colRenderer.setAttributes(self.colSize, [0, 0.7725, 0.258, 0.5])
+		self.colRenderer.updateModel(self.valueRender)
 
 		self.ev.addActive(self.event, self.id)
 
@@ -93,6 +93,7 @@ class Bridge(entitydrawable.EntityDrawable):
 
 		self.state = True
 		self.setDrawCol(True)
+		self.colRenderer.updateModel(self.valueRender)
 
 	def deactivate(self):
 		if self.direction:
@@ -102,3 +103,4 @@ class Bridge(entitydrawable.EntityDrawable):
 
 		self.state = False
 		self.setDrawCol(False)
+		self.colRenderer.updateModel(self.valueRender)
