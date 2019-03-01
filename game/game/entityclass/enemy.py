@@ -24,13 +24,6 @@ class Enemy(entitycomplex.EntityComplex):
 
 		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)
 
-	def collision(self, ent):
-		if (ent.attributes["playerSword"] == 1 and self.attributes["playerSword"] == 2) or\
-				(ent.attributes["playerBow"] == 1 and self.attributes["playerBow"] == 2):
-			ent.triggerBox(self)
-
-		super().collision(ent)
-
 	def setLife(self, newLife, death=True):
 		super().setLife(newLife, death)
 		if self.isEvent:

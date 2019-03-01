@@ -52,7 +52,7 @@ class MapManager:
 		MapManager.modelMtx = pyrr.Matrix44.identity()
 		sm.updateLink("texture", "model", MapManager.modelMtx)
 
-		MapManager.changeRoom("test", "map4", 0)
+		MapManager.changeRoom("test", "map1", 0)
 
 	@staticmethod
 	def display():
@@ -171,7 +171,7 @@ class MapManager:
 		MapManager.defaultEntry = values[MapManager.DATA_MAP_INFO][2]
 
 		for i in range(0, len(values[MapManager.DATA_IMAGES])):
-			MapManager.tex.append(texture.Texture("map1"))
+			MapManager.tex.append(texture.Texture("map"))
 			len(MapManager.tex)
 			MapManager.tex[i].loadImage(values[MapManager.DATA_IMAGES][i])
 

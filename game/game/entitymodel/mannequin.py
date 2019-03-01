@@ -15,6 +15,7 @@ class Mannequin(enemy.Enemy):
 
 		self.attributes["playerSword"] = 2
 		self.attributes["playerBow"] = 2
+		self.attributes["blockDamage"] = 1
 
 		self.life = args[Mannequin.ARGS_LIFE]
 

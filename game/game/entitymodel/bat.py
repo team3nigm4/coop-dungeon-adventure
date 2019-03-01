@@ -28,11 +28,14 @@ class Bat(enemy.Enemy):
 		self.maxSpeed = [Bat.SPEED_MAX,Bat.SPEED_MAX]
 		self.life = 4
 
-		self.entityRenderer.setImagePath([1, 1], "entities/bat.png", [0.5, 0.5])
-
 		self.invincibilityTime = Bat.INVINCIBILITY_TIME
 
 		self.target = None
+
+
+		self.entityRenderer.setImagePath([1, 1], "entities/bat.png", [0.5, 0.5])
+		self.gapDisplayPos = -1
+
 
 	def update(self):
 		super().update()

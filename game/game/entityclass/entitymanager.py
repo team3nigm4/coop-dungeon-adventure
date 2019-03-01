@@ -111,6 +111,24 @@ class EntityManager:
 				e.displayBox()
 
 	@staticmethod
+	def displayMiddleEntity(entityID):
+		ent = EntityManager.entities[entityID]
+		index = EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE].index(entityID)
+		if ent.pos[1] > ent.oldPos[1]:
+			for i in range(index, -1, -1):
+				ent2 = EntityManager.entities[EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE][i]]
+				if ent.pos[1] + ent.gapDisplayPos > ent2.pos[1] + ent2.gapDisplayPos:
+					EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE].remove(entityID)
+					EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE].insert(i, entityID)
+		elif ent.pos[1] < ent.oldPos[1]:
+			for i in range(index, len(EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE]), 1):
+				ent2 = EntityManager.entities[EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE][i]]
+				if ent.pos[1] + ent.gapDisplayPos < ent2.pos[1] + ent2.gapDisplayPos:
+					EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE].remove(entityID)
+					EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE].insert(i, entityID)
+
+
+	@staticmethod
 	def dispose():
 		EntityManager.entitiesRemove.sort(reverse=True)
 		for a in EntityManager.entitiesRemove:
