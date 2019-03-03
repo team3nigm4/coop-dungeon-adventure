@@ -5,12 +5,12 @@ from game.game.entityclass import entitycollision
 
 class Door(entitycollision.EntityCollision):
 
-	ARGS_COL_BOX_SIZE = 2
-	ARGS_ZONE_NAME = 3
-	ARGS_MAP_ID = 4
-	ARGS_MAP_ENTRY_POINT = 5
-	ARGS_IS_EVENT = 6
-	ARGS_EVENT = 7
+	ARGS_COL_BOX_SIZE = 3
+	ARGS_ZONE_NAME = 4
+	ARGS_MAP_ID = 5
+	ARGS_MAP_ENTRY_POINT = 6
+	ARGS_IS_EVENT = 7
+	ARGS_EVENT = 8
 
 	def __init__(self, args):
 		super().__init__(args)
@@ -27,9 +27,20 @@ class Door(entitycollision.EntityCollision):
 		else:
 			self.isActive = True
 			self.setColBox(self.colSize, True)
+			self.setDrawCol(True)
 
 		self.isTwo = False
 		self.attributes["door"] = 2
+
+		self.colRenderer.setAttributes(self.colSize, [0.7725, 0.956, 0.258, 0.5])
+
+		if self.isEvent:
+			self.isActive = False
+			self.ev.addActive(self.event, self.id)
+			self.mam.setTileSize(self.pos, self.halfColSize, 1)
+
+		else:
+			self.isActive = True
 
 	def update(self):
 		self.isTwo = False
@@ -41,7 +52,6 @@ class Door(entitycollision.EntityCollision):
 					self.isTwo = True
 					# Temp system without both players
 				else:
-					self.mam.unloadImages()
 					self.mam.reserveChange([self.zone, self.map, self.entry])
 					# Change the map with its id
 
@@ -49,18 +59,10 @@ class Door(entitycollision.EntityCollision):
 		self.isActive = True
 		self.setColBox(self.colSize, True)
 		self.mam.setTileSize(self.pos, self.halfColSize, 0)
+		self.setDrawCol(True)
 
 	def deactivate(self):
 		self.isActive = False
 		self.setColBox(self.colSize, False)
 		self.mam.setTileSize(self.pos, self.halfColSize, 1)
-
-	def setId(self, id):
-		super().setId(id)
-		if self.isEvent:
-			self.isActive = False
-			self.ev.addActive(self.event, self.id)
-			self.mam.setTileSize(self.pos, self.halfColSize, 1)
-
-		else:
-			self.isActive = True
+		self.setDrawCol(False)

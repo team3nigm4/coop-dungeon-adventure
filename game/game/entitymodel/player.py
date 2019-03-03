@@ -9,8 +9,8 @@ class Player(entitycomplex.EntityComplex):
 	SPEED_MAX = 0.09
 	SPEED_DECREASE = 0.025
 
-	ARGS_PLAYER_NUMBER = 2
-	ARGS_PLAYER_TEXTURE = 3
+	ARGS_PLAYER_NUMBER = 3
+	ARGS_PLAYER_TEXTURE = 4
 
 	INVINCIBILITY_TIME = 60
 
@@ -39,6 +39,7 @@ class Player(entitycomplex.EntityComplex):
 		self.colRenderer.setAttributes(self.colSize, [1, 1, 0, 0.5])
 
 		self.entityRenderer.setImagePath([1, 1.5], args[Player.ARGS_PLAYER_TEXTURE], [0.45, 0.2])
+		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)
 
 	def useItem(self, input):
 		if input == 2:

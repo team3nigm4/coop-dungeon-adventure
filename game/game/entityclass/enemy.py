@@ -1,14 +1,12 @@
 # Entity class player, embodies one of the players
 
-import math
-
 from game.game.entityclass import entitycomplex
 
 
 class Enemy(entitycomplex.EntityComplex):
 
-	ARGS_IS_EVENT = 2
-	ARGS_EVENT = 3
+	ARGS_IS_EVENT = 3
+	ARGS_EVENT = 4
 
 	INVINCIBILITY_TIME = 60
 
@@ -19,12 +17,12 @@ class Enemy(entitycomplex.EntityComplex):
 			self.eventID = args[Enemy.ARGS_EVENT]
 			self.ev.deactivate(self.eventID)
 
-	def collision(self, ent):
-		if (ent.attributes["playerSword"] == 1 and self.attributes["playerSword"] == 2) or\
-				(ent.attributes["playerBow"] == 1 and self.attributes["playerBow"] == 2):
-			ent.triggerBox(self)
+		import random
+		self.setDrawCol(True)
+		self.colRenderer.setAttributes(self.colSize, [1 - random.random()/3, random.random()/5, random.random()/5, 0.5])
+		self.colRenderer.updateModel(self.pos)
 
-		super().collision(ent)
+		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)
 
 	def setLife(self, newLife, death=True):
 		super().setLife(newLife, death)

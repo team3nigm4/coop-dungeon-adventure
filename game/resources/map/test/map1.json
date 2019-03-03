@@ -57,6 +57,7 @@
   },
   "entities": [
     [
+      ["Mannequin", [[7.5, 6.5], false, 0, 2]],
       ["ActivationBlock", [[10.5, 7.5]]],
       ["TogglePlate", [[8.5, 2.5], 0]],
       ["ActivationPlate", [[8.5, 8.5], 0]],

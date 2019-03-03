@@ -4,12 +4,13 @@ from game.game.entityclass import entitydrawable
 
 import math
 
+
 class Bridge(entitydrawable.EntityDrawable):
 	# True horizontal, False vertical
-	ARGS_DIRECTION = 2
-	ARGS_COUNTER = 3
-	ARGS_SIZE = 4
-	ARGS_EVENT = 5
+	ARGS_DIRECTION = 3
+	ARGS_COUNTER = 4
+	ARGS_SIZE = 5
+	ARGS_EVENT = 6
 
 	def __init__(self, args):
 		super().__init__(args)
@@ -22,7 +23,7 @@ class Bridge(entitydrawable.EntityDrawable):
 			self.size -= 1
 			self.append = 1
 		else:
-			self.size +=1
+			self.size += 1
 			self.append = -1
 
 		self.size = int(math.fabs(self.size))
@@ -33,6 +34,26 @@ class Bridge(entitydrawable.EntityDrawable):
 		# 0 is the counter, 1 is the case linked, 2 the value to change
 		self.counters = []
 		self.state = False
+
+		if self.direction:
+			if self.append < 0:
+				self.colSize = [self.size + 1, 1]
+				self.valueRender = [self.pos[0] + 1 - self.colSize[0] / 2, self.pos[1] + 0.5]
+			else:
+				self.colSize = [self.size + 1, 1]
+				self.valueRender = [self.pos[0] + self.colSize[0] / 2, self.pos[1] + 0.5]
+		else:
+			if self.append < 0:
+				self.colSize = [1, self.size + 1]
+				self.valueRender = [self.pos[0] + 0.5, self.pos[1] + 1 - self.colSize[1] / 2]
+			else:
+				self.colSize = [1, self.size + 1]
+				self.valueRender = [self.pos[0] + 0.5, self.pos[1] + self.colSize[1] / 2]
+
+		self.colRenderer.setAttributes(self.colSize, [0, 0.7725, 0.258, 0.5])
+		self.colRenderer.updateModel(self.valueRender)
+
+		self.ev.addActive(self.event, self.id)
 
 	def update(self):
 		toRemove = []
@@ -71,6 +92,8 @@ class Bridge(entitydrawable.EntityDrawable):
 			self.counters.append([0, self.pos[1], 0])
 
 		self.state = True
+		self.setDrawCol(True)
+		self.colRenderer.updateModel(self.valueRender)
 
 	def deactivate(self):
 		if self.direction:
@@ -79,7 +102,5 @@ class Bridge(entitydrawable.EntityDrawable):
 			self.counters.append([0, self.pos[1], 2])
 
 		self.state = False
-
-	def setId(self, id):
-		super().setId(id)
-		self.ev.addActive(self.event, self.id)
+		self.setDrawCol(False)
+		self.colRenderer.updateModel(self.valueRender)

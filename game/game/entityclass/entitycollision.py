@@ -34,14 +34,18 @@ class EntityCollision(entity.Entity):
 		self.drawCol = False
 		color = [0.1, 0.1, 0.1,  0.4]
 		self.colRenderer = boxrenderer.BoxRenderer(self.colSize, color)
+		self.colRenderer.updateModel([round(self.pos[0] * 32) / 32, round(self.pos[1] * 32) / 32])
 
 	def setDrawCol(self, state):
 		self.drawCol = state
+		if self.drawCol:
+			self.colRenderer.setAttributes(self.colSize, self.colRenderer.color)
+			self.colRenderer.updateModel([round(self.pos[0] * 32) / 32, round(self.pos[1] * 32) / 32])
 
 	def update(self):
 		self.oldPos = self.pos
 
-	def display(self):
+	def displayBox(self):
 		if self.drawCol:
 			self.colRenderer.display()
 
@@ -57,13 +61,13 @@ class EntityCollision(entity.Entity):
 			else:
 				self.em.removeToTest(self.id)
 
-	def updateColRenderer(self):
-		self.colRenderer.setAttributes(self.colSize, self.colRenderer.color)
+		if self.drawCol:
+			self.colRenderer.setAttributes(self.colSize, self.colRenderer.color)
+			self.colRenderer.updateModel([round(self.pos[0] * 32) / 32, round(self.pos[1] * 32) / 32])
 
 	def setPos(self, position):
 		super().setPos(position)
-		if self.drawCol:
-			self.colRenderer.updateModel(self.pos)
+		self.colRenderer.updateModel([round(self.pos[0] * 32) / 32, round(self.pos[1] * 32) / 32])
 
 	def setSpeed(self, speed):
 		self.speed = speed

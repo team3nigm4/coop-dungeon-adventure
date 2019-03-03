@@ -1,9 +1,7 @@
-import pyrr
-
 from game.render.shape import shape
 from game.render.texture import texture
 from game.render.shader.shadermanager import ShaderManager as sm
-
+from game.util import matrix4f
 
 class EntityRenderer:
 
@@ -25,10 +23,10 @@ class EntityRenderer:
 
 		self.tex = texture.Texture("")
 		self.tex.defaultInit()
-		self.modelMtx = pyrr.Matrix44.identity()
+		self.model = matrix4f.Matrix4f(True)
 
 	def display(self):
-		sm.updateLink("texture", "model", self.modelMtx)
+		sm.updateLink("texture", "model", self.model.matrix)
 		self.tex.bind()
 		self.shape.display()
 
@@ -65,8 +63,8 @@ class EntityRenderer:
 		self.shape.resetVBO(quad)
 
 	def updateModel(self, newPos):
-		self.modelMtx[3][0] = newPos[0]
-		self.modelMtx[3][1] = newPos[1]
+		self.model.matrix[3][0] = newPos[0]
+		self.model.matrix[3][1] = newPos[1]
 
 	def unload(self):
 		self.tex.unload()

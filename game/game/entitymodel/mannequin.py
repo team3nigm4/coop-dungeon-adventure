@@ -3,7 +3,7 @@
 from game.game.entityclass import enemy
 
 class Mannequin(enemy.Enemy):
-	ARGS_LIFE = 4
+	ARGS_LIFE = 5
 
 	INVINCIBILITY_TIME = 60
 
@@ -15,9 +15,8 @@ class Mannequin(enemy.Enemy):
 
 		self.attributes["playerSword"] = 2
 		self.attributes["playerBow"] = 2
+		self.attributes["blockDamage"] = 1
 
 		self.life = args[Mannequin.ARGS_LIFE]
-		# self.setDrawCol(True)
-		# self.colRenderer.setAttributes(self.colSize, [0, 1, 0, 1])
 
 		self.invincibilityTime = Mannequin.INVINCIBILITY_TIME

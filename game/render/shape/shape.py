@@ -29,21 +29,26 @@ class Shape:
 				print("(shape-setVertices) using EBO without providing indices(None)")
 				exit(1)
 
-			self.verticesNumber = len(indices)
-
+			self.indicesNumber = len(indices)
 			indices = numpy.array(indices, dtype=numpy.uint32)
 
 			gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, self.ebo)
 			gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, indices.itemsize * len(indices), indices, gl.GL_STATIC_DRAW)
 
 		self.resetVBO(vertices)
+		vertices = numpy.array(vertices, dtype=numpy.float32)
 
-		for i in range(0, len(info)):
-			gl.glVertexAttribPointer(i, info[i], gl.GL_FLOAT, gl.GL_FALSE, len(vertices), gl.ctypes.c_void_p(i*12))
+		gl.glVertexAttribPointer(0, info[0], gl.GL_FLOAT, gl.GL_FALSE, sum(info) * vertices.itemsize,
+								 gl.ctypes.c_void_p(0))
+		gl.glEnableVertexAttribArray(0)
+		for i in range(1, len(info)):
+			gl.glVertexAttribPointer(i, info[i], gl.GL_FLOAT, gl.GL_FALSE, sum(info) * vertices.itemsize,
+									 gl.ctypes.c_void_p(sum(info[:i]) * vertices.itemsize))
 			gl.glEnableVertexAttribArray(i)
 
+
 		if not self.useEBO:
-			self.verticesNumber = len(vertices) / sum(info)
+			self.verticesNumber = int(len(vertices) / sum(info))
 
 		self.unbind()
 
@@ -70,7 +75,7 @@ class Shape:
 
 	def draw(self):
 		if self.useEBO:
-			gl.glDrawElements(gl.GL_TRIANGLES, self.verticesNumber, gl.GL_UNSIGNED_INT, None)
+			gl.glDrawElements(gl.GL_TRIANGLES, self.indicesNumber, gl.GL_UNSIGNED_INT, None)
 		else:
 			gl.glDrawArrays(gl.GL_TRIANGLES, 0, self.verticesNumber)
 
