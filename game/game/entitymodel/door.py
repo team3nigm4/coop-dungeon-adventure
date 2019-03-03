@@ -52,7 +52,6 @@ class Door(entitycollision.EntityCollision):
 					self.isTwo = True
 					# Temp system without both players
 				else:
-					self.mam.unloadImages()
 					self.mam.reserveChange([self.zone, self.map, self.entry])
 					# Change the map with its id
 
