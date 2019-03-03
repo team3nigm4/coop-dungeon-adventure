@@ -1,6 +1,5 @@
 # Manage every entity of the game
 
-
 from game.game.entityclass.loadentity import LoadEntity
 from game.game.entityclass import entitycollision
 from game.util import math as mathcda
@@ -22,7 +21,7 @@ class EntityManager:
 
 	displayLayer = [[], [], []]
 
-	displayBox = False
+	displayBox = True
 
 	@staticmethod
 	def addA(args):

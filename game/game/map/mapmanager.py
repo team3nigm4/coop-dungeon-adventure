@@ -4,9 +4,6 @@ import math
 
 from game.game.entityclass import entitymanager as em
 from game.render.shader.shadermanager import ShaderManager as sm
-from game.render.shape import shape
-from game.render.texture import texture
-from game.util import matrix4f
 from game.game.map import mapdisplay as mp
 
 

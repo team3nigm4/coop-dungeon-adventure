@@ -12,21 +12,28 @@ class Arrow(entitycomplex.EntityComplex):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox([0.2, 0.4], True)
 
 		self.attributes["playerBow"] = 1
 		self.direction = args[Arrow.ARGS_DIRECTION]
 		if self.direction == 0:
+			self.setColBox([0.4, 0.2], True)
 			self.speed[0] = -Arrow.SPEED
 		elif self.direction == 1:
+			self.setColBox([0.2, 0.4], True)
 			self.speed[1] = Arrow.SPEED
 		elif self.direction == 2:
+			self.setColBox([0.4, 0.2], True)
 			self.speed[0] = Arrow.SPEED
 		else:
+			self.setColBox([0.2, 0.4], True)
 			self.speed[1] = -Arrow.SPEED
 
 		self.entityRenderer.setImagePath([1, 1], "entities/arrow.png", [0.5, 0.5])
 		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)
+
+		self.setDrawCol(True)
+		self.colRenderer.setAttributes(self.colSize, [0, 0, 1, 0.5])
+		self.colRenderer.updateModel(self.pos)
 
 	def update(self):
 		super().update()
