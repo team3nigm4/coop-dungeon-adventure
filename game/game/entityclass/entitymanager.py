@@ -22,7 +22,7 @@ class EntityManager:
 
 	displayLayer = [[], [], []]
 
-	displayBox = True
+	displayBox = False
 
 	@staticmethod
 	def addA(args):

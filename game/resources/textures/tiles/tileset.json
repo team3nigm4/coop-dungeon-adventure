@@ -1,0 +1,16 @@
+{
+  "id": [
+    "ground",
+    "ground2",
+    "wall"
+  ],
+  "textPos":{
+    "ground": [0, 0],
+    "ground2": [1, 0],
+    "wall": [2, 0]
+  },
+  "info": {
+    "gap" : [0, 0],
+    "size" : [3, 1]
+  }
+}

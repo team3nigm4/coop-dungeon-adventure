@@ -2,29 +2,25 @@
 
 import math
 
-import pyrr
-
 from game.game.entityclass import entitymanager as em
 from game.render.shader.shadermanager import ShaderManager as sm
 from game.render.shape import shape
 from game.render.texture import texture
+from game.util import matrix4f
+from game.game.map import mapdisplay as mp
 
 
 class MapManager:
 	DATA_MAP_INFO = 0
-	DATA_IMAGES = 1
-	DATA_INTERACTIONS = 2
-	DATA_ENTRIES = 3
-	DATA_ENTITIES = 4
+	DATA_INTERACTIONS = 1
+	DATA_ENTRIES = 2
+	DATA_ENTITIES = 3
 
 	INTERACTION_SOLID = 1
 	INTERACTION_EMPTY = 2
 
 	width = None
 	height = None
-	shape = None
-	modelMtx = None
-	tex = []
 	interaction = []
 
 	zone = "null"
@@ -37,33 +33,13 @@ class MapManager:
 
 	@staticmethod
 	def init():
+		mp.MapDisplay.init()
 
-		quad = [0.0, 0.0, 0.0, 0.0, 0.0,
-				1.0, 0.0, 0.0, 1.0, 0.0,
-				1.0, 1.0, 0.0, 1.0, 1.0,
-				0.0, 1.0, 0.0, 0.0, 1.0]
-
-		indices = [0, 1, 2,
-				   2, 3, 0]
-
-		MapManager.shape = shape.Shape("texture", True)
-		MapManager.shape.setVertices(quad, [3, 2], indices)
-
-		MapManager.modelMtx = pyrr.Matrix44.identity()
-		sm.updateLink("texture", "model", MapManager.modelMtx)
-
-		MapManager.changeRoom("test", "map4", 0)
+		MapManager.changeRoom("test", "map1", 0)
 
 	@staticmethod
 	def display():
-		sm.updateLink("texture", "model", MapManager.modelMtx)
-		MapManager.shape.applyShader()
-		MapManager.shape.bind()
-
-		for i in range(0, len(MapManager.tex)):
-			MapManager.tex[i].bind()
-			MapManager.shape.draw()
-		MapManager.shape.unbind()
+		mp.MapDisplay.display()
 
 	@staticmethod
 	def checkCollisionX(entity):
@@ -162,18 +138,14 @@ class MapManager:
 		MapManager.changeValues = None
 
 		# Load new room
-		from game.game.map import mapfunctions
-		values = mapfunctions.loadMap(zone, map, entry)
+		from game.game.map import maploading
+		values = maploading.loadMap(zone, map, entry)
+		mp.MapDisplay.constructMap()
 
 		# Apply values
 		MapManager.zone = values[MapManager.DATA_MAP_INFO][0]
 		MapManager.id = values[MapManager.DATA_MAP_INFO][1]
 		MapManager.defaultEntry = values[MapManager.DATA_MAP_INFO][2]
-
-		for i in range(0, len(values[MapManager.DATA_IMAGES])):
-			MapManager.tex.append(texture.Texture("map"))
-			len(MapManager.tex)
-			MapManager.tex[i].loadImage(values[MapManager.DATA_IMAGES][i])
 
 		MapManager.interaction = values[MapManager.DATA_INTERACTIONS]
 
@@ -198,14 +170,6 @@ class MapManager:
 			args.insert(0, (values[MapManager.DATA_ENTITIES][i][0]))
 			em.EntityManager.addA(args)
 
-		# Work with values
-		quad = [0, 0, 0.0, 0.0, 0.0,
-				width, 0, 0.0, 1.0, 0.0,
-				width, height, 0.0, 1.0, 1.0,
-				0, height, 0.0, 0.0, 1.0]
-
-		MapManager.shape.resetVBO(quad)
-
 		# Set the camera position
 
 		from game.screen import gamemanager
@@ -227,7 +191,7 @@ class MapManager:
 			cam.addPos([0, -height / 2, 0])
 
 		cam.goToEntity()
-		sm.updateLink("texture", "view", cam.getView())
+		sm.dispose()
 
 	@staticmethod
 	# Change one bloc of the interaction map
@@ -269,16 +233,8 @@ class MapManager:
 	@staticmethod
 	def checkChangeMap():
 		if MapManager.changeValues is not None:
-			MapManager.unloadImages()
 			MapManager.changeRoom(MapManager.changeValues[0], MapManager.changeValues[1], MapManager.changeValues[2])
 
 	@staticmethod
-	def unloadImages():
-		for i in range(0, len(MapManager.tex)):
-			MapManager.tex[i].unload()
-		MapManager.tex = []
-
-	@staticmethod
 	def unload():
-		MapManager.shape.unload()
-		MapManager.unloadImages()
+		mp.MapDisplay.unload()

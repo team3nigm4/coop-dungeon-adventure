@@ -41,7 +41,7 @@ class Bridge(entitydrawable.EntityDrawable):
 				self.valueRender = [self.pos[0] + 1 - self.colSize[0] / 2, self.pos[1] + 0.5]
 			else:
 				self.colSize = [self.size + 1, 1]
-				self.valueRender = [self.pos[0]  + self.colSize[0] / 2, self.pos[1] + 0.5]
+				self.valueRender = [self.pos[0] + self.colSize[0] / 2, self.pos[1] + 0.5]
 		else:
 			if self.append < 0:
 				self.colSize = [1, self.size + 1]
