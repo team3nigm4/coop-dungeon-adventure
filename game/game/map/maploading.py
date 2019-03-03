@@ -1,5 +1,5 @@
 # Import test map
-from game.game.map.mapdisplay import MapDisplay
+from game.game.map.maprender import MapDisplay
 
 def loadMap(zone, name, entry):
 	import json

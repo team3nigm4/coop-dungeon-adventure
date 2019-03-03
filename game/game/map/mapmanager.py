@@ -4,7 +4,7 @@ import math
 
 from game.game.entityclass import entitymanager as em
 from game.render.shader.shadermanager import ShaderManager as sm
-from game.game.map import mapdisplay as mp
+from game.game.map import maprender as mp
 
 
 class MapManager:

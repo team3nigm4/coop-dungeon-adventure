@@ -60,25 +60,7 @@ class MapDisplay:
 					id = MapDisplay.mapValues[step][height][width]
 					if id != 0:
 						pos = MapDisplay.tileSet["textPos"][MapDisplay.tileSet["id"][id - 1]]
-
-						MapDisplay.addBlock(width, y - height-1,
-											pos[0], pos[1])
-
-						MapDisplay.addBlock(width + 1, y - height-1,
-											pos[0] + 1, pos[1])
-
-						MapDisplay.addBlock(width + 1, y - height,
-											pos[0] + 1, pos[1] + 1)
-
-						MapDisplay.addBlock(width, y - height,
-											pos[0], pos[1] + 1)
-
-						MapDisplay.ebo.append(count)
-						MapDisplay.ebo.append(count + 1)
-						MapDisplay.ebo.append(count + 3)
-						MapDisplay.ebo.append(count + 1)
-						MapDisplay.ebo.append(count + 2)
-						MapDisplay.ebo.append(count + 3)
+						MapDisplay.addBlock(width, y - height, pos[0], pos[1], count, 3)
 						count += 4
 
 		print(MapDisplay.vbo)
@@ -92,9 +74,68 @@ class MapDisplay:
 		MapDisplay.shapeDown.bind()
 		MapDisplay.shapeDown.draw()
 
+	@staticmethod
+	def addBlock(posX, posY, tposX, tpoY, eboIndex, rotate=1):
+		if rotate == 0:
+			MapDisplay.addPos(posX, posY - 1,
+								tposX , tpoY + 1)
+
+			MapDisplay.addPos(posX + 1, posY - 1,
+								tposX, tpoY)
+
+			MapDisplay.addPos(posX + 1, posY,
+								tposX + 1, tpoY)
+
+			MapDisplay.addPos(posX, posY,
+							tposX + 1, tpoY + 1)
+
+		elif rotate == 1:
+			MapDisplay.addPos(posX, posY - 1,
+							  tposX, tpoY)
+
+			MapDisplay.addPos(posX + 1, posY - 1,
+							  tposX + 1, tpoY)
+
+			MapDisplay.addPos(posX + 1, posY,
+							  tposX + 1, tpoY + 1)
+
+			MapDisplay.addPos(posX, posY,
+							  tposX, tpoY + 1)
+		elif rotate == 2:
+			MapDisplay.addPos(posX, posY - 1,
+							  tposX + 1, tpoY)
+
+			MapDisplay.addPos(posX + 1, posY - 1,
+							  tposX + 1, tpoY + 1)
+
+			MapDisplay.addPos(posX + 1, posY,
+							  tposX, tpoY + 1)
+
+			MapDisplay.addPos(posX, posY,
+							  tposX, tpoY)
+		else:
+			MapDisplay.addPos(posX, posY - 1,
+							  tposX + 1, tpoY + 1)
+
+			MapDisplay.addPos(posX + 1, posY - 1,
+							  tposX, tpoY + 1)
+
+			MapDisplay.addPos(posX + 1, posY,
+							  tposX, tpoY)
+
+			MapDisplay.addPos(posX, posY,
+							  tposX + 1, tpoY)
+
+		MapDisplay.ebo.append(eboIndex)
+		MapDisplay.ebo.append(eboIndex + 1)
+		MapDisplay.ebo.append(eboIndex + 3)
+		MapDisplay.ebo.append(eboIndex + 1)
+		MapDisplay.ebo.append(eboIndex + 2)
+		MapDisplay.ebo.append(eboIndex + 3)
+
 
 	@staticmethod
-	def addBlock(width, height, posX, posY):
+	def addPos(width, height, posX, posY):
 		MapDisplay.vbo.append(float(width))
 		MapDisplay.vbo.append(float(height))
 		MapDisplay.vbo.append(0.0)
