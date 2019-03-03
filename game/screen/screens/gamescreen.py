@@ -58,10 +58,11 @@ class GameScreen(screen.Screen):
 			from game.game.command import Command
 			Command.command(input('Command : '))
 
-		mam.checkChangeMap()
+		mam.dispose()
 
 		gm.cam.goToEntity()
 		em.dispose()
+
 
 		# Return data
 		clientData.append(time.time_ns())

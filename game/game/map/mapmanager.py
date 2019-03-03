@@ -30,13 +30,13 @@ class MapManager:
 
 	@staticmethod
 	def init():
-		mp.MapDisplay.init()
+		mp.MapRender.init()
 
 		MapManager.changeRoom("test", "map1", 0)
 
 	@staticmethod
 	def display():
-		mp.MapDisplay.display()
+		mp.MapRender.display()
 
 	@staticmethod
 	def checkCollisionX(entity):
@@ -137,7 +137,6 @@ class MapManager:
 		# Load new room
 		from game.game.map import maploading
 		values = maploading.loadMap(zone, map, entry)
-		mp.MapDisplay.constructMap()
 
 		# Apply values
 		MapManager.zone = values[MapManager.DATA_MAP_INFO][0]
@@ -190,6 +189,8 @@ class MapManager:
 		cam.goToEntity()
 		sm.dispose()
 
+		mp.MapRender.constructMap()
+
 	@staticmethod
 	# Change one bloc of the interaction map
 	def setTile(position, id):
@@ -228,10 +229,15 @@ class MapManager:
 		MapManager.changeValues = values
 
 	@staticmethod
+	def dispose():
+		MapManager.checkChangeMap()
+		mp.MapRender.dispose()
+
+	@staticmethod
 	def checkChangeMap():
 		if MapManager.changeValues is not None:
 			MapManager.changeRoom(MapManager.changeValues[0], MapManager.changeValues[1], MapManager.changeValues[2])
 
 	@staticmethod
 	def unload():
-		mp.MapDisplay.unload()
+		mp.MapRender.unload()

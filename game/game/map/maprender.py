@@ -6,8 +6,7 @@ from game.render.texture import texture
 from game.util import matrix4f
 from game.render.shader.shadermanager import ShaderManager as sm
 
-class MapDisplay:
-
+class MapRender:
 	GROUND = 0
 	GROUND2 = 1
 	BASE_WALL = 2
@@ -27,123 +26,154 @@ class MapDisplay:
 	tilesPosition = []
 
 	vbo = []
+	vboCount = 0
 	ebo = []
+	eboCount = 0
+	floorVbo = [0,0,0,0,0,0,0,0]
 
 	modelDown =  matrix4f.Matrix4f()
+
+	change = False
 
 	@staticmethod
 	def init():
 		path_tileSetImage = "/tiles/tileset.png"
 		path_tileSet = "game/resources/textures/tiles/tileset.json"
-		MapDisplay.tileSet = json.load(open(path_tileSet))
-		MapDisplay.tileSetImage = texture.Texture(path_tileSetImage)
-		MapDisplay.tileSetImage.load()
+		MapRender.tileSet = json.load(open(path_tileSet))
+		MapRender.tileSetImage = texture.Texture(path_tileSetImage)
+		MapRender.tileSetImage.load()
 
-		MapDisplay.shapeUp = shape.Shape("texture", True)
-		MapDisplay.shapeDown = shape.Shape("texture", True)
+		MapRender.shapeUp = shape.Shape("texture", True)
+		MapRender.shapeDown = shape.Shape("texture", True)
 
-		MapDisplay.modelDown = matrix4f.Matrix4f(True)
-		sm.updateLink("texture", "model", MapDisplay.modelDown.matrix)
+		MapRender.modelDown = matrix4f.Matrix4f(True)
+		sm.updateLink("texture", "model", MapRender.modelDown.matrix)
 
 	@staticmethod
 	def constructMap():
-		MapDisplay.tilesPosition = []
-		MapDisplay.vbo = []
-		MapDisplay.ebo = []
-		gap = MapDisplay.tileSet["info"]["gap"]
-		size = MapDisplay.tileSet["info"]
-		count = 0
-		for step in range(2):
-			y = len(MapDisplay.mapValues[step])
-			for height in range(len(MapDisplay.mapValues[step])):
-				for width in range(len(MapDisplay.mapValues[step][height])):
-					id = MapDisplay.mapValues[step][height][width]
-					if id != 0:
-						pos = MapDisplay.tileSet["textPos"][MapDisplay.tileSet["id"][id - 1]]
-						MapDisplay.addBlock(width, y - height, pos[0], pos[1], count, 3)
-						count += 4
+		y = len(MapRender.mapValues[0])
+		x = len(MapRender.mapValues[0][0])
+		MapRender.tilesPosition = [[[None for jk in range(x)] for kj in range(y)] for lk in range(2)]
 
-		print(MapDisplay.vbo)
-		print(MapDisplay.ebo)
-		MapDisplay.shapeDown.setVertices(MapDisplay.vbo, [3, 2], MapDisplay.ebo)
+		MapRender.vbo = []
+		MapRender.ebo = []
+		MapRender.eboCount = 0
+		MapRender.vboCount = 0
+
+		for floor in range(2):
+			for height in range(len(MapRender.mapValues[floor])):
+				for width in range(len(MapRender.mapValues[floor][height])):
+					id = MapRender.mapValues[floor][height][width]
+					if id != 0:
+						pos = MapRender.tileSet["textPos"][MapRender.tileSet["id"][id - 1]]
+						MapRender.addTile(floor, width, y - height, pos[0], pos[1])
+
+		MapRender.shapeDown.setVertices(MapRender.vbo, [3, 2], MapRender.ebo)
 
 	@staticmethod
 	def display():
-		sm.updateLink("texture", "model", MapDisplay.modelDown.matrix)
-		MapDisplay.tileSetImage.bind()
-		MapDisplay.shapeDown.bind()
-		MapDisplay.shapeDown.draw()
+		sm.updateLink("texture", "model", MapRender.modelDown.matrix)
+		MapRender.tileSetImage.bind()
+		MapRender.shapeDown.bind()
+		MapRender.shapeDown.draw()
 
 	@staticmethod
-	def addBlock(posX, posY, tposX, tpoY, eboIndex, rotate=1):
+	def dispose():
+		if MapRender.change:
+			MapRender.shapeDown.resetVBO(MapRender.vbo)
+			MapRender.change = False
+
+	@staticmethod
+	def addTile(floor, posX, posY, tposX, tposY, rotate=1):
+		if MapRender.tilesPosition[floor][mp.MapManager.height - posY][posX] is None:
+			eboIndex = MapRender.eboCount * 4
+
+			MapRender.ebo.append(eboIndex)
+			MapRender.ebo.append(eboIndex + 1)
+			MapRender.ebo.append(eboIndex + 3)
+			MapRender.ebo.append(eboIndex + 1)
+			MapRender.ebo.append(eboIndex + 2)
+			MapRender.ebo.append(eboIndex + 3)
+
+			MapRender.eboCount +=1
+
+		vboCount = MapRender.vboCount * 20
+		MapRender.tilesPosition[floor][mp.MapManager.height - posY][posX] = MapRender.vboCount
+		MapRender.vboCount += 1
+
 		if rotate == 0:
-			MapDisplay.addPos(posX, posY - 1,
-								tposX , tpoY + 1)
+			MapRender.addPos(posX, posY - 1,
+							 tposX, tposY, vboCount)
 
-			MapDisplay.addPos(posX + 1, posY - 1,
-								tposX, tpoY)
+			MapRender.addPos(posX + 1, posY - 1,
+							 tposX, tposY + 1, vboCount)
 
-			MapDisplay.addPos(posX + 1, posY,
-								tposX + 1, tpoY)
+			MapRender.addPos(posX + 1, posY,
+							 tposX + 1, tposY + 1, vboCount)
 
-			MapDisplay.addPos(posX, posY,
-							tposX + 1, tpoY + 1)
-
-		elif rotate == 1:
-			MapDisplay.addPos(posX, posY - 1,
-							  tposX, tpoY)
-
-			MapDisplay.addPos(posX + 1, posY - 1,
-							  tposX + 1, tpoY)
-
-			MapDisplay.addPos(posX + 1, posY,
-							  tposX + 1, tpoY + 1)
-
-			MapDisplay.addPos(posX, posY,
-							  tposX, tpoY + 1)
+			MapRender.addPos(posX, posY,
+							 tposX + 1, tposY, vboCount)
 		elif rotate == 2:
-			MapDisplay.addPos(posX, posY - 1,
-							  tposX + 1, tpoY)
+			MapRender.addPos(posX, posY - 1,
+							 tposX + 1, tposY + 1, vboCount)
 
-			MapDisplay.addPos(posX + 1, posY - 1,
-							  tposX + 1, tpoY + 1)
+			MapRender.addPos(posX + 1, posY - 1,
+							 tposX + 1, tposY, vboCount)
 
-			MapDisplay.addPos(posX + 1, posY,
-							  tposX, tpoY + 1)
+			MapRender.addPos(posX + 1, posY,
+							 tposX, tposY, vboCount)
 
-			MapDisplay.addPos(posX, posY,
-							  tposX, tpoY)
-		else:
-			MapDisplay.addPos(posX, posY - 1,
-							  tposX + 1, tpoY + 1)
+			MapRender.addPos(posX, posY,
+							 tposX, tposY + 1, vboCount)
+		elif rotate == 1:
+			MapRender.addPos(posX, posY - 1,
+							 tposX, tposY + 1, vboCount)
 
-			MapDisplay.addPos(posX + 1, posY - 1,
-							  tposX, tpoY + 1)
+			MapRender.addPos(posX + 1, posY - 1,
+							 tposX + 1, tposY + 1, vboCount)
 
-			MapDisplay.addPos(posX + 1, posY,
-							  tposX, tpoY)
+			MapRender.addPos(posX + 1, posY,
+							 tposX + 1, tposY, vboCount)
 
-			MapDisplay.addPos(posX, posY,
-							  tposX + 1, tpoY)
+			MapRender.addPos(posX, posY,
+							 tposX, tposY, vboCount)
+		elif rotate == 3:
+			MapRender.addPos(posX, posY - 1,
+							 tposX + 1, tposY, vboCount)
 
-		MapDisplay.ebo.append(eboIndex)
-		MapDisplay.ebo.append(eboIndex + 1)
-		MapDisplay.ebo.append(eboIndex + 3)
-		MapDisplay.ebo.append(eboIndex + 1)
-		MapDisplay.ebo.append(eboIndex + 2)
-		MapDisplay.ebo.append(eboIndex + 3)
+			MapRender.addPos(posX + 1, posY - 1,
+							 tposX, tposY, vboCount)
 
+			MapRender.addPos(posX + 1, posY,
+							 tposX, tposY + 1, vboCount)
+
+			MapRender.addPos(posX, posY,
+							 tposX + 1, tposY + 1, vboCount)
+		MapRender.change = True
 
 	@staticmethod
-	def addPos(width, height, posX, posY):
-		MapDisplay.vbo.append(float(width))
-		MapDisplay.vbo.append(float(height))
-		MapDisplay.vbo.append(0.0)
-		MapDisplay.vbo.append(round(posX / MapDisplay.tileSet["info"]["size"][0], 3))
-		MapDisplay.vbo.append(round(posY / MapDisplay.tileSet["info"]["size"][1], 3))
+	def addPos(posX, posY, tposX, tposY, vboPos):
+		MapRender.vbo.insert(vboPos, float(posX))
+		MapRender.vbo.insert(vboPos + 1, float(posY))
+		MapRender.vbo.insert(vboPos + 2, 0.0)
+		MapRender.vbo.insert(vboPos + 3, round(tposX / MapRender.tileSet["info"]["size"][0], 3))
+		MapRender.vbo.insert(vboPos + 4,
+							 MapRender.tileSet["info"]["size"][1] - round(tposY / MapRender.tileSet["info"]["size"][1],
+																		  3))
+
+	@staticmethod
+	def deleteTile(layer, posX, posY):
+		vbo = MapRender.tilesPosition[layer][mp.MapManager.height - posY][posX]
+		MapRender.tilesPosition[layer][mp.MapManager.height - posY][posX] = None
+		for i in range(20):
+			del MapRender.vbo[vbo*20]
+		for i in range(6):
+			del MapRender.ebo[len(MapRender.ebo) - 1]
+
+		MapRender.change = True
 
 	@staticmethod
 	def unload():
-		MapDisplay.shapeDown.unload()
-		MapDisplay.shapeUp.unload()
-		MapDisplay.tileSetImage.unload()
+		MapRender.shapeDown.unload()
+		MapRender.shapeUp.unload()
+		MapRender.tileSetImage.unload()
