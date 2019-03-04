@@ -16,6 +16,6 @@ Installation & Lancement
 Contributeurs
 --------------
 - Alexandre Boin ([alexboin](https://github.com/alexboin/)) 
-<<contact@alexandre-boinfr>>
+<<contact@alexandre-boin.fr>>
 - Maxence Bazin ([MightyCode](https://github.com/MightyCode/)) 
 <<contact@bazin-maxence.tk>>
