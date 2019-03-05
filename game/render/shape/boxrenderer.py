@@ -33,7 +33,7 @@ class BoxRenderer:
 				0, size[1], 0.0, 				self.color[0], self.color[1], self.color[2], self.color[3]]
 
 
-		self.shape.resetVBO(quad)
+		self.shape.setVbo(quad)
 
 	def updateModel(self, newPos):
 		self.model.matrix[3][0] = newPos[0] - self.size[0] / 2

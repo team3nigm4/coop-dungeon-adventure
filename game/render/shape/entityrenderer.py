@@ -44,7 +44,7 @@ class EntityRenderer:
 				size[0] - hotPoint[0], size[1] - hotPoint[1], 0.0, 1.0, 1.0,
 				0 - hotPoint[0], size[1] - hotPoint[1], 0.0, 0.0, 1.0]
 
-		self.shape.resetVBO(quad)
+		self.shape.setVbo(quad)
 
 	def setImage(self, size, image, hotPoint):
 		self.tex.unload()
@@ -60,7 +60,7 @@ class EntityRenderer:
 				size[0] - hotPoint[0], size[1] - hotPoint[1], 0.0, 1.0, 1.0,
 				0 - hotPoint[0], size[1] - hotPoint[1], 0.0, 0.0, 1.0]
 
-		self.shape.resetVBO(quad)
+		self.shape.setVbo(quad)
 
 	def updateModel(self, newPos):
 		self.model.matrix[3][0] = newPos[0]

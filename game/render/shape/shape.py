@@ -29,13 +29,9 @@ class Shape:
 				print("(shape-setVertices) using EBO without providing indices(None)")
 				exit(1)
 
-			self.indicesNumber = len(indices)
-			indices = numpy.array(indices, dtype=numpy.uint32)
+			self.setEbo(indices)
 
-			gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, self.ebo)
-			gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, indices.itemsize * len(indices), indices, gl.GL_STATIC_DRAW)
-
-		self.resetVBO(vertices)
+		self.setVbo(vertices)
 		vertices = numpy.array(vertices, dtype=numpy.float32)
 
 		gl.glVertexAttribPointer(0, info[0], gl.GL_FLOAT, gl.GL_FALSE, sum(info) * vertices.itemsize,
@@ -52,11 +48,18 @@ class Shape:
 
 		self.unbind()
 
-	def resetVBO(self, vertices):
+	def setVbo(self, vertices):
 		self.bind()
 		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, self.vbo)
 		vertices = numpy.array(vertices, dtype=numpy.float32)
 		gl.glBufferData(gl.GL_ARRAY_BUFFER, vertices.itemsize * len(vertices), vertices, gl.GL_STATIC_DRAW)
+
+	def setEbo(self, indices):
+		self.bind()
+		gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, self.ebo)
+		self.indicesNumber = len(indices)
+		indices = numpy.array(indices, dtype=numpy.uint32)
+		gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, indices.itemsize * len(indices), indices, gl.GL_STATIC_DRAW)
 
 	def display(self):
 		self.applyShader()
