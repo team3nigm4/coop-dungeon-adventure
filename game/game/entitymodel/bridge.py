@@ -1,6 +1,7 @@
 # Class pressure plate
 
 from game.game.entityclass import entitydrawable
+from game.game.map.maprender import MapRender
 
 import math
 
@@ -14,8 +15,6 @@ class Bridge(entitydrawable.EntityDrawable):
 
 	def __init__(self, args):
 		super().__init__(args)
-
-		self.entityRenderer.setImagePath([1, 1], "entities/pontV.png", [0, 0])
 
 		self.direction = args[Bridge.ARGS_DIRECTION]
 		self.size = args[Bridge.ARGS_SIZE]
@@ -59,19 +58,55 @@ class Bridge(entitydrawable.EntityDrawable):
 		toRemove = []
 		for i in range(len(self.counters)):
 			if self.counters[i][0] >= self.countLen:
+
 				# Apply change
 				toRemove.append(i)
 				if self.direction:
+					rotation = 2
+					position = int(self.counters[i][1]), int(self.pos[1])
+
+					if self.counters[i][1] == self.pos[0]:
+						texture = "begin-bridge"
+					elif self.counters[i][1] == self.pos[0] + self.size * self.append:
+						texture = "begin-bridge"
+						rotation += 2
+						rotation %= 4
+					else:
+						texture = "bridge"
+
 					self.mam.setTile([self.counters[i][1], self.pos[1]], self.counters[i][2])
 
 					# Next case
 					if not math.fabs(math.fabs(self.pos[0]) - math.fabs(self.counters[i][1])) == self.size:
 						self.counters.append([0, self.counters[i][1] + self.append, self.counters[i][2]])
 				else:
+					rotation = 1
+					position = int(self.pos[0]), int(self.counters[i][1])
+
+					if self.counters[i][1] == self.pos[1]:
+						texture = "begin-bridge"
+					elif self.counters[i][1] == self.pos[1] + self.size * self.append:
+						texture = "begin-bridge"
+						rotation += 2
+						rotation %= 4
+					else:
+						texture = "bridge"
+
+
 					self.mam.setTile([self.pos[0], self.counters[i][1]], self.counters[i][2])
+
 					# Next case
 					if not math.fabs(math.fabs(self.pos[1]) - math.fabs(self.counters[i][1])) == self.size:
 						self.counters.append([0, self.counters[i][1] + self.append, self.counters[i][2]])
+
+				if self.counters[i][2] == 0:
+					if self.append > 0:
+						rotation += 2
+						rotation %= 4
+
+					MapRender.addTile(0, position[0], position[1], texture, rotation)
+				else:
+					MapRender.deleteTile(0, position[0], position[1])
 
 			else:
 				self.counters[i][0] += 1
@@ -82,8 +117,7 @@ class Bridge(entitydrawable.EntityDrawable):
 				del self.counters[i]
 
 	def display(self):
-		if self.state:
-			super().display()
+		pass
 
 	def activate(self):
 		if self.direction:

@@ -17,7 +17,11 @@ class BoxRenderer:
 				2, 3, 0]
 
 		self.shape = shape.Shape("box", True)
-		self.shape.setVertices(quad, [3, 4], indices)
+		self.shape.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
+		self.shape.setEbo(indices)
+		self.shape.setVbo(quad)
+		self.shape.setReading([3, 4])
+
 		self.model = matrix4f.Matrix4f(True)
 
 	def display(self):

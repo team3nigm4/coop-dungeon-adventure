@@ -1,7 +1,6 @@
 import json
 
 from game.render.shape import shape
-from game.game.map import mapmanager as mp
 from game.render.texture import texture
 from game.util import matrix4f
 from game.render.shader.shadermanager import ShaderManager as sm
@@ -45,7 +44,11 @@ class MapRender:
 		MapRender.tileSetImage.load()
 
 		MapRender.shapeUp = shape.Shape("texture", True)
+		MapRender.shapeUp.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
+		MapRender.shapeUp.setReading([3, 2])
 		MapRender.shapeDown = shape.Shape("texture", True)
+		MapRender.shapeDown.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
+		MapRender.shapeDown.setReading([3, 2])
 
 		MapRender.modelDown = matrix4f.Matrix4f(True)
 		sm.updateLink("texture", "model", MapRender.modelDown.matrix)
@@ -74,7 +77,7 @@ class MapRender:
 						MapRender.vboCount += 1
 
 		MapRender.change = True
-		MapRender.shapeDown.setVertices(MapRender.vbo, [3, 2], MapRender.ebo)
+		MapRender.dispose()
 
 		# Set the camera position
 
@@ -109,8 +112,8 @@ class MapRender:
 	@staticmethod
 	def dispose():
 		if MapRender.change:
-			MapRender.shapeDown.setVbo(MapRender.vbo)
 			MapRender.shapeDown.setEbo(MapRender.ebo)
+			MapRender.shapeDown.setVbo(MapRender.vbo)
 			MapRender.change = False
 
 	@staticmethod
@@ -123,8 +126,6 @@ class MapRender:
 			MapRender.shiftVboIndex(floor, posX, posY)
 
 		pos = MapRender.tileSet["textPos"][textName]
-		print("vboCount", len(MapRender.vbo) / 20)
-		print("eboCount", MapRender.ebo)
 		MapRender.addTile2(vboCount, floor, posX, posY, pos[0], pos[1], rotate)
 		MapRender.change = True
 

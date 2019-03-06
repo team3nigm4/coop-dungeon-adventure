@@ -32,7 +32,7 @@ class MapManager:
 	def init():
 		mp.MapRender.init()
 
-		MapManager.changeRoom("test", "map1", 0)
+		MapManager.changeRoom("test", "map4", 0)
 
 	@staticmethod
 	def display():

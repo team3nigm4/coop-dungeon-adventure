@@ -19,7 +19,10 @@ class EntityRenderer:
 				2, 3, 0]
 
 		self.shape = shape.Shape("texture", True)
-		self.shape.setVertices(quad, [3, 2], indices)
+		self.shape.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
+		self.shape.setEbo(indices)
+		self.shape.setVbo(quad)
+		self.shape.setReading([3, 2])
 
 		self.tex = texture.Texture("")
 		self.tex.defaultInit()
