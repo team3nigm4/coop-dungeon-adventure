@@ -5,7 +5,6 @@ from game.render.shape import entityrenderer as ed
 
 
 class EntityDrawable(entitycollision.EntityCollision):
-
 	def __init__(self, args):
 		super().__init__(args)
 		self.displayLayer = -1

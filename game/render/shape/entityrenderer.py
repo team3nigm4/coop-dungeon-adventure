@@ -34,12 +34,11 @@ class EntityRenderer:
 		self.shape.display()
 
 	def setImagePath(self, size, path, hotPoint):
-		self.tex.unload()
+		self.tex.unload(False)
 		self.size = size
 		self.hotPoint = hotPoint
 		self.tex = texture.Texture(path)
 		self.tex.load()
-		self.hotPoint = 0
 
 		size = self.size
 		quad = [0 - hotPoint[0], 0 - hotPoint[1], 0.0, 0.0, 0.0,
@@ -50,12 +49,11 @@ class EntityRenderer:
 		self.shape.setVbo(quad)
 
 	def setImage(self, size, image, hotPoint):
-		self.tex.unload()
+		self.tex.unload(False)
 		self.size = size
 		self.hotPoint = hotPoint
-		self.tex.texId.setPath("(entityRenderer-texture from path")
+		self.tex.texId.setPath("(entityRenderer-texture from path)")
 		self.tex.loadImage(image)
-		self.hotPoint = 0
 
 		size = self.size
 		quad = [0 - hotPoint[0], 0 - hotPoint[1], 0.0, 0.0, 0.0,

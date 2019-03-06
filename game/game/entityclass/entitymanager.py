@@ -9,15 +9,17 @@ class EntityManager:
 	PLAYER_1 = 0
 	PLAYER_2 = 1
 
+	ENTITY_NO_ERROR = ["SpawnPoint"]
+
+	DISPLAY_DOWN = 0
+	DISPLAY_MIDDLE = 1
+	DISPLAY_UP = 2
+
 	entities = []
 	entitiesCol = []
 	entitiesRemove = []
 
 	len = 0
-
-	DISPLAY_DOWN = 0
-	DISPLAY_MIDDLE = 1
-	DISPLAY_UP = 2
 
 	displayLayer = [[], [], []]
 
@@ -30,7 +32,8 @@ class EntityManager:
 		if entity != False:
 			EntityManager.addWithId(entity)
 		else:
-			print("Error: wrong arguments to instance an entity\n", args)
+			if not args[0] in EntityManager.ENTITY_NO_ERROR:
+				print("Error: wrong arguments to instance an entity:\n", args)
 
 	@staticmethod
 	def addToDisplay(layer, id, pos=0):
@@ -48,8 +51,8 @@ class EntityManager:
 		if not id in EntityManager.entitiesCol:
 			EntityManager.entitiesCol.append(id)
 		else:
-			print("(EntityManager - addToTest() ) Error two entities with same id want to be place on entityCol, id :",
-				  id)
+			print("(EntityManager - addToTest()) Error, adding two same id :",
+				  id, ", type:", EntityManager.entities[id].type)
 
 	@staticmethod
 	def addWithId(entity):

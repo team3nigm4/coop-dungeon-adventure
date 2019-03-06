@@ -14,33 +14,28 @@ class Door(entitycollision.EntityCollision):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox(args[Door.ARGS_COL_BOX_SIZE], False)
+		self.setColBox(args[Door.ARGS_COL_BOX_SIZE], False, False)
 
 		self.zone = args[Door.ARGS_ZONE_NAME]
 		self.map = args[Door.ARGS_MAP_ID]
 		self.entry = args[Door.ARGS_MAP_ENTRY_POINT]
 
 		self.isEvent = args[Door.ARGS_IS_EVENT]
+
 		if self.isEvent:
 			self.isActive = False
 			self.event = args[Door.ARGS_EVENT]
+			self.ev.addActive(self.event, self.id)
+			self.mam.setTileSize(self.pos, self.halfColSize, 1)
 		else:
 			self.isActive = True
-			self.setColBox(self.colSize, True)
 			self.setDrawCol(True)
+			self.setColBox(self.colSize, True)
 
 		self.isTwo = False
 		self.attributes["door"] = 2
 
 		self.colRenderer.setAttributes(self.colSize, [0.7725, 0.956, 0.258, 0.5])
-
-		if self.isEvent:
-			self.isActive = False
-			self.ev.addActive(self.event, self.id)
-			self.mam.setTileSize(self.pos, self.halfColSize, 1)
-
-		else:
-			self.isActive = True
 
 	def update(self):
 		self.isTwo = False

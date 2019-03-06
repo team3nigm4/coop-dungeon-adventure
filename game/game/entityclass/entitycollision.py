@@ -3,7 +3,6 @@ from game.game.entityclass import entity
 
 class EntityCollision(entity.Entity):
 
-
 	# NO_STATE = 0
 	# GIVE_STATE = 1
 	# TAKE_STATE = 2
@@ -49,7 +48,7 @@ class EntityCollision(entity.Entity):
 		if self.drawCol:
 			self.colRenderer.display()
 
-	def setColBox(self, size, test):
+	def setColBox(self, size, test, remove=True):
 		self.colSize = size
 		self.halfColSize[0] = self.colSize[0] / 2
 		self.halfColSize[1] = self.colSize[1] / 2
@@ -59,7 +58,8 @@ class EntityCollision(entity.Entity):
 			if self.testCol:
 				self.em.addToTest(self.id)
 			else:
-				self.em.removeToTest(self.id)
+				if remove:
+					self.em.removeToTest(self.id)
 
 		if self.drawCol:
 			self.colRenderer.setAttributes(self.colSize, self.colRenderer.color)
