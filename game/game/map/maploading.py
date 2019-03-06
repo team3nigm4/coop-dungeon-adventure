@@ -1,5 +1,5 @@
 # Import test map
-from game.game.map.mapdisplay import MapDisplay
+from game.game.map.maprender import MapRender
 
 def loadMap(zone, name, entry):
 	import json
@@ -13,7 +13,7 @@ def loadMap(zone, name, entry):
 							int(getValues["entries"]["default"]), int(getValues["map"]["events"])])
 
 		# Load graphic
-		MapDisplay.mapValues = getValues["layers"]
+		MapRender.mapValues = getValues["layers"]
 
 		returnValues.append(getValues["collision"][0])
 		returnValues.append(getValues["entries"][str(entry)])

@@ -70,10 +70,11 @@ class Texture:
 	def status(self):
 		return self.correctLoaded
 
-	def unload(self):
+	def unload(self, status=True):
 		# Security when error with unloaded textures
 		if self.correctLoaded:
 			gl.glDeleteTextures(self.texId.getId())
 			gameManager.GameManager.texManager.remove(self.texId)
 			self.correctLoaded = False
-			print("Texture num : " + str(self.texId.getId()) + ", unloaded.")
+			if status:
+				print("Texture num : " + str(self.texId.getId()) + ", unloaded.")

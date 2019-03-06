@@ -4,7 +4,7 @@ import math
 
 from game.game.entityclass import entitymanager as em
 from game.render.shader.shadermanager import ShaderManager as sm
-from game.game.map import mapdisplay as mp
+from game.game.map import maprender as mp
 
 
 class MapManager:
@@ -16,8 +16,8 @@ class MapManager:
 	INTERACTION_SOLID = 1
 	INTERACTION_EMPTY = 2
 
-	width = None
-	height = None
+	cWidth = None
+	cHeight = None
 	interaction = []
 
 	zone = "null"
@@ -30,13 +30,13 @@ class MapManager:
 
 	@staticmethod
 	def init():
-		mp.MapDisplay.init()
+		mp.MapRender.init()
 
-		MapManager.changeRoom("test", "map1", 0)
+		MapManager.changeRoom("test", "map4", 0)
 
 	@staticmethod
 	def display():
-		mp.MapDisplay.display()
+		mp.MapRender.display()
 
 	@staticmethod
 	def checkCollisionX(entity):
@@ -46,21 +46,21 @@ class MapManager:
 		position = entity.pos
 
 		nextPos = position[0] + speed
-		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.width:
+		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.cWidth:
 			posY = [math.floor(position[1] - colBoxSize[1]), math.floor(position[1] + colBoxSize[1])]
 
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
-				if MapManager.interaction[MapManager.height - 1 - posY[0]][nextPos] == MapManager.INTERACTION_SOLID or \
-						MapManager.interaction[MapManager.height - 1 - posY[1]][
+				if MapManager.interaction[MapManager.cHeight - 1 - posY[0]][nextPos] == MapManager.INTERACTION_SOLID or \
+						MapManager.interaction[MapManager.cHeight - 1 - posY[1]][
 							nextPos] == MapManager.INTERACTION_SOLID:
 					entity.setPos([nextPos - half - 0.001, entity.pos[1]])
 					return
 
 			else:
 				nextPos = math.floor(nextPos - half)
-				if MapManager.interaction[MapManager.height - 1 - posY[0]][nextPos] == MapManager.INTERACTION_SOLID or \
-						MapManager.interaction[MapManager.height - 1 - posY[1]][
+				if MapManager.interaction[MapManager.cHeight - 1 - posY[0]][nextPos] == MapManager.INTERACTION_SOLID or \
+						MapManager.interaction[MapManager.cHeight - 1 - posY[1]][
 							nextPos] == MapManager.INTERACTION_SOLID:
 					entity.setPos([nextPos + 1 + half + 0.001, entity.pos[1]])
 					return
@@ -77,20 +77,20 @@ class MapManager:
 		position = entity.pos
 
 		nextPos = position[1] + speed
-		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.height:
+		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.cHeight:
 			posX = [math.floor(position[0] - colBoxSize[0]), math.floor(position[0] + colBoxSize[0])]
 
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
-				if MapManager.interaction[MapManager.height - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
-						MapManager.interaction[MapManager.height - 1 - nextPos][
+				if MapManager.interaction[MapManager.cHeight - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
+						MapManager.interaction[MapManager.cHeight - 1 - nextPos][
 							posX[1]] == MapManager.INTERACTION_SOLID:
 					entity.setPos([entity.pos[0], nextPos - half - 0.001])
 					return
 			else:
 				nextPos = math.floor(nextPos - half)
-				if MapManager.interaction[MapManager.height - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
-						MapManager.interaction[MapManager.height - 1 - nextPos][
+				if MapManager.interaction[MapManager.cHeight - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
+						MapManager.interaction[MapManager.cHeight - 1 - nextPos][
 							posX[1]] == MapManager.INTERACTION_SOLID:
 					entity.setPos([entity.pos[0], nextPos + 1 + half + 0.001])
 					return
@@ -100,7 +100,7 @@ class MapManager:
 
 	@staticmethod
 	def checkEmpty(entity):
-		if MapManager.interaction[MapManager.height - 1 - math.floor(entity.pos[1])][
+		if MapManager.interaction[MapManager.cHeight - 1 - math.floor(entity.pos[1])][
 			math.floor(entity.pos[0])] == MapManager.INTERACTION_EMPTY:
 			side = [math.floor(entity.pos[0] - entity.halfColSize[0]),
 					math.floor(entity.pos[1] + entity.halfColSize[1]),
@@ -108,16 +108,16 @@ class MapManager:
 					math.floor(entity.pos[1] - entity.halfColSize[1])]
 
 			empty = 0
-			if MapManager.interaction[MapManager.height - 1 - side[1]][side[0]] == MapManager.INTERACTION_EMPTY:
+			if MapManager.interaction[MapManager.cHeight - 1 - side[1]][side[0]] == MapManager.INTERACTION_EMPTY:
 				empty += 1
 
-			if MapManager.interaction[MapManager.height - 1 - side[1]][side[2]] == MapManager.INTERACTION_EMPTY:
+			if MapManager.interaction[MapManager.cHeight - 1 - side[1]][side[2]] == MapManager.INTERACTION_EMPTY:
 				empty += 1
 
-			if MapManager.interaction[MapManager.height - 1 - side[3]][side[2]] == MapManager.INTERACTION_EMPTY:
+			if MapManager.interaction[MapManager.cHeight - 1 - side[3]][side[2]] == MapManager.INTERACTION_EMPTY:
 				empty += 1
 
-			if MapManager.interaction[MapManager.height - 1 - side[3]][side[0]] == MapManager.INTERACTION_EMPTY:
+			if MapManager.interaction[MapManager.cHeight - 1 - side[3]][side[0]] == MapManager.INTERACTION_EMPTY:
 				empty += 1
 
 			if empty > 1:
@@ -137,7 +137,6 @@ class MapManager:
 		# Load new room
 		from game.game.map import maploading
 		values = maploading.loadMap(zone, map, entry)
-		mp.MapDisplay.constructMap()
 
 		# Apply values
 		MapManager.zone = values[MapManager.DATA_MAP_INFO][0]
@@ -151,10 +150,10 @@ class MapManager:
 		EventManager.setupEvent(values[MapManager.DATA_MAP_INFO][3])
 
 		# Set the size of the current map
-		width = len(MapManager.interaction[0])
-		height = len(MapManager.interaction)
-		MapManager.width = width
-		MapManager.height = height
+		cWidth = len(MapManager.interaction[0])
+		cHeight = len(MapManager.interaction)
+		MapManager.cWidth = cWidth
+		MapManager.cHeight = cHeight
 
 		# Create instance of entities and place players
 		MapManager.entry = entry
@@ -167,33 +166,12 @@ class MapManager:
 			args.insert(0, (values[MapManager.DATA_ENTITIES][i][0]))
 			em.EntityManager.addA(args)
 
-		# Set the camera position
-
-		from game.screen import gamemanager
-		cam = gamemanager.GameManager.cam
-
-		cam.setPos([0, 0, cam.pos[2]])
-		cam.setMaximum([width, height])
-
-		if width > 18:
-			cam.track[0] = True
-		else:
-			cam.track[0] = False
-			cam.addPos([-width / 2, 0, 0])
-
-		if height > 12:
-			cam.track[1] = True
-		else:
-			cam.track[1] = False
-			cam.addPos([0, -height / 2, 0])
-
-		cam.goToEntity()
-		sm.dispose()
+		mp.MapRender.constructMap()
 
 	@staticmethod
 	# Change one bloc of the interaction map
 	def setTile(position, id):
-		MapManager.interaction[MapManager.height - 1 - math.floor(position[1])][math.floor(position[0])] = id
+		MapManager.interaction[MapManager.cHeight - 1 - math.floor(position[1])][math.floor(position[0])] = id
 
 		# Check if entity with collision in the change
 		if id == MapManager.INTERACTION_SOLID:
@@ -228,10 +206,15 @@ class MapManager:
 		MapManager.changeValues = values
 
 	@staticmethod
+	def dispose():
+		MapManager.checkChangeMap()
+		mp.MapRender.dispose()
+
+	@staticmethod
 	def checkChangeMap():
 		if MapManager.changeValues is not None:
 			MapManager.changeRoom(MapManager.changeValues[0], MapManager.changeValues[1], MapManager.changeValues[2])
 
 	@staticmethod
 	def unload():
-		mp.MapDisplay.unload()
+		mp.MapRender.unload()

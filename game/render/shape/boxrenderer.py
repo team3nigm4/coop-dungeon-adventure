@@ -17,7 +17,11 @@ class BoxRenderer:
 				2, 3, 0]
 
 		self.shape = shape.Shape("box", True)
-		self.shape.setVertices(quad, [3, 4], indices)
+		self.shape.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
+		self.shape.setEbo(indices)
+		self.shape.setVbo(quad)
+		self.shape.setReading([3, 4])
+
 		self.model = matrix4f.Matrix4f(True)
 
 	def display(self):
@@ -33,7 +37,7 @@ class BoxRenderer:
 				0, size[1], 0.0, 				self.color[0], self.color[1], self.color[2], self.color[3]]
 
 
-		self.shape.resetVBO(quad)
+		self.shape.setVbo(quad)
 
 	def updateModel(self, newPos):
 		self.model.matrix[3][0] = newPos[0] - self.size[0] / 2
