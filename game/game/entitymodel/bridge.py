@@ -74,7 +74,7 @@ class Bridge(entitydrawable.EntityDrawable):
 					else:
 						texture = "bridge"
 
-					self.mam.setTile([self.counters[i][1], self.pos[1]], self.counters[i][2])
+					self.mam.setTileSize([self.counters[i][1]+0.5, self.pos[1]+0.5], [0.498, 0.498], self.counters[i][2])
 
 					# Next case
 					if not math.fabs(math.fabs(self.pos[0]) - math.fabs(self.counters[i][1])) == self.size:
@@ -92,8 +92,7 @@ class Bridge(entitydrawable.EntityDrawable):
 					else:
 						texture = "bridge"
 
-
-					self.mam.setTile([self.pos[0], self.counters[i][1]], self.counters[i][2])
+					self.mam.setTileSize([self.pos[0]+0.5, self.counters[i][1]+0.5], [0.498, 0.498], self.counters[i][2])
 
 					# Next case
 					if not math.fabs(math.fabs(self.pos[1]) - math.fabs(self.counters[i][1])) == self.size:

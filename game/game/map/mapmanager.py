@@ -13,6 +13,8 @@ class MapManager:
 	DATA_ENTRIES = 2
 	DATA_ENTITIES = 3
 
+	COEF = 2
+
 	INTERACTION_SOLID = 1
 	INTERACTION_EMPTY = 2
 
@@ -41,71 +43,69 @@ class MapManager:
 	@staticmethod
 	def checkCollisionX(entity):
 		colBoxSize = entity.halfColSize
-		half = colBoxSize[0]
-		speed = entity.speed[0]
-		position = entity.pos
+		half = colBoxSize[0] * MapManager.COEF
+		speed = entity.speed[0] * MapManager.COEF
+		position = [entity.pos[0] * MapManager.COEF, entity.pos[1] * MapManager.COEF]
 
 		nextPos = position[0] + speed
 		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.cWidth:
-			posY = [math.floor(position[1] - colBoxSize[1]), math.floor(position[1] + colBoxSize[1])]
-
+			posY = [math.floor(position[1] - colBoxSize[1]  * MapManager.COEF), math.floor(position[1] + colBoxSize[1]  * MapManager.COEF)]
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
 				if MapManager.interaction[MapManager.cHeight - 1 - posY[0]][nextPos] == MapManager.INTERACTION_SOLID or \
 						MapManager.interaction[MapManager.cHeight - 1 - posY[1]][
 							nextPos] == MapManager.INTERACTION_SOLID:
-					entity.setPos([nextPos - half - 0.001, entity.pos[1]])
+					entity.setPos([nextPos / MapManager.COEF - half / MapManager.COEF - 0.001, entity.pos[1]])
 					return
-
 			else:
 				nextPos = math.floor(nextPos - half)
 				if MapManager.interaction[MapManager.cHeight - 1 - posY[0]][nextPos] == MapManager.INTERACTION_SOLID or \
 						MapManager.interaction[MapManager.cHeight - 1 - posY[1]][
 							nextPos] == MapManager.INTERACTION_SOLID:
-					entity.setPos([nextPos + 1 + half + 0.001, entity.pos[1]])
+					entity.setPos([nextPos / MapManager.COEF + 1 / MapManager.COEF + half / MapManager.COEF + 0.001, entity.pos[1]])
 					return
 		else:
 			return
 
-		entity.setPos([position[0] + speed, entity.pos[1]])
+		entity.setPos([position[0] / MapManager.COEF + speed / MapManager.COEF, entity.pos[1]])
 
 	@staticmethod
 	def checkCollisionY(entity):
 		colBoxSize = entity.halfColSize
-		half = colBoxSize[1]
-		speed = entity.speed[1]
-		position = entity.pos
+		half = colBoxSize[1]  * MapManager.COEF
+		speed = entity.speed[1]  * MapManager.COEF
+		position = [entity.pos[0] * MapManager.COEF, entity.pos[1] * MapManager.COEF]
 
 		nextPos = position[1] + speed
 		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.cHeight:
-			posX = [math.floor(position[0] - colBoxSize[0]), math.floor(position[0] + colBoxSize[0])]
+			posX = [math.floor(position[0] - colBoxSize[0] * MapManager.COEF), math.floor(position[0] + colBoxSize[0] * MapManager.COEF)]
 
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
 				if MapManager.interaction[MapManager.cHeight - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
 						MapManager.interaction[MapManager.cHeight - 1 - nextPos][
 							posX[1]] == MapManager.INTERACTION_SOLID:
-					entity.setPos([entity.pos[0], nextPos - half - 0.001])
+					entity.setPos([entity.pos[0], nextPos / MapManager.COEF - half / MapManager.COEF - 0.001])
 					return
 			else:
 				nextPos = math.floor(nextPos - half)
 				if MapManager.interaction[MapManager.cHeight - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
 						MapManager.interaction[MapManager.cHeight - 1 - nextPos][
 							posX[1]] == MapManager.INTERACTION_SOLID:
-					entity.setPos([entity.pos[0], nextPos + 1 + half + 0.001])
+					entity.setPos([entity.pos[0], nextPos / MapManager.COEF + 1 / MapManager.COEF + half / MapManager.COEF + 0.001])
 					return
 		else:
 			return
-		entity.setPos([entity.pos[0], position[1] + speed])
+		entity.setPos([entity.pos[0], position[1] / MapManager.COEF + speed / MapManager.COEF])
 
 	@staticmethod
 	def checkEmpty(entity):
-		if MapManager.interaction[MapManager.cHeight - 1 - math.floor(entity.pos[1])][
-			math.floor(entity.pos[0])] == MapManager.INTERACTION_EMPTY:
-			side = [math.floor(entity.pos[0] - entity.halfColSize[0]),
-					math.floor(entity.pos[1] + entity.halfColSize[1]),
-					math.floor(entity.pos[0] + entity.halfColSize[0]),
-					math.floor(entity.pos[1] - entity.halfColSize[1])]
+		if MapManager.interaction[MapManager.cHeight - 1 - math.floor(entity.pos[1] * MapManager.COEF)][
+			math.floor(entity.pos[0] * MapManager.COEF)] == MapManager.INTERACTION_EMPTY:
+			side = [math.floor(entity.pos[0] * MapManager.COEF - entity.halfColSize[0] * MapManager.COEF),
+					math.floor(entity.pos[1] * MapManager.COEF + entity.halfColSize[1] * MapManager.COEF),
+					math.floor(entity.pos[0] * MapManager.COEF + entity.halfColSize[0] * MapManager.COEF),
+					math.floor(entity.pos[1] * MapManager.COEF - entity.halfColSize[1] * MapManager.COEF)]
 
 			empty = 0
 			if MapManager.interaction[MapManager.cHeight - 1 - side[1]][side[0]] == MapManager.INTERACTION_EMPTY:
@@ -169,8 +169,13 @@ class MapManager:
 		mp.MapRender.constructMap()
 
 	@staticmethod
+	def setTileCoef(position, id):
+		MapManager.setTile([position[0] * MapManager.COEF, position[1] * MapManager.COEF], id)
+
+	@staticmethod
 	# Change one bloc of the interaction map
 	def setTile(position, id):
+		print("add a tile", math.floor(position[0]), math.floor(position[1]))
 		MapManager.interaction[MapManager.cHeight - 1 - math.floor(position[1])][math.floor(position[0])] = id
 
 		# Check if entity with collision in the change
@@ -194,12 +199,19 @@ class MapManager:
 	# Change a zone of the interaction map
 	@staticmethod
 	def setTileSize(position, size, id):
-		posX = [math.floor(position[0] - size[0]), math.floor(position[0] + size[0])]
-		posY = [math.floor(position[1] - size[1]), math.floor(position[1] + size[1])]
+		posX = [math.floor(position[0] * MapManager.COEF - size[0] * MapManager.COEF), math.floor(position[0] * MapManager.COEF + size[0] * MapManager.COEF)]
+		posY = [math.floor(position[1] * MapManager.COEF - size[1] * MapManager.COEF), math.floor(position[1] * MapManager.COEF + size[1] * MapManager.COEF)]
 
-		for x in range(posX[0], posX[1] + 1):
-			for y in range(posY[0], posY[1] + 1):
-				MapManager.setTile([x, y], id)
+		countX = 0
+		countY = 0
+		print("infemX", posX[1] - posX[0] + 1, posX)
+		print("infemY", posY[1] - posY[0] + 1, posY)
+		while countX < posX[1] - posX[0] + 1:
+			while countY < posY[1] - posY[0] + 1:
+				MapManager.setTile([posX[0] + countX, posY[0] + countY], id)
+				countY += 1
+			countY = 0
+			countX += 1
 
 	@staticmethod
 	def reserveChange(values):
