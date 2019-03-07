@@ -175,7 +175,6 @@ class MapManager:
 	@staticmethod
 	# Change one bloc of the interaction map
 	def setTile(position, id):
-		print("add a tile", math.floor(position[0]), math.floor(position[1]))
 		MapManager.interaction[MapManager.cHeight - 1 - math.floor(position[1])][math.floor(position[0])] = id
 
 		# Check if entity with collision in the change
@@ -204,8 +203,6 @@ class MapManager:
 
 		countX = 0
 		countY = 0
-		print("infemX", posX[1] - posX[0] + 1, posX)
-		print("infemY", posY[1] - posY[0] + 1, posY)
 		while countX < posX[1] - posX[0] + 1:
 			while countY < posY[1] - posY[0] + 1:
 				MapManager.setTile([posX[0] + countX, posY[0] + countY], id)
