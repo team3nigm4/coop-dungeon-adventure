@@ -5,6 +5,7 @@ import math
 from game.game.entityclass import entitymanager as em
 from game.render.shader.shadermanager import ShaderManager as sm
 from game.game.map import maprender as mp
+from game.game.map.eventmanager import EventManager as ev
 
 
 class MapManager:
@@ -34,7 +35,7 @@ class MapManager:
 	def init():
 		mp.MapRender.init()
 
-		MapManager.changeRoom("test", "map4", 0)
+		MapManager.changeRoom("test", "map1", 0)
 
 	@staticmethod
 	def display():
@@ -146,8 +147,7 @@ class MapManager:
 		MapManager.interaction = values[MapManager.DATA_INTERACTIONS]
 
 		# Setup the event Manager
-		from game.game.map.eventmanager import EventManager
-		EventManager.setupEvent(values[MapManager.DATA_MAP_INFO][3])
+		ev.setupEvent(values[MapManager.DATA_MAP_INFO][3])
 
 		# Set the size of the current map
 		cWidth = len(MapManager.interaction[0])
@@ -216,6 +216,7 @@ class MapManager:
 
 	@staticmethod
 	def dispose():
+		ev.dispose()
 		MapManager.checkChangeMap()
 		mp.MapRender.dispose()
 

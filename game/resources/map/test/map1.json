@@ -2,7 +2,7 @@
     "map": {
         "zone": "test",
         "id": "map1",
-        "events": "1"
+        "events": "2"
     },
     "layers": [
         [
@@ -68,11 +68,13 @@
     "entities": [
         [
             ["Mannequin", [[7.5, 6.5], false, 0, 2]],
+            ["Spawn", [[0, 2], 0, ["Bat", [8.5, 4.5], true, 1]]],
+            ["Spawn", [[0, 2], 0, ["Bat", [9.5, 4.5], true, 1]]],
             ["ActivationBlock", [[10.5, 7.5]]],
             ["SpawnPoint", [[1.5, 6.0]]],
             ["TogglePlate", [[8.5, 2.5], 0]],
             ["ActivationPlate", [[8.5, 8.5], 0]],
-            ["Door", [[13.5, 5.0], [0.498, 1.998], "test", "map2", 0, true, 0]],
+            ["Door", [[13.5, 5.0], [0.498, 1.998], "test", "map2", 0, true, 1]],
             ["SpawnPoint", [[12.5, 6.0]]]
         ]
     ]
