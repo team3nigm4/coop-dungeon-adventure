@@ -22,7 +22,7 @@ class Spawn(entity.Entity):
 			from game.game.map.eventmanager import EventManager as ev
 			self.em.remove(self.id)
 			self.em.addA(self.entityInfo)
-			ev.removeActive(self.event, self.id)
+			ev.remove(self.event, self.id)
 			self.hasSpawn = True
 
 	def deactivate(self):

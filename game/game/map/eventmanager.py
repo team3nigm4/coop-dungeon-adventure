@@ -5,6 +5,7 @@
 class EventManager:
 	toActive = [[]]
 	event = []
+	wantRemove = []
 
 	@staticmethod
 	# Define how much events there are
@@ -21,12 +22,23 @@ class EventManager:
 			print("(EventManager - addActive()) Error two entities with same id want to be place on table", eventIndex,", with id :", id)
 
 	@staticmethod
-	def removeActive(eventIndex, id):
+	def rem(eventIndex, id):
 		if id in EventManager.toActive[eventIndex]:
 			EventManager.toActive[eventIndex].remove(id)
-			
 		else:
 			print("(EventManager - addActive()) Error want and unknown entity", eventIndex,", with id :", id)
+
+	@staticmethod
+	def remove(eventIndex, id):
+		if id in EventManager.toActive[eventIndex]:
+			EventManager.wantRemove.append([id, eventIndex])
+
+	@staticmethod
+	def dispose():
+		if not EventManager.wantRemove == []:
+			for i in EventManager.wantRemove:
+				EventManager.toActive[i[1]].remove(i[0])
+			EventManager.wantRemove = []
 
 	@staticmethod
 	def activate(eventIndex):
@@ -34,9 +46,7 @@ class EventManager:
 		if EventManager.event[eventIndex] == 0:
 			from game.game.entityclass.entitymanager import EntityManager
 			for i in EventManager.toActive[eventIndex]:
-
 				EntityManager.entities[i].activate()
-
 
 	@staticmethod
 	def deactivate(eventIndex):

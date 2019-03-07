@@ -40,10 +40,12 @@ class GameScreen(screen.Screen):
 		serverData = gm.serverData
 		clientData = im.getState()
 
+		# Update
 		self.controlPlay1.update()
 		self.controlPlay2.update()
 		em.update()
 
+		# Keys test
 		if im.inputPressed(im.ESCAPE):
 			from game.main.window import Window
 			Window.exit()
@@ -58,8 +60,8 @@ class GameScreen(screen.Screen):
 			from game.game.command import Command
 			Command.command(input('Command : '))
 
+		# Dispose components
 		mam.dispose()
-
 		gm.cam.goToEntity()
 		em.dispose()
 
