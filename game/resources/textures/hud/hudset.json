@@ -1,0 +1,17 @@
+{
+  "position":{
+    "full-heart": [0, 0],
+    "half-heart": [1, 0],
+    "dead-heart": [2, 0],
+    "portrait1":  [3, 0],
+    "portrait2":  [4, 0],
+    "item":       [5, 0],
+    "item-key":   [6, 0],
+    "item-sword": [7, 0],
+    "item-bow":   [8, 0]
+  },
+  "info": {
+    "gap" : [0, 0],
+    "size" : [9, 1]
+  }
+}

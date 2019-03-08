@@ -43,8 +43,18 @@ class Command:
 			  "damage: Apply some damages to an entity.\n Args: entityId (0) and damage(s) (0).\n\n"
 			  "emStatus: Know the current status of the entity manager.\n No Argument.\n\n"
 			  "help: Get informations about functions.\n No Argument.\n\n"
+			  "rechargeHud: Recharge the hud info and rebuilt the hud.\n\n"
 			  "setLife: Set the life of an entity.\n Args: entityId (0) and new life (0).\n\n"
+			  "toggleBox: (True/False)."
 			  "tpE: Move one entity to another.\n Args: entityID to tansport (0) and arrival entityID (1).")
+
+	@staticmethod
+	# 1 = entity
+	# 2 = newLife
+	def rechargeHud(args):
+		from game.game.gameplay.hud import Hud
+		Hud.unload()
+		Hud.init()
 
 	@staticmethod
 	# 1 = entity
@@ -59,8 +69,21 @@ class Command:
 			print(e)
 
 	@staticmethod
+	# 1 = entity
+	# 2 = newLife
+	def toggleBox(args):
+		from game.game.entityclass.entitymanager import EntityManager as em
+		if args[1] == "True" :
+			em.displayBox = True
+		elif args[1] == "False":
+			em.displayBox = False
+		else:
+			print("Wrong argument after type:", args[1])
+
+	@staticmethod
 	# 1 = entity1
 	# 2 = entity2
 	def tpE(args):
 		from game.game.entityclass.entitymanager import EntityManager as em
 		em.entities[int(args[1])].setPos(em.entities[int(args[2])].pos)
+

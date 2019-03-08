@@ -3,6 +3,7 @@
 from game.render.shader import gluniforms as glU
 from game.render.shader import shader
 from game.screen import gamemanager as gm
+from game.util import matrix4f
 
 
 class ShaderManager:
@@ -15,29 +16,26 @@ class ShaderManager:
 	@staticmethod
 	def init():
 		ShaderManager.shaders["box"] = shader.Shader("boxVert.glsl", "boxFrag.glsl")
-		ShaderManager.shaders["box"].load()
-		ShaderManager.shaders["box"].use()
-
-		ShaderManager.shaders["box"].addLink("projection")
-		glU.glUniformv(ShaderManager.shaders["box"], "projection", gm.GameManager.cam.getProjection())
-
-		ShaderManager.shaders["box"].addLink("view")
-		ShaderManager.shaders["box"].addLink("model")
-
-		# Box shader
 		ShaderManager.shaders["texture"] = shader.Shader("texVert.glsl", "texFrag.glsl")
-		ShaderManager.shaders["texture"].load()
-		ShaderManager.shaders["texture"].use()
+		ShaderManager.shaders["hud"] = shader.Shader("texHudVert.glsl", "texHudFrag.glsl")
 
-		ShaderManager.shaders["texture"].addLink("projection")
-		glU.glUniformv(ShaderManager.shaders["texture"], "projection", gm.GameManager.cam.getProjection())
+		for e in ShaderManager.shaders:
+			ShaderManager.shaders[e].load()
+			ShaderManager.shaders[e].use()
+			ShaderManager.shaders[e].addLink("projection")
+			glU.glUniformv(ShaderManager.shaders[e], "projection", gm.GameManager.cam.getProjection())
 
-		ShaderManager.shaders["texture"].addLink("view")
-		ShaderManager.shaders["texture"].addLink("model")
+			ShaderManager.shaders[e].addLink("view")
+			ShaderManager.shaders[e].addLink("model")
 
 		ShaderManager.addReloading("view", gm.GameManager.cam.getView())
+
 		ShaderManager.addToReload("view", "texture")
 		ShaderManager.addToReload("view", "box")
+
+		matrix = matrix4f.Matrix4f(True)
+		matrix.matrix[3][2] = -8.572
+		glU.glUniformv(ShaderManager.shaders["hud"], "view", matrix.matrix)
 
 		ShaderManager.dispose()
 

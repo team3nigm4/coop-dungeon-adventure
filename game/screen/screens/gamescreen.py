@@ -8,6 +8,7 @@ from game.game.map.mapmanager import MapManager as mam
 from game.inputs.inputmanager import InputManager as im
 from game.screen.gamemanager import GameManager as gm
 from game.screen.screens import screen
+from game.game.gameplay.hud import Hud
 
 
 class GameScreen(screen.Screen):
@@ -23,6 +24,7 @@ class GameScreen(screen.Screen):
 		em.addWithId(player2)
 
 		mam.init()
+		Hud.init()
 
 		from game.inputs import playercontroler as plc
 		self.controlPlay1 = plc.PlayerController()
@@ -65,7 +67,6 @@ class GameScreen(screen.Screen):
 		gm.cam.goToEntity()
 		em.dispose()
 
-
 		# Return data
 		clientData.append(time.time_ns())
 		gm.clientData = clientData
@@ -73,7 +74,9 @@ class GameScreen(screen.Screen):
 	def display(self):
 		mam.display()
 		em.display()
+		Hud.display()
 
 	def unload(self):
 		mam.unload()
+		Hud.unload()
 		em.unload()
