@@ -64,16 +64,18 @@ class Hud:
 
 	@staticmethod
 	def constructHud():
-		Hud.vbo = []
+		Hud.vbo = [0 for a in range(20*10)]
 		Hud.itemName1 = ""
 		Hud.itemName2 = ""
 
 		Hud.initElement(Hud.hudInfo["position"]["portrait1"],
-						Hud.hudInfo["size"]["portrait1"], "portrait1")
+						Hud.hudInfo["size"]["portrait1"], "portrait1", Hud.PORTRAIT_1)
 
 		Hud.initElement(Hud.hudInfo["position"]["portrait2"],
-						Hud.hudInfo["size"]["portrait2"], "portrait2")
+						Hud.hudInfo["size"]["portrait2"], "portrait2", Hud.PORTRAIT_2)
 		Hud.dispose()
+		print("Hud len", len(Hud.vbo)/20)
+		print(Hud.vbo)
 		Hud.shape.setVbo(Hud.vbo)
 
 	@staticmethod
@@ -99,12 +101,11 @@ class Hud:
 					itemType = "item"
 
 				Hud.initElement(Hud.hudInfo["position"]["item" + str(i)],
-								Hud.hudInfo["size"]["item" + str(i)], itemType)
+								Hud.hudInfo["size"]["item" + str(i)], itemType, 1+i)
 
 	@staticmethod
-	def initElement(position, size, texture, vboCount=None):
-		if vboCount == None:
-			vboCount = int(len(Hud.vbo)/20)
+	def initElement(position, size, texture, vboCount):
+		del Hud.vbo[vboCount*20:(vboCount+1)*20]
 
 		pos = Hud.hudSet["position"][texture]
 		Hud.addVertice(position[0] - size[0]/2, position[1] - size[1]/2,
