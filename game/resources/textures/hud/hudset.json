@@ -7,8 +7,8 @@
     "portrait2":  [4, 0],
     "item":       [5, 0],
     "item-key":   [6, 0],
-    "item-sword": [7, 0],
-    "item-bow":   [8, 0]
+    "item-bow":   [7, 0],
+    "item-sword": [8, 0]
   },
   "info": {
     "gap" : [0, 0],

@@ -4,6 +4,7 @@ from game.render.texture import texture
 from game.render.shape import shape
 from game.util import matrix4f
 from game.render.shader.shadermanager import ShaderManager as sm
+from game.game.entityclass.entitymanager import EntityManager as em
 
 
 class Hud:
@@ -24,6 +25,7 @@ class Hud:
 	HEARTHS_2 = 7
 
 	model = matrix4f.Matrix4f(True)
+	itemName = ["", ""]
 
 	@staticmethod
 	def init():
@@ -63,12 +65,15 @@ class Hud:
 	@staticmethod
 	def constructHud():
 		Hud.vbo = []
+		Hud.itemName1 = ""
+		Hud.itemName2 = ""
 
 		Hud.initElement(Hud.hudInfo["position"]["portrait1"],
 						Hud.hudInfo["size"]["portrait1"], "portrait1")
 
 		Hud.initElement(Hud.hudInfo["position"]["portrait2"],
 						Hud.hudInfo["size"]["portrait2"], "portrait2")
+		Hud.dispose()
 		Hud.shape.setVbo(Hud.vbo)
 
 	@staticmethod
@@ -77,6 +82,24 @@ class Hud:
 		Hud.hudSetImage.bind()
 		Hud.shape.bind()
 		Hud.shape.draw()
+
+	@staticmethod
+	def dispose():
+		for i in range(1, 3):
+			itemName = em.entities[i-1].getItemName()
+			if not itemName[i-1] == itemName:
+				if itemName == "Key":
+					itemType = "item-key"
+				elif itemName == "Weapon":
+					if em.entities[i-1].item.arm:
+						itemType = "item-sword"
+					else:
+						itemType = "item-bow"
+				else:
+					itemType = "item"
+
+				Hud.initElement(Hud.hudInfo["position"]["item" + str(i)],
+								Hud.hudInfo["size"]["item" + str(i)], itemType)
 
 	@staticmethod
 	def initElement(position, size, texture, vboCount=None):

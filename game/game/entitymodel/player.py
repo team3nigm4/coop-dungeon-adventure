@@ -119,3 +119,6 @@ class Player(entitycomplex.EntityComplex):
 			self.applyDamage(ent.damage)
 
 		super().collision(ent)
+
+	def getItemName(self):
+		return self.item.name

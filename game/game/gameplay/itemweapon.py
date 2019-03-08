@@ -14,8 +14,8 @@ class ItemWeapon(item.Item):
 		self.used = False
 		self.useCounter = 0
 		self.trigBox = triggerbox.TriggerBox(self, ["TriggerBox", -1, [0,0], 0])
-		# True sword, False bow
 
+		# True sword, False bow
 		self.arm = True
 		if self.player.em.len > 0:
 			if self.player.em.entities[1 - self.player.playerNumber].item.name == "Weapon":

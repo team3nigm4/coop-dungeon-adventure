@@ -66,6 +66,7 @@ class GameScreen(screen.Screen):
 		mam.dispose()
 		gm.cam.goToEntity()
 		em.dispose()
+		Hud.dispose()
 
 		# Return data
 		clientData.append(time.time_ns())
