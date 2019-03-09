@@ -34,6 +34,7 @@ class Arrow(entitycomplex.EntityComplex):
 		self.setDrawCol(True)
 		self.colRenderer.setAttributes(self.colSize, [0, 0, 1, 0.5])
 		self.colRenderer.updateModel(self.pos)
+		self.gapDisplayPos = -1
 
 	def update(self):
 		super().update()

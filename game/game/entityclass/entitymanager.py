@@ -12,8 +12,9 @@ class EntityManager:
 	ENTITY_NO_ERROR = ["SpawnPoint"]
 
 	DISPLAY_DOWN = 0
-	DISPLAY_MIDDLE = 1
-	DISPLAY_UP = 2
+	DISPLAY_DOWN2 = 1
+	DISPLAY_MIDDLE = 2
+	DISPLAY_UP = 3
 
 	entities = []
 	entitiesCol = []
@@ -21,7 +22,7 @@ class EntityManager:
 
 	len = 0
 
-	displayLayer = [[], [], []]
+	displayLayer = [[], [], [], []]
 
 	displayBox = True
 
@@ -79,7 +80,7 @@ class EntityManager:
 				EntityManager.entities.remove(EntityManager.entities[2])
 
 		EntityManager.entitiesCol = [EntityManager.PLAYER_1, EntityManager.PLAYER_2]
-		EntityManager.displayLayer = [[], [EntityManager.PLAYER_1, EntityManager.PLAYER_2], []]
+		EntityManager.displayLayer = [[], [], [EntityManager.PLAYER_1, EntityManager.PLAYER_2], []]
 		EntityManager.len = len(EntityManager.entities)
 
 	@staticmethod
