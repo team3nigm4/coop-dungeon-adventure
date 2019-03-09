@@ -1,4 +1,5 @@
 import json
+import numpy
 
 from game.render.texture import texture
 from game.render.shape import shape
@@ -80,6 +81,7 @@ class Hud:
 	@staticmethod
 	def display():
 		sm.updateLink("hud", "model", Hud.model.matrix)
+		# sm.updateLinkf("hud", "opacity", numpy.float(0.8))
 		Hud.hudSetImage.bind()
 		Hud.shape.bind()
 		Hud.shape.draw()

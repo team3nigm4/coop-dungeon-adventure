@@ -45,6 +45,11 @@ class ShaderManager:
 		glU.glUniformv(ShaderManager.shaders[key], link, value)
 
 	@staticmethod
+	def updateLinkf(key, link, value):
+		ShaderManager.shaders[key].use()
+		glU.glUniformf(ShaderManager.shaders[key], link, value)
+
+	@staticmethod
 	def addToReload(key, shader):
 		ShaderManager.reloading[key][0].append(shader)
 
