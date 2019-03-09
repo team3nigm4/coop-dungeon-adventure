@@ -1,17 +1,22 @@
 {
   "position":{
-    "full-heart": [0, 0],
+
+
+    "dead-heart": [0, 0],
     "half-heart": [1, 0],
-    "dead-heart": [2, 0],
-    "portrait1":  [3, 0],
-    "portrait2":  [4, 0],
-    "item":       [5, 0],
-    "item-key":   [6, 0],
-    "item-bow":   [7, 0],
-    "item-sword": [8, 0]
+    "full-heart": [2, 0],
+    "dead-heart-save": [3, 0],
+    "half-heart-save": [4, 0],
+    "full-heart-save": [5, 0],
+    "portrait1":  [6, 0],
+    "portrait2":  [7, 0],
+    "item":       [8, 0],
+    "item-key":   [9, 0],
+    "item-bow":   [10, 0],
+    "item-sword": [11, 0]
   },
   "info": {
     "gap" : [0, 0],
-    "size" : [9, 1]
+    "size" : [12, 1]
   }
 }

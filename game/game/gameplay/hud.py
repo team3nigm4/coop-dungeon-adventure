@@ -26,6 +26,8 @@ class Hud:
 
 	model = matrix4f.Matrix4f(True)
 	itemName = ["", ""]
+	playerLife = [0, 0]
+	playerInvincibility = [False, False]
 
 	@staticmethod
 	def init():
@@ -74,9 +76,6 @@ class Hud:
 		Hud.initElement(Hud.hudInfo["position"]["portrait2"],
 						Hud.hudInfo["size"]["portrait2"], "portrait2", Hud.PORTRAIT_2)
 		Hud.dispose()
-		print("Hud len", len(Hud.vbo)/20)
-		print(Hud.vbo)
-		Hud.shape.setVbo(Hud.vbo)
 
 	@staticmethod
 	def display():
@@ -87,21 +86,60 @@ class Hud:
 
 	@staticmethod
 	def dispose():
-		for i in range(1, 3):
-			itemName = em.entities[i-1].getItemName()
-			if not itemName[i-1] == itemName:
+		change = False
+		for i in range(2):
+			itemName = em.entities[i].getItemName()
+			# If the item of the player change
+			if not itemName[i] == itemName:
 				if itemName == "Key":
 					itemType = "item-key"
 				elif itemName == "Weapon":
-					if em.entities[i-1].item.arm:
+					if em.entities[i].item.arm:
 						itemType = "item-sword"
 					else:
 						itemType = "item-bow"
 				else:
 					itemType = "item"
 
-				Hud.initElement(Hud.hudInfo["position"]["item" + str(i)],
-								Hud.hudInfo["size"]["item" + str(i)], itemType, 1+i)
+				Hud.initElement(Hud.hudInfo["position"]["item" + str(i + 1)],
+								Hud.hudInfo["size"]["item" + str(i + 1)], itemType, 2 + i)
+				change = True
+
+			if not em.entities[i].life == Hud.playerLife[i]:
+				if em.entities[i].takeDamage == Hud.playerInvincibility[i]:
+					Hud.playerInvincibility[i] = not em.entities[i].takeDamage
+				Hud.setHealthBar(em.entities[i].life, i)
+				change = True
+
+			elif em.entities[i].takeDamage == Hud.playerInvincibility[i]:
+				Hud.playerInvincibility[i] = not em.entities[i].takeDamage
+				Hud.setHealthBar(Hud.playerLife[i], i)
+				change = True
+
+		if change:
+			Hud.shape.setVbo(Hud.vbo)
+
+	@staticmethod
+	def setHealthBar(newLife, i):
+		Hud.playerLife[i] = newLife
+		for a in range(3):
+			if Hud.playerLife[i] >= a * 2 + 2:
+				texture = "full-heart"
+			elif Hud.playerLife[i] >= a * 2 + 1:
+				texture = "half-heart"
+			else:
+				texture = "dead-heart"
+
+			if Hud.playerInvincibility[i]:
+				texture+="-save"
+
+			position = Hud.hudInfo["position"]["healthBar" + str(i + 1)].copy()
+			position[0] += (Hud.hudInfo["info"]["hearthGap"] * a)  + (Hud.hudInfo["size"]["hearth"][0] * a)
+
+			if i == 0:
+				Hud.initElement(position, Hud.hudInfo["size"]["hearth"], texture, Hud.HEARTHS_1 + a)
+			else:
+				Hud.initElement(position, Hud.hudInfo["size"]["hearth"], texture, Hud.HEARTHS_2 + a)
 
 	@staticmethod
 	def initElement(position, size, texture, vboCount):
