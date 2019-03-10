@@ -45,7 +45,7 @@ class Command:
 			  "help: Get informations about functions.\n No Argument.\n\n"
 			  "rechargeHud: Recharge the hud info and rebuilt the hud.\n\n"
 			  "setLife: Set the life of an entity.\n Args: entityId (0) and new life (0).\n\n"
-			  "toggleBox: (True/False)."
+			  "toggleBox: Toggle the display of collision boxes."
 			  "tpE: Move one entity to another.\n Args: entityID to tansport (0) and arrival entityID (1).")
 
 	@staticmethod
@@ -69,16 +69,12 @@ class Command:
 			print(e)
 
 	@staticmethod
-	# 1 = entity
-	# 2 = newLife
 	def toggleBox(args):
 		from game.game.entityclass.entitymanager import EntityManager as em
-		if args[1] == "True" :
-			em.displayBox = True
-		elif args[1] == "False":
+		if em.displayBox == True:
 			em.displayBox = False
 		else:
-			print("Wrong argument after type:", args[1])
+			em.displayBox = True
 
 	@staticmethod
 	# 1 = entity1
