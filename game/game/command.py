@@ -6,7 +6,7 @@ class Command:
 			args = command.split(" ")
 			getattr(Command, args[0])(args)
 		except Exception as e:
-			print("\nError on command :" + command)
+			print("\n[COMMAND] Error on command " + command + "()")
 			print(e)
 
 	@staticmethod
