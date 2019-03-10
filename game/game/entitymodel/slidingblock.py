@@ -17,6 +17,8 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 		self.attributes["heavy"] = 1
 		self.attributes["interaction"] = 2
 
+		self.setDisplayLayer(self.em.DISPLAY_DOWN2)
+
 	def update(self):
 		super().update()
 		if self.inMov[0]:

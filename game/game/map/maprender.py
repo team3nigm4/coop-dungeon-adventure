@@ -80,7 +80,6 @@ class MapRender:
 		MapRender.dispose()
 
 		# Set the camera position
-
 		from game.screen import gamemanager
 		cam = gamemanager.GameManager.cam
 

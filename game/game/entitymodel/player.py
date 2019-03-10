@@ -101,8 +101,9 @@ class Player(entitycomplex.EntityComplex):
 
 	def applyDamage(self, damage, death=False):
 		if self.life == 0:
-			if self.em.entities[1 - self.playerNumber].life > 0:
-				self.em.entities[1 - self.playerNumber].applyDamage(damage)
+			if self.em.entities[1 - self.playerNumber].life > 0 :
+				if self.takeDamage:
+					self.em.entities[1 - self.playerNumber].applyDamage(damage)
 			else:
 				print("Two players are dead !!")
 				exit()
@@ -119,3 +120,6 @@ class Player(entitycomplex.EntityComplex):
 			self.applyDamage(ent.damage)
 
 		super().collision(ent)
+
+	def getItemName(self):
+		return self.item.name

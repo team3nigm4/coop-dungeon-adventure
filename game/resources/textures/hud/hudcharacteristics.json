@@ -1,0 +1,20 @@
+{
+  "position":{
+    "portrait1":  [1, 10],
+    "portrait2":  [17, 10],
+    "item1":      [2.5, 10],
+    "item2":      [15.5, 10],
+    "healthBar1": [3.7, 9.9],
+    "healthBar2": [12.3, 9.9]
+  },
+  "size":{
+    "portrait1": [1, 1],
+    "portrait2": [1, 1],
+    "item1":     [1.1, 1.1],
+    "item2":     [1.1, 1.1],
+    "hearth":    [0.9, 0.9]
+  },
+  "info": {
+    "hearthGap" : 0.15
+  }
+}
