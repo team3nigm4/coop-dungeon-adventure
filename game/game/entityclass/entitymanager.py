@@ -130,7 +130,6 @@ class EntityManager:
 					EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE].remove(entityID)
 					EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE].insert(i, entityID)
 
-
 	@staticmethod
 	def dispose():
 		EntityManager.entitiesRemove.sort(reverse=True)

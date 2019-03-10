@@ -2,6 +2,7 @@
 
 from game.game.entityclass import enemy
 from game.util import math as mathcda
+from game.game.entityclass import entitycollision
 
 import math
 
@@ -30,8 +31,7 @@ class Bat(enemy.Enemy):
 
 		self.invincibilityTime = Bat.INVINCIBILITY_TIME
 
-		self.target = None
-
+		self.target = -1
 
 		self.entityRenderer.setImagePath([1, 1], "entities/bat.png", [0.5, 0.5])
 		self.gapDisplayPos = -1
@@ -40,7 +40,7 @@ class Bat(enemy.Enemy):
 	def update(self):
 		super().update()
 
-		if self.target == None:
+		if self.target == -1:
 			if mathcda.distE(self, self.em.entities[self.em.PLAYER_1]) < Bat.DETECTION_RANGE:
 				self.target = 0
 			elif mathcda.distE(self, self.em.entities[self.em.PLAYER_2]) < Bat.DETECTION_RANGE:
@@ -49,7 +49,7 @@ class Bat(enemy.Enemy):
 		else:
 			target = self.em.entities[self.target]
 			if self.em.entities[self.target].id == -1:
-				self.target = None
+				self.target = -1
 			else:
 				if mathcda.distEx(self, target) > self.maxSpeed[0]:
 					if self.pos[0] > target.pos[0]:
@@ -82,3 +82,10 @@ class Bat(enemy.Enemy):
 					self.speed[i] = self.wantDirection[i] * self.maxSpeed[i]
 
 		self.setPos([self.pos[0] + self.speed[0], self.pos[1] + self.speed[1]])
+
+	def collision(self, ent):
+		if (ent.attributes["playerSword"] == 1 and self.attributes["playerSword"] == 2) or \
+				(ent.attributes["playerBow"] == 1 and self.attributes["playerBow"] == 2):
+			ent.triggerBox(self)
+			if not ent.entityId == self.target:
+				self.target = ent.entityId

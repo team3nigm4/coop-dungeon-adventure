@@ -35,6 +35,7 @@ class Arrow(entitycomplex.EntityComplex):
 		self.colRenderer.setAttributes(self.colSize, [0, 0, 1, 0.5])
 		self.colRenderer.updateModel(self.pos)
 		self.gapDisplayPos = -1
+		self.entityId = -1
 
 	def update(self):
 		super().update()
@@ -51,6 +52,9 @@ class Arrow(entitycomplex.EntityComplex):
 	def collision(self, ent):
 		if ent.attributes["collision"] == 2:
 			self.setLife(0)
+
+	def setEntityId(self, entityId):
+		self.entityId = entityId
 
 	def triggerBox(self, ent):
 		ent.applyDamage(self.DAMAGE)
