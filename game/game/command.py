@@ -38,16 +38,28 @@ class Command:
 		em.status()
 
 	@staticmethod
-	def help(args):
-		print("\n:::Help:::\n\n"
-			  "cm/ChangeMap: Go to a new map.\n Args: zone (test), mapID (map1) and entryPoint (0).\n\n"
-			  "damage: Apply some damages to an entity.\n Args: entityId (0) and damage(s) (0).\n\n"
-			  "emStatus: Know the current status of the entity manager.\n No Argument.\n\n"
-			  "help: Get informations about functions.\n No Argument.\n\n"
-			  "rechargeHud: Recharge the hud info and rebuilt the hud.\n\n"
-			  "setLife: Set the life of an entity.\n Args: entityId (0) and new life (0).\n\n"
-			  "toggleBoxes: Toggle the display of collision boxes."
-			  "tpE: Move one entity to another.\n Args: entityID to tansport (0) and arrival entityID (1).")
+	def help(functionName=False):
+		commandsHelp = {
+			"cm": "Usage: cm [zoneName] [mapId] [entryPoint]\n  Go to a new map (alias of ChangeMap)",
+			"changeMap": "Usage: changeMap [zoneName] [mapId] [entryPoint]\n  Go to a new map (alias of cm)",
+			"damage": "Usage: damage [entityId] [damagesAmount]\n  Apply some damages to an entity.",
+			"emStatus": "  Display the current status of the entity manager.",
+			"help": "Usage: help {functionName}\n  Shows how to use a function.\n  No argument: displays the list of available functions",
+			"rechargeHud": "  Reload hud informations and rebuilt it.",
+			"setLife": "Usage: setLife [entityId] [lifeAmount]\n  Define the amount of life of an entity",
+			"toggleBoxes": "  Toggle the display of collision boxes.",
+			"tpE": "Usage: tpE [entityIdToMove] [destinationEntityId]\n  Move an entity to another."
+		}
+		if len(functionName) > 1:
+			if functionName[1] in commandsHelp:
+				print("\n:::: Help for command " + functionName[1] + "() ::::")
+				print(commandsHelp[functionName[1]] + "\n")
+			else:
+				print("[COMMAND] Error : No command called \"" + functionName[1] + "()\"")
+		else:
+			print("\n:::: Commands list ::::")
+			for key, value in commandsHelp.items():
+				print(key + "\n" + commandsHelp[key] + "\n")
 
 	@staticmethod
 	# 1 = entity

@@ -60,7 +60,7 @@ class GameScreen(screen.Screen):
 
 		if im.keyBoardManager.getKey(290):
 			from game.game.command import Command
-			Command.command(input('Command : '))
+			Command.command(input('\n[COMMAND] $ '))
 
 		# Dispose components
 		mam.dispose()
