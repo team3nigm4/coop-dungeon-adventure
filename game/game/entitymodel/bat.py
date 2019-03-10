@@ -2,14 +2,13 @@
 
 from game.game.entityclass import enemy
 from game.util import math as mathcda
-from game.game.entityclass import entitycollision
 
 import math
 
 
 class Bat(enemy.Enemy):
 	SPEED_ADD = 0.003
-	SPEED_MAX = 0.03
+	SPEED_MAX = 0.035
 	SPEED_DECREASE = 0.003
 
 	DETECTION_RANGE = 4
@@ -26,8 +25,9 @@ class Bat(enemy.Enemy):
 
 		self.direction = 3
 		self.damage = 1
-		self.maxSpeed = [Bat.SPEED_MAX,Bat.SPEED_MAX]
+		self.maxSpeed = [Bat.SPEED_MAX, Bat.SPEED_MAX]
 		self.life = 4
+		self.speedCounter = 0
 
 		self.invincibilityTime = Bat.INVINCIBILITY_TIME
 
@@ -35,7 +35,6 @@ class Bat(enemy.Enemy):
 
 		self.entityRenderer.setImagePath([1, 1], "entities/bat.png", [0.5, 0.5])
 		self.gapDisplayPos = -1
-
 
 	def update(self):
 		super().update()
@@ -51,6 +50,14 @@ class Bat(enemy.Enemy):
 			if self.em.entities[self.target].id == -1:
 				self.target = -1
 			else:
+				# Apply the effect of a bat flying
+				self.maxSpeed = [Bat.SPEED_MAX - Bat.SPEED_MAX * math.cos(self.speedCounter) * 0.30,
+								 Bat.SPEED_MAX - Bat.SPEED_MAX * math.cos(self.speedCounter) * 0.30]
+				self.speedCounter += 0.13
+				if self.speedCounter >= 2 * math.pi:
+					self.speedCounter = 0
+
+				# Bat want to move if too far of the player
 				if mathcda.distEx(self, target) > self.maxSpeed[0]:
 					if self.pos[0] > target.pos[0]:
 						self.left(2)
