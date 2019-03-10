@@ -74,11 +74,7 @@ class EntityManager:
 	@staticmethod
 	def clear():
 		# Delete h
-		if EntityManager.len > 1:
-			for i in range(2, EntityManager.len):
-				EntityManager.entities[2].unload()
-				EntityManager.entities.remove(EntityManager.entities[2])
-
+		EntityManager.entities = EntityManager.entities [:2]
 		EntityManager.entitiesCol = [EntityManager.PLAYER_1, EntityManager.PLAYER_2]
 		EntityManager.displayLayer = [[], [], [EntityManager.PLAYER_1, EntityManager.PLAYER_2], []]
 		EntityManager.len = len(EntityManager.entities)
@@ -142,22 +138,6 @@ class EntityManager:
 		EntityManager.len = 0
 
 	@staticmethod
-	def unload():
-		print("\nUnload EntityManager :")
-		for e in EntityManager.entities:
-			e.unload()
-		print("\n")
-
-	@staticmethod
-	def update():
-		e = EntityManager.len - 1
-		while e >= 0:
-			EntityManager.entities[e].update()
-			if EntityManager.entities[e].testCol:
-				EntityManager.collision(e)
-			e -= 1
-
-	@staticmethod
 	def rem(entity):
 		id = entity[0]
 
@@ -200,6 +180,17 @@ class EntityManager:
 			print("Entity", EntityManager.entities[i].id, ", entityType", EntityManager.entities[i].type)
 
 	@staticmethod
+	def setEntities(entities):
+		EntityManager.entities = entities
+		EntityManager.len = len(EntityManager.entities)
+
+	@staticmethod
+	def setValues(entities, entitiesCol, displayLayer):
+		EntityManager.setEntities(entities)
+		EntityManager.entitiesCol = entitiesCol
+		EntityManager.displayLayer = displayLayer
+
+	@staticmethod
 	# Collision rect aabb
 	def testCollision(ent1, ent2):
 		if not (ent2.pos[0] - ent2.halfColSize[0] >= ent1.pos[0] + ent1.halfColSize[0] or
@@ -207,3 +198,19 @@ class EntityManager:
 				ent2.pos[1] - ent2.halfColSize[1] >= ent1.halfColSize[1] + ent1.pos[1] or
 				ent2.pos[1] + ent2.halfColSize[1] <= ent1.pos[1] - ent1.halfColSize[1]):
 			ent2.collision(ent1)
+
+	@staticmethod
+	def unload():
+		if EntityManager.len > 1:
+			for i in range(2, EntityManager.len):
+				EntityManager.entities[2].unload()
+				del EntityManager.entities[2]
+
+	@staticmethod
+	def update():
+		e = EntityManager.len - 1
+		while e >= 0:
+			EntityManager.entities[e].update()
+			if EntityManager.entities[e].testCol:
+				EntityManager.collision(e)
+			e -= 1

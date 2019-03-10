@@ -15,7 +15,6 @@ class GameScreen(screen.Screen):
 
 	def __init__(self):
 		super(GameScreen, self).__init__()
-
 		em.init()
 
 		player1 = pl.Player(["Player", em.PLAYER_1, [0, 0], 0, "entities/player/player1.png"])
@@ -80,4 +79,5 @@ class GameScreen(screen.Screen):
 	def unload(self):
 		mam.unload()
 		Hud.unload()
-		em.unload()
+		em.entities[em.PLAYER_1].unload()
+		em.entities[em.PLAYER_2].unload()

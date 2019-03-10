@@ -32,7 +32,7 @@ class Hud:
 
 	@staticmethod
 	def init():
-		path_hudSetImage = "/hud/hudset.png"
+		path_hudSetImage = "hud/hudset.png"
 		path_hudSet = "game/resources/textures/hud/hudset.json"
 		Hud.hudSet = json.load(open(path_hudSet))
 		Hud.hudSetImage = texture.Texture(path_hudSetImage)
