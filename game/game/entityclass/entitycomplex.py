@@ -53,8 +53,6 @@ class EntityComplex(entitydrawable.EntityDrawable):
                 (ent.attributes["playerBow"] == 1 and self.attributes["playerBow"] == 2):
             ent.triggerBox(self)
 
-        super().collision(ent)
-
     def applyDamage(self, damage, death=True):
         if self.takeDamage:
             print(self.type, "take", str(damage), "damage(s)")

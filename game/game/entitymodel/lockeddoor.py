@@ -20,7 +20,6 @@ class LockedDoor(door.Door):
         self.isActive = True
         self.mam.setTileSize(self.pos, self.halfColSize, 0)
 
-
     def deactivate(self):
         self.isActive = False
         self.mam.setTileSize(self.pos, self.halfColSize, 1)

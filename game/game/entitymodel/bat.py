@@ -8,7 +8,7 @@ import math
 
 class Bat(enemy.Enemy):
 	SPEED_ADD = 0.003
-	SPEED_MAX = 0.03
+	SPEED_MAX = 0.035
 	SPEED_DECREASE = 0.003
 
 	DETECTION_RANGE = 4
@@ -25,22 +25,21 @@ class Bat(enemy.Enemy):
 
 		self.direction = 3
 		self.damage = 1
-		self.maxSpeed = [Bat.SPEED_MAX,Bat.SPEED_MAX]
+		self.maxSpeed = [Bat.SPEED_MAX, Bat.SPEED_MAX]
 		self.life = 4
+		self.speedCounter = 0
 
 		self.invincibilityTime = Bat.INVINCIBILITY_TIME
 
-		self.target = None
-
+		self.target = -1
 
 		self.entityRenderer.setImagePath([1, 1], "entities/bat.png", [0.5, 0.5])
 		self.gapDisplayPos = -1
 
-
 	def update(self):
 		super().update()
 
-		if self.target == None:
+		if self.target == -1:
 			if mathcda.distE(self, self.em.entities[self.em.PLAYER_1]) < Bat.DETECTION_RANGE:
 				self.target = 0
 			elif mathcda.distE(self, self.em.entities[self.em.PLAYER_2]) < Bat.DETECTION_RANGE:
@@ -49,8 +48,16 @@ class Bat(enemy.Enemy):
 		else:
 			target = self.em.entities[self.target]
 			if self.em.entities[self.target].id == -1:
-				self.target = None
+				self.target = -1
 			else:
+				# Apply the effect of a bat flying
+				self.maxSpeed = [Bat.SPEED_MAX - Bat.SPEED_MAX * math.cos(self.speedCounter) * 0.30,
+								 Bat.SPEED_MAX - Bat.SPEED_MAX * math.cos(self.speedCounter) * 0.30]
+				self.speedCounter += 0.13
+				if self.speedCounter >= 2 * math.pi:
+					self.speedCounter = 0
+
+				# Bat want to move if too far of the player
 				if mathcda.distEx(self, target) > self.maxSpeed[0]:
 					if self.pos[0] > target.pos[0]:
 						self.left(2)
@@ -82,3 +89,10 @@ class Bat(enemy.Enemy):
 					self.speed[i] = self.wantDirection[i] * self.maxSpeed[i]
 
 		self.setPos([self.pos[0] + self.speed[0], self.pos[1] + self.speed[1]])
+
+	def collision(self, ent):
+		if (ent.attributes["playerSword"] == 1 and self.attributes["playerSword"] == 2) or \
+				(ent.attributes["playerBow"] == 1 and self.attributes["playerBow"] == 2):
+			ent.triggerBox(self)
+			if not ent.entityId == self.target:
+				self.target = ent.entityId
