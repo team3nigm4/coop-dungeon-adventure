@@ -18,6 +18,7 @@ class Command:
 		mam.reserveChange([args[1], args[2], int(args[3])])
 
 	@staticmethod
+	# Alias of changeMap()
 	def cm(args):
 		Command.changeMap(args)
 
@@ -45,7 +46,7 @@ class Command:
 			  "help: Get informations about functions.\n No Argument.\n\n"
 			  "rechargeHud: Recharge the hud info and rebuilt the hud.\n\n"
 			  "setLife: Set the life of an entity.\n Args: entityId (0) and new life (0).\n\n"
-			  "toggleBox: Toggle the display of collision boxes."
+			  "toggleBoxes: Toggle the display of collision boxes."
 			  "tpE: Move one entity to another.\n Args: entityID to tansport (0) and arrival entityID (1).")
 
 	@staticmethod
@@ -69,12 +70,9 @@ class Command:
 			print(e)
 
 	@staticmethod
-	def toggleBox(args):
+	def toggleBoxes(args):
 		from game.game.entityclass.entitymanager import EntityManager as em
-		if em.displayBox == True:
-			em.displayBox = False
-		else:
-			em.displayBox = True
+		em.displayBox^= True
 
 	@staticmethod
 	# 1 = entity1
