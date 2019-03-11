@@ -23,6 +23,7 @@ class Window:
 	def init():
 		colorama.init()
 		Logger.info("GAME", "Started")
+		print("")
 		Config.load()
 		Window.beginTime = time.time()
 
@@ -114,4 +115,6 @@ class Window:
 	def exit():
 		gameManager.unload()
 		glfw.terminate()
+		print("")
+		Logger.info("GAME", "Closed")
 		exit()
