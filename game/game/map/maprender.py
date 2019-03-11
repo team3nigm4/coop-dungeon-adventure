@@ -24,8 +24,8 @@ class MapRender:
 	shapeUp = None
 	shapeDown = None
 
-	mapValues = []
-	tilesPosition = []
+	mapValues = [[]]
+	tilesPosition = [[]]
 
 	vbo = []
 	vboCount = 0
@@ -77,29 +77,6 @@ class MapRender:
 						MapRender.vboCount += 1
 
 		MapRender.change = True
-		MapRender.dispose()
-
-		# Set the camera position
-		from game.screen import gamemanager
-		cam = gamemanager.GameManager.cam
-
-		cam.setPos([0, 0, cam.pos[2]])
-		cam.setMaximum([width, height])
-
-		if width > 18:
-			cam.track[0] = True
-		else:
-			cam.track[0] = False
-			cam.addPos([-width / 2, 0, 0])
-
-		if height > 12:
-			cam.track[1] = True
-		else:
-			cam.track[1] = False
-			cam.addPos([0, -height / 2, 0])
-
-		cam.goToEntity()
-		sm.dispose()
 
 	@staticmethod
 	def display():
@@ -236,6 +213,45 @@ class MapRender:
 						MapRender.tilesPosition[floor][y][x] += indent
 
 	@staticmethod
+	def setMapValues(vbo, ebo, mapValue, tilesPositon, vboCount, eboCount):
+		MapRender.mapValues = mapValue
+		MapRender.tilesPosition = tilesPositon
+		MapRender.vbo = vbo
+		MapRender.ebo = ebo
+		MapRender.vboCount  = vboCount
+		MapRender.eboCount = eboCount
+
+		MapRender.tWidth = len(MapRender.mapValues[0][0])
+		MapRender.tHeight = len(MapRender.mapValues[0])
+		width = MapRender.tWidth
+		height = MapRender.tHeight
+
+		# Set the camera position
+		from game.screen import gamemanager
+		cam = gamemanager.GameManager.cam
+
+		cam.setPos([0, 0, cam.pos[2]])
+		cam.setMaximum([width, height])
+
+		if width > 18:
+			cam.track[0] = True
+		else:
+			cam.track[0] = False
+			cam.addPos([-width / 2, 0, 0])
+
+		if height > 12:
+			cam.track[1] = True
+		else:
+			cam.track[1] = False
+			cam.addPos([0, -height / 2, 0])
+
+		cam.goToEntity()
+		sm.dispose()
+		MapRender.change = True
+		MapRender.dispose()
+
+
+	@staticmethod
 	def reserveNextVbo(layer, posX, posy):
 		posY = MapRender.tHeight - posy - 1
 		for x in range(posX, len(MapRender.tilesPosition[layer][posY])):
@@ -261,7 +277,6 @@ class MapRender:
 
 		MapRender.vboCount +=1
 		return MapRender.vboCount
-
 
 	@staticmethod
 	def unload():

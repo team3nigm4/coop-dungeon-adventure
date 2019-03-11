@@ -1,26 +1,43 @@
 # Import test map
 from game.game.map.maprender import MapRender
+import os, json
 
-def loadMap(zone, name, entry):
-	import json
-	path = "game/resources/map/" + zone + "/" + name + ".json"
+class MapLoading:
 
-	try:
-		getValues = json.load(open(path))
+	@staticmethod
+	def loadMap(zone, name, entry):
+		path = "game/resources/map/" + zone + "/" + name + ".json"
 
-		returnValues = []
-		returnValues.append([getValues["map"]["zone"], getValues["map"]["id"],
-							int(getValues["entries"]["default"]), int(getValues["map"]["events"])])
+		try:
+			getValues = json.load(open(path))
 
-		# Load graphic
-		MapRender.mapValues = getValues["layers"]
+			returnValues = []
+			returnValues.append([int(getValues["entries"]["default"]), int(getValues["map"]["events"])])
 
-		returnValues.append(getValues["collision"][0])
-		returnValues.append(getValues["entries"][str(entry)])
+			returnValues.append(getValues["collision"][0])
+			returnValues.append(getValues["entries"])
 
-		returnValues.append(getValues["entities"][0])
+			returnValues.append(getValues["entities"][0])
 
-		return returnValues
-	except json.decoder.JSONDecodeError:
-		print("Can't load the map", path)
-		exit()
+			returnValues.append(getValues["layers"])
+
+			return returnValues
+		except json.decoder.JSONDecodeError:
+			print("Can't load the map", path)
+			exit()
+
+	@staticmethod
+	def isMap(zone, map, entry):
+		path = "game/resources/map/" + zone + "/" + map +".json"
+		state = os.path.isfile(path)
+		if not state:
+			print("(MapLoading): the map :", map," in zone:", zone, "doesn't exists")
+			return False
+		else:
+			value = json.load(open(path))
+			try:
+				ok = value["entries"][str(entry)]
+				return True
+			except KeyError:
+				print("(MapLoading): the map :", map, " in zone:", zone, "has not entry point:", entry)
+				return False
