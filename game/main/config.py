@@ -1,5 +1,6 @@
 # Check, load and save the config (path)
 
+from game.util.logger import Logger
 
 class Config:
 	# Default value to prevent a mistake of configs's loading
@@ -18,33 +19,35 @@ class Config:
 		# Verification of the existence of the "data" folder
 		path = "data"
 		if not (os.path.exists(path)) and not (os.path.isdir(path)):
-			print("[CONFIG] Creating '%s' folder..." % path)
+			Logger.info("CONFIG", "Creating '%s' folder..." % path)
 			try:
 				os.mkdir(path)
+				Logger.success("CONFIG", "Done !")
 			except OSError:
-				print("[CONFIG] Creation of the directory %s failed" % path)
+				Logger.error("CONFIG", "Creation of the directory %s failed" % path)
 				exit()
 
 		# Verification of the existence of the "data/config" folder
 		path = "data/config"
 		if not (os.path.exists(path)) and not (os.path.isdir(path)):
-			print("[CONFIG] Creating '%s' folder..." % path)
+			Logger.info("CONFIG", "Creating '%s' folder..." % path)
 			try:
 				os.mkdir(path)
+				Logger.success("CONFIG", "Done !")
 			except OSError:
-				print("[CONFIG] Creation of the directory %s failed" % path)
+				Logger.error("CONFIG", "Creation of the directory %s failed" % path)
 				exit()
 
 		# Verification of the existence of the user-specific config file
 		path = Config.CONFIG_PATH
 		if not (os.path.exists(path)):
-			print("[CONFIG] Creating the user-specific configuration file...")
+			Logger.info("CONFIG", "Creating the user-specific configuration file...")
 			Config.createDefaultConfig()
 
 		# Verification of the existence of the user-specific key config file
 		path = Config.INPUTS_PATH
 		if not (os.path.exists(path)):
-			print("[CONFIG] Creating the user-specific key configuration file...")
+			Logger.info("CONFIG", "Creating the user-specific key configuration file...")
 			Config.createDefaultInputs()
 
 	@staticmethod
@@ -135,7 +138,7 @@ class Config:
 
 		with open(Config.CONFIG_PATH, 'w') as outfile:
 			json.dump(ConfigToSave, outfile, indent="	")
-			print("[CONFIG] Configuration file saved successfully !")
+			Logger.success("CONFIG", "Configuration file saved successfully !")
 
 	@staticmethod
 	def saveInputs():
@@ -147,7 +150,7 @@ class Config:
 
 		with open(Config.INPUTS_PATH, 'w') as outfile:
 			json.dump(InputsToSave, outfile, indent="	")
-			print("[CONFIG] Key configuration file saved successfully !")
+			Logger.success("CONFIG", "Key configuration file saved successfully !")
 
 	@staticmethod
 	def loadConfig():
@@ -156,8 +159,7 @@ class Config:
 			configFile = json.load(open(Config.CONFIG_PATH))['config']
 			Config.values = configFile
 		except json.decoder.JSONDecodeError:
-			Config.createDefaultConfig(Config.yes(
-				"[CONFIG] Failed to parse the config file ! Do you want to recreate it and delete the old one ?"))
+			Config.createDefaultConfig(Config.yes(Logger.format("CONFIG", "Failed to parse the config file ! Do you want to recreate it and delete the old one ?")))
 
 	@staticmethod
 	def loadInputs():
@@ -166,8 +168,7 @@ class Config:
 			inputsFile = json.load(open(Config.INPUTS_PATH))['inputs']
 			Config.inputs = inputsFile
 		except json.decoder.JSONDecodeError:
-			Config.createDefaultInputs(Config.yes(
-				"[CONFIG] Failed to parse the key config file ! Do you want to recreate it and delete the old one ?"))
+			Config.createDefaultInputs(Config.yes(Logger.format("CONFIG", "Failed to parse the key config file ! Do you want to recreate it and delete the old one ?")))
 
 	@staticmethod
 	def yes(sentence):

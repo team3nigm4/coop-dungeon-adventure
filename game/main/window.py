@@ -5,6 +5,9 @@ import time
 import OpenGL.GL as gl
 import glfw
 
+import colorama
+
+from game.util.logger import Logger 
 from game.main.config import Config
 
 
@@ -18,12 +21,14 @@ class Window:
 
 	@staticmethod
 	def init():
+		colorama.init()
+		Logger.info("GAME", "Started")
 		Config.load()
 		Window.beginTime = time.time()
 
 		# Initializing GLFW
 		if not glfw.init():
-			print("glfw not init")
+			Logger.error("GLFW", "Failed to init GLFW")
 			exit()
 
 		Window.create()  # the window
