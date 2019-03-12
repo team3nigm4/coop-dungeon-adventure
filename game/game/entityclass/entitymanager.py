@@ -3,6 +3,7 @@
 from game.game.entityclass.loadentity import LoadEntity
 from game.game.entityclass import entitycollision
 from game.util import math as mathcda
+from game.util.logger import Logger
 
 
 class EntityManager:
@@ -155,7 +156,7 @@ class EntityManager:
 
 		EntityManager.len = len(EntityManager.entities)
 		if entity[1]:
-			print("Remove the entity,", id)
+			Logger.info("ENTITY MANAGER", "Remove entity n°" + str(id))
 
 	@staticmethod
 	def remove(id, display=True):

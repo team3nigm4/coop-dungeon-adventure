@@ -44,8 +44,7 @@ class Window:
 		glfw.default_window_hints()
 		glfw.window_hint(glfw.RESIZABLE, 0)  # 0 = false
 
-		Window.window = glfw.create_window(Config.values["window"]["width"], Config.values["window"]["height"],
-										   "Coop Dungeon Adventure", None, None)
+		Window.window = glfw.create_window(Config.values["window"]["width"], Config.values["window"]["height"], "Coop Dungeon Adventure", None, None)
 
 		if not Window.window:
 			glfw.terminate()
