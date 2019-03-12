@@ -1,4 +1,5 @@
 from game.game.entityclass import entitydrawable
+from game.util.logger import Logger
 
 class EntityComplex(entitydrawable.EntityDrawable):
     def __init__(self, args):
@@ -55,6 +56,6 @@ class EntityComplex(entitydrawable.EntityDrawable):
 
     def applyDamage(self, damage, death=True):
         if self.takeDamage:
-            print(self.type, "take", str(damage), "damage(s)")
+            Logger.info("ENTITY COMPLEX", self.type + " take " + str(damage) + " damage(s)")
             self.setLife(self.life - damage, death)
             self.takeDamage = False

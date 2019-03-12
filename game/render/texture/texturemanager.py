@@ -1,6 +1,7 @@
 # Manages all textures to know which ones are loaded
 
 from game.render.texture import texture
+from game.util.logger import Logger
 
 
 class TextureManager:
@@ -19,15 +20,15 @@ class TextureManager:
 		self.texIds.remove(texId)
 
 	def state(self):
-		print("Textures currently loaded :")
-		print("=" * 24)
+		Logger.info("TEXTURE MANAGER", "Textures currently loaded :")
+		print("=" * 45)
 		for tex in self.texIds:
 			print("Texture " + str(tex.getId()) + ", from " + tex.getPath())
-		print("=" * 24)
+		print("=" * 45)
 
 	def endState(self):
 		if len(self.texIds) > 0:
-			print("\nError at the end of the program ->")
+			Logger.error("TEXTURE MANAGER", "Error at the end of the program ->")
 			self.state()
 		else:
-			print("\nNo remaining textures\n")
+			Logger.info("TEXTURE MANAGER", "No remaining textures")

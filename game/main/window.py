@@ -5,6 +5,9 @@ import time
 import OpenGL.GL as gl
 import glfw
 
+import colorama
+
+from game.util.logger import Logger 
 from game.main.config import Config
 
 
@@ -18,12 +21,15 @@ class Window:
 
 	@staticmethod
 	def init():
+		colorama.init()
+		Logger.info("GAME", "Started")
+		print("")
 		Config.load()
 		Window.beginTime = time.time()
 
 		# Initializing GLFW
 		if not glfw.init():
-			print("glfw not init")
+			Logger.error("GLFW", "Failed to init GLFW")
 			exit()
 
 		Window.create()  # the window
@@ -38,8 +44,7 @@ class Window:
 		glfw.default_window_hints()
 		glfw.window_hint(glfw.RESIZABLE, 0)  # 0 = false
 
-		Window.window = glfw.create_window(Config.values["window"]["width"], Config.values["window"]["height"],
-										   "Coop Dungeon Adventure", None, None)
+		Window.window = glfw.create_window(Config.values["window"]["width"], Config.values["window"]["height"], "Coop Dungeon Adventure", None, None)
 
 		if not Window.window:
 			glfw.terminate()
@@ -109,4 +114,6 @@ class Window:
 	def exit():
 		gameManager.unload()
 		glfw.terminate()
+		print("")
+		Logger.info("GAME", "Closed")
 		exit()
