@@ -24,14 +24,15 @@ class Bat(enemy.Enemy):
 		self.attributes["playerBow"] = 2
 
 		self.direction = 3
-		self.damage = 1
 		self.maxSpeed = [Bat.SPEED_MAX, Bat.SPEED_MAX]
-		self.life = 4
+		self.target = -1
 		self.speedCounter = 0
 
+		self.life = 4
+		self.damage = 1
 		self.invincibilityTime = Bat.INVINCIBILITY_TIME
-
-		self.target = -1
+		self.knockback = 0.35
+		self.height = 0.8
 
 		self.entityRenderer.setImagePath([1, 1], "entities/bat.png", [0.5, 0.5])
 		self.gapDisplayPos = -1
@@ -93,6 +94,7 @@ class Bat(enemy.Enemy):
 	def collision(self, ent):
 		if (ent.attributes["playerSword"] == 1 and self.attributes["playerSword"] == 2) or \
 				(ent.attributes["playerBow"] == 1 and self.attributes["playerBow"] == 2):
-			ent.triggerBox(self)
-			if not ent.entityId == self.target:
+			if not ent.entityId == self.target and ent.giveDamage:
 				self.target = ent.entityId
+			ent.triggerBox(self)
+

@@ -36,6 +36,9 @@ class Arrow(entitycomplex.EntityComplex):
 		self.colRenderer.updateModel(self.pos)
 		self.gapDisplayPos = -1
 		self.entityId = -1
+		self.giveDamage = True
+
+		self.knockback = 0.25
 
 	def update(self):
 		super().update()
@@ -57,5 +60,17 @@ class Arrow(entitycomplex.EntityComplex):
 		self.entityId = entityId
 
 	def triggerBox(self, ent):
-		ent.applyDamage(self.DAMAGE)
-		self.setLife(0)
+		if self.giveDamage:
+			ent.setStun(True)
+			if self.direction == 0:
+				ent.applyKnockback(self.knockback, [ent.pos[0] + 1, ent.pos[1]])
+			elif self.direction == 1:
+				ent.applyKnockback(self.knockback, [ent.pos[0], ent.pos[1] - 1])
+			elif self.direction == 2:
+				ent.applyKnockback(self.knockback, [ent.pos[0] - 1, ent.pos[1]])
+			elif self.direction == 3:
+				ent.applyKnockback(self.knockback, [ent.pos[0], ent.pos[1] + 1])
+
+			self.giveDamage = False
+			ent.applyDamage(self.DAMAGE)
+			self.setLife(0)

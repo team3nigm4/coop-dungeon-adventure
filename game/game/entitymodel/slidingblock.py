@@ -38,8 +38,26 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 		self.mam.checkEmpty(self)
 
 	def collision(self, ent):
+		# If in move and ent has no collision
+		if (self.inMov[0] or self.inMov[1]) and ent.attributes["collision"] != 2:
+			if ent.attributes["blockDamage"] == 1:
+				if self.inMov[0]:
+					if self.speed[0] > 0:
+						if ent.pos[0] > self.pos[0]:
+							ent.applyDamage(SlidingBlock.DAMAGE)
+					else:
+						if ent.pos[0] < self.pos[0]:
+							ent.applyDamage(SlidingBlock.DAMAGE)
+				else:
+					if self.speed[1] > 0:
+						if ent.pos[1] > self.pos[1]:
+							ent.applyDamage(SlidingBlock.DAMAGE)
+					else:
+						if ent.pos[1] < self.pos[1]:
+							ent.applyDamage(SlidingBlock.DAMAGE)
+
 		# If we apply the collision
-		if ent.attributes["collision"] > 0 and (ent.attributes["collision"] != 2 or ent.inMov[0] or ent.inMov[1]):
+		elif ent.attributes["collision"] > 0 and (ent.attributes["collision"] != 2 or ent.inMov[0] or ent.inMov[1]):
 			# Just move in x
 			if ent.inMov[0] and not ent.inMov[1]:
 				tempDir = 0
@@ -77,39 +95,20 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 					self.speed[1] = SlidingBlock.SPEED * tempDir
 
 			# Move in both coordinates
-			elif ent.inMov[0] and ent.inMov[1]:
+			else:
 				oldPos = [ent.pos[0] - ent.speed[0], ent.pos[1] - ent.speed[1]]
 
 				# what ent's position to replace
-				if ent.inMov[0]:
 					# left
-					if oldPos[0] + ent.halfColSize[0] < self.pos[0] - self.halfColSize[0]:
+				if oldPos[0] + ent.halfColSize[0] < self.pos[0] - self.halfColSize[0]:
 						ent.setPos([self.pos[0] - self.halfColSize[0] - ent.halfColSize[0] - 0.002, ent.pos[1]])
 					# right
-					elif oldPos[0] - ent.halfColSize[0] > self.pos[0] + self.halfColSize[0]:
+				elif oldPos[0] - ent.halfColSize[0] > self.pos[0] + self.halfColSize[0]:
 						ent.setPos([self.pos[0] + self.halfColSize[0] + ent.halfColSize[0] + 0.002, ent.pos[1]])
 
-				if ent.inMov[1]:
 					# up
-					if oldPos[1] - ent.halfColSize[1] > self.pos[1] + self.halfColSize[1]:
+				if oldPos[1] - ent.halfColSize[1] > self.pos[1] + self.halfColSize[1]:
 						ent.setPos([ent.pos[0], self.pos[1] + self.halfColSize[1] + ent.halfColSize[1] + 0.002])
 					# down
-					elif oldPos[1] + ent.halfColSize[1] < self.pos[1] - self.halfColSize[1]:
+				elif oldPos[1] + ent.halfColSize[1] < self.pos[1] - self.halfColSize[1]:
 						ent.setPos([ent.pos[0], self.pos[1] - self.halfColSize[1] - ent.halfColSize[1] - 0.002])
-
-		if self.inMov[0] or self.inMov[1]:
-			if ent.attributes["blockDamage"] == 1:
-				if self.inMov[0]:
-					if self.speed[0] > 0:
-						if ent.pos[0] > self.pos[0]:
-							ent.applyDamage(SlidingBlock.DAMAGE)
-					else:
-						if ent.pos[0] < self.pos[0]:
-							ent.applyDamage(SlidingBlock.DAMAGE)
-				else:
-					if self.speed[1] > 0:
-						if ent.pos[1] > self.pos[1]:
-							ent.applyDamage(SlidingBlock.DAMAGE)
-					else:
-						if ent.pos[1] < self.pos[1]:
-							ent.applyDamage(SlidingBlock.DAMAGE)

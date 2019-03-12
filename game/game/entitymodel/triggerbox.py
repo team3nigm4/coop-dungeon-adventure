@@ -15,6 +15,8 @@ class TriggerBox(entitycollision.EntityCollision):
 		self.setDrawCol(True)
 		self.colRenderer.setAttributes(self.colSize, [0, 0, 1, 0.5])
 
+		self.giveDamage = True
+
 	def update(self):
 		super().update()
 		if self.count >= self.maxCount:

@@ -20,3 +20,6 @@ class Mannequin(enemy.Enemy):
 		self.life = args[Mannequin.ARGS_LIFE]
 
 		self.invincibilityTime = Mannequin.INVINCIBILITY_TIME
+
+	def applyKnockback(self, knockback, pos):
+		pass

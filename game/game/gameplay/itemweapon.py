@@ -4,6 +4,7 @@ from game.game.entitymodel import triggerbox
 class ItemWeapon(item.Item):
 	SWORD_ATTACK_TIME = 24
 	SWORD_RELOAD_TIME = 48
+	SWORD_KNOCKBACK = 0.2
 
 	BOW_RELOAD_TIME = 48
 
@@ -66,7 +67,7 @@ class ItemWeapon(item.Item):
 
 	def update(self):
 		if self.used:
-			# Sword
+			# Sword*
 			if self.arm:
 				if self.useCounter <= ItemWeapon.SWORD_ATTACK_TIME:
 					self.trigBox.setPos(self.triggerPos())
@@ -98,5 +99,7 @@ class ItemWeapon(item.Item):
 		else:
 			return [self.player.pos[0], self.player.pos[1] - self.player.halfColSize[0] - 0.31]
 
-	def triggerBox(self, ent):
+	def triggerBox(self, ent):		
+		ent.applyKnockback(ItemWeapon.SWORD_KNOCKBACK, self.trigBox.pos)
 		ent.applyDamage(self.player.damage)
+  
