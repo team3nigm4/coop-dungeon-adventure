@@ -4,6 +4,7 @@ import math
 
 from game.game.entityclass import entitycomplex
 
+
 class Player(entitycomplex.EntityComplex):
 	SPEED_ADD = 0.015
 	SPEED_MAX = 0.09
@@ -12,7 +13,7 @@ class Player(entitycomplex.EntityComplex):
 	ARGS_PLAYER_NUMBER = 3
 	ARGS_PLAYER_TEXTURE = 4
 
-	INVINCIBILITY_TIME = 60
+	INVINCIBILITY_TIME = 90
 
 	def __init__(self, args):
 		super().__init__(args)
@@ -27,10 +28,11 @@ class Player(entitycomplex.EntityComplex):
 
 		self.wantDirection = [0, 0]
 		self.direction = 3
-		self.damage = 1
 		self.life = 6
 		self.maxSpeed = Player.SPEED_MAX
 		self.invincibilityTime = Player.INVINCIBILITY_TIME
+
+		self.weight = 1.3
 
 		from game.game.gameplay import itemweapon
 		self.item = itemweapon.ItemWeapon(self)
@@ -42,15 +44,15 @@ class Player(entitycomplex.EntityComplex):
 		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)
 
 	def useItem(self, input):
-		if input == 2:
+		if input == 2 and not self.stuned:
 			self.item.useItem()
 
 	def useItem2(self, input):
-		if input == 2:
+		if input == 2 and not self.stuned:
 			self.item.useItem2()
 
 	def interact(self, input):
-		if input == 2:
+		if input == 2 and not self.stuned:
 			self.attributes["interaction"] = 1
 		else:
 			self.attributes["interaction"] = 0
@@ -59,16 +61,19 @@ class Player(entitycomplex.EntityComplex):
 		super().update()
 		self.item.update()
 
-		if (self.wantDirection[0] != 0 and self.wantDirection[1] == 0) or (
-				self.wantDirection[1] != 0 and self.wantDirection[0] == 0):
-			if self.wantDirection[0] == -1:
-				self.direction = 0
-			elif self.wantDirection[1] == 1:
+		# Change the direction choose by the player
+		if (not self.wantDirection[0] == 0 and self.wantDirection[1] == 0) or (
+				not self.wantDirection[1] == 0 and self.wantDirection[0] == 0) or (
+				self.oldWantDirection == [0, 0]):
+			# In priority up and down direction
+			if self.wantDirection[1] == 1:
 				self.direction = 1
+			elif self.wantDirection[1] == -1:
+				self.direction = 3
+			elif self.wantDirection[0] == -1:
+				self.direction = 0
 			elif self.wantDirection[0] == 1:
 				self.direction = 2
-			else:
-				self.direction = 3
 
 		for i in range(2):
 			if self.wantDirection[i] == 0:
@@ -104,6 +109,7 @@ class Player(entitycomplex.EntityComplex):
 			if self.em.entities[1 - self.playerNumber].life > 0 :
 				if self.takeDamage:
 					self.em.entities[1 - self.playerNumber].applyDamage(damage)
+					self.takeDamage = False
 			else:
 				print("Two players are dead !!")
 				exit()
@@ -117,6 +123,8 @@ class Player(entitycomplex.EntityComplex):
 
 	def collision(self, ent):
 		if ent.attributes["enemyDamage"] == 1:
+			self.setStun(True)
+			self.applyKnockback(ent.knockback, ent.pos)
 			self.applyDamage(ent.damage)
 
 		super().collision(ent)

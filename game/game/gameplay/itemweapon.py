@@ -4,8 +4,10 @@ from game.game.entitymodel import triggerbox
 class ItemWeapon(item.Item):
 	SWORD_ATTACK_TIME = 24
 	SWORD_RELOAD_TIME = 48
+	SWORD_KNOCKBACK = 0.10
+	SWORD_ATTACK_DAMAGE = 2
 
-	BOW_RELOAD_TIME = 48
+	BOW_RELOAD_TIME = 72
 
 	LOW_SPEED_COEF = 3
 
@@ -66,7 +68,7 @@ class ItemWeapon(item.Item):
 
 	def update(self):
 		if self.used:
-			# Sword
+			# Sword*
 			if self.arm:
 				if self.useCounter <= ItemWeapon.SWORD_ATTACK_TIME:
 					self.trigBox.setPos(self.triggerPos())
@@ -99,4 +101,13 @@ class ItemWeapon(item.Item):
 			return [self.player.pos[0], self.player.pos[1] - self.player.halfColSize[0] - 0.31]
 
 	def triggerBox(self, ent):
-		ent.applyDamage(self.player.damage)
+		ent.setStun(True)
+		if self.player.direction == 0:
+			ent.applyKnockback(ItemWeapon.SWORD_KNOCKBACK, [ent.pos[0] + 1, ent.pos[1]])
+		elif self.player.direction == 1:
+			ent.applyKnockback(ItemWeapon.SWORD_KNOCKBACK, [ent.pos[0], ent.pos[1] - 1])
+		elif self.player.direction == 2:
+			ent.applyKnockback(ItemWeapon.SWORD_KNOCKBACK, [ent.pos[0] - 1, ent.pos[1]])
+		elif self.player.direction == 3:
+			ent.applyKnockback(ItemWeapon.SWORD_KNOCKBACK, [ent.pos[0], ent.pos[1] + 1])
+		ent.applyDamage(ItemWeapon.SWORD_ATTACK_DAMAGE)

@@ -215,3 +215,6 @@ class EntityManager:
 			if EntityManager.entities[e].testCol:
 				EntityManager.collision(e)
 			e -= 1
+
+		for e in EntityManager.entities:
+			e.dispose()

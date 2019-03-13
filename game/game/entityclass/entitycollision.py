@@ -41,7 +41,7 @@ class EntityCollision(entity.Entity):
 			self.colRenderer.setAttributes(self.colSize, self.colRenderer.color)
 			self.colRenderer.updateModel([round(self.pos[0] * 32) / 32, round(self.pos[1] * 32) / 32])
 
-	def update(self):
+	def dispose(self):
 		self.oldPos = self.pos
 
 	def displayBox(self):
