@@ -36,8 +36,9 @@ class Spider(enemy.Enemy):
 		self.wantDirection = [0, 0]
 		self.maxSpeed = [0, 0]
 
-		self.life = 2
+		self.life = 5
 		self.invincibilityTime = Spider.INVINCIBILITY_TIME
+		self.knockback = 2.5
 
 		self.target = None
 		self.targetCounter = 0
