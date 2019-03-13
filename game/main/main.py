@@ -3,4 +3,8 @@
 from game.main.window import Window
 
 Window.init()
-Window.run()
+
+try:
+	Window.run()
+except KeyboardInterrupt:
+	Window.exit()

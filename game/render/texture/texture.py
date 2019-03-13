@@ -5,6 +5,7 @@ from PIL import Image as img
 
 from game.render.texture import textureid as textureId
 from game.screen import gamemanager as gameManager
+from game.util.logger import Logger
 
 
 class Texture:
@@ -26,8 +27,8 @@ class Texture:
 		try:
 			image = img.open(self.texId.getPath())
 			self.loadImage(image)
-		except Exception:
-			self.error()
+		except Exception as error:
+			self.error(error)
 
 	def loadImage(self, image):
 		try:
@@ -47,21 +48,22 @@ class Texture:
 
 				gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST)
 				gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST)
-				gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, self.width, self.height, 0,
-								gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, imgData)
-				print("Texture num : " + str(self.texId.getId()) + " , loaded with path : " + self.texId.getPath())
+				gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, self.width, self.height, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, imgData)
+				Logger.info("TEXTURE +", "Texture n°" + str(self.texId.getId()) + " loaded (" + self.texId.getPath().replace(self.PATH, '') + ")")
 				gameManager.GameManager.texManager.add(self.texId)
 				self.correctLoaded = True
-			except Exception:
+			except Exception as error:
 				gl.glDeleteTextures(self.texId.getId())
 				gameManager.GameManager.texManager.remove(self.texId)
-				self.error()
-		except Exception:
-			self.error()
+				self.error(error)
+		except Exception as error:
+			self.error(error)
 
-	def error(self):
+	def error(self, error):
 		# When error, replace the current texture by the error texture
-		print("Error on loading the texture " + str(self.texId.getId()) + " :\n" + self.texId.getPath())
+		Logger.error("TEXTURE", "Error while loading texture n°" + str(self.texId.getId()) + " (" + self.texId.getPath().replace(self.PATH, '') + ')')
+		Logger.bold("Error returned :")
+		print("  " + str(error) + "\n")
 		self.defaultInit()
 
 	def bind(self):
@@ -77,4 +79,4 @@ class Texture:
 			gameManager.GameManager.texManager.remove(self.texId)
 			self.correctLoaded = False
 			if status:
-				print("Texture num : " + str(self.texId.getId()) + ", unloaded.")
+				Logger.info("TEXTURE -", "Texture n°" + str(self.texId.getId()) + " unloaded")
