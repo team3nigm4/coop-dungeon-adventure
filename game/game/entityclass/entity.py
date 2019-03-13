@@ -26,6 +26,9 @@ class Entity:
 	def display(self):
 		pass
 
+	def dispose(self):
+		pass
+
 	def displayBox(self):
 		pass
 

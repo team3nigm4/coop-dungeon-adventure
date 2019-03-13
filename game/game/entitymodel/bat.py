@@ -28,7 +28,7 @@ class Bat(enemy.Enemy):
 		self.target = -1
 		self.speedCounter = 0
 
-		self.life = 4
+		self.life = 7
 		self.damage = 1
 		self.invincibilityTime = Bat.INVINCIBILITY_TIME
 		self.knockback = 0.35

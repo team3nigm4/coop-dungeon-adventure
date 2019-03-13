@@ -1,6 +1,8 @@
 from game.game.entityclass import entitydrawable
+from game.game.entityclass import entitycollision as entc
 
 import math
+
 
 class EntityComplex(entitydrawable.EntityDrawable):
     def __init__(self, args):
@@ -21,6 +23,7 @@ class EntityComplex(entitydrawable.EntityDrawable):
         self.invincibilityTime = 1
         self.takeDamage = True
         self.wantDirection = [0, 0]
+        self.oldWantDirection = [0, 0]
 
     def left(self, input):
         if input > 1 and not self.stuned:
@@ -55,8 +58,12 @@ class EntityComplex(entitydrawable.EntityDrawable):
                 self.invincibilityCounter +=1
 
     def display(self):
-        self.wantDirection = [0, 0]
         super().display()
+
+    def dispose(self):
+        super().dispose()
+        self.wantDirection = [0, 0]
+        self.oldWantDirection = self.oldWantDirection = [0, 0]
 
     def setLife(self, newLife, death=True):
         self.life = newLife

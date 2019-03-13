@@ -4,6 +4,7 @@ import math
 
 from game.game.entityclass import entitycomplex
 
+
 class Player(entitycomplex.EntityComplex):
 	SPEED_ADD = 0.015
 	SPEED_MAX = 0.09
@@ -27,7 +28,6 @@ class Player(entitycomplex.EntityComplex):
 
 		self.wantDirection = [0, 0]
 		self.direction = 3
-		self.damage = 1
 		self.life = 6
 		self.maxSpeed = Player.SPEED_MAX
 		self.invincibilityTime = Player.INVINCIBILITY_TIME
@@ -61,16 +61,19 @@ class Player(entitycomplex.EntityComplex):
 		super().update()
 		self.item.update()
 
-		if (self.wantDirection[0] != 0 and self.wantDirection[1] == 0) or (
-				self.wantDirection[1] != 0 and self.wantDirection[0] == 0):
-			if self.wantDirection[0] == -1:
-				self.direction = 0
-			elif self.wantDirection[1] == 1:
+		# Change the direction choose by the player
+		if (not self.wantDirection[0] == 0 and self.wantDirection[1] == 0) or (
+				not self.wantDirection[1] == 0 and self.wantDirection[0] == 0) or (
+				self.oldWantDirection == [0, 0]):
+			# In priority up and down direction
+			if self.wantDirection[1] == 1:
 				self.direction = 1
+			elif self.wantDirection[1] == -1:
+				self.direction = 3
+			elif self.wantDirection[0] == -1:
+				self.direction = 0
 			elif self.wantDirection[0] == 1:
 				self.direction = 2
-			else:
-				self.direction = 3
 
 		for i in range(2):
 			if self.wantDirection[i] == 0:
