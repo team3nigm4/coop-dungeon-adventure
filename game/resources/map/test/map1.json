@@ -69,6 +69,7 @@
         [
             ["Mannequin", [[7.5, 6.5], false, 0, 2]],
             ["Spawn", [[0, 2], 0, ["Bat", [8.5, 4.5], true, 0]]],
+            ["Spawn", [[0, 2], 0, ["Spider", [8.5, 4.5], true, 0]]],
             ["ActivationBlock", [[10.5, 7.5]]],
             ["SpawnPoint", [[1.5, 6.0]]],
             ["TogglePlate", [[8.5, 2.5], 0]],

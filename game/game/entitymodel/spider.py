@@ -38,7 +38,7 @@ class Spider(enemy.Enemy):
 
 		self.life = 5
 		self.invincibilityTime = Spider.INVINCIBILITY_TIME
-		self.knockback = 2.5
+		self.knockback = 0.25
 
 		self.target = None
 		self.targetCounter = 0
