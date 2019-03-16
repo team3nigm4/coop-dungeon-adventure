@@ -4,6 +4,7 @@ from game.render.shape import shape
 from game.render.texture import texture
 from game.util import matrix4f
 from game.render.shader.shadermanager import ShaderManager as sm
+from game.game.entityclass import entitymanager as em
 
 class MapRender:
 	GROUND = 0
@@ -17,6 +18,9 @@ class MapRender:
 
 	tileSetImage = None
 	tileSet = None
+	transitionImage = None
+	transitionPos = matrix4f.Matrix4f()
+	transitionShape = None
 
 	tWidth = 0
 	tHeight = 0
@@ -31,18 +35,25 @@ class MapRender:
 	vboCount = 0
 	ebo = []
 	eboCount = 0
-	modelDown =  matrix4f.Matrix4f()
+	modelDown = matrix4f.Matrix4f()
 
 	change = False
 
 	@staticmethod
 	def init():
+		# Images and json loading
 		path_tileSetImage = "/tiles/tileset.png"
 		path_tileSet = "game/resources/textures/tiles/tileset.json"
+		path_transitionImage = "hud/transition.png"
+
 		MapRender.tileSet = json.load(open(path_tileSet))
+
 		MapRender.tileSetImage = texture.Texture(path_tileSetImage)
 		MapRender.tileSetImage.load()
+		MapRender.transitionImage = texture.Texture(path_transitionImage)
+		MapRender.transitionImage.load()
 
+		# Render's shapes loading
 		MapRender.shapeUp = shape.Shape("texture", True)
 		MapRender.shapeUp.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
 		MapRender.shapeUp.setReading([3, 2])
@@ -53,6 +64,20 @@ class MapRender:
 		MapRender.modelDown = matrix4f.Matrix4f(True)
 		sm.updateLink("texture", "model", MapRender.modelDown.matrix)
 
+		MapRender.transitionPos = matrix4f.Matrix4f(True)
+		MapRender.transitionShape = shape.Shape("hud", True)
+		MapRender.transitionShape.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
+		quad = [-18.0, -12.0, 0.0, 0.0, 0.0,
+				18.0, -12.0, 0.0, 	1.0, 0.0,
+				18.0, 12.0, 0.0, 	1.0, 1.0,
+				-18.0, 12.0, 0.0, 	0.0, 1.0]
+		indices = [0, 1, 2,		2, 3, 0]
+		MapRender.transitionShape.setVbo(quad)
+		MapRender.transitionShape.setEbo(indices)
+		MapRender.transitionShape.setReading([3, 2])
+		# MapRender.transitionPos.matrix[3][0] = 5
+		# MapRender.transitionPos.matrix[3][1] -= 5
+
 	@staticmethod
 	def constructMap():
 		height = len(MapRender.mapValues[0])
@@ -60,7 +85,7 @@ class MapRender:
 		MapRender.tWidth = width
 		MapRender.tHeight = height
 
-		MapRender.tilesPosition = [[[None for jk in range(width)] for kj in range(height)] for lk in range(2)]
+		MapRender.tilesPosition = [[[None for sx in range(width)] for y in range(height)] for z in range(2)]
 
 		MapRender.vbo = []
 		MapRender.ebo = []
@@ -79,11 +104,15 @@ class MapRender:
 		MapRender.change = True
 
 	@staticmethod
-	def display():
+	def display(transition):
 		sm.updateLink("texture", "model", MapRender.modelDown.matrix)
 		MapRender.tileSetImage.bind()
-		MapRender.shapeDown.bind()
-		MapRender.shapeDown.draw()
+		MapRender.shapeDown.display()
+		em.EntityManager.display()
+
+		sm.updateLink("hud", "model", MapRender.transitionPos.matrix)
+		# MapRender.tileSetImage.bind()
+		MapRender.transitionShape.display()
 
 	@staticmethod
 	def dispose():
@@ -283,3 +312,5 @@ class MapRender:
 		MapRender.shapeDown.unload()
 		MapRender.shapeUp.unload()
 		MapRender.tileSetImage.unload()
+		MapRender.transitionShape.unload()
+		MapRender.transitionImage.unload()

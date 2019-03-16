@@ -41,10 +41,10 @@ class EntityRenderer:
 		self.tex.load()
 
 		size = self.size
-		quad = [0 - hotPoint[0], 0 - hotPoint[1], 0.0, 0.0, 0.0,
-				size[0] - hotPoint[0], 0 - hotPoint[1], 0.0, 1.0, 0.0,
-				size[0] - hotPoint[0], size[1] - hotPoint[1], 0.0, 1.0, 1.0,
-				0 - hotPoint[0], size[1] - hotPoint[1], 0.0, 0.0, 1.0]
+		quad = [0 - hotPoint[0], 0 - hotPoint[1], 0.0, 				0.0, 0.0,
+				size[0] - hotPoint[0], 0 - hotPoint[1], 0.0, 		1.0, 0.0,
+				size[0] - hotPoint[0], size[1] - hotPoint[1], 0.0, 	1.0, 1.0,
+				0 - hotPoint[0], size[1] - hotPoint[1], 0.0, 		0.0, 1.0]
 
 		self.shape.setVbo(quad)
 

@@ -45,10 +45,10 @@ class Door(entitycollision.EntityCollision):
 			if ent.attributes["door"] == 1:
 				if not self.isTwo:
 					self.isTwo = True
-					# Temp system without both players
 				else:
-					self.mam.reserveChange([self.zone, self.map, self.entry])
-					# Change the map with its id
+					# Change the map with its values
+					self.mam.reserveChange(self.zone, self.map, self.entry)
+					
 
 	def activate(self):
 		self.isActive = True

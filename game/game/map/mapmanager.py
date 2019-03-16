@@ -7,6 +7,7 @@ from game.game.map import maprender as mp
 from game.game.map.eventmanager import EventManager as ev
 from game.game.map.maptemporarysave import MapTemporarySave as mts
 from game.game.map.maploading import MapLoading as ml
+from game.screen import gamemanager as gm
 
 
 class MapManager:
@@ -14,6 +15,12 @@ class MapManager:
 
 	INTERACTION_SOLID = 1
 	INTERACTION_EMPTY = 2
+
+	TRANSITION_TIMES = [30, 1, 30]
+	TRANSITION_BEGIN = 0
+	TRANSITION_LOAD = 1
+	TRANSITION_END = 2
+
 
 	cWidth = None
 	cHeight = None
@@ -27,15 +34,23 @@ class MapManager:
 
 	changeValues = None
 
+	transition = False
+	transitionPhase = 0
+	transitionCount = 0
+
 	@staticmethod
-	def changeRoom(zone, map, entry):
-		# Clear the game before changing
-		MapManager.changeValues = None
+	def changeRoom():
+		zone = MapManager.changeValues[0]
+		map = MapManager.changeValues[1]
+		entry = MapManager.changeValues[2]
 
 		# If the room if a new map
 		if not ml.isMap(zone, map, entry):
 			if MapManager.zone == "null":
-				MapManager.changeRoom("test", "map1", 0)
+				MapManager.changeValues[0] = "test"
+				MapManager.changeValues[1] = "map1"
+				MapManager.changeValues[2] = 0
+				MapManager.changeRoom()
 				return
 
 		# If a new Zone
@@ -50,11 +65,16 @@ class MapManager:
 		MapManager.entry = entry
 
 		mts.changeRoom(map, entry)
+		# Clear the game before changing
+		MapManager.changeValues = None
 
 	@staticmethod
 	def checkChangeMap():
+		# Default value of change value (without map chnage requested) is none
 		if MapManager.changeValues is not None:
-			MapManager.changeRoom(MapManager.changeValues[0], MapManager.changeValues[1], MapManager.changeValues[2])
+			# Prepare the transition
+			gm.GameManager.currentScreen.inPause = True
+			MapManager.transition = True
 
 	@staticmethod
 	def checkCollisionX(entity):
@@ -150,22 +170,19 @@ class MapManager:
 
 	@staticmethod
 	def display():
-		mp.MapRender.display()
-
-	@staticmethod
-	def dispose():
-		ev.dispose()
-		MapManager.checkChangeMap()
-		mp.MapRender.dispose()
+		mp.MapRender.display(MapManager.transition)
 
 	@staticmethod
 	def init():
 		mp.MapRender.init()
-		MapManager.changeRoom("test", "map1", 0)
+		MapManager.changeValues = ["null", "map0", 0]
+
+		MapManager.reserveChange("tuto", "0-2-1", 0)
+		MapManager.changeRoom()
 
 	@staticmethod
-	def reserveChange(values):
-		MapManager.changeValues = values
+	def reserveChange(zone, map, entry):
+		MapManager.changeValues = [zone, map, entry]
 
 	@staticmethod
 	# Change one bloc of the interaction map
@@ -178,10 +195,10 @@ class MapManager:
 				if not em.EntityManager.entities[i].attributes["collision"] == 0:
 					e = em.EntityManager.entities[i]
 					# Collision Test
-					if math.floor(e.pos[0] - e.halfColSize[0]) <= position[0] <= math.floor(
-							e.pos[0] + e.halfColSize[0]) and \
-							math.floor(e.pos[1] - e.halfColSize[1]) <= position[1] <= math.floor(
-						e.pos[1] + e.halfColSize[1]):
+					if math.floor(e.pos[0] * MapManager.COEF - e.halfColSize[0] * MapManager.COEF) <= position[0] <= math.floor(
+							e.pos[0] * MapManager.COEF + e.halfColSize[0] * MapManager.COEF) and \
+							math.floor(e.pos[1] * MapManager.COEF - e.halfColSize[1] * MapManager.COEF) <= position[1] <= math.floor(
+						e.pos[1] * MapManager.COEF + e.halfColSize[1] * MapManager.COEF):
 
 						if not e.type == "Player":
 							em.EntityManager.remove(e.id)
@@ -232,3 +249,27 @@ class MapManager:
 	def unload():
 		mp.MapRender.unload()
 		mts.unloadAll()
+
+	@staticmethod
+	def update():
+		if MapManager.transition:
+			if MapManager.transitionPhase > 2:
+				# Reset values
+				MapManager.transitionCount = 0
+				MapManager.transitionPhase = 0
+				gm.GameManager.currentScreen.inPause = False
+				MapManager.transition = False
+			else:
+				# If end of each phase
+				if MapManager.transitionCount >= MapManager.TRANSITION_TIMES[MapManager.transitionPhase]:
+					MapManager.transitionPhase +=1
+					MapManager.transitionCount = 0
+
+				else:
+					if MapManager.transitionPhase == MapManager.TRANSITION_LOAD:
+						MapManager.changeRoom()
+					MapManager.transitionCount +=1
+		else:
+			ev.dispose()
+			MapManager.checkChangeMap()
+			mp.MapRender.dispose()

@@ -40,7 +40,7 @@ class Command:
 	# 3 = entryPoint
 	def changeMap(args):
 		from game.game.map.mapmanager import MapManager as mam
-		mam.reserveChange([args[1], args[2], int(args[3])])
+		mam.reserveChange(args[1], args[2], int(args[3]))
 
 	@staticmethod
 	# Alias of changeMap()

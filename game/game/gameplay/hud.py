@@ -1,5 +1,4 @@
 import json
-import numpy
 
 from game.render.texture import texture
 from game.render.shape import shape
@@ -9,6 +8,15 @@ from game.game.entityclass.entitymanager import EntityManager as em
 
 
 class Hud:
+	PORTRAIT_1 = 0
+	PORTRAIT_2 = 1
+	ITEM_1 = 2
+	ITEM_2 = 3
+	HEARTHS_1 = 4
+	HEARTHS_2 = 7
+
+	VERTEX_SIZE = 4 * 6
+
 	hudSetImage = None
 	hudSet = None
 	hudInfo = None
@@ -17,13 +25,6 @@ class Hud:
 
 	vbo = []
 	ebo = []
-
-	PORTRAIT_1 = 0
-	PORTRAIT_2 = 1
-	ITEM_1 = 2
-	ITEM_2 = 3
-	HEARTHS_1 = 4
-	HEARTHS_2 = 7
 
 	model = matrix4f.Matrix4f(True)
 	itemName = ["", ""]
@@ -40,12 +41,11 @@ class Hud:
 
 		Hud.shape = shape.Shape("hud", True)
 		Hud.shape.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
-		Hud.shape.setReading([3, 2])
+		Hud.shape.setReading([3, 2, 1])
 
 		Hud.model = matrix4f.Matrix4f(True)
 		Hud.model.matrix[3][0] -= 9
 		Hud.model.matrix[3][1] -= 6
-		sm.updateLink("hud", "model", Hud.model.matrix)
 
 		Hud.ebo = []
 		for index in range(10):
@@ -67,24 +67,25 @@ class Hud:
 
 	@staticmethod
 	def constructHud():
-		Hud.vbo = [0 for a in range(20*10)]
+		Hud.vbo = [0 for a in range(Hud.VERTEX_SIZE * 10)]
 		Hud.itemName1 = ""
 		Hud.itemName2 = ""
 
 		Hud.initElement(Hud.hudInfo["position"]["portrait1"],
-						Hud.hudInfo["size"]["portrait1"], "portrait1", Hud.PORTRAIT_1)
+						Hud.hudInfo["size"]["portrait1"], "portrait1",
+						Hud.PORTRAIT_1, Hud.hudInfo["opacity"]["portrait1"])
 
 		Hud.initElement(Hud.hudInfo["position"]["portrait2"],
-						Hud.hudInfo["size"]["portrait2"], "portrait2", Hud.PORTRAIT_2)
+						Hud.hudInfo["size"]["portrait2"], "portrait2",
+						Hud.PORTRAIT_2, Hud.hudInfo["opacity"]["portrait2"])
 		Hud.dispose()
 
 	@staticmethod
 	def display():
 		sm.updateLink("hud", "model", Hud.model.matrix)
-		# sm.updateLinkf("hud", "opacity", numpy.float(0.8))
+		
 		Hud.hudSetImage.bind()
-		Hud.shape.bind()
-		Hud.shape.draw()
+		Hud.shape.display()
 
 	@staticmethod
 	def dispose():
@@ -104,7 +105,8 @@ class Hud:
 					itemType = "item"
 
 				Hud.initElement(Hud.hudInfo["position"]["item" + str(i + 1)],
-								Hud.hudInfo["size"]["item" + str(i + 1)], itemType, 2 + i)
+								Hud.hudInfo["size"]["item" + str(i + 1)],
+								itemType, 2 + i, Hud.hudInfo["opacity"]["item" + str(i + 1)])
 				change = True
 
 			if not em.entities[i].life == Hud.playerLife[i]:
@@ -133,36 +135,39 @@ class Hud:
 				texture = "dead-heart"
 
 			if Hud.playerInvincibility[i]:
-				texture+="-save"
+				texture += "-save"
 
 			position = Hud.hudInfo["position"]["healthBar" + str(i + 1)].copy()
 			position[0] += (Hud.hudInfo["info"]["hearthGap"] * a)  + (Hud.hudInfo["size"]["hearth"][0] * a)
 
 			if i == 0:
-				Hud.initElement(position, Hud.hudInfo["size"]["hearth"], texture, Hud.HEARTHS_1 + a)
+				Hud.initElement(position, Hud.hudInfo["size"]["hearth"],
+								texture, Hud.HEARTHS_1 + a, Hud.hudInfo["opacity"]["healthBar1"])
 			else:
-				Hud.initElement(position, Hud.hudInfo["size"]["hearth"], texture, Hud.HEARTHS_2 + a)
+				Hud.initElement(position, Hud.hudInfo["size"]["hearth"],
+								texture, Hud.HEARTHS_2 + a, Hud.hudInfo["opacity"]["healthBar2"])
 
 	@staticmethod
-	def initElement(position, size, texture, vboCount):
-		del Hud.vbo[vboCount*20:(vboCount+1)*20]
+	def initElement(position, size, texture, vboCount, opacity):
+		del Hud.vbo[vboCount * Hud.VERTEX_SIZE: (vboCount + 1) * Hud.VERTEX_SIZE]
 
 		pos = Hud.hudSet["position"][texture]
-		Hud.addVertice(position[0] - size[0]/2, position[1] - size[1]/2,
-					pos[0], pos[1] + 1, vboCount)
 
-		Hud.addVertice(position[0] + size[0]/2, position[1] - size[1]/2,
-					pos[0] + 1, pos[1] + 1, vboCount)
+		Hud.addVertice(position[0] - size[0] / 2, position[1] - size[1] / 2,
+					pos[0], pos[1] + 1, vboCount, opacity)
 
-		Hud.addVertice(position[0] + size[0]/2, position[1] + size[1]/2,
-					pos[0] + 1, pos[1], vboCount)
+		Hud.addVertice(position[0] + size[0] / 2, position[1] - size[1] / 2,
+					pos[0] + 1, pos[1] + 1, vboCount, opacity)
+
+		Hud.addVertice(position[0] + size[0] / 2, position[1] + size[1] / 2,
+					pos[0] + 1, pos[1], vboCount, opacity)
 
 		Hud.addVertice(position[0]- size[0]/2, position[1] + size[1]/2,
-					pos[0], pos[1], vboCount)
+					pos[0], pos[1], vboCount, opacity)
 
 	@staticmethod
-	def addVertice(posX, posY, tposX, tposY, vboPos):
-		vboPos *= 20
+	def addVertice(posX, posY, tposX, tposY, vboPos, opacity):
+		vboPos *= Hud.VERTEX_SIZE
 		posY += 1
 		Hud.vbo.insert(vboPos, float(posX))
 		Hud.vbo.insert(vboPos + 1, float(posY))
@@ -170,6 +175,8 @@ class Hud:
 		Hud.vbo.insert(vboPos + 3, round(tposX / Hud.hudSet["info"]["size"][0], 3))
 		Hud.vbo.insert(vboPos + 4,
 							 Hud.hudSet["info"]["size"][1] - round(tposY / Hud.hudSet["info"]["size"][1], 3))
+		Hud.vbo.insert(vboPos + 5, opacity)
+
 	@staticmethod
 	def unload():
 		Hud.hudSetImage.unload()
