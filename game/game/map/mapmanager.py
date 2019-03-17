@@ -326,7 +326,6 @@ class MapManager:
 						if MapManager.transitionCount == 0:
 							if MapManager.exitPos <= 3:
 								MapManager.exitPos = (MapManager.exitPos + 2) % 4
-								print(MapManager.exitPos)
 
 							MapManager.changeRoom()
 							pos = gm.GameManager.cam.pos.copy()
