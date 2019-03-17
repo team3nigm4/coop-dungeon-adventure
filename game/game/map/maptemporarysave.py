@@ -108,13 +108,13 @@ class MapTemporarySave:
 										  mts.defaultEntry_instances[map],
 										  mts.entryPos_instances[map][str(mts.defaultEntry_instances[map])])
 
+
+			mr.mapValues = values[MapTemporarySave.DATA_MAP_DISPLAY]
+			mr.constructMap()
 			for i in range(0, len(values[MapTemporarySave.DATA_ENTITIES])):
 				args = values[MapTemporarySave.DATA_ENTITIES][i][1]
 				args.insert(0, (values[MapTemporarySave.DATA_ENTITIES][i][0]))
 				em.EntityManager.addA(args)
-
-			mr.mapValues = values[MapTemporarySave.DATA_MAP_DISPLAY]
-			mr.constructMap()
 
 			MapTemporarySave.saveValue(map)
 

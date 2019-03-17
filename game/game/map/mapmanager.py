@@ -8,6 +8,7 @@ from game.game.map.eventmanager import EventManager as ev
 from game.game.map.maptemporarysave import MapTemporarySave as mts
 from game.game.map.maploading import MapLoading as ml
 from game.screen import gamemanager as gm
+from game.util import math as mathcda
 
 
 class MapManager:
@@ -21,7 +22,6 @@ class MapManager:
 	TRANSITION_LOAD = 1
 	TRANSITION_END = 2
 
-
 	cWidth = None
 	cHeight = None
 	interaction = []
@@ -33,6 +33,7 @@ class MapManager:
 	defaultEntry = 0
 
 	changeValues = None
+	exitPos = 4
 
 	transition = False
 	transitionPhase = 0
@@ -70,7 +71,7 @@ class MapManager:
 
 	@staticmethod
 	def checkChangeMap():
-		# Default value of change value (without map chnage requested) is none
+		# Default value of change value (without map change requested) is none
 		if MapManager.changeValues is not None:
 			# Prepare the transition
 			gm.GameManager.currentScreen.inPause = True
@@ -177,12 +178,13 @@ class MapManager:
 		mp.MapRender.init()
 		MapManager.changeValues = ["null", "map0", 0]
 
-		MapManager.reserveChange("tuto", "0-2-1", 0)
+		MapManager.reserveChange("tuto", "0-1-0", 0)
 		MapManager.changeRoom()
 
 	@staticmethod
-	def reserveChange(zone, map, entry):
+	def reserveChange(zone, map, entry, exitPos=4):
 		MapManager.changeValues = [zone, map, entry]
+		MapManager.exitPos = exitPos
 
 	@staticmethod
 	# Change one bloc of the interaction map
@@ -228,7 +230,6 @@ class MapManager:
 			countY = 0
 			countX += 1
 
-
 	@staticmethod
 	def setupMapValues(interaction, defaultEntry, entryPos):
 		MapManager.interaction = interaction
@@ -253,22 +254,80 @@ class MapManager:
 	@staticmethod
 	def update():
 		if MapManager.transition:
+			# End of transition
 			if MapManager.transitionPhase > 2:
 				# Reset values
 				MapManager.transitionCount = 0
 				MapManager.transitionPhase = 0
 				gm.GameManager.currentScreen.inPause = False
 				MapManager.transition = False
+			# In a phase
 			else:
 				# If end of each phase
 				if MapManager.transitionCount >= MapManager.TRANSITION_TIMES[MapManager.transitionPhase]:
 					MapManager.transitionPhase +=1
 					MapManager.transitionCount = 0
-
+				# Update during the transition
 				else:
-					if MapManager.transitionPhase == MapManager.TRANSITION_LOAD:
+					# Begin
+					if MapManager.transitionPhase == MapManager.TRANSITION_BEGIN:
+						pos = gm.GameManager.cam.pos.copy()
+						pos[0] = -(9 + pos[0])
+						pos[1] = -(6 + pos[1])
+						if MapManager.exitPos == 1:
+							pos[1] += mathcda.map(MapManager.transitionCount-0.001, 0,
+																	 MapManager.TRANSITION_TIMES[
+																		 MapManager.transitionPhase], 0, 12) - 12
+						elif MapManager.exitPos == 3:
+							pos[1] += -mathcda.map(MapManager.transitionCount-0.001, 0,
+																	 MapManager.TRANSITION_TIMES[
+																		 MapManager.transitionPhase], 0, 12) + 12
+						elif MapManager.exitPos == 0:
+							pos[0] += -mathcda.map(MapManager.transitionCount-0.001, 0,
+																	 MapManager.TRANSITION_TIMES[
+																		 MapManager.transitionPhase], 0, 18) + 18
+						elif MapManager.exitPos == 2:
+							pos[0] += mathcda.map(MapManager.transitionCount-0.001, 0,
+																	 MapManager.TRANSITION_TIMES[
+																		 MapManager.transitionPhase], 0, 18) - 18
+
+						mp.MapRender.setTransitionPos(pos)
+					# End
+					elif MapManager.transitionPhase == MapManager.TRANSITION_END:
+						pos = gm.GameManager.cam.pos.copy()
+						pos[0] = -(9 + pos[0])
+						pos[1] = -(6 + pos[1])
+						if MapManager.exitPos == 1:
+							pos[1] += mathcda.map(MapManager.transitionCount-0.001, 0,
+																	 MapManager.TRANSITION_TIMES[
+																		 MapManager.transitionPhase], 12, 0) - 12
+						elif MapManager.exitPos == 3:
+							pos[1] += -mathcda.map(MapManager.transitionCount-0.001, 0,
+																	 MapManager.TRANSITION_TIMES[
+																		 MapManager.transitionPhase], 12, 0) + 12
+						elif MapManager.exitPos == 0:
+							pos[0] += -mathcda.map(MapManager.transitionCount-0.001, 0,
+																	 MapManager.TRANSITION_TIMES[
+																		 MapManager.transitionPhase], 18, 0) + 18
+						elif MapManager.exitPos == 2:
+							pos[0] += mathcda.map(MapManager.transitionCount-0.001, 0,
+																	 MapManager.TRANSITION_TIMES[
+																		 MapManager.transitionPhase], 18, 0) - 18
+						mp.MapRender.setTransitionPos(pos)
+					# Load the new map
+					elif MapManager.transitionPhase == MapManager.TRANSITION_LOAD:
+						if MapManager.exitPos <= 3:
+							MapManager.exitPos = (MapManager.exitPos + 2) % 4
+							print(MapManager.exitPos)
+
 						MapManager.changeRoom()
+						pos = gm.GameManager.cam.pos.copy()
+						pos[0] = -(9 + pos[0])
+						pos[1] = -(6 + pos[1])
+						mp.MapRender.setTransitionPos(pos)
+
 					MapManager.transitionCount +=1
+
 		else:
 			ev.dispose()
 			MapManager.checkChangeMap()

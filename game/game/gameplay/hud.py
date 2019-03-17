@@ -4,7 +4,7 @@ from game.render.texture import texture
 from game.render.shape import shape
 from game.util import matrix4f
 from game.render.shader.shadermanager import ShaderManager as sm
-from game.game.entityclass.entitymanager import EntityManager as em
+from game.game.entityclass import entitymanager as em
 
 
 class Hud:
@@ -89,15 +89,16 @@ class Hud:
 
 	@staticmethod
 	def dispose():
+		ent = em.EntityManager
 		change = False
 		for i in range(2):
-			itemName = em.entities[i].getItemName()
+			itemName = ent.entities[i].getItemName()
 			# If the item of the player change
 			if not itemName[i] == itemName:
 				if itemName == "Key":
 					itemType = "item-key"
 				elif itemName == "Weapon":
-					if em.entities[i].item.arm:
+					if ent.entities[i].item.arm:
 						itemType = "item-sword"
 					else:
 						itemType = "item-bow"
@@ -109,14 +110,14 @@ class Hud:
 								itemType, 2 + i, Hud.hudInfo["opacity"]["item" + str(i + 1)])
 				change = True
 
-			if not em.entities[i].life == Hud.playerLife[i]:
-				if em.entities[i].takeDamage == Hud.playerInvincibility[i]:
-					Hud.playerInvincibility[i] = not em.entities[i].takeDamage
-				Hud.setHealthBar(em.entities[i].life, i)
+			if not ent.entities[i].life == Hud.playerLife[i]:
+				if ent.entities[i].takeDamage == Hud.playerInvincibility[i]:
+					Hud.playerInvincibility[i] = not ent.entities[i].takeDamage
+				Hud.setHealthBar(ent.entities[i].life, i)
 				change = True
 
-			elif em.entities[i].takeDamage == Hud.playerInvincibility[i]:
-				Hud.playerInvincibility[i] = not em.entities[i].takeDamage
+			elif ent.entities[i].takeDamage == Hud.playerInvincibility[i]:
+				Hud.playerInvincibility[i] = not ent.entities[i].takeDamage
 				Hud.setHealthBar(Hud.playerLife[i], i)
 				change = True
 

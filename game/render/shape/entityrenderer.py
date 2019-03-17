@@ -3,6 +3,7 @@ from game.render.texture import texture
 from game.render.shader.shadermanager import ShaderManager as sm
 from game.util import matrix4f
 
+
 class EntityRenderer:
 
 	def __init__(self):
