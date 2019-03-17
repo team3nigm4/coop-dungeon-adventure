@@ -17,7 +17,7 @@ class MapManager:
 	INTERACTION_SOLID = 1
 	INTERACTION_EMPTY = 2
 
-	TRANSITION_TIMES = [30, 1, 30]
+	TRANSITION_TIMES = [25, 15, 25]
 	TRANSITION_BEGIN = 0
 	TRANSITION_LOAD = 1
 	TRANSITION_END = 2
@@ -178,8 +178,11 @@ class MapManager:
 		mp.MapRender.init()
 		MapManager.changeValues = ["null", "map0", 0]
 
+		# Force to load the first map with transition
 		MapManager.reserveChange("tuto", "0-1-0", 0)
-		MapManager.changeRoom()
+		MapManager.checkChangeMap()
+		MapManager.transitionPhase = 1
+		MapManager.update()
 
 	@staticmethod
 	def reserveChange(zone, map, entry, exitPos=4):
@@ -244,7 +247,9 @@ class MapManager:
 		# Create instance of entities and place players
 		MapManager.entryPos = entryPos
 		em.EntityManager.entities[em.EntityManager.PLAYER_1].setPos(entryPos)
+		em.EntityManager.entities[em.EntityManager.PLAYER_1].speed = [0,0]
 		em.EntityManager.entities[em.EntityManager.PLAYER_2].setPos(entryPos)
+		em.EntityManager.entities[em.EntityManager.PLAYER_2].speed = [0, 0]
 
 	@staticmethod
 	def unload():
@@ -261,6 +266,8 @@ class MapManager:
 				MapManager.transitionPhase = 0
 				gm.GameManager.currentScreen.inPause = False
 				MapManager.transition = False
+				# Put the transition texture in Pétaouchnoque
+				mp.MapRender.setTransitionPos([999999,99999])
 			# In a phase
 			else:
 				# If end of each phase
@@ -316,15 +323,16 @@ class MapManager:
 						mp.MapRender.setTransitionPos(pos)
 					# Load the new map
 					elif MapManager.transitionPhase == MapManager.TRANSITION_LOAD:
-						if MapManager.exitPos <= 3:
-							MapManager.exitPos = (MapManager.exitPos + 2) % 4
-							print(MapManager.exitPos)
+						if MapManager.transitionCount == 0:
+							if MapManager.exitPos <= 3:
+								MapManager.exitPos = (MapManager.exitPos + 2) % 4
+								print(MapManager.exitPos)
 
-						MapManager.changeRoom()
-						pos = gm.GameManager.cam.pos.copy()
-						pos[0] = -(9 + pos[0])
-						pos[1] = -(6 + pos[1])
-						mp.MapRender.setTransitionPos(pos)
+							MapManager.changeRoom()
+							pos = gm.GameManager.cam.pos.copy()
+							pos[0] = -(9 + pos[0])
+							pos[1] = -(6 + pos[1])
+							mp.MapRender.setTransitionPos(pos)
 
 					MapManager.transitionCount +=1
 

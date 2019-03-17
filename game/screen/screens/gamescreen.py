@@ -15,6 +15,8 @@ class GameScreen(screen.Screen):
 
 	def __init__(self):
 		super(GameScreen, self).__init__()
+
+	def init(self):
 		em.init()
 
 		player1 = pl.Player(["Player", em.PLAYER_1, [0, 0], 0, "entities/player/player1.png"])

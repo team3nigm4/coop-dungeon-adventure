@@ -108,7 +108,6 @@ class MapTemporarySave:
 										  mts.defaultEntry_instances[map],
 										  mts.entryPos_instances[map][str(mts.defaultEntry_instances[map])])
 
-
 			mr.mapValues = values[MapTemporarySave.DATA_MAP_DISPLAY]
 			mr.constructMap()
 			for i in range(0, len(values[MapTemporarySave.DATA_ENTITIES])):
@@ -120,15 +119,17 @@ class MapTemporarySave:
 
 		# Apply all data to managers
 		em.EntityManager.setValues(mts.entities_instances[map], mts.entitiesCol_instances[map], mts.displayLayer_instances[map])
+
+		mam.MapManager.setupMapValues(mts.interaction_instances[map],
+									  mts.defaultEntry_instances[map],
+									  mts.entryPos_instances[map][str(entry)])
+
 		mr.setMapValues(mts.vbo_instances[map], mts.ebo_instances[map], mts.mapValues_instances[map],
 						mts.tilesPosition_instances[map], mts.vboCount_instances[map], mts.eboCount_instances[map])
 
 		ev.event = mts.event_instances[map]
 		ev.toActive = mts.toActive_instances[map]
 
-		mam.MapManager.setupMapValues(mts.interaction_instances[map],
-									  mts.defaultEntry_instances[map],
-									  mts.entryPos_instances[map][str(entry)])
 
 	@staticmethod
 	def saveValue(map):
