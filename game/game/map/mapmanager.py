@@ -17,7 +17,7 @@ class MapManager:
 	INTERACTION_SOLID = 1
 	INTERACTION_EMPTY = 2
 
-	TRANSITION_TIMES = [25, 15, 25]
+	TRANSITION_TIMES = [20, 10, 20]
 	TRANSITION_BEGIN = 0
 	TRANSITION_LOAD = 1
 	TRANSITION_END = 2
@@ -200,9 +200,11 @@ class MapManager:
 				if not em.EntityManager.entities[i].attributes["collision"] == 0:
 					e = em.EntityManager.entities[i]
 					# Collision Test
-					if math.floor(e.pos[0] * MapManager.COEF - e.halfColSize[0] * MapManager.COEF) <= position[0] <= math.floor(
+					if math.floor(e.pos[0] * MapManager.COEF - e.halfColSize[0] * MapManager.COEF) <= position[
+						0] <= math.floor(
 							e.pos[0] * MapManager.COEF + e.halfColSize[0] * MapManager.COEF) and \
-							math.floor(e.pos[1] * MapManager.COEF - e.halfColSize[1] * MapManager.COEF) <= position[1] <= math.floor(
+							math.floor(e.pos[1] * MapManager.COEF - e.halfColSize[1] * MapManager.COEF) <= position[
+						1] <= math.floor(
 						e.pos[1] * MapManager.COEF + e.halfColSize[1] * MapManager.COEF):
 
 						if not e.type == "Player":
@@ -247,7 +249,7 @@ class MapManager:
 		# Create instance of entities and place players
 		MapManager.entryPos = entryPos
 		em.EntityManager.entities[em.EntityManager.PLAYER_1].setPos(entryPos)
-		em.EntityManager.entities[em.EntityManager.PLAYER_1].speed = [0,0]
+		em.EntityManager.entities[em.EntityManager.PLAYER_1].speed = [0, 0]
 		em.EntityManager.entities[em.EntityManager.PLAYER_2].setPos(entryPos)
 		em.EntityManager.entities[em.EntityManager.PLAYER_2].speed = [0, 0]
 
@@ -267,36 +269,37 @@ class MapManager:
 				gm.GameManager.currentScreen.inPause = False
 				MapManager.transition = False
 				# Put the transition texture in Pétaouchnoque
-				mp.MapRender.setTransitionPos([999999,99999])
+				mp.MapRender.setTransitionPos([999999, 999999])
 			# In a phase
 			else:
 				# If end of each phase
 				if MapManager.transitionCount >= MapManager.TRANSITION_TIMES[MapManager.transitionPhase]:
-					MapManager.transitionPhase +=1
+					MapManager.transitionPhase += 1
 					MapManager.transitionCount = 0
 				# Update during the transition
 				else:
 					# Begin
 					if MapManager.transitionPhase == MapManager.TRANSITION_BEGIN:
 						pos = gm.GameManager.cam.pos.copy()
+						# Pos take in consideration the position of camera
 						pos[0] = -(9 + pos[0])
 						pos[1] = -(6 + pos[1])
 						if MapManager.exitPos == 1:
-							pos[1] += mathcda.map(MapManager.transitionCount-0.001, 0,
-																	 MapManager.TRANSITION_TIMES[
-																		 MapManager.transitionPhase], 0, 12) - 12
+							pos[1] += mathcda.map(MapManager.transitionCount - 0.001, 0,
+												  MapManager.TRANSITION_TIMES[
+													  MapManager.transitionPhase], 0, 12) - 12
 						elif MapManager.exitPos == 3:
-							pos[1] += -mathcda.map(MapManager.transitionCount-0.001, 0,
-																	 MapManager.TRANSITION_TIMES[
-																		 MapManager.transitionPhase], 0, 12) + 12
+							pos[1] += -mathcda.map(MapManager.transitionCount - 0.001, 0,
+												   MapManager.TRANSITION_TIMES[
+													   MapManager.transitionPhase], 0, 12) + 12
 						elif MapManager.exitPos == 0:
-							pos[0] += -mathcda.map(MapManager.transitionCount-0.001, 0,
-																	 MapManager.TRANSITION_TIMES[
-																		 MapManager.transitionPhase], 0, 18) + 18
+							pos[0] += -mathcda.map(MapManager.transitionCount - 0.001, 0,
+												   MapManager.TRANSITION_TIMES[
+													   MapManager.transitionPhase], 0, 18) + 18
 						elif MapManager.exitPos == 2:
-							pos[0] += mathcda.map(MapManager.transitionCount-0.001, 0,
-																	 MapManager.TRANSITION_TIMES[
-																		 MapManager.transitionPhase], 0, 18) - 18
+							pos[0] += mathcda.map(MapManager.transitionCount - 0.001, 0,
+												  MapManager.TRANSITION_TIMES[
+													  MapManager.transitionPhase], 0, 18) - 18
 
 						mp.MapRender.setTransitionPos(pos)
 					# End
@@ -305,21 +308,21 @@ class MapManager:
 						pos[0] = -(9 + pos[0])
 						pos[1] = -(6 + pos[1])
 						if MapManager.exitPos == 1:
-							pos[1] += mathcda.map(MapManager.transitionCount-0.001, 0,
-																	 MapManager.TRANSITION_TIMES[
-																		 MapManager.transitionPhase], 12, 0) - 12
+							pos[1] += mathcda.map(MapManager.transitionCount - 0.001, 0,
+												  MapManager.TRANSITION_TIMES[
+													  MapManager.transitionPhase], 12, 0) - 12
 						elif MapManager.exitPos == 3:
-							pos[1] += -mathcda.map(MapManager.transitionCount-0.001, 0,
-																	 MapManager.TRANSITION_TIMES[
-																		 MapManager.transitionPhase], 12, 0) + 12
+							pos[1] += -mathcda.map(MapManager.transitionCount - 0.001, 0,
+												   MapManager.TRANSITION_TIMES[
+													   MapManager.transitionPhase], 12, 0) + 12
 						elif MapManager.exitPos == 0:
-							pos[0] += -mathcda.map(MapManager.transitionCount-0.001, 0,
-																	 MapManager.TRANSITION_TIMES[
-																		 MapManager.transitionPhase], 18, 0) + 18
+							pos[0] += -mathcda.map(MapManager.transitionCount - 0.001, 0,
+												   MapManager.TRANSITION_TIMES[
+													   MapManager.transitionPhase], 18, 0) + 18
 						elif MapManager.exitPos == 2:
-							pos[0] += mathcda.map(MapManager.transitionCount-0.001, 0,
-																	 MapManager.TRANSITION_TIMES[
-																		 MapManager.transitionPhase], 18, 0) - 18
+							pos[0] += mathcda.map(MapManager.transitionCount - 0.001, 0,
+												  MapManager.TRANSITION_TIMES[
+													  MapManager.transitionPhase], 18, 0) - 18
 						mp.MapRender.setTransitionPos(pos)
 					# Load the new map
 					elif MapManager.transitionPhase == MapManager.TRANSITION_LOAD:
@@ -333,7 +336,7 @@ class MapManager:
 							pos[1] = -(6 + pos[1])
 							mp.MapRender.setTransitionPos(pos)
 
-					MapManager.transitionCount +=1
+					MapManager.transitionCount += 1
 
 		else:
 			ev.dispose()
