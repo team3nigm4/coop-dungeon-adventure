@@ -5,6 +5,7 @@ class LoadEntity:
 	from game.game.entitymodel import bat
 	from game.game.entitymodel import bridge
 	from game.game.entitymodel import door
+	from game.game.entitymodel import itemrecoverable
 	from game.game.entitymodel import lockeddoor
 	from game.game.entitymodel import mannequin
 	from game.game.entitymodel import player
@@ -21,6 +22,7 @@ class LoadEntity:
 		"Bat": bat.Bat,
 		"Bridge": bridge.Bridge,
 		"Door": door.Door,
+		"ItemRecoverable": itemrecoverable.ItemRecoverable,
 		"LockedDoor": lockeddoor.LockedDoor,
 		"Mannequin": mannequin.Mannequin,
 		"Player": player.Player,

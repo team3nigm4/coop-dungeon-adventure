@@ -122,7 +122,7 @@ class Config:
 			"GO_DOWN_1": [[0, 264]],
 			"INTERACT_1": [[1, 1]],
 			"ITEM_1": [[1, 0]],
-			"ITEM2_1": [[0, 48]],
+			"ITEM2_1": [[0, 345]],
 		}
 
 		if overwrite:

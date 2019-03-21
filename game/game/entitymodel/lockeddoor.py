@@ -5,7 +5,6 @@ class LockedDoor(door.Door):
         args.append(False)
         super().__init__(args)
         self.attributes["key"] = 2
-        self.setColBox(self.colSize, True)
         self.deactivate()
 
     def collision(self, ent):
@@ -19,7 +18,12 @@ class LockedDoor(door.Door):
     def activate(self):
         self.isActive = True
         self.mam.setTileSize(self.pos, self.halfColSize, 0)
+        self.setDrawCol(True)
 
     def deactivate(self):
         self.isActive = False
+        self.setColBox(self.colSize, False)
         self.mam.setTileSize(self.pos, self.halfColSize, 1)
+        self.setColBox(self.colSize, True)
+        self.setDrawCol(False)
+

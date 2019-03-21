@@ -1,12 +1,11 @@
 # Class pressure plate
 
-from game.game.entityclass import entitydrawable
+from game.game.entityclass import entitycollision
 from game.game.map.maprender import MapRender
 
 import math
 
-
-class Bridge(entitydrawable.EntityDrawable):
+class Bridge(entitycollision.EntityCollision):
 	# True horizontal, False vertical
 	ARGS_DIRECTION = 3
 	ARGS_COUNTER = 4
