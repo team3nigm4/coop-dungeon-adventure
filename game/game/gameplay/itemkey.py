@@ -31,4 +31,4 @@ class ItemKey(item.Item):
 		self.player.em.addWithId(entity)
 
 	def triggerBox(self, ent):
-		self.player.item = item.Item(self.player, "null")
+		self.player.setItem("Null")

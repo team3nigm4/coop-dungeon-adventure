@@ -33,7 +33,7 @@ class Player(entitycomplex.EntityComplex):
 
 		self.weight = 1.3
 
-		self.setItem("Null")
+		self.setItem("Weapon")
 
 		self.setDrawCol(True)
 		self.colRenderer.setAttributes(self.colSize, [1, 1, 0, 0.5])

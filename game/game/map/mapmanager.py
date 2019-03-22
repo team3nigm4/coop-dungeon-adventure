@@ -61,6 +61,7 @@ class MapManager:
 			mts.unload(map)
 
 		# Apply values
+		MapManager.collideTest = False
 		MapManager.zone = zone
 		MapManager.id = map
 		MapManager.entry = entry
@@ -68,6 +69,7 @@ class MapManager:
 		mts.changeRoom(map, entry)
 		# Clear the game before changing
 		MapManager.changeValues = None
+		MapManager.collideTest = True
 
 	@staticmethod
 	def checkChangeMap():
@@ -179,7 +181,7 @@ class MapManager:
 		MapManager.changeValues = ["null", "map0", 0]
 
 		# Force to load the first map with transition
-		MapManager.reserveChange("test", "map1", 0)
+		MapManager.reserveChange("test", "map2", 0)
 		MapManager.checkChangeMap()
 		MapManager.transitionPhase = 1
 		MapManager.update()
@@ -195,8 +197,11 @@ class MapManager:
 		MapManager.interaction[MapManager.cHeight - 1 - math.floor(position[1])][math.floor(position[0])] = id
 
 		# Check if entity with collision in the change
-		if id == MapManager.INTERACTION_SOLID:
+		if id == MapManager.INTERACTION_SOLID and MapManager.collideTest:
+			em.EntityManager.status()
 			for i in em.EntityManager.entitiesCol:
+				print(i)
+
 				if not em.EntityManager.entities[i].attributes["collision"] == 0:
 					e = em.EntityManager.entities[i]
 					# Collision Test

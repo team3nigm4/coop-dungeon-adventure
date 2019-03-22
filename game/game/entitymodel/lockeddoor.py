@@ -22,8 +22,6 @@ class LockedDoor(door.Door):
 
     def deactivate(self):
         self.isActive = False
-        self.setColBox(self.colSize, False)
         self.mam.setTileSize(self.pos, self.halfColSize, 1)
-        self.setColBox(self.colSize, True)
         self.setDrawCol(False)
 

@@ -22,7 +22,7 @@ class ItemRecoverable(entitydrawable.EntityDrawable):
 				ent.setItem(self.type)
 
 				if not playItemName == "Null":
-					self.setType(ent.getItemName())
+					self.setType(playItemName)
 				else:
 					self.em.remove(self.id)
 

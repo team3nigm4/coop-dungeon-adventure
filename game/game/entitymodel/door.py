@@ -16,7 +16,6 @@ class Door(entitycollision.EntityCollision):
 	def __init__(self, args):
 		super().__init__(args)
 		self.setColBox(args[Door.ARGS_COL_BOX_SIZE], False, False)
-
 		self.zone = args[Door.ARGS_ZONE_NAME]
 		self.map = args[Door.ARGS_MAP_ID]
 		self.entry = args[Door.ARGS_MAP_ENTRY_POINT]
@@ -39,12 +38,12 @@ class Door(entitycollision.EntityCollision):
 		self.colRenderer.setAttributes(self.colSize, [0.7725, 0.956, 0.258, 0.5])
 
 		if self.colSize[0] > self.colSize[1]:
-			if self.pos[1] > len(mr.tilesPosition[0])/2:
+			if self.pos[1] > len(mr.tilesPosition[0]) / 2:
 				self.exitPos = 1
 			else:
 				self.exitPos = 3
 		else:
-			if self.pos[0] > len(mr.tilesPosition[0][0])/2:
+			if self.pos[0] > len(mr.tilesPosition[0][0]) / 2:
 				self.exitPos = 2
 			else:
 				self.exitPos = 0
@@ -69,6 +68,6 @@ class Door(entitycollision.EntityCollision):
 
 	def deactivate(self):
 		self.isActive = False
-		self.setColBox(self.colSize, False)
 		self.mam.setTileSize(self.pos, self.halfColSize, 1)
+		self.setColBox(self.colSize, False)
 		self.setDrawCol(False)
