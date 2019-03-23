@@ -32,9 +32,10 @@ class EntityDrawable(entitycollision.EntityCollision):
 			self.displayLayer = layer
 			self.em.addToDisplay(self.displayLayer, self.id)
 		else:
-			print("Error : want to set an invalid display layer (" + str(layer) + ") to", self.type,"with id", str(id))
+			print("Error : want to set an invalid display layer (" + str(layer) + ") to", self.type, "with id", str(id))
 
 	def unload(self):
+		super().unload()
 		self.entityRenderer.unload()
 		if self.displayLayer >= 0 and self.displayLayer <= 2:
 			self.em.removeToDipslay(self.displayLayer, self.id)

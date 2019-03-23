@@ -17,6 +17,29 @@ class EntityManager:
 	DISPLAY_MIDDLE = 2
 	DISPLAY_UP = 3
 
+	# reset = 0, no reset = 1
+	LIST_RESET = {
+		"Null": 0,
+		"ActivationBlock": 0,
+		"ActivationPlate": 0,
+		"Arrow": 0,
+		"Bat": 0,
+		"Bridge": 0,
+		"Door": 0,
+		"ItemRecoverable": 1,
+		"LockedDoor": 1,
+		"Mannequin": 0,
+		"Player": 1,
+		"PressurePlate": 0,
+		"SlidingBlock": 0,
+		"Spawn": 0,
+		"Spider": 0,
+		"TogglePlate": 0
+	}
+
+	TO_RESET = 0
+	NO_RESET = 1
+
 	entities = []
 	entitiesCol = []
 	entitiesRemove = []
@@ -53,8 +76,8 @@ class EntityManager:
 		if not id in EntityManager.entitiesCol:
 			EntityManager.entitiesCol.append(id)
 		else:
-			print("(EntityManager - addToTest()) Error, adding two same id :",
-				  id, ", type:", EntityManager.entities[id].type)
+			print("(EntityManager - addToTest()) Error, adding two same id :", id, ", type:",
+				  EntityManager.entities[id].type)
 
 	@staticmethod
 	def addWithId(entity):
@@ -67,17 +90,21 @@ class EntityManager:
 
 	@staticmethod
 	def checkPlace():
-		for i in range(0, EntityManager.len):
+		for i in range(1, EntityManager.len):
 			if EntityManager.entities[i].id == -1:
 				return i
 		return len(EntityManager.entities)
 
 	@staticmethod
+	def checkId():
+		pass
+
+	@staticmethod
 	def clear():
-		# Delete h
-		EntityManager.entities = EntityManager.entities [:2]
+		EntityManager.entities = EntityManager.entities[:2]
 		EntityManager.entitiesCol = [EntityManager.PLAYER_1, EntityManager.PLAYER_2]
 		EntityManager.displayLayer = [[], [], [EntityManager.PLAYER_1, EntityManager.PLAYER_2], []]
+
 		EntityManager.len = len(EntityManager.entities)
 
 	@staticmethod
@@ -145,14 +172,10 @@ class EntityManager:
 		# Unload the entity
 		EntityManager.entities[id].unload()
 
-		if isinstance(EntityManager.entities[id], entitycollision.EntityCollision):
-			if EntityManager.entities[id].testCol:
-				EntityManager.entitiesCol.remove(id)
-
 		if id == len(EntityManager.entities) - 1:
 			del EntityManager.entities[id]
 		else:
-			EntityManager.entities[id] = entitycollision.EntityCollision(["NULL", -1, [0, 0]])
+			EntityManager.entities[id] = entitycollision.EntityCollision(["Null", -1, [0, 0]])
 
 		EntityManager.len = len(EntityManager.entities)
 		if entity[1]:
@@ -176,9 +199,9 @@ class EntityManager:
 
 	@staticmethod
 	def status():
-		print("\nEntityManager status:\n")
-		for i in range(0, EntityManager.len):
-			print("Entity", EntityManager.entities[i].id, ", entityType", EntityManager.entities[i].type)
+		print("\nEntityManager status len(", EntityManager.len, ") :\n")
+		for e in EntityManager.entities:
+			print("Entity", e.id, ", entityType", e.type)
 
 	@staticmethod
 	def setEntities(entities):
@@ -201,11 +224,17 @@ class EntityManager:
 			ent2.collision(ent1)
 
 	@staticmethod
-	def unload():
+	def unload(reset=False):
+		id = 2
 		if EntityManager.len > 1:
 			for i in range(2, EntityManager.len):
-				EntityManager.entities[2].unload()
-				del EntityManager.entities[2]
+				if (reset and EntityManager.LIST_RESET[EntityManager.entities[id].type] == EntityManager.NO_RESET):
+					print(EntityManager.entities[id].type)
+					id += 1
+				else:
+					EntityManager.entities[id].unload()
+					del EntityManager.entities[id]
+		EntityManager.len = len(EntityManager.entities)
 
 	@staticmethod
 	def update():

@@ -33,9 +33,43 @@ class LoadEntity:
 		"TogglePlate": toggleplate.TogglePlate
 	}
 
+	# reset = 0, no reset = 1
+	LIST_RESET = {
+		"ActivationBlock": 0,
+		"ActivationPlate": 0,
+		"Arrow": 0,
+		"Bat": 0,
+		"Bridge": 0,
+		"Door": 0,
+		"ItemRecoverable": 1,
+		"LockedDoor": 1,
+		"Mannequin": 0,
+		"Player": 1,
+		"PressurePlate": 0,
+		"SlidingBlock": 0,
+		"Spawn": 0,
+		"Spider": 0,
+		"TogglePlate": 0
+	}
+
+	TO_RESET = 0
+	NO_RESET = 1
+
+	reset = False
+
+	@staticmethod
+	def setReset(state):
+		LoadEntity.reset = state
+
 	@staticmethod
 	def instance(args):
 		if args[0] in LoadEntity.entities:
-			return LoadEntity.entities[args[0]](args)
-		else: 
+			if LoadEntity.reset:
+				if LoadEntity.LIST_RESET[args[0]] == LoadEntity.NO_RESET:
+					return False
+				else:
+					return LoadEntity.entities[args[0]](args)
+			else:
+				return LoadEntity.entities[args[0]](args)
+		else:
 			return False

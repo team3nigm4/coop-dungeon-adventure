@@ -31,7 +31,7 @@ class EntityCollision(entity.Entity):
 
 		from game.render.shape import boxrenderer
 		self.drawCol = False
-		color = [0.1, 0.1, 0.1,  0.4]
+		color = [0.1, 0.1, 0.1, 0.4]
 		self.colRenderer = boxrenderer.BoxRenderer(self.colSize, color)
 		self.colRenderer.updateModel([round(self.pos[0] * 32) / 32, round(self.pos[1] * 32) / 32])
 
@@ -74,3 +74,7 @@ class EntityCollision(entity.Entity):
 
 	def collision(self, ent):
 		pass
+
+	def unload(self):
+		if self.collision:
+			self.em.removeToTest(self.id)

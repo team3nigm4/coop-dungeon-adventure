@@ -4,7 +4,6 @@ from game.game.entityclass import entitycomplex
 
 
 class Enemy(entitycomplex.EntityComplex):
-
 	ARGS_IS_EVENT = 3
 	ARGS_EVENT = 4
 
@@ -19,7 +18,8 @@ class Enemy(entitycomplex.EntityComplex):
 
 		import random
 		self.setDrawCol(True)
-		self.colRenderer.setAttributes(self.colSize, [1 - random.random()/3, random.random()/5, random.random()/5, 0.5])
+		self.colRenderer.setAttributes(self.colSize,
+									   [1 - random.random() / 3, random.random() / 5, random.random() / 5, 0.5])
 		self.colRenderer.updateModel(self.pos)
 
 		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)

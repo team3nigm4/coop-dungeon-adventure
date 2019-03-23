@@ -5,13 +5,14 @@ import math
 from game.game.entityclass import entitymanager as em
 from game.game.map import maprender as mp
 from game.game.map.eventmanager import EventManager as ev
-from game.game.map.maptemporarysave import MapTemporarySave as mts
+from game.game.map import maptemporarysave as mts
 from game.game.map.maploading import MapLoading as ml
 from game.screen import gamemanager as gm
 from game.util import math as mathcda
 
 
 class MapManager:
+	collideTest = True
 	COEF = 2
 
 	INTERACTION_SOLID = 1
@@ -56,17 +57,20 @@ class MapManager:
 
 		# If a new Zone
 		if not zone == MapManager.zone:
-			mts.newZone(zone)
-		elif MapManager.id == map:
-			mts.unload(map)
+			mts.MapTemporarySave.newZone(zone)
 
 		# Apply values
+		test = MapManager.zone
 		MapManager.collideTest = False
 		MapManager.zone = zone
 		MapManager.id = map
 		MapManager.entry = entry
 
-		mts.changeRoom(map, entry)
+		if MapManager.exitPos == 4 and not test == "null":
+			mts.MapTemporarySave.changeRoom(map, entry, True)
+		else:
+			mts.MapTemporarySave.changeRoom(map, entry)
+
 		# Clear the game before changing
 		MapManager.changeValues = None
 		MapManager.collideTest = True
@@ -261,7 +265,7 @@ class MapManager:
 	@staticmethod
 	def unload():
 		mp.MapRender.unload()
-		mts.unloadAll()
+		mts.MapTemporarySave.unloadAll()
 
 	@staticmethod
 	def update():
