@@ -5,7 +5,8 @@ class LockedDoor(door.Door):
         args.append(False)
         super().__init__(args)
         self.attributes["key"] = 2
-        self.deactivate()
+        self.isActive = False
+        self.checkState()
 
     def collision(self, ent):
         if ent.attributes["key"] == 1:
@@ -14,6 +15,12 @@ class LockedDoor(door.Door):
             self.em.remove(ent.id)
 
         super().collision(ent)
+
+    def checkState(self):
+        if self.isActive:
+            self.activate()
+        else:
+            self.deactivate()
 
     def activate(self):
         self.isActive = True
@@ -24,4 +31,3 @@ class LockedDoor(door.Door):
         self.isActive = False
         self.mam.setTileSize(self.pos, self.halfColSize, 1)
         self.setDrawCol(False)
-

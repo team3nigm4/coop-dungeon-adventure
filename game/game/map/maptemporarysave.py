@@ -123,7 +123,6 @@ class MapTemporarySave:
 				args = values[MapTemporarySave.DATA_ENTITIES][i][1]
 				args.insert(0, (values[MapTemporarySave.DATA_ENTITIES][i][0]))
 				em.EntityManager.addA(args)
-
 			MapTemporarySave.saveValue(map)
 			loadentity.LoadEntity.setReset(False)     
 
@@ -139,7 +138,8 @@ class MapTemporarySave:
 
 		ev.event = mts.event_instances[map]
 		ev.toActive = mts.toActive_instances[map]
-
+		if reset:
+			em.EntityManager.entityEffectAfterReset()
 
 	@staticmethod
 	def saveValue(map):

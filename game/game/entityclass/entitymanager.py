@@ -97,7 +97,13 @@ class EntityManager:
 
 	@staticmethod
 	def checkId():
-		pass
+		for e in range(3, EntityManager.len):
+			idM =  EntityManager.entities[e-1].id
+			print(EntityManager.entities[e])
+			if EntityManager.entities[e].id - idM > 1:
+				EntityManager.entities[e].unloadToEntityManager()
+				EntityManager.entities[e].id = idM + 1
+				EntityManager.entities[e].chargeToEntityManager()
 
 	@staticmethod
 	def clear():
@@ -162,8 +168,32 @@ class EntityManager:
 		EntityManager.entitiesRemove = []
 
 	@staticmethod
+	def entityEffectAfterReset():
+		for e in EntityManager.entities:
+			if not EntityManager.isResetable(e):
+				if hasattr(e, "checkState"):
+					e.checkState()
+
+	@staticmethod
 	def init():
 		EntityManager.len = 0
+
+	@staticmethod
+	def isResetable(e):
+		type = e.type
+		count = 0
+		if type == "Spawn":
+			while type == "Spawn":
+				temp = e.entityInfo
+				for i in range(count):
+					temp = temp[3]
+
+				if not temp[0] == "Spawn":
+					type = temp[0]
+				else:
+					count +=1
+
+		return EntityManager.LIST_RESET[type] == EntityManager.TO_RESET
 
 	@staticmethod
 	def rem(entity):
@@ -228,8 +258,7 @@ class EntityManager:
 		id = 2
 		if EntityManager.len > 1:
 			for i in range(2, EntityManager.len):
-				if (reset and EntityManager.LIST_RESET[EntityManager.entities[id].type] == EntityManager.NO_RESET):
-					print(EntityManager.entities[id].type)
+				if (reset and not EntityManager.isResetable(EntityManager.entities[id])):
 					id += 1
 				else:
 					EntityManager.entities[id].unload()

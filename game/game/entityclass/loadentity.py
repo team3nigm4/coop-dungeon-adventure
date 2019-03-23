@@ -65,7 +65,7 @@ class LoadEntity:
 	def instance(args):
 		if args[0] in LoadEntity.entities:
 			if LoadEntity.reset:
-				if LoadEntity.LIST_RESET[args[0]] == LoadEntity.NO_RESET:
+				if not LoadEntity.isResetable(args):
 					return False
 				else:
 					return LoadEntity.entities[args[0]](args)
@@ -73,3 +73,21 @@ class LoadEntity:
 				return LoadEntity.entities[args[0]](args)
 		else:
 			return False
+
+	@staticmethod
+	def isResetable(arg):
+		type = arg[0]
+		count = 0
+		if type == "Spawn":
+			arg = arg[LoadEntity.entities["Spawn"].ARGS_ENTITY_INFO]
+			while type == "Spawn":
+				temp = arg
+				for i in range(count):
+					temp = temp[3]
+
+				if not temp[0] == "Spawn":
+					type = temp[0]
+				else:
+					count +=1
+
+		return LoadEntity.LIST_RESET[type] == LoadEntity.TO_RESET

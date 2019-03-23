@@ -19,7 +19,7 @@ class ItemRecoverable(entitydrawable.EntityDrawable):
 		if ent.attributes["interaction"] == 1:
 			if ent.type == "Player":
 				playItemName = ent.getItemName()
-				ent.setItem(self.type)
+				ent.setItem(self.itemType)
 
 				if not playItemName == "Null":
 					self.setType(playItemName)
@@ -27,8 +27,8 @@ class ItemRecoverable(entitydrawable.EntityDrawable):
 					self.em.remove(self.id)
 
 	def setType(self, type):
-		self.type = type
-		if self.type == "Key":
+		self.itemType = type
+		if self.itemType == "Key":
 			path = "/entities/item-key.png"
 		else:
 			path = "/entities/item-weapon.png"

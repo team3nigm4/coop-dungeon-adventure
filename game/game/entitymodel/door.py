@@ -30,7 +30,7 @@ class Door(entitycollision.EntityCollision):
 		else:
 			self.isActive = True
 			self.setDrawCol(True)
-			self.setColBox(self.colSize, True)
+			self.setColBox(self.colSize, True, False)
 
 		self.isTwo = False
 		self.attributes["door"] = 2
@@ -69,5 +69,5 @@ class Door(entitycollision.EntityCollision):
 	def deactivate(self):
 		self.isActive = False
 		self.mam.setTileSize(self.pos, self.halfColSize, 1)
-		self.setColBox(self.colSize, False)
+		self.setColBox(self.colSize, False, False)
 		self.setDrawCol(False)

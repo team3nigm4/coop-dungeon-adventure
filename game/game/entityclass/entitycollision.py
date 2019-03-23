@@ -75,6 +75,14 @@ class EntityCollision(entity.Entity):
 	def collision(self, ent):
 		pass
 
+
+	def chargeToEntityManager(self):
+		if self.testCol:
+			self.setColBox(self.colSize, True)
+
 	def unload(self):
+		self.unloadToEntityManager()
+
+	def unloadToEntityManager(self):
 		if self.collision:
 			self.em.removeToTest(self.id)
