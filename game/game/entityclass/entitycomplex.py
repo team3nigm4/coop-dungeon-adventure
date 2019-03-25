@@ -68,7 +68,7 @@ class EntityComplex(entitydrawable.EntityDrawable):
 	def setLife(self, newLife, death=True):
 		self.life = newLife
 		if self.life <= 0 and death:
-			self.em.remove(self.id)
+			self.removeEm()
 
 	def collision(self, ent):
 		if (ent.attributes["playerSword"] == 1 and self.attributes["playerSword"] == 2) or \

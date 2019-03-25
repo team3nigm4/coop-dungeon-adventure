@@ -1,6 +1,7 @@
 from game.game.entityclass import entitymanager
 from game.game.map import eventmanager
 from game.game.map import mapmanager
+from game.game.entityclass import entityid
 
 
 class Entity:
@@ -10,7 +11,8 @@ class Entity:
 
 	def __init__(self, args):
 		self.type = args[Entity.ARGS_TYPE]
-		self.id = args[Entity.ARGS_ID]
+		self.entityId = entityid.EntityId()
+		self.entityId.setId(args[Entity.ARGS_ID])
 		self.pos = args[Entity.ARGS_POSITION]
 
 		self.em = entitymanager.EntityManager
@@ -33,7 +35,14 @@ class Entity:
 		pass
 
 	def setId(self, id):
-		self.id = id
+		self.entityId.setId(id)
+
+	def getId(self):
+		return self.entityId.getId()
+
+	# Remove easily from entity Manager
+	def removeEm(self, printRemove=True):
+		self.em.remove(self.entityId, printRemove)
 
 	def unload(self):
 		pass

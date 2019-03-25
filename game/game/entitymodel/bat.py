@@ -25,7 +25,7 @@ class Bat(enemy.Enemy):
 
 		self.direction = 3
 		self.maxSpeed = [Bat.SPEED_MAX, Bat.SPEED_MAX]
-		self.target = -1
+		self.targetId = -1
 		self.speedCounter = 0
 
 		self.life = 7
@@ -39,17 +39,16 @@ class Bat(enemy.Enemy):
 
 	def update(self):
 		super().update()
-
-		if self.target == -1:
+		# Target detection
+		if self.targetId == -1:
 			if mathcda.distE(self, self.em.entities[self.em.PLAYER_1]) < Bat.DETECTION_RANGE:
-				self.target = 0
+				self.targetId = 0
 			elif mathcda.distE(self, self.em.entities[self.em.PLAYER_2]) < Bat.DETECTION_RANGE:
-				self.target = 1
-
+				self.targetId = 1
 		else:
-			target = self.em.entities[self.target]
-			if self.em.entities[self.target].id == -1:
-				self.target = -1
+			target = self.em.entities[self.targetId]
+			if target.getId() == -1:
+				self.targetId = -1
 			else:
 				# Apply the effect of a bat flying
 				self.maxSpeed = [Bat.SPEED_MAX - Bat.SPEED_MAX * math.cos(self.speedCounter) * 0.30,
@@ -71,6 +70,7 @@ class Bat(enemy.Enemy):
 					else:
 						self.up(2)
 
+		# Update position
 		for i in range(2):
 			if self.wantDirection[i] == 0:
 				if self.speed[i] < 0:
@@ -94,7 +94,9 @@ class Bat(enemy.Enemy):
 	def collision(self, ent):
 		if (ent.attributes["playerSword"] == 1 and self.attributes["playerSword"] == 2) or \
 				(ent.attributes["playerBow"] == 1 and self.attributes["playerBow"] == 2):
-			if not ent.entityId == self.target and ent.giveDamage:
-				self.target = ent.entityId
+			# If it is another player giving the damage
+			if not ent.entityId == self.targetId and ent.giveDamage:
+				# This player is the new target
+				self.targetId = ent.entityId.id
 			ent.triggerBox(self)
 

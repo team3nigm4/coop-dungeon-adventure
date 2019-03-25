@@ -61,65 +61,64 @@ class EntityManager:
 				print("Error: wrong arguments to instance an entity:\n", args)
 
 	@staticmethod
-	def addToDisplay(layer, id, pos=0):
-		if not id in EntityManager.displayLayer[layer]:
+	def addToDisplay(layer, entityId, pos=0):
+		if not entityId in EntityManager.displayLayer[layer]:
 			if pos < 0 or pos >= len(EntityManager.displayLayer[layer]):
-				EntityManager.displayLayer[layer].append(id)
+				EntityManager.displayLayer[layer].append(entityId)
 			else:
 				if pos < len(EntityManager.displayLayer[layer]):
-					EntityManager.displayLayer[layer].insert(pos, id)
+					EntityManager.displayLayer[layer].insert(pos, entityId)
 				else:
-					EntityManager.displayLayer[layer].append(id)
+					EntityManager.displayLayer[layer].append(entityId)
 
 	@staticmethod
-	def addToTest(id):
-		if not id in EntityManager.entitiesCol:
-			EntityManager.entitiesCol.append(id)
+	def addToTest(entityId):
+		if not entityId in EntityManager.entitiesCol:
+			EntityManager.entitiesCol.append(entityId)
 		else:
-			print("(EntityManager - addToTest()) Error, adding two same id :", id, ", type:",
-				  EntityManager.entities[id].type)
+			print("(EntityManager - addToTest()) Error, adding two same id :", entityId.id, ", type:",
+				  EntityManager.entities[entityId.Id].type)
 
 	@staticmethod
 	def addWithId(entity):
-		if entity.id == EntityManager.len:
+		id = entity.entityId.id
+		if id == EntityManager.len:
 			EntityManager.entities.append(entity)
 		else:
-			EntityManager.entities[entity.id] = entity
+			EntityManager.entities[id] = entity
 
 		EntityManager.len = len(EntityManager.entities)
 
 	@staticmethod
 	def checkPlace():
 		for i in range(1, EntityManager.len):
-			if EntityManager.entities[i].id == -1:
+			if EntityManager.entities[i].entityId.id == -1:
 				return i
 		return len(EntityManager.entities)
 
 	@staticmethod
 	def checkId():
 		for e in range(3, EntityManager.len):
-			idM =  EntityManager.entities[e-1].id
+			idM =  EntityManager.entities[e-1].entityId.id
 			print(EntityManager.entities[e])
-			if EntityManager.entities[e].id - idM > 1:
-				EntityManager.entities[e].unloadToEntityManager()
-				EntityManager.entities[e].id = idM + 1
-				EntityManager.entities[e].chargeToEntityManager()
+			if EntityManager.entities[e].entityId.id - idM > 1:
+				EntityManager.entities[e].entityId.id = idM + 1
 
 	@staticmethod
 	def clear():
 		EntityManager.entities = EntityManager.entities[:2]
-		EntityManager.entitiesCol = [EntityManager.PLAYER_1, EntityManager.PLAYER_2]
-		EntityManager.displayLayer = [[], [], [EntityManager.PLAYER_1, EntityManager.PLAYER_2], []]
+		EntityManager.entitiesCol = [EntityManager.entities[0].entityId, EntityManager.entities[1].entityId]
+		EntityManager.displayLayer = [[], [], [EntityManager.entities[0].entityId, EntityManager.entities[1].entityId], []]
 
 		EntityManager.len = len(EntityManager.entities)
 
 	@staticmethod
-	def collision(entityId):
+	def collision(index):
 		list = []
 		for i in range(0, len(EntityManager.entitiesCol)):
-			if not EntityManager.entitiesCol[i] == entityId:
-				dist = mathcda.distOldE(EntityManager.entities[entityId],
-										EntityManager.entities[EntityManager.entitiesCol[i]])
+			if not EntityManager.entitiesCol[i].id == index:
+				dist = mathcda.distOldE(EntityManager.entities[index],
+										EntityManager.entities[EntityManager.entitiesCol[i].id])
 
 				j = 0
 				while j < len(list):
@@ -130,14 +129,14 @@ class EntityManager:
 				list.insert(j, [dist, EntityManager.entitiesCol.index(EntityManager.entitiesCol[i])])
 
 		for a in list:
-			EntityManager.testCollision(EntityManager.entities[entityId],
-										EntityManager.entities[EntityManager.entitiesCol[a[1]]])
+			EntityManager.testCollision(EntityManager.entities[index],
+										EntityManager.entities[EntityManager.entitiesCol[a[1]].id])
 
 	@staticmethod
 	def display():
 		for i in EntityManager.displayLayer:
 			for e in i:
-				EntityManager.entities[e].display()
+				EntityManager.entities[e.id].display()
 
 		if EntityManager.displayBox:
 			for e in EntityManager.entities:
@@ -145,24 +144,24 @@ class EntityManager:
 
 	@staticmethod
 	def displayMiddleEntity(entityID):
-		ent = EntityManager.entities[entityID]
+		ent = EntityManager.entities[entityID.id]
 		index = EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE].index(entityID)
 		if ent.pos[1] > ent.oldPos[1]:
 			for i in range(index, -1, -1):
-				ent2 = EntityManager.entities[EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE][i]]
+				ent2 = EntityManager.entities[EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE][i].id]
 				if ent.pos[1] + ent.gapDisplayPos > ent2.pos[1] + ent2.gapDisplayPos:
 					EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE].remove(entityID)
 					EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE].insert(i, entityID)
 		elif ent.pos[1] < ent.oldPos[1]:
 			for i in range(index, len(EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE]), 1):
-				ent2 = EntityManager.entities[EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE][i]]
+				ent2 = EntityManager.entities[EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE][i].id]
 				if ent.pos[1] + ent.gapDisplayPos < ent2.pos[1] + ent2.gapDisplayPos:
 					EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE].remove(entityID)
 					EntityManager.displayLayer[EntityManager.DISPLAY_MIDDLE].insert(i, entityID)
 
 	@staticmethod
 	def dispose():
-		EntityManager.entitiesRemove.sort(reverse=True)
+		EntityManager.entitiesRemove.reverse()
 		for a in EntityManager.entitiesRemove:
 			EntityManager.rem(a)
 		EntityManager.entitiesRemove = []
@@ -196,8 +195,8 @@ class EntityManager:
 		return EntityManager.LIST_RESET[type] == EntityManager.TO_RESET
 
 	@staticmethod
-	def rem(entity):
-		id = entity[0]
+	def rem(info):
+		id = info[0].id
 
 		# Unload the entity
 		EntityManager.entities[id].unload()
@@ -208,24 +207,26 @@ class EntityManager:
 			EntityManager.entities[id] = entitycollision.EntityCollision(["Null", -1, [0, 0]])
 
 		EntityManager.len = len(EntityManager.entities)
-		if entity[1]:
+		# Print the removing ?
+		if info[1]:
 			Logger.info("ENTITY MANAGER", "Remove entity n°" + str(id))
 
 	@staticmethod
-	def remove(id, display=True):
-		EntityManager.entitiesRemove.append([id, display])
+	def remove(entityId, printRemove):
+		entityId.id
+		EntityManager.entitiesRemove.append([entityId, printRemove])
 
 	@staticmethod
-	def removeToDipslay(layer, id):
-		if id in EntityManager.displayLayer[layer]:
-			EntityManager.displayLayer[layer].remove(id)
+	def removeToDipslay(layer, entityId):
+		if entityId in EntityManager.displayLayer[layer]:
+			EntityManager.displayLayer[layer].remove(entityId)
 
 	@staticmethod
-	def removeToTest(id):
-		if id in EntityManager.entitiesCol:
-			EntityManager.entitiesCol.remove(id)
+	def removeToTest(entityId):
+		if entityId in EntityManager.entitiesCol:
+			EntityManager.entitiesCol.remove(entityId)
 		else:
-			print("(EntityManager - removeToTest()) Error none entity want to be remove from entityCol, id : ", id)
+			print("(EntityManager - removeToTest()) Error none entity want to be remove from entityCol, id : ", entityId.id)
 
 	@staticmethod
 	def status():

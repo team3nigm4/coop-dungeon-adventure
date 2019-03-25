@@ -12,7 +12,7 @@ class LockedDoor(door.Door):
         if ent.attributes["key"] == 1:
             ent.triggerBox(ent)
             self.activate()
-            self.em.remove(ent.id)
+            ent.removeEm()
 
         super().collision(ent)
 

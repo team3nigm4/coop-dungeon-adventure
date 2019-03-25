@@ -27,7 +27,7 @@ class ItemKey(item.Item):
 
 		entity.setColBox(size, True)
 		entity.attributes["key"] = 1
-		entity.setEntityId(self.player.id)
+		entity.setEntityMaster(self.player.entityId)
 		self.player.em.addWithId(entity)
 
 	def triggerBox(self, ent):

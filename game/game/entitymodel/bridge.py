@@ -51,7 +51,7 @@ class Bridge(entitycollision.EntityCollision):
 		self.colRenderer.setAttributes(self.colSize, [0, 0.7725, 0.258, 0.5])
 		self.colRenderer.updateModel(self.valueRender)
 
-		self.ev.addActive(self.event, self.id)
+		self.ev.addActive(self.event, self.entityId)
 
 	def update(self):
 		toRemove = []

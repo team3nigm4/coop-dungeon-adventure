@@ -54,12 +54,12 @@ class EntityCollision(entity.Entity):
 		self.halfColSize[1] = self.colSize[1] / 2
 
 		self.testCol = test
-		if not self.id == -1:
+		if not self.entityId.id == -1:
 			if self.testCol:
-				self.em.addToTest(self.id)
+				self.em.addToTest(self.entityId)
 			else:
 				if remove:
-					self.em.removeToTest(self.id)
+					self.em.removeToTest(self.entityId)
 
 		if self.drawCol:
 			self.colRenderer.setAttributes(self.colSize, self.colRenderer.color)
@@ -85,4 +85,4 @@ class EntityCollision(entity.Entity):
 
 	def unloadToEntityManager(self):
 		if self.collision:
-			self.em.removeToTest(self.id)
+			self.em.removeToTest(self.entityId)

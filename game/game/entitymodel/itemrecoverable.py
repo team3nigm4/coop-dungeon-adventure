@@ -24,7 +24,7 @@ class ItemRecoverable(entitydrawable.EntityDrawable):
 				if not playItemName == "Null":
 					self.setType(playItemName)
 				else:
-					self.em.remove(self.id)
+					self.removeEm()
 
 	def setType(self, type):
 		self.itemType = type

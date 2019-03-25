@@ -35,7 +35,7 @@ class Arrow(entitycomplex.EntityComplex):
 		self.colRenderer.setAttributes(self.colSize, [0, 0, 1, 0.5])
 		self.colRenderer.updateModel(self.pos)
 		self.gapDisplayPos = -1
-		self.entityId = -1
+		self.entityMaster = -1
 		self.giveDamage = True
 
 		self.knockback = 0.25
@@ -49,15 +49,15 @@ class Arrow(entitycomplex.EntityComplex):
 			self.mam.checkCollisionY(self)
 
 		if self.oldPos == self.pos:
-			self.em.remove(self.id)
+			self.removeEm(False)
 		self.wantDirection = [0, 0]
 
 	def collision(self, ent):
 		if ent.attributes["collision"] == 2:
 			self.setLife(0)
 
-	def setEntityId(self, entityId):
-		self.entityId = entityId
+	def setEntityMaster(self, entityMaster):
+		self.entityMaster = entityMaster
 
 	def triggerBox(self, ent):
 		if self.giveDamage:

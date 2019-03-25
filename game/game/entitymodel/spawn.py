@@ -18,14 +18,13 @@ class Spawn(entity.Entity):
 
 	def activate(self):
 		if not self.hasSpawn:
-
-			self.em.remove(self.id)
+			self.removeEm(False)
 			self.em.addA(self.entityInfo)
-			ev.remove(self.event, self.id)
+			ev.remove(self.event, self.entityId)
 			self.hasSpawn = True
 
 	def deactivate(self):
 		pass
 
 	def checkState(self):
-		EventManager.addActive(self.event, self.id)
+		EventManager.addActive(self.event, self.entityId)

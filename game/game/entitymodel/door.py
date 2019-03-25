@@ -25,7 +25,7 @@ class Door(entitycollision.EntityCollision):
 		if self.isEvent:
 			self.isActive = False
 			self.event = args[Door.ARGS_EVENT]
-			self.ev.addActive(self.event, self.id)
+			self.ev.addActive(self.event, self.entityId)
 			self.mam.setTileSize(self.pos, self.halfColSize, 1)
 		else:
 			self.isActive = True
