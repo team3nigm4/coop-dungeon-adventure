@@ -43,6 +43,13 @@ class MapRender:
 		MapRender.tileSetImage = texture.Texture(path_tileSetImage)
 		MapRender.tileSetImage.load()
 
+		MapRender.tileSize = MapRender.tileSet["info"]["tilesize"]
+		MapRender.tileSet["info"]["size"] = [int(MapRender.tileSetImage.width/MapRender.tileSize), int(MapRender.tileSetImage.height/MapRender.tileSize)]
+		MapRender.tileSet["id"] = []
+		for y in range(0, int(MapRender.tileSetImage.height/MapRender.tileSize)):
+			for x in range(0, int(MapRender.tileSetImage.width/MapRender.tileSize)):
+				MapRender.tileSet["id"].append([x, y])
+
 		MapRender.shapeUp = shape.Shape("texture", True)
 		MapRender.shapeUp.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
 		MapRender.shapeUp.setReading([3, 2])
@@ -72,7 +79,7 @@ class MapRender:
 				for x in range(len(MapRender.mapValues[floor][y])):
 					id = MapRender.mapValues[floor][y][x]
 					if id != 0:
-						pos = MapRender.tileSet["textPos"][MapRender.tileSet["id"][id - 1]]
+						pos = MapRender.tileSet["id"][id - 1]
 						MapRender.addTile2(MapRender.vboCount, floor, x, height - y - 1, pos[0], pos[1])
 						MapRender.vboCount += 1
 
@@ -101,7 +108,7 @@ class MapRender:
 			MapRender.deleteTile(floor, posX, posY)
 			MapRender.shiftVboIndex(floor, posX, posY)
 
-		pos = MapRender.tileSet["textPos"][textName]
+		pos = MapRender.tileSet["tiles"][textName]
 		MapRender.addTile2(vboCount, floor, posX, posY, pos[0], pos[1], rotate)
 		MapRender.change = True
 
