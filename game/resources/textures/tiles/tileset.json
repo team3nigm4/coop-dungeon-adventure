@@ -1,20 +1,10 @@
 {
-  "id": [
-    "ground",
-    "ground2",
-    "wall",
-    "begin-bridge",
-    "bridge"
-  ],
-  "textPos":{
-    "ground": [0, 0],
-    "ground2": [1, 0],
-    "wall": [2, 0],
-    "begin-bridge": [0, 1],
-    "bridge": [1, 1]
-  },
   "info": {
     "gap" : [0, 0],
-    "size" : [3, 2]
+    "tilesize" : 32
+  },
+  "tiles":{
+    "begin-bridge": [0, 1],
+    "bridge": [1, 1]
   }
 }
