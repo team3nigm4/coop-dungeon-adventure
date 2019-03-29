@@ -30,8 +30,8 @@ class ItemRecoverable(entitydrawable.EntityDrawable):
 	def setType(self, type):
 		self.itemType = type
 		if self.itemType == "Key":
-			path = "/entities/item-key.png"
+			path = "/items/item-key.png"
 		else:
-			path = "/entities/item-weapon.png"
+			path = "/items/item-weapon.png"
 
 		self.entityRenderer.setImagePath([0.8, 0.8], path, [0.4, 0.4])

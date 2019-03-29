@@ -12,7 +12,7 @@ class Mannequin(enemy.Enemy):
 		self.setColBox([0.6, 0.4])
 		self.setCollision(True)
 
-		self.entityRenderer.setImagePath([1, 1.5], "entities/mannequin.png", [0.45, 0.2])
+		self.entityRenderer.setImagePath([1, 1.5], "ennemies/mannequin.png", [0.45, 0.2])
 
 		self.attributes["playerSword"] = 2
 		self.attributes["playerBow"] = 2

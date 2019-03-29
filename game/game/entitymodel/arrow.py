@@ -30,7 +30,7 @@ class Arrow(entitycomplex.EntityComplex):
 
 		self.setCollision(True)
 
-		self.entityRenderer.setImagePath([1, 1], "entities/arrow.png", [0.5, 0.5])
+		self.entityRenderer.setImagePath([1, 1], "items/arrow.png", [0.5, 0.5])
 		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)
 
 		self.setDrawCol(True)
