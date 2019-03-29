@@ -33,6 +33,10 @@ class LoadEntity:
 		"TogglePlate": toggleplate.TogglePlate
 	}
 
+	noError = [
+		"SpawnPoint"
+	]
+
 	# reset = 0, no reset = 1
 	LIST_RESET = {
 		"ActivationBlock": 0,
@@ -63,16 +67,23 @@ class LoadEntity:
 
 	@staticmethod
 	def instance(args):
-		if args[0] in LoadEntity.entities:
-			if LoadEntity.reset:
-				if not LoadEntity.isResetable(args):
-					return False
+		# If the instance complete without problem
+		try:
+			if args[0] in LoadEntity.entities:
+				if LoadEntity.reset:
+					if not LoadEntity.isResetable(args):
+						return ["False", "No Error"]
+					else:
+						return ["True", LoadEntity.entities[args[0]](args)]
 				else:
-					return LoadEntity.entities[args[0]](args)
+					return ["True", LoadEntity.entities[args[0]](args)]
 			else:
-				return LoadEntity.entities[args[0]](args)
-		else:
-			return False
+				if args[0] in LoadEntity.noError:
+					return ["False", "No Error"]
+				else:
+					return ["False", "This type of entity doesn't exist"]
+		except Exception as e:
+			return ["False", e]
 
 	@staticmethod
 	def isResetable(arg):

@@ -20,7 +20,8 @@ class Spider(enemy.Enemy):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox([0.55, 0.55], True)
+		self.setColBox([0.55, 0.55])
+		self.setCollision(True)
 
 		self.attributes["enemyDamage"] = 1
 		self.attributes["playerSword"] = 2

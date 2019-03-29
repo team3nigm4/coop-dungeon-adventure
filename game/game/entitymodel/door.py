@@ -15,7 +15,7 @@ class Door(entitycollision.EntityCollision):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox(args[Door.ARGS_COL_BOX_SIZE], False, False)
+		self.setColBox(args[Door.ARGS_COL_BOX_SIZE])
 		self.zone = args[Door.ARGS_ZONE_NAME]
 		self.map = args[Door.ARGS_MAP_ID]
 		self.entry = args[Door.ARGS_MAP_ENTRY_POINT]
@@ -23,14 +23,13 @@ class Door(entitycollision.EntityCollision):
 		self.isEvent = args[Door.ARGS_IS_EVENT]
 
 		if self.isEvent:
-			self.isActive = False
 			self.event = args[Door.ARGS_EVENT]
 			self.ev.addActive(self.event, self.entityId)
 			self.mam.setTileSize(self.pos, self.halfColSize, 1)
+			self.setCollision(True)
 		else:
-			self.isActive = True
 			self.setDrawCol(True)
-			self.setColBox(self.colSize, True, False)
+			self.setCollision(True)
 
 		self.isTwo = False
 		self.attributes["door"] = 2
@@ -52,22 +51,21 @@ class Door(entitycollision.EntityCollision):
 		self.isTwo = False
 
 	def collision(self, ent):
-		if self.isActive:
-			if ent.attributes["door"] == 1:
-				if not self.isTwo:
-					self.isTwo = True
-				else:
-					# Change the map with its values
-					self.mam.reserveChange(self.zone, self.map, self.entry, self.exitPos)
+		if ent.attributes["door"] == 1:
+			if not self.isTwo:
+				self.isTwo = True
+			else:
+				# Change the map with its values
+				self.mam.reserveChange(self.zone, self.map, self.entry, self.exitPos)
 
 	def activate(self):
-		self.isActive = True
-		self.setColBox(self.colSize, True)
-		self.mam.setTileSize(self.pos, self.halfColSize, 0)
-		self.setDrawCol(True)
+		if not self.testCol:
+			self.setCollision(True)
+			self.mam.setTileSize(self.pos, self.halfColSize, 0)
+			self.setDrawCol(True)
 
 	def deactivate(self):
-		self.isActive = False
-		self.mam.setTileSize(self.pos, self.halfColSize, 1)
-		self.setColBox(self.colSize, False, False)
-		self.setDrawCol(False)
+		if self.testCol:
+			self.setCollision(False)
+			self.mam.setTileSize(self.pos, self.halfColSize, 1)
+			self.setDrawCol(False)

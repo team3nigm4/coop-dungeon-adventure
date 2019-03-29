@@ -171,7 +171,8 @@ class MapTemporarySave:
 
 		if mts.mapsLoad[map]:
 			mts.mapsLoad[map] = False
-			em.EntityManager.setEntities(mts.entities_instances[map])
+			em.EntityManager.setValues(mts.entities_instances[map], mts.entitiesCol_instances[map],
+									   mts.displayLayer_instances[map])
 			em.EntityManager.unload(reset)
 
 	@staticmethod

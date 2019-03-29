@@ -10,7 +10,8 @@ class TogglePlate(entitydrawable.EntityDrawable):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox([1, 1], True)
+		self.setColBox([1, 1])
+		self.setCollision(True)
 		self.images = [img.open("game/resources/textures/entities/toggle-plate-release.png"),
 					img.open("game/resources/textures/entities/toggle-plate-press.png")]
 

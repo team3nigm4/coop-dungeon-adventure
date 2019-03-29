@@ -8,7 +8,8 @@ class ItemRecoverable(entitydrawable.EntityDrawable):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox([1, 1], True)
+		self.setColBox([1, 1])
+		self.setCollision(True)
 
 		self.setType(args[ItemRecoverable.ARGS_ITEM_TYPE])
 

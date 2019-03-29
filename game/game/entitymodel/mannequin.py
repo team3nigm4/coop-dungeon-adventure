@@ -9,7 +9,8 @@ class Mannequin(enemy.Enemy):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox([0.6, 0.4], True)
+		self.setColBox([0.6, 0.4])
+		self.setCollision(True)
 
 		self.entityRenderer.setImagePath([1, 1.5], "entities/mannequin.png", [0.45, 0.2])
 

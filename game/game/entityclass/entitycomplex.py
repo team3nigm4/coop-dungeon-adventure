@@ -1,5 +1,4 @@
 from game.game.entityclass import entitydrawable
-from game.game.entityclass import entitycollision as entc
 from game.util.logger import Logger
 import math
 

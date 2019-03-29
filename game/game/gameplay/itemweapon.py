@@ -39,7 +39,8 @@ class ItemWeapon(item.Item):
 					size = [1, 1]
 
 				self.trigBox = triggerbox.TriggerBox(self, ["TriggerBox", self.player.em.checkPlace(), self.triggerPos(), ItemWeapon.SWORD_ATTACK_TIME])
-				self.trigBox.setColBox(size, True)
+				self.trigBox.setColBox(size)
+				self.trigBox.setCollision(True)
 				self.trigBox.attributes["playerSword"] = 1
 				self.trigBox.setEntityMaster(self.player.entityId)
 

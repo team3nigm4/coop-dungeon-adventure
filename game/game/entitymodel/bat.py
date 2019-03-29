@@ -17,7 +17,8 @@ class Bat(enemy.Enemy):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox([0.9, 0.9], True)
+		self.setColBox([0.9, 0.9])
+		self.setCollision(True)
 
 		self.attributes["enemyDamage"] = 1
 		self.attributes["playerSword"] = 2

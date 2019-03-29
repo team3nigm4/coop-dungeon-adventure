@@ -48,22 +48,23 @@ class EntityCollision(entity.Entity):
 		if self.drawCol:
 			self.colRenderer.display()
 
-	def setColBox(self, size, test, remove=True):
+	def setColBox(self, size):
 		self.colSize = size
 		self.halfColSize[0] = self.colSize[0] / 2
 		self.halfColSize[1] = self.colSize[1] / 2
 
-		self.testCol = test
-		if not self.entityId.id == -1:
-			if self.testCol:
-				self.em.addToTest(self.entityId)
-			else:
-				if remove:
-					self.em.removeToTest(self.entityId)
-
 		if self.drawCol:
 			self.colRenderer.setAttributes(self.colSize, self.colRenderer.color)
 			self.colRenderer.updateModel([round(self.pos[0] * 32) / 32, round(self.pos[1] * 32) / 32])
+
+	def setCollision(self, state):
+		old = self.testCol
+		self.testCol = state
+		if not self.entityId.id == -1:
+			if self.testCol and not old:
+				self.em.addToTest(self.entityId)
+			elif not self.testCol and old:
+				self.em.removeToTest(self.entityId)
 
 	def setPos(self, position):
 		super().setPos(position)
@@ -75,14 +76,9 @@ class EntityCollision(entity.Entity):
 	def collision(self, ent):
 		pass
 
-
-	def chargeToEntityManager(self):
-		if self.testCol:
-			self.setColBox(self.colSize, True)
-
 	def unload(self):
 		self.unloadToEntityManager()
 
 	def unloadToEntityManager(self):
-		if self.collision:
+		if self.testCol:
 			self.em.removeToTest(self.entityId)

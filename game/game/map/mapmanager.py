@@ -1,3 +1,4 @@
+# coding=utf-8
 # Manages the current map, displays it, and performs various actions on it (collision test)
 
 import math
@@ -204,10 +205,9 @@ class MapManager:
 		if id == MapManager.INTERACTION_SOLID and MapManager.collideTest:
 			em.EntityManager.status()
 			for i in em.EntityManager.entitiesCol:
-				print(i)
 
-				if not em.EntityManager.entities[i].attributes["collision"] == 0:
-					e = em.EntityManager.entities[i]
+				if not em.EntityManager.entities[i.id].attributes["collision"] == 0:
+					e = em.EntityManager.entities[i.id]
 					# Collision Test
 					if math.floor(e.pos[0] * MapManager.COEF - e.halfColSize[0] * MapManager.COEF) <= position[
 						0] <= math.floor(

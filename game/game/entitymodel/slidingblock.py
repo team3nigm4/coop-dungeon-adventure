@@ -10,7 +10,8 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox([0.998, 0.998], True)
+		self.setColBox([0.998, 0.998])
+		self.setCollision(True)
 		self.entityRenderer.setImagePath([1, 1], "entities/sliding-block.png", [0.5, 0.5])
 
 		self.attributes["collision"] = 2

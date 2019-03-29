@@ -1,3 +1,4 @@
+# coding=utf-8
 # Manage every entity of the game
 
 from game.game.entityclass.loadentity import LoadEntity
@@ -53,12 +54,12 @@ class EntityManager:
 	@staticmethod
 	def addA(args):
 		args.insert(entitycollision.EntityCollision.ARGS_ID, EntityManager.checkPlace())
-		entity = LoadEntity.instance(args)
-		if entity != False:
-			EntityManager.addWithId(entity)
+		result = LoadEntity.instance(args)
+		if result[0] == "True":
+			EntityManager.addWithId(result[1])
 		else:
-			if not args[0] in EntityManager.ENTITY_NO_ERROR:
-				print("Error: wrong arguments to instance an entity:\n", args)
+			if not result[1] == "No Error":
+				Logger.error("LoadEntity", result[1] + "\n" + str(args))
 
 	@staticmethod
 	def addToDisplay(layer, entityId, pos=0):
@@ -76,8 +77,7 @@ class EntityManager:
 		if not entityId in EntityManager.entitiesCol:
 			EntityManager.entitiesCol.append(entityId)
 		else:
-			print("(EntityManager - addToTest()) Error, adding two same id :", entityId.id, ", type:",
-				  EntityManager.entities[entityId.Id].type)
+			Logger.error("EntityManager", "AddToTest() Error, with " + EntityManager.entities[entityId.id].type + " entity adding two same id : " + str(entityId.id))
 
 	@staticmethod
 	def addWithId(entity):
@@ -100,7 +100,6 @@ class EntityManager:
 	def checkId():
 		for e in range(3, EntityManager.len):
 			idM =  EntityManager.entities[e-1].entityId.id
-			print(EntityManager.entities[e])
 			if EntityManager.entities[e].entityId.id - idM > 1:
 				EntityManager.entities[e].entityId.id = idM + 1
 
@@ -190,7 +189,7 @@ class EntityManager:
 				if not temp[0] == "Spawn":
 					type = temp[0]
 				else:
-					count +=1
+					count += 1
 
 		return EntityManager.LIST_RESET[type] == EntityManager.TO_RESET
 
@@ -213,7 +212,6 @@ class EntityManager:
 
 	@staticmethod
 	def remove(entityId, printRemove):
-		entityId.id
 		EntityManager.entitiesRemove.append([entityId, printRemove])
 
 	@staticmethod
@@ -226,13 +224,13 @@ class EntityManager:
 		if entityId in EntityManager.entitiesCol:
 			EntityManager.entitiesCol.remove(entityId)
 		else:
-			print("(EntityManager - removeToTest()) Error none entity want to be remove from entityCol, id : ", entityId.id)
+			Logger.error("EntityManager", "RemoveToTest() Error " + EntityManager.entities[entityId.id].type + " entity want to be remove from entityCol, id : " + str(entityId.id))
 
 	@staticmethod
 	def status():
-		print("\nEntityManager status len(", EntityManager.len, ") :\n")
+		Logger.info("EntityManager", "\n status with len(" + str(EntityManager.len) + ") :\n")
 		for e in EntityManager.entities:
-			print("Entity", e.id, ", entityType", e.type)
+			Logger.info("EntityManager","Entity" + str(e.entityId.id) + ", entityType" + e.type)
 
 	@staticmethod
 	def setEntities(entities):
@@ -259,7 +257,7 @@ class EntityManager:
 		id = 2
 		if EntityManager.len > 1:
 			for i in range(2, EntityManager.len):
-				if (reset and not EntityManager.isResetable(EntityManager.entities[id])):
+				if reset and not EntityManager.isResetable(EntityManager.entities[id]):
 					id += 1
 				else:
 					EntityManager.entities[id].unload()

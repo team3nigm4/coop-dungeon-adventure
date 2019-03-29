@@ -16,7 +16,8 @@ class Player(entitycomplex.EntityComplex):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox([0.6, 0.4], True)
+		self.setColBox([0.6, 0.4])
+		self.setCollision(True)
 		self.playerNumber = args[Player.ARGS_PLAYER_NUMBER]
 
 		self.attributes["collision"] = 1

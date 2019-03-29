@@ -25,7 +25,8 @@ class ItemKey(item.Item):
 		entity = triggerbox.TriggerBox(self, ["TriggerBox", self.player.em.checkPlace(),
 												pos, ItemKey.KEY_USE_TIME])
 
-		entity.setColBox(size, True)
+		entity.setColBox(size)
+		entity.setCollision(True)
 		entity.attributes["key"] = 1
 		entity.setEntityMaster(self.player.entityId)
 		self.player.em.addWithId(entity)
