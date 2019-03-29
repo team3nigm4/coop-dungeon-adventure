@@ -35,7 +35,7 @@ class Bat(enemy.Enemy):
 		self.knockback = 0.35
 		self.height = 0.8
 
-		self.entityRenderer.setImagePath([1, 1], "entities/bat.png", [0.5, 0.5])
+		self.entityRenderer.setImagePath([1, 1], "ennemies/bat.png", [0.5, 0.5])
 		self.gapDisplayPos = -1
 
 	def update(self):

@@ -9,8 +9,8 @@ class ActivationPlate(pressureplate.PressurePlate):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.images = [img.open("game/resources/textures/entities/activation-plate-release.png"),
-					img.open("game/resources/textures/entities/activation-plate-press.png")]
+		self.images = [img.open("game/resources/textures/blocks/activation-plate-release.png"),
+					img.open("game/resources/textures/blocks/activation-plate-press.png")]
 
 		self.entityRenderer.setImage([1, 1], self.images[0], [0.5, 0.5])
 

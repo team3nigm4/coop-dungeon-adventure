@@ -19,9 +19,9 @@ class GameScreen(screen.Screen):
 	def init(self):
 		em.init()
 
-		player1 = pl.Player(["Player", em.PLAYER_1, [0, 0], 0, "entities/player/player1.png"])
+		player1 = pl.Player(["Player", em.PLAYER_1, [0, 0], 0, "players/player1.png"])
 		em.addWithId(player1)
-		player2 = pl.Player(["Player", em.PLAYER_2, [0, 0], 1, "entities/player/player2.png"])
+		player2 = pl.Player(["Player", em.PLAYER_2, [0, 0], 1, "players/player2.png"])
 		em.addWithId(player2)
 
 		mam.init()
