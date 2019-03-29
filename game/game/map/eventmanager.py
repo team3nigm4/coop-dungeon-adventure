@@ -6,12 +6,24 @@ class EventManager:
 	toActive = [[]]
 	event = []
 	wantRemove = []
+	init = True
 
 	@staticmethod
 	# Define how much events there are
 	def setupEvent(number):
+		EventManager.init = True
 		EventManager.event = [0] * number
 		EventManager.toActive = [[] for i in range(number)]
+
+	@staticmethod
+	def endInit():
+		for i in range(len(EventManager.event)):
+			if EventManager.event[0] == 0:
+				EventManager.activeAllEntities(i)
+			else:
+				EventManager.deactiveAllEntities(i)
+
+		EventManager.init = False
 
 	@staticmethod
 	# Add a entity the to the list of entities to call when an event is true
@@ -43,16 +55,23 @@ class EventManager:
 	@staticmethod
 	def activate(eventIndex):
 		EventManager.event[eventIndex] -= 1
-		if EventManager.event[eventIndex] == 0:
-			from game.game.entityclass.entitymanager import EntityManager
-			for i in EventManager.toActive[eventIndex]:
-				EntityManager.entities[i.id].activate()
+		if EventManager.event[eventIndex] == 0 and not EventManager.init:
+			EventManager.activeAllEntities(eventIndex)
+
+	@staticmethod
+	def activeAllEntities(eventIndex):
+		from game.game.entityclass.entitymanager import EntityManager
+		for i in EventManager.toActive[eventIndex]:
+			EntityManager.entities[i.id].activate()
 
 	@staticmethod
 	def deactivate(eventIndex):
-		if EventManager.event[eventIndex] == 0:
-			from game.game.entityclass.entitymanager import EntityManager
-			for i in EventManager.toActive[eventIndex]:
-				EntityManager.entities[i.id].deactivate()
-		
+		if EventManager.event[eventIndex] == 0 and not EventManager.init:
+			EventManager.deactiveAllEntities(eventIndex)
 		EventManager.event[eventIndex] += 1
+
+	@staticmethod
+	def deactiveAllEntities(eventIndex):
+		from game.game.entityclass.entitymanager import EntityManager
+		for i in EventManager.toActive[eventIndex]:
+			EntityManager.entities[i.id].deactivate()

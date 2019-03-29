@@ -123,6 +123,9 @@ class MapTemporarySave:
 				args = values[MapTemporarySave.DATA_ENTITIES][i][1]
 				args.insert(0, (values[MapTemporarySave.DATA_ENTITIES][i][0]))
 				em.EntityManager.addA(args)
+
+			ev.endInit()
+			#
 			MapTemporarySave.saveValue(map)
 			loadentity.LoadEntity.setReset(False)     
 
