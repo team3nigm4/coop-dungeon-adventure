@@ -3,32 +3,33 @@ from game.game.entitymodel import triggerbox
 
 class ItemKey(item.Item):
 
-	KEY_USE_TIME = 1
+	KEY_USE_TIME = 4
 
 	def __init__(self, player):
 		super().__init__(player, "Key")
 
 	def useItem(self):
 		if self.player.direction == 0:
-			entity = triggerbox.TriggerBox(self, ["TriggerBox",
-												[self.player.pos[0] - self.player.halfColSize[0] - 0.15, self.player.pos[1]], ItemKey.KEY_USE_TIME])
-			size = [0.3, 0.01]
+			pos = self.player.pos[0] - self.player.halfColSize[0] - 0.15, self.player.pos[1]
+			size = [0.3, 0.3]
 		elif self.player.direction == 1:
-			entity = triggerbox.TriggerBox(self, ["TriggerBox",
-												[self.player.pos[0], self.player.pos[1]  + self.player.halfColSize[1] + 0.15], ItemKey.KEY_USE_TIME])
-			size = [0.01, 0.3]
+			pos = [self.player.pos[0], self.player.pos[1]  + self.player.halfColSize[1] + 0.15]
+			size = [0.3, 0.3]
 		elif self.player.direction == 2:
-			entity = triggerbox.TriggerBox(self, ["TriggerBox",
-												[self.player.pos[0] + self.player.halfColSize[0] + 0.15, self.player.pos[1]], 0.01])
-			size = [0.3, 0.01]
+			pos = [self.player.pos[0] + self.player.halfColSize[0] + 0.15, self.player.pos[1]]
+			size = [0.3, 0.3]
 		else :
-			entity = triggerbox.TriggerBox(self, ["TriggerBox",
-												[self.player.pos[0], self.player.pos[1] - self.player.halfColSize[0] - 0.15], 0.01])
-			size = [0.01, 0.03]
+			pos = [self.player.pos[0], self.player.pos[1] - self.player.halfColSize[0] - 0.15]
+			size = [0.3, 0.03]
 
-		entity.setColBox(size, True)
+		entity = triggerbox.TriggerBox(self, ["TriggerBox", self.player.em.checkPlace(),
+												pos, ItemKey.KEY_USE_TIME])
+
+		entity.setColBox(size)
+		entity.setCollision(True)
 		entity.attributes["key"] = 1
-		self.player.em.add(entity)
+		entity.setEntityMaster(self.player.entityId)
+		self.player.em.addWithId(entity)
 
 	def triggerBox(self, ent):
-		self.player.item = item.Item(self.player, "null")
+		self.player.setItem("Null")

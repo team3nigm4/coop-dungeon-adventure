@@ -4,6 +4,7 @@ from game.render.texture import texturemanager as textureManager
 from game.screen import camera
 from game.inputs.inputmanager import InputManager as im
 from game.render.shader.shadermanager import ShaderManager as sm
+from game.util.logger import Logger
 
 
 class GameManager:
@@ -24,6 +25,10 @@ class GameManager:
 
 	def __init__(self):
 		# Init systems
+		Logger.info("GAME MANAGER", "Created")
+
+
+	def begin(self):
 		GameManager.texManager = textureManager.TextureManager()
 		GameManager.texManager.init()
 
@@ -34,7 +39,7 @@ class GameManager:
 		GameManager.cam = camera.Camera(70.0, [0, 0, -8.572])  # Precise position of cam to render 18 * 12 tiles
 		sm.init()
 
-	def begin(self):
+	def init(self):
 		self.setCurrentScreen(GameManager.GAMESCREEN)
 
 	# if GameManager.server:
@@ -57,6 +62,8 @@ class GameManager:
 		if value == GameManager.GAMESCREEN:
 			from game.screen.screens import gamescreen as ga
 			GameManager.currentScreen = ga.GameScreen()
+
+		GameManager.currentScreen.init()
 		# if GameManager.server:
 		# 	Server.init()
 

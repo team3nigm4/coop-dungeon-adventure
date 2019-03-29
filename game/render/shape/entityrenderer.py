@@ -3,6 +3,7 @@ from game.render.texture import texture
 from game.render.shader.shadermanager import ShaderManager as sm
 from game.util import matrix4f
 
+
 class EntityRenderer:
 
 	def __init__(self):
@@ -41,10 +42,10 @@ class EntityRenderer:
 		self.tex.load()
 
 		size = self.size
-		quad = [0 - hotPoint[0], 0 - hotPoint[1], 0.0, 0.0, 0.0,
-				size[0] - hotPoint[0], 0 - hotPoint[1], 0.0, 1.0, 0.0,
-				size[0] - hotPoint[0], size[1] - hotPoint[1], 0.0, 1.0, 1.0,
-				0 - hotPoint[0], size[1] - hotPoint[1], 0.0, 0.0, 1.0]
+		quad = [0 - hotPoint[0], 0 - hotPoint[1], 0.0, 				0.0, 0.0,
+				size[0] - hotPoint[0], 0 - hotPoint[1], 0.0, 		1.0, 0.0,
+				size[0] - hotPoint[0], size[1] - hotPoint[1], 0.0, 	1.0, 1.0,
+				0 - hotPoint[0], size[1] - hotPoint[1], 0.0, 		0.0, 1.0]
 
 		self.shape.setVbo(quad)
 

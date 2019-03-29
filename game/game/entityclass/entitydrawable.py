@@ -21,20 +21,32 @@ class EntityDrawable(entitycollision.EntityCollision):
 		super().setPos(position)
 		self.entityRenderer.updateModel([round(self.pos[0] * 32) / 32, round(self.pos[1] * 32) / 32])
 		if self.displayLayer == self.em.DISPLAY_MIDDLE:
-			self.em.displayMiddleEntity(self.id)
+			self.em.displayMiddleEntity(self.entityId)
 
 	def setDisplayLayer(self, layer):
 		if not self.displayLayer == -1:
-			self.em.removeToDipslay(self.displayLayer, self.id)
+			self.em.removeToDipslay(self.displayLayer, self.entityId)
 
 		# Security
 		if layer >= 0 and layer <= 2:
 			self.displayLayer = layer
-			self.em.addToDisplay(self.displayLayer, self.id)
+			self.em.addToDisplay(self.displayLayer, self.entityId)
 		else:
-			print("Error : want to set an invalid display layer (" + str(layer) + ") to", self.type,"with id", str(id))
+			print("Error : want to set an invalid display layer (" + str(layer) + ") to", self.type, "with id", str(id))
+
+	def chargeToEntityManager(self):
+		super().chargeToEntityManager()
+		layer = self.displayLayer
+		self.displayLayer = -1
+		self.setDisplayLayer(layer)
 
 	def unload(self):
+		super().unload()
 		self.entityRenderer.unload()
-		if self.displayLayer >= 0 and self.displayLayer <= 2:
-			self.em.removeToDipslay(self.displayLayer, self.id)
+		self.unloadToEntityManager(True)
+
+	def unloadToEntityManager(self, unload=False):
+		if not unload:
+			super().unloadToEntityManager()
+		if 0 <= self.displayLayer <= 2:
+			self.em.removeToDipslay(self.displayLayer, self.entityId)

@@ -3,6 +3,7 @@ from game.game.map import mapmanager as mam
 from game.game.map.eventmanager import EventManager as ev
 from game.game.entityclass import entitymanager as em
 from game.game.map.maprender import MapRender as mr
+from game.game.entityclass import loadentity
 
 
 class MapTemporarySave:
@@ -41,7 +42,6 @@ class MapTemporarySave:
 	ebo_instances = {}
 	vboCount_instances = {}
 	eboCount_instances = {}
-
 
 	@staticmethod
 	def newZone(zone):
@@ -85,15 +85,20 @@ class MapTemporarySave:
 		mts.currentMap = "Null"
 
 	@staticmethod
-	def changeRoom(map, entry):
+	def changeRoom(map, entry, reset=False):
 		mts = MapTemporarySave
 		mts.oldMap = mts.currentMap
 		mts.currentMap = map
 
-		if not mts.oldMap == "Null" and not mts.oldMap == mts.currentMap:
+		if reset:
+			mts.unload(map, True)
+			loadentity.LoadEntity.setReset(True)
+
+		if not mts.oldMap == "Null" and not reset:
 			MapTemporarySave.saveValue(mts.oldMap)
 
 		if not mts.mapsLoad[map]:
+
 			# Init the values of map
 			mts.mapsLoad[map] = True
 
@@ -101,34 +106,43 @@ class MapTemporarySave:
 
 			ev.setupEvent(values[MapTemporarySave.DATA_MAP_INFO][1])
 
-			em.EntityManager.clear()
+			if not reset:
+				em.EntityManager.clear()
+			else:
+				em.EntityManager.checkId()
+
 			mts.defaultEntry_instances[map] = values[MapTemporarySave.DATA_MAP_INFO][0]
 			mts.entryPos_instances[map] = values[MapTemporarySave.DATA_ENTRIES]
 			mam.MapManager.setupMapValues(values[MapTemporarySave.DATA_INTERACTIONS],
 										  mts.defaultEntry_instances[map],
 										  mts.entryPos_instances[map][str(mts.defaultEntry_instances[map])])
 
+			mr.mapValues = values[MapTemporarySave.DATA_MAP_DISPLAY]
+			mr.constructMap()
 			for i in range(0, len(values[MapTemporarySave.DATA_ENTITIES])):
 				args = values[MapTemporarySave.DATA_ENTITIES][i][1]
 				args.insert(0, (values[MapTemporarySave.DATA_ENTITIES][i][0]))
 				em.EntityManager.addA(args)
 
-			mr.mapValues = values[MapTemporarySave.DATA_MAP_DISPLAY]
-			mr.constructMap()
-
+			ev.endInit()
+			#
 			MapTemporarySave.saveValue(map)
+			loadentity.LoadEntity.setReset(False)     
 
 		# Apply all data to managers
 		em.EntityManager.setValues(mts.entities_instances[map], mts.entitiesCol_instances[map], mts.displayLayer_instances[map])
+
+		mam.MapManager.setupMapValues(mts.interaction_instances[map],
+									  mts.defaultEntry_instances[map],
+									  mts.entryPos_instances[map][str(entry)])
+
 		mr.setMapValues(mts.vbo_instances[map], mts.ebo_instances[map], mts.mapValues_instances[map],
 						mts.tilesPosition_instances[map], mts.vboCount_instances[map], mts.eboCount_instances[map])
 
 		ev.event = mts.event_instances[map]
 		ev.toActive = mts.toActive_instances[map]
-
-		mam.MapManager.setupMapValues(mts.interaction_instances[map],
-									  mts.defaultEntry_instances[map],
-									  mts.entryPos_instances[map][str(entry)])
+		if reset:
+			em.EntityManager.entityEffectAfterReset()
 
 	@staticmethod
 	def saveValue(map):
@@ -155,13 +169,14 @@ class MapTemporarySave:
 		mts.eboCount_instances[map] = mr.eboCount
 
 	@staticmethod
-	def unload(map):
+	def unload(map, reset=False):
 		mts = MapTemporarySave
 
 		if mts.mapsLoad[map]:
 			mts.mapsLoad[map] = False
-			em.EntityManager.setEntities(mts.entities_instances[map])
-			em.EntityManager.unload()
+			em.EntityManager.setValues(mts.entities_instances[map], mts.entitiesCol_instances[map],
+									   mts.displayLayer_instances[map])
+			em.EntityManager.unload(reset)
 
 	@staticmethod
 	def unloadAll():

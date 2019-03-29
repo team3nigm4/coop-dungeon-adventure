@@ -1,12 +1,11 @@
 # Class pressure plate
 
-from game.game.entityclass import entitydrawable
+from game.game.entityclass import entitycollision
 from game.game.map.maprender import MapRender
 
 import math
 
-
-class Bridge(entitydrawable.EntityDrawable):
+class Bridge(entitycollision.EntityCollision):
 	# True horizontal, False vertical
 	ARGS_DIRECTION = 3
 	ARGS_COUNTER = 4
@@ -52,7 +51,7 @@ class Bridge(entitydrawable.EntityDrawable):
 		self.colRenderer.setAttributes(self.colSize, [0, 0.7725, 0.258, 0.5])
 		self.colRenderer.updateModel(self.valueRender)
 
-		self.ev.addActive(self.event, self.id)
+		self.ev.addActive(self.event, self.entityId)
 
 	def update(self):
 		toRemove = []

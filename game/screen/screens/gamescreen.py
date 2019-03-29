@@ -15,6 +15,8 @@ class GameScreen(screen.Screen):
 
 	def __init__(self):
 		super(GameScreen, self).__init__()
+
+	def init(self):
 		em.init()
 
 		player1 = pl.Player(["Player", em.PLAYER_1, [0, 0], 0, "entities/player/player1.png"])
@@ -36,36 +38,40 @@ class GameScreen(screen.Screen):
 
 		gm.cam.trackEntity(em.PLAYER_1)
 
+		self.inPause = False
+
 	def update(self):
 		# Receive and create data
 		serverData = gm.serverData
 		clientData = im.getState()
 
-		# Update
-		self.controlPlay1.update()
-		self.controlPlay2.update()
-		em.update()
+		if not self.inPause:
+			# Update
+			self.controlPlay1.update()
+			self.controlPlay2.update()
+			em.update()
 
-		# Keys test
-		if im.inputPressed(im.ESCAPE):
-			from game.main.window import Window
-			Window.exit()
+			# Keys test
+			if im.inputPressed(im.ESCAPE):
+				from game.main.window import Window
+				Window.exit()
 
-		if im.inputPressed(im.RESET):
-			mam.reserveChange([mam.zone, mam.id, mam.defaultEntry])
+			if im.inputPressed(im.RESET):
+				mam.reserveChange(mam.zone, mam.id, mam.defaultEntry)
 
-		if im.inputPressed(im.ITEM2_0):
-			gm.cam.trackEntity(1 - gm.cam.entityId)
+			if im.inputPressed(im.ITEM2_0):
+				gm.cam.trackEntity(1 - gm.cam.entityId)
 
-		if im.keyBoardManager.getKey(290):
-			from game.game.command import Command
-			Command.command(input('\n[COMMAND] $ '))
+			if im.keyBoardManager.getKey(290):
+				from game.game.command import Command
+				Command.command(input('\n[COMMAND] $ '))
 
-		# Dispose components
-		mam.dispose()
-		gm.cam.goToEntity()
-		em.dispose()
-		Hud.dispose()
+			# Dispose components
+			gm.cam.goToEntity()
+			em.dispose()
+			Hud.dispose()
+
+		mam.update()
 
 		# Return data
 		clientData.append(time.time_ns())
@@ -73,7 +79,6 @@ class GameScreen(screen.Screen):
 
 	def display(self):
 		mam.display()
-		em.display()
 		Hud.display()
 
 	def unload(self):

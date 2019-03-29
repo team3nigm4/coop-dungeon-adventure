@@ -16,17 +16,19 @@ class Arrow(entitycomplex.EntityComplex):
 		self.attributes["playerBow"] = 1
 		self.direction = args[Arrow.ARGS_DIRECTION]
 		if self.direction == 0:
-			self.setColBox([0.4, 0.2], True)
+			self.setColBox([0.4, 0.2])
 			self.speed[0] = -Arrow.SPEED
 		elif self.direction == 1:
-			self.setColBox([0.2, 0.4], True)
+			self.setColBox([0.2, 0.4])
 			self.speed[1] = Arrow.SPEED
 		elif self.direction == 2:
-			self.setColBox([0.4, 0.2], True)
+			self.setColBox([0.4, 0.2])
 			self.speed[0] = Arrow.SPEED
 		else:
-			self.setColBox([0.2, 0.4], True)
+			self.setColBox([0.2, 0.4])
 			self.speed[1] = -Arrow.SPEED
+
+		self.setCollision(True)
 
 		self.entityRenderer.setImagePath([1, 1], "entities/arrow.png", [0.5, 0.5])
 		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)
@@ -35,7 +37,7 @@ class Arrow(entitycomplex.EntityComplex):
 		self.colRenderer.setAttributes(self.colSize, [0, 0, 1, 0.5])
 		self.colRenderer.updateModel(self.pos)
 		self.gapDisplayPos = -1
-		self.entityId = -1
+		self.entityMaster = -1
 		self.giveDamage = True
 
 		self.knockback = 0.25
@@ -49,15 +51,15 @@ class Arrow(entitycomplex.EntityComplex):
 			self.mam.checkCollisionY(self)
 
 		if self.oldPos == self.pos:
-			self.em.remove(self.id)
+			self.removeEm(False)
 		self.wantDirection = [0, 0]
 
 	def collision(self, ent):
 		if ent.attributes["collision"] == 2:
 			self.setLife(0)
 
-	def setEntityId(self, entityId):
-		self.entityId = entityId
+	def setEntityMaster(self, entityMaster):
+		self.entityMaster = entityMaster
 
 	def triggerBox(self, ent):
 		if self.giveDamage:

@@ -67,14 +67,16 @@
     },
     "entities": [
         [
-            ["Mannequin", [[7.5, 6.5], false, 0, 2]],
-            ["Spawn", [[0, 2], 0, ["Bat", [8.5, 4.5], true, 0]]],
-            ["Spawn", [[0, 2], 0, ["Spider", [8.5, 4.5], true, 0]]],
+            ["LockedDoor", [[13.5, 5.0], [0.498, 1.998], "test", "map2", 0]],
+            ["Spawn", [[0, 2], 0, ["ItemRecoverable", [1.5, 4.5], "Key"]]],
             ["ActivationBlock", [[10.5, 7.5]]],
             ["SpawnPoint", [[1.5, 6.0]]],
             ["TogglePlate", [[8.5, 2.5], 0]],
-            ["ActivationPlate", [[8.5, 8.5], 1]],
-            ["Door", [[13.5, 5.0], [0.498, 1.998], "test", "map2", 0, true, 1]],
+            ["ActivationPlate", [[8.5, 8.5], 0]],
+            ["TogglePlate", [[7.5, 1.5], 1]],
+            ["Spawn", [[0, 2], 1, ["Mannequin", [7.5, 2.5], false, 0, 7]]],
+            ["Spawn", [[0, 2], 1, ["Spider", [8.5, 4.5], false, 0]]],
+            ["Spawn", [[0, 2], 1, ["Bat", [9.5, 4.5], false, 0]]],
             ["SpawnPoint", [[12.5, 6.0]]]
         ]
     ]

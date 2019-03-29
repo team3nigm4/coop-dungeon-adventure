@@ -1,5 +1,7 @@
 from game.game.entityclass import entity
-
+from game.game.map.eventmanager import EventManager as ev
+from game.game.map.eventmanager import EventManager
+from game.game.map.eventmanager import EventManager
 
 class Spawn(entity.Entity):
 	ARGS_EVENT = 3
@@ -9,21 +11,20 @@ class Spawn(entity.Entity):
 		super().__init__(args)
 
 		self.event = args[Spawn.ARGS_EVENT]
-
 		self.entityInfo = args[Spawn.ARGS_ENTITY_INFO]
 		self.hasSpawn = False
 		self.testCol = False
-
-		from game.game.map.eventmanager import EventManager
-		EventManager.addActive(self.event, self.id)
+		self.checkState()
 
 	def activate(self):
 		if not self.hasSpawn:
-			from game.game.map.eventmanager import EventManager as ev
-			self.em.remove(self.id)
+			self.removeEm(False)
 			self.em.addA(self.entityInfo)
-			ev.remove(self.event, self.id)
+			ev.remove(self.event, self.entityId)
 			self.hasSpawn = True
 
 	def deactivate(self):
 		pass
+
+	def checkState(self):
+		EventManager.addActive(self.event, self.entityId)

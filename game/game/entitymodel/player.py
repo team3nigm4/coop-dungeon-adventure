@@ -4,7 +4,6 @@ import math
 
 from game.game.entityclass import entitycomplex
 
-
 class Player(entitycomplex.EntityComplex):
 	SPEED_ADD = 0.015
 	SPEED_MAX = 0.09
@@ -17,7 +16,8 @@ class Player(entitycomplex.EntityComplex):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox([0.6, 0.4], True)
+		self.setColBox([0.6, 0.4])
+		self.setCollision(True)
 		self.playerNumber = args[Player.ARGS_PLAYER_NUMBER]
 
 		self.attributes["collision"] = 1
@@ -34,8 +34,7 @@ class Player(entitycomplex.EntityComplex):
 
 		self.weight = 1.3
 
-		from game.game.gameplay import itemweapon
-		self.item = itemweapon.ItemWeapon(self)
+		self.setItem("Weapon")
 
 		self.setDrawCol(True)
 		self.colRenderer.setAttributes(self.colSize, [1, 1, 0, 0.5])
@@ -131,3 +130,14 @@ class Player(entitycomplex.EntityComplex):
 
 	def getItemName(self):
 		return self.item.name
+
+	def setItem(self, type):
+		if type == "Key":
+			from game.game.gameplay import  itemkey
+			self.item = itemkey.ItemKey(self)
+		elif type == "Weapon":
+			from game.game.gameplay import  itemweapon
+			self.item = itemweapon.ItemWeapon(self)
+		else:
+			from game.game.gameplay import item
+			self.item = item.Item(self, "Null")

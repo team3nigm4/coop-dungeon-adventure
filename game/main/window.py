@@ -38,6 +38,7 @@ class Window:
 		global gameManager
 		gameManager = gm.GameManager()
 		gameManager.begin()
+		gameManager.init()
 
 	@staticmethod
 	def create():

@@ -10,7 +10,7 @@ class TriggerBox(entitycollision.EntityCollision):
 		self.maxCount = args[TriggerBox.ARGS_COUNTER]
 		self.count = 0
 		self.entity = entity
-		self.entityId = -1
+		self.entityMaster = -1
 
 		self.setDrawCol(True)
 		self.colRenderer.setAttributes(self.colSize, [0, 0, 1, 0.5])
@@ -20,12 +20,12 @@ class TriggerBox(entitycollision.EntityCollision):
 	def update(self):
 		super().update()
 		if self.count >= self.maxCount:
-			self.em.remove(self.id, False)
+			self.removeEm(False)
 
 		self.count +=1
 
-	def setEntityId(self, entityId):
-		self.entityId = entityId
+	def setEntityMaster(self, entityMaster):
+		self.entityMaster = entityMaster
 
 	def triggerBox(self, ent):
 		self.entity.triggerBox(ent)

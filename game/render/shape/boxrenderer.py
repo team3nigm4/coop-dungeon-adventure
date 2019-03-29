@@ -8,10 +8,10 @@ class BoxRenderer:
 		self.size = size
 		self.color = color
 
-		quad = [0.0, 0.0, 0.0, 					self.color[0], self.color[1], self.color[2], self.color[3],
-				size[0], 0.0, 0.0, 				self.color[0], self.color[1], self.color[2], self.color[3],
-				size[0], size[1], 0.0, 			self.color[0], self.color[1], self.color[2], self.color[3],
-				0.0, size[1], 0.0, 				self.color[0], self.color[1], self.color[2], self.color[3]]
+		quad = [0.0, 0.0, 0.0, 				self.color[0], self.color[1], self.color[2], self.color[3],
+				size[0], 0.0, 0.0, 			self.color[0], self.color[1], self.color[2], self.color[3],
+				size[0], size[1], 0.0, 		self.color[0], self.color[1], self.color[2], self.color[3],
+				0.0, size[1], 0.0, 			self.color[0], self.color[1], self.color[2], self.color[3]]
 
 		indices = [0, 1, 2,
 				2, 3, 0]

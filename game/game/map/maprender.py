@@ -4,6 +4,8 @@ from game.render.shape import shape
 from game.render.texture import texture
 from game.util import matrix4f
 from game.render.shader.shadermanager import ShaderManager as sm
+from game.game.entityclass import entitymanager as em
+
 
 class MapRender:
 	GROUND = 0
@@ -17,6 +19,9 @@ class MapRender:
 
 	tileSetImage = None
 	tileSet = None
+	transitionImage = None
+	transitionPos = matrix4f.Matrix4f()
+	transitionShape = None
 
 	tWidth = 0
 	tHeight = 0
@@ -31,17 +36,23 @@ class MapRender:
 	vboCount = 0
 	ebo = []
 	eboCount = 0
-	modelDown =  matrix4f.Matrix4f()
+	modelDown = matrix4f.Matrix4f()
 
 	change = False
 
 	@staticmethod
 	def init():
+		# Images and json loading
 		path_tileSetImage = "/tiles/tileset.png"
 		path_tileSet = "game/resources/textures/tiles/tileset.json"
+		path_transitionImage = "/hud/transition.png"
+
 		MapRender.tileSet = json.load(open(path_tileSet))
+
 		MapRender.tileSetImage = texture.Texture(path_tileSetImage)
 		MapRender.tileSetImage.load()
+		MapRender.transitionImage = texture.Texture(path_transitionImage)
+		MapRender.transitionImage.load()
 
 		MapRender.tileSize = MapRender.tileSet["info"]["tilesize"]
 		MapRender.tileSet["info"]["size"] = [int(MapRender.tileSetImage.width/MapRender.tileSize), int(MapRender.tileSetImage.height/MapRender.tileSize)]
@@ -50,6 +61,8 @@ class MapRender:
 			for x in range(0, int(MapRender.tileSetImage.width/MapRender.tileSize)):
 				MapRender.tileSet["id"].append([x, y])
 
+    # Render's shapes loading
+  
 		MapRender.shapeUp = shape.Shape("texture", True)
 		MapRender.shapeUp.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
 		MapRender.shapeUp.setReading([3, 2])
@@ -60,6 +73,24 @@ class MapRender:
 		MapRender.modelDown = matrix4f.Matrix4f(True)
 		sm.updateLink("texture", "model", MapRender.modelDown.matrix)
 
+		from game.render.shape import entityrenderer as er
+		MapRender.transitionShape = er.EntityRenderer()
+		MapRender.transitionShape.setImagePath([18, 12], path_transitionImage, [0,0])
+
+		# MapRender.transitionPos = matrix4f.Matrix4f(True)
+		# MapRender.transitionShape = shape.Shape("hud", True)
+		# MapRender.transitionShape.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
+		# quad = [0, 0, 0.0, 			0.0, 0.0, 	1.0,
+		# 		18.0, 0, 0.0, 		1.0, 0.0, 	1.0,
+		# 		18.0, 12.0, 0.0, 	1.0, 1.0, 	1.0,
+		# 		0, 12.0, 0.0, 		0.0, 1.0,  	1.0]
+		# indices = [0, 1, 2,		2, 3, 0]
+		# MapRender.transitionShape.setEbo(indices)
+		# MapRender.transitionShape.setVbo(quad)
+		# MapRender.transitionShape.setReading([3, 2, 1])
+		# MapRender.transitionPos.matrix[3][0] = -9
+		# MapRender.transitionPos.matrix[3][1] = -6
+
 	@staticmethod
 	def constructMap():
 		height = len(MapRender.mapValues[0])
@@ -67,7 +98,7 @@ class MapRender:
 		MapRender.tWidth = width
 		MapRender.tHeight = height
 
-		MapRender.tilesPosition = [[[None for jk in range(width)] for kj in range(height)] for lk in range(2)]
+		MapRender.tilesPosition = [[[None for sx in range(width)] for y in range(height)] for z in range(2)]
 
 		MapRender.vbo = []
 		MapRender.ebo = []
@@ -86,11 +117,17 @@ class MapRender:
 		MapRender.change = True
 
 	@staticmethod
-	def display():
+	def display(transition):
 		sm.updateLink("texture", "model", MapRender.modelDown.matrix)
 		MapRender.tileSetImage.bind()
-		MapRender.shapeDown.bind()
-		MapRender.shapeDown.draw()
+		MapRender.shapeDown.display()
+		em.EntityManager.display()
+		# print(MapRender.transitionPos.matrix)
+		# sm.updateLink("hud", "model", MapRender.transitionPos.matrix)
+		# MapRender.transitionImage.bind()
+		# MapRender.transitionShape.display()
+		if transition:
+			MapRender.transitionShape.display()
 
 	@staticmethod
 	def dispose():
@@ -98,6 +135,10 @@ class MapRender:
 			MapRender.shapeDown.setEbo(MapRender.ebo)
 			MapRender.shapeDown.setVbo(MapRender.vbo)
 			MapRender.change = False
+
+	@staticmethod
+	def setTransitionPos(pos):
+		MapRender.transitionShape.updateModel(pos)
 
 	@staticmethod
 	def addTile(floor, posX, posY, textName, rotate=1):
@@ -193,7 +234,7 @@ class MapRender:
 		if not vbo == None:
 			MapRender.tilesPosition[layer][MapRender.tHeight - posY - 1][posX] = None
 			for i in range(20):
-				del MapRender.vbo[vbo*20]
+				del MapRender.vbo[vbo * 20]
 			for i in range(6):
 				del MapRender.ebo[len(MapRender.ebo) - 1]
 			MapRender.eboCount -=1
@@ -257,7 +298,6 @@ class MapRender:
 		MapRender.change = True
 		MapRender.dispose()
 
-
 	@staticmethod
 	def reserveNextVbo(layer, posX, posy):
 		posY = MapRender.tHeight - posy - 1
@@ -290,3 +330,5 @@ class MapRender:
 		MapRender.shapeDown.unload()
 		MapRender.shapeUp.unload()
 		MapRender.tileSetImage.unload()
+		MapRender.transitionShape.unload()
+		MapRender.transitionImage.unload()
