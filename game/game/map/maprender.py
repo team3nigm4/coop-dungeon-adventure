@@ -32,13 +32,13 @@ class MapRender:
 	mapValues = [[]]
 	tilesPosition = [[]]
 
-	vbo = []
-	vboCount = 0
-	ebo = []
-	eboCount = 0
-	modelDown = matrix4f.Matrix4f()
+	vbo = [[],[]]
+	vboCount = [0, 0]
+	ebo = [[],[]]
+	eboCount = [0, 0]
+	model = matrix4f.Matrix4f()
 
-	change = False
+	change = [False, False]
 
 	@staticmethod
 	def init():
@@ -61,8 +61,7 @@ class MapRender:
 			for x in range(0, int(MapRender.tileSetImage.width/MapRender.tileSize)):
 				MapRender.tileSet["id"].append([x, y])
 
-    # Render's shapes loading
-  
+		# Render's shapes loading
 		MapRender.shapeUp = shape.Shape("texture", True)
 		MapRender.shapeUp.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
 		MapRender.shapeUp.setReading([3, 2])
@@ -70,8 +69,8 @@ class MapRender:
 		MapRender.shapeDown.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
 		MapRender.shapeDown.setReading([3, 2])
 
-		MapRender.modelDown = matrix4f.Matrix4f(True)
-		sm.updateLink("texture", "model", MapRender.modelDown.matrix)
+		MapRender.model= matrix4f.Matrix4f(True)
+		sm.updateLink("texture", "model", MapRender.model.matrix)
 
 		from game.render.shape import entityrenderer as er
 		MapRender.transitionShape = er.EntityRenderer()
@@ -98,30 +97,40 @@ class MapRender:
 		MapRender.tWidth = width
 		MapRender.tHeight = height
 
-		MapRender.tilesPosition = [[[None for sx in range(width)] for y in range(height)] for z in range(2)]
+		MapRender.tilesPosition = [[[None for sx in range(width)] for y in range(height)] for z in range(8)]
 
-		MapRender.vbo = []
-		MapRender.ebo = []
-		MapRender.eboCount = 0
-		MapRender.vboCount = 0
+		MapRender.vbo = [[],[]]
+		MapRender.ebo = [[],[]]
+		MapRender.eboCount = [0, 0]
+		MapRender.vboCount = [0, 0]
 
-		for floor in range(2):
+		for floor in range(8):
+			if floor < 3:
+				stage = 0
+			else:
+				stage = 1
+
 			for y in range(len(MapRender.mapValues[floor])):
 				for x in range(len(MapRender.mapValues[floor][y])):
 					id = MapRender.mapValues[floor][y][x]
 					if id != 0:
 						pos = MapRender.tileSet["id"][id - 1]
-						MapRender.addTile2(MapRender.vboCount, floor, x, height - y - 1, pos[0], pos[1])
-						MapRender.vboCount += 1
+						MapRender.addTile2(MapRender.vboCount[stage], floor, stage, x, height - y - 1, pos[0], pos[1])
+						MapRender.vboCount[stage] += 1
 
-		MapRender.change = True
+		MapRender.change = [True, True]
 
 	@staticmethod
 	def display(transition):
-		sm.updateLink("texture", "model", MapRender.modelDown.matrix)
+		sm.updateLink("texture", "model", MapRender.model.matrix)
 		MapRender.tileSetImage.bind()
 		MapRender.shapeDown.display()
+
 		em.EntityManager.display()
+
+		sm.updateLink("texture", "model", MapRender.model.matrix)
+		MapRender.tileSetImage.bind()
+		MapRender.shapeUp.display()
 		# print(MapRender.transitionPos.matrix)
 		# sm.updateLink("hud", "model", MapRender.transitionPos.matrix)
 		# MapRender.transitionImage.bind()
@@ -131,10 +140,14 @@ class MapRender:
 
 	@staticmethod
 	def dispose():
-		if MapRender.change:
-			MapRender.shapeDown.setEbo(MapRender.ebo)
-			MapRender.shapeDown.setVbo(MapRender.vbo)
-			MapRender.change = False
+		if MapRender.change[0]:
+			MapRender.shapeDown.setEbo(MapRender.ebo[0])
+			MapRender.shapeDown.setVbo(MapRender.vbo[0])
+			MapRender.change[0] = False
+
+		if MapRender.change[1]:
+			MapRender.shapeUp.setEbo(MapRender.ebo[1])
+			MapRender.shapeUp.setVbo(MapRender.vbo[1])
 
 	@staticmethod
 	def setTransitionPos(pos):
@@ -142,6 +155,11 @@ class MapRender:
 
 	@staticmethod
 	def addTile(floor, posX, posY, textName, rotate=1):
+		if floor < 3:
+			stage = 0
+		else:
+			stage = 1
+
 		vboCount = MapRender.tilesPosition[floor][MapRender.tHeight - posY - 1][posX]
 		if vboCount is None:
 			vboCount = MapRender.reserveNextVbo(floor, posX, posY)
@@ -150,100 +168,110 @@ class MapRender:
 			MapRender.shiftVboIndex(floor, posX, posY)
 
 		pos = MapRender.tileSet["tiles"][textName]
-		MapRender.addTile2(vboCount, floor, posX, posY, pos[0], pos[1], rotate)
-		MapRender.change = True
+		MapRender.addTile2(vboCount, floor, stage, posX, posY, pos[0], pos[1], rotate)
+		MapRender.change[stage] = True
 
 	@staticmethod
-	def addTile2(vboCount, floor, posX, posY, tposX, tposY, rotate=1):
-		eboIndex = MapRender.eboCount * 4
+	def addTile2(vboCount, floor, stage, posX, posY, tposX, tposY, rotate=1):
+		eboIndex = MapRender.eboCount[stage] * 4
 
-		MapRender.ebo.append(eboIndex)
-		MapRender.ebo.append(eboIndex + 1)
-		MapRender.ebo.append(eboIndex + 3)
-		MapRender.ebo.append(eboIndex + 1)
-		MapRender.ebo.append(eboIndex + 2)
-		MapRender.ebo.append(eboIndex + 3)
+		MapRender.ebo[stage].append(eboIndex)
+		MapRender.ebo[stage].append(eboIndex + 1)
+		MapRender.ebo[stage].append(eboIndex + 3)
+		MapRender.ebo[stage].append(eboIndex + 1)
+		MapRender.ebo[stage].append(eboIndex + 2)
+		MapRender.ebo[stage].append(eboIndex + 3)
 
-		MapRender.eboCount +=1
+		MapRender.eboCount[stage] +=1
 
 		MapRender.tilesPosition[floor][MapRender.tHeight - posY - 1][posX] = vboCount	
 
 		if rotate == 0:
-			MapRender.addPos(posX, posY - 1,
+			MapRender.addPos(stage, posX, posY - 1,
 							 tposX, tposY, vboCount)
 
-			MapRender.addPos(posX + 1, posY - 1,
+			MapRender.addPos(stage, posX + 1, posY - 1,
 							 tposX, tposY + 1, vboCount)
 
-			MapRender.addPos(posX + 1, posY,
+			MapRender.addPos(stage, posX + 1, posY,
 							 tposX + 1, tposY + 1, vboCount)
 
-			MapRender.addPos(posX, posY,
+			MapRender.addPos(stage, posX, posY,
 							 tposX + 1, tposY, vboCount)
 		elif rotate == 2:
-			MapRender.addPos(posX, posY - 1,
+			MapRender.addPos(stage, posX, posY - 1,
 							 tposX + 1, tposY + 1, vboCount)
 
-			MapRender.addPos(posX + 1, posY - 1,
+			MapRender.addPos(stage, posX + 1, posY - 1,
 							 tposX + 1, tposY, vboCount)
 
-			MapRender.addPos(posX + 1, posY,
+			MapRender.addPos(stage, posX + 1, posY,
 							 tposX, tposY, vboCount)
 
-			MapRender.addPos(posX, posY,
+			MapRender.addPos(stage, posX, posY,
 							 tposX, tposY + 1, vboCount)
 		elif rotate == 1:
-			MapRender.addPos(posX, posY - 1,
+			MapRender.addPos(stage, posX, posY - 1,
 							 tposX, tposY + 1, vboCount)
 
-			MapRender.addPos(posX + 1, posY - 1,
+			MapRender.addPos(stage, posX + 1, posY - 1,
 							 tposX + 1, tposY + 1, vboCount)
 
-			MapRender.addPos(posX + 1, posY,
+			MapRender.addPos(stage, posX + 1, posY,
 							 tposX + 1, tposY, vboCount)
 
-			MapRender.addPos(posX, posY,
+			MapRender.addPos(stage, posX, posY,
 							 tposX, tposY, vboCount)
 		elif rotate == 3:
-			MapRender.addPos(posX, posY - 1,
+			MapRender.addPos(stage, posX, posY - 1,
 							 tposX + 1, tposY, vboCount)
 
-			MapRender.addPos(posX + 1, posY - 1,
+			MapRender.addPos(stage, posX + 1, posY - 1,
 							 tposX, tposY, vboCount)
 
-			MapRender.addPos(posX + 1, posY,
+			MapRender.addPos(stage, posX + 1, posY,
 							 tposX, tposY + 1, vboCount)
 
-			MapRender.addPos(posX, posY,
+			MapRender.addPos(stage, posX, posY,
 							 tposX + 1, tposY + 1, vboCount)
 
 	@staticmethod
-	def addPos(posX, posY, tposX, tposY, vboPos):
+	def addPos(stage, posX, posY, tposX, tposY, vboPos):
 		vboPos *= 20
 		posY += 1
-		MapRender.vbo.insert(vboPos, float(posX))
-		MapRender.vbo.insert(vboPos + 1, float(posY))
-		MapRender.vbo.insert(vboPos + 2, 0.0)
-		MapRender.vbo.insert(vboPos + 3, round(tposX / MapRender.tileSet["info"]["size"][0], 3))
-		MapRender.vbo.insert(vboPos + 4,
+		MapRender.vbo[stage].insert(vboPos, float(posX))
+		MapRender.vbo[stage].insert(vboPos + 1, float(posY))
+		MapRender.vbo[stage].insert(vboPos + 2, 0.0)
+		MapRender.vbo[stage].insert(vboPos + 3, round(tposX / MapRender.tileSet["info"]["size"][0], 3))
+		MapRender.vbo[stage].insert(vboPos + 4,
 							 MapRender.tileSet["info"]["size"][1] - round(tposY / MapRender.tileSet["info"]["size"][1], 3))
 
 	@staticmethod
-	def deleteTile(layer, posX, posY):
-		vbo = MapRender.tilesPosition[layer][MapRender.tHeight - posY - 1][posX]
-		if not vbo == None:
-			MapRender.tilesPosition[layer][MapRender.tHeight - posY - 1][posX] = None
-			for i in range(20):
-				del MapRender.vbo[vbo * 20]
-			for i in range(6):
-				del MapRender.ebo[len(MapRender.ebo) - 1]
-			MapRender.eboCount -=1
+	def deleteTile(floor, posX, posY):
+		if floor < 3:
+			stage = 0
+		else:
+			stage = 1
 
-			MapRender.change = True
-			MapRender.shiftVboIndex(layer, posX, posY, -1)
+		vbo = MapRender.tilesPosition[floor][MapRender.tHeight - posY - 1][posX]
+		if not vbo == None:
+			MapRender.tilesPosition[floor][MapRender.tHeight - posY - 1][posX] = None
+			for i in range(20):
+				del MapRender.vbo[stage][vbo * 20]
+			for i in range(6):
+				del MapRender.ebo[stage][len(MapRender.ebo) - 1]
+			MapRender.eboCount[stage] -=1
+
+			MapRender.change[stage] = True
+			MapRender.shiftVboIndex(floor, posX, posY, -1)
 
 	@staticmethod
 	def shiftVboIndex(layer, posX, posY, indent=1):
+		if layer < 3:
+			end = 4
+		else:
+			end = 8
+
 		posY = MapRender.tHeight - posY - 1
 		for x in range(posX, len(MapRender.tilesPosition[layer][posY])):
 			if not MapRender.tilesPosition[layer][posY][x] == None:
@@ -254,7 +282,7 @@ class MapRender:
 				if not MapRender.tilesPosition[layer][y][x] == None:
 					MapRender.tilesPosition[layer][y][x] += indent
 
-		for floor in range(layer + 1, len(MapRender.tilesPosition)):
+		for floor in range(layer + 1, end):
 			for y in range(posY, len(MapRender.tilesPosition[floor])):
 				for x in range(len(MapRender.tilesPosition[floor][y])):
 					if not MapRender.tilesPosition[floor][y][x] == None:
@@ -295,11 +323,16 @@ class MapRender:
 
 		cam.goToEntity()
 		sm.dispose()
-		MapRender.change = True
+		MapRender.change = [True, True]
 		MapRender.dispose()
 
 	@staticmethod
 	def reserveNextVbo(layer, posX, posy):
+		if layer < 3:
+			end = 4
+		else:
+			end = 8
+
 		posY = MapRender.tHeight - posy - 1
 		for x in range(posX, len(MapRender.tilesPosition[layer][posY])):
 			if not MapRender.tilesPosition[layer][posY][x] == None:
@@ -314,7 +347,7 @@ class MapRender:
 					MapRender.shiftVboIndex(layer, x, y)
 					return vbo
 
-		for floor in range(layer + 1, len(MapRender.tilesPosition)):
+		for floor in range(layer + 1, end):
 			for y in range(posY, len(MapRender.tilesPosition[floor])):
 				for x in range(len(MapRender.tilesPosition[floor][y])):
 					if not MapRender.tilesPosition[floor][y][x] == None:
