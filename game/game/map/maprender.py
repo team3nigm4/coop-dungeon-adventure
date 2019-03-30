@@ -242,9 +242,9 @@ class MapRender:
 		MapRender.vbo[stage].insert(vboPos, float(posX))
 		MapRender.vbo[stage].insert(vboPos + 1, float(posY))
 		MapRender.vbo[stage].insert(vboPos + 2, 0.0)
-		MapRender.vbo[stage].insert(vboPos + 3, round(tposX / MapRender.tileSet["info"]["size"][0], 3))
+		MapRender.vbo[stage].insert(vboPos + 3, round(tposX / MapRender.tileSet["info"]["size"][0], 4))
 		MapRender.vbo[stage].insert(vboPos + 4,
-							 MapRender.tileSet["info"]["size"][1] - round(tposY / MapRender.tileSet["info"]["size"][1], 3))
+							 MapRender.tileSet["info"]["size"][1] - round(tposY / MapRender.tileSet["info"]["size"][1], 4))
 
 	@staticmethod
 	def deleteTile(floor, posX, posY):
