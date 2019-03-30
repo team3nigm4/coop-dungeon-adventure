@@ -77,7 +77,8 @@ class EntityManager:
 		if not entityId in EntityManager.entitiesCol:
 			EntityManager.entitiesCol.append(entityId)
 		else:
-			Logger.error("EntityManager", "AddToTest() Error, with " + EntityManager.entities[entityId.id].type + " entity adding two same id : " + str(entityId.id))
+			Logger.error("EntityManager", "AddToTest() Error, with " + EntityManager.entities[
+				entityId.id].type + " entity adding two same id : " + str(entityId.id))
 
 	@staticmethod
 	def addWithId(entity):
@@ -99,7 +100,7 @@ class EntityManager:
 	@staticmethod
 	def checkId():
 		for e in range(3, EntityManager.len):
-			idM =  EntityManager.entities[e-1].entityId.id
+			idM = EntityManager.entities[e - 1].entityId.id
 			if EntityManager.entities[e].entityId.id - idM > 1:
 				EntityManager.entities[e].entityId.id = idM + 1
 
@@ -107,7 +108,8 @@ class EntityManager:
 	def clear():
 		EntityManager.entities = EntityManager.entities[:2]
 		EntityManager.entitiesCol = [EntityManager.entities[0].entityId, EntityManager.entities[1].entityId]
-		EntityManager.displayLayer = [[], [], [EntityManager.entities[0].entityId, EntityManager.entities[1].entityId], []]
+		EntityManager.displayLayer = [[], [], [EntityManager.entities[0].entityId, EntityManager.entities[1].entityId],
+									  []]
 
 		EntityManager.len = len(EntityManager.entities)
 
@@ -224,13 +226,14 @@ class EntityManager:
 		if entityId in EntityManager.entitiesCol:
 			EntityManager.entitiesCol.remove(entityId)
 		else:
-			Logger.error("EntityManager", "RemoveToTest() Error " + EntityManager.entities[entityId.id].type + " entity want to be remove from entityCol, id : " + str(entityId.id))
+			Logger.error("EntityManager", "RemoveToTest() Error " + EntityManager.entities[
+				entityId.id].type + " entity want to be remove from entityCol, id : " + str(entityId.id))
 
 	@staticmethod
 	def status():
 		Logger.info("EntityManager", "\n status with len(" + str(EntityManager.len) + ") :\n")
 		for e in EntityManager.entities:
-			Logger.info("EntityManager","Entity" + str(e.entityId.id) + ", entityType" + e.type)
+			Logger.info("EntityManager", "Entity" + str(e.entityId.id) + ", entityType" + e.type)
 
 	@staticmethod
 	def setEntities(entities):

@@ -9,7 +9,7 @@ from game.game.entityclass import entitymanager as em
 
 class MapRender:
 	GROUND = 0
-	GROUND2 = 1 
+	GROUND2 = 1
 	BASE_WALL = 2
 	BASE_WALL2 = 3
 	HIGH_WALL = 4
@@ -17,8 +17,10 @@ class MapRender:
 	SUPP = 6
 	SUPP2 = 7
 
-	tileSetImage = None
-	tileSet = None
+	tileSetImages = {}
+	tileSets = {}
+	currentTileSet = "tuto"
+
 	transitionImage = None
 	transitionPos = matrix4f.Matrix4f()
 	transitionShape = None
@@ -32,9 +34,9 @@ class MapRender:
 	mapValues = [[]]
 	tilesPosition = [[]]
 
-	vbo = [[],[]]
+	vbo = [[], []]
 	vboCount = [0, 0]
-	ebo = [[],[]]
+	ebo = [[], []]
 	eboCount = [0, 0]
 	model = matrix4f.Matrix4f()
 
@@ -43,23 +45,11 @@ class MapRender:
 	@staticmethod
 	def init():
 		# Images and json loading
-		path_tileSetImage = "/tiles/tileset.png"
-		path_tileSet = "game/resources/textures/tiles/tileset.json"
+		MapRender.loadTileSets()
+
 		path_transitionImage = "/hud/transition.png"
-
-		MapRender.tileSet = json.load(open(path_tileSet))
-
-		MapRender.tileSetImage = texture.Texture(path_tileSetImage)
-		MapRender.tileSetImage.load()
 		MapRender.transitionImage = texture.Texture(path_transitionImage)
 		MapRender.transitionImage.load()
-
-		MapRender.tileSize = MapRender.tileSet["info"]["tilesize"]
-		MapRender.tileSet["info"]["size"] = [int(MapRender.tileSetImage.width/MapRender.tileSize), int(MapRender.tileSetImage.height/MapRender.tileSize)]
-		MapRender.tileSet["id"] = []
-		for y in range(0, int(MapRender.tileSetImage.height/MapRender.tileSize)):
-			for x in range(0, int(MapRender.tileSetImage.width/MapRender.tileSize)):
-				MapRender.tileSet["id"].append([x, y])
 
 		# Render's shapes loading
 		MapRender.shapeUp = shape.Shape("texture", True)
@@ -69,26 +59,50 @@ class MapRender:
 		MapRender.shapeDown.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
 		MapRender.shapeDown.setReading([3, 2])
 
-		MapRender.model= matrix4f.Matrix4f(True)
+		MapRender.model = matrix4f.Matrix4f(True)
 		sm.updateLink("texture", "model", MapRender.model.matrix)
 
 		from game.render.shape import entityrenderer as er
 		MapRender.transitionShape = er.EntityRenderer()
-		MapRender.transitionShape.setImagePath([18, 12], path_transitionImage, [0,0])
+		MapRender.transitionShape.setImagePath([18, 12], path_transitionImage, [0, 0])
 
-		# MapRender.transitionPos = matrix4f.Matrix4f(True)
-		# MapRender.transitionShape = shape.Shape("hud", True)
-		# MapRender.transitionShape.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
-		# quad = [0, 0, 0.0, 			0.0, 0.0, 	1.0,
-		# 		18.0, 0, 0.0, 		1.0, 0.0, 	1.0,
-		# 		18.0, 12.0, 0.0, 	1.0, 1.0, 	1.0,
-		# 		0, 12.0, 0.0, 		0.0, 1.0,  	1.0]
-		# indices = [0, 1, 2,		2, 3, 0]
-		# MapRender.transitionShape.setEbo(indices)
-		# MapRender.transitionShape.setVbo(quad)
-		# MapRender.transitionShape.setReading([3, 2, 1])
-		# MapRender.transitionPos.matrix[3][0] = -9
-		# MapRender.transitionPos.matrix[3][1] = -6
+	# MapRender.transitionPos = matrix4f.Matrix4f(True)
+	# MapRender.transitionShape = shape.Shape("hud", True)
+	# MapRender.transitionShape.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
+	# quad = [0, 0, 0.0, 			0.0, 0.0, 	1.0,
+	# 		18.0, 0, 0.0, 		1.0, 0.0, 	1.0,
+	# 		18.0, 12.0, 0.0, 	1.0, 1.0, 	1.0,
+	# 		0, 12.0, 0.0, 		0.0, 1.0,  	1.0]
+	# indices = [0, 1, 2,		2, 3, 0]
+	# MapRender.transitionShape.setEbo(indices)
+	# MapRender.transitionShape.setVbo(quad)
+	# MapRender.transitionShape.setReading([3, 2, 1])
+	# MapRender.transitionPos.matrix[3][0] = -9
+	# MapRender.transitionPos.matrix[3][1] = -6
+
+	@staticmethod
+	def loadTileSets():
+		# Load json tileset files
+		MapRender.tileSets = {
+			"outside": json.load(open("game/resources/textures/tiles/outside.json")),
+			"tuto": json.load(open("game/resources/textures/tiles/tuto.json"))
+		}
+
+		MapRender.tileSetImages = {
+			"outside": texture.Texture("/tiles/outside.png"),
+			"tuto": texture.Texture("/tiles/tuto.png")
+		}
+
+		for tileset in MapRender.tileSets:
+			MapRender.tileSetImages[tileset].load()
+			MapRender.tileSize = MapRender.tileSets[tileset]["info"]["tilesize"]
+			MapRender.tileSets[tileset]["info"]["size"] = [int(MapRender.tileSetImages[tileset].width / MapRender.tileSize),
+														   int(MapRender.tileSetImages[tileset].height / MapRender.tileSize)]
+			MapRender.tileSets[tileset]["id"] = []
+			for y in range(0, int(MapRender.tileSetImages[tileset].height / MapRender.tileSize)):
+				for x in range(0, int(MapRender.tileSetImages[tileset].width / MapRender.tileSize)):
+					MapRender.tileSets[tileset]["id"].append([x, y])
+
 
 	@staticmethod
 	def constructMap():
@@ -99,8 +113,8 @@ class MapRender:
 
 		MapRender.tilesPosition = [[[None for sx in range(width)] for y in range(height)] for z in range(8)]
 
-		MapRender.vbo = [[],[]]
-		MapRender.ebo = [[],[]]
+		MapRender.vbo = [[], []]
+		MapRender.ebo = [[], []]
 		MapRender.eboCount = [0, 0]
 		MapRender.vboCount = [0, 0]
 
@@ -114,7 +128,7 @@ class MapRender:
 				for x in range(len(MapRender.mapValues[floor][y])):
 					id = MapRender.mapValues[floor][y][x]
 					if id != 0:
-						pos = MapRender.tileSet["id"][id - 1]
+						pos = MapRender.tileSets[MapRender.currentTileSet]["id"][id - 1]
 						MapRender.addTile2(MapRender.vboCount[stage], floor, stage, x, height - y - 1, pos[0], pos[1])
 						MapRender.vboCount[stage] += 1
 
@@ -123,13 +137,13 @@ class MapRender:
 	@staticmethod
 	def display(transition):
 		sm.updateLink("texture", "model", MapRender.model.matrix)
-		MapRender.tileSetImage.bind()
+		MapRender.tileSetImages[MapRender.currentTileSet].bind()
 		MapRender.shapeDown.display()
 
 		em.EntityManager.display()
 
 		sm.updateLink("texture", "model", MapRender.model.matrix)
-		MapRender.tileSetImage.bind()
+		MapRender.tileSetImages[MapRender.currentTileSet].bind()
 		MapRender.shapeUp.display()
 		# print(MapRender.transitionPos.matrix)
 		# sm.updateLink("hud", "model", MapRender.transitionPos.matrix)
@@ -163,11 +177,11 @@ class MapRender:
 		vboCount = MapRender.tilesPosition[floor][MapRender.tHeight - posY - 1][posX]
 		if vboCount is None:
 			vboCount = MapRender.reserveNextVbo(floor, posX, posY)
-		else: 
+		else:
 			MapRender.deleteTile(floor, posX, posY)
 			MapRender.shiftVboIndex(floor, posX, posY)
 
-		pos = MapRender.tileSet["tiles"][textName]
+		pos = MapRender.tileSets[MapRender.currentTileSet]["tiles"][textName]
 		MapRender.addTile2(vboCount, floor, stage, posX, posY, pos[0], pos[1], rotate)
 		MapRender.change[stage] = True
 
@@ -182,9 +196,9 @@ class MapRender:
 		MapRender.ebo[stage].append(eboIndex + 2)
 		MapRender.ebo[stage].append(eboIndex + 3)
 
-		MapRender.eboCount[stage] +=1
+		MapRender.eboCount[stage] += 1
 
-		MapRender.tilesPosition[floor][MapRender.tHeight - posY - 1][posX] = vboCount	
+		MapRender.tilesPosition[floor][MapRender.tHeight - posY - 1][posX] = vboCount
 
 		if rotate == 0:
 			MapRender.addPos(stage, posX, posY - 1,
@@ -242,9 +256,11 @@ class MapRender:
 		MapRender.vbo[stage].insert(vboPos, float(posX))
 		MapRender.vbo[stage].insert(vboPos + 1, float(posY))
 		MapRender.vbo[stage].insert(vboPos + 2, 0.0)
-		MapRender.vbo[stage].insert(vboPos + 3, round(tposX / MapRender.tileSet["info"]["size"][0], 4))
+		MapRender.vbo[stage].insert(vboPos + 3,
+									round(tposX / MapRender.tileSets[MapRender.currentTileSet]["info"]["size"][0], 4))
 		MapRender.vbo[stage].insert(vboPos + 4,
-							 MapRender.tileSet["info"]["size"][1] - round(tposY / MapRender.tileSet["info"]["size"][1], 4))
+									MapRender.tileSets[MapRender.currentTileSet]["info"]["size"][1] -
+									round(tposY / MapRender.tileSets[MapRender.currentTileSet]["info"]["size"][1], 4))
 
 	@staticmethod
 	def deleteTile(floor, posX, posY):
@@ -260,7 +276,7 @@ class MapRender:
 				del MapRender.vbo[stage][vbo * 20]
 			for i in range(6):
 				del MapRender.ebo[stage][len(MapRender.ebo) - 1]
-			MapRender.eboCount[stage] -=1
+			MapRender.eboCount[stage] -= 1
 
 			MapRender.change[stage] = True
 			MapRender.shiftVboIndex(floor, posX, posY, -1)
@@ -289,13 +305,14 @@ class MapRender:
 						MapRender.tilesPosition[floor][y][x] += indent
 
 	@staticmethod
-	def setMapValues(vbo, ebo, mapValue, tilesPositon, vboCount, eboCount):
+	def setMapValues(vbo, ebo, mapValue, tilesPositon, vboCount, eboCount, tileSet):
 		MapRender.mapValues = mapValue
 		MapRender.tilesPosition = tilesPositon
 		MapRender.vbo = vbo
 		MapRender.ebo = ebo
-		MapRender.vboCount  = vboCount
+		MapRender.vboCount = vboCount
 		MapRender.eboCount = eboCount
+		MapRender.currentTileSet = tileSet
 
 		MapRender.tWidth = len(MapRender.mapValues[0][0])
 		MapRender.tHeight = len(MapRender.mapValues[0])
@@ -355,13 +372,14 @@ class MapRender:
 						MapRender.shiftVboIndex(floor, x, y)
 						return vbo
 
-		MapRender.vboCount +=1
+		MapRender.vboCount += 1
 		return MapRender.vboCount
 
 	@staticmethod
 	def unload():
 		MapRender.shapeDown.unload()
 		MapRender.shapeUp.unload()
-		MapRender.tileSetImage.unload()
+		for tileset in MapRender.tileSetImages:
+			MapRender.tileSetImages[tileset].unload()
 		MapRender.transitionShape.unload()
 		MapRender.transitionImage.unload()
