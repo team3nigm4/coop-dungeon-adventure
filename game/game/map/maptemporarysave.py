@@ -12,6 +12,7 @@ class MapTemporarySave:
 	DATA_ENTRIES = 2
 	DATA_ENTITIES = 3
 	DATA_MAP_DISPLAY = 4
+	DATA_TILESET = 5
 
 	zone = "Null"
 	mapNumbers = 0
@@ -36,6 +37,7 @@ class MapTemporarySave:
 	defaultEntry_instances = {}
 
 	# Map Render
+	currentTileSet_instances = {}
 	mapValues_instances = {}
 	tilesPosition_instances = {}
 	vbo_instances = {}
@@ -74,6 +76,7 @@ class MapTemporarySave:
 				mts.defaultEntry_instances[name] = 0
 
 				# Map Render
+				mts.currentTileSet_instances[name] = "tuto"
 				mts.mapValues_instances[name] = []
 				mts.tilesPosition_instances[name] = []
 				mts.vbo_instances[name] = []
@@ -97,12 +100,13 @@ class MapTemporarySave:
 		if not mts.oldMap == "Null" and not reset:
 			MapTemporarySave.saveValue(mts.oldMap)
 
+		# Load the current Map
 		if not mts.mapsLoad[map]:
 
 			# Init the values of map
 			mts.mapsLoad[map] = True
 
-			values = ml.loadMap(mts.zone, map, entry)
+			values = ml.loadMap(mts.zone, map)
 
 			ev.setupEvent(values[MapTemporarySave.DATA_MAP_INFO][1])
 
@@ -118,6 +122,8 @@ class MapTemporarySave:
 										  mts.entryPos_instances[map][str(mts.defaultEntry_instances[map])])
 
 			mr.mapValues = values[MapTemporarySave.DATA_MAP_DISPLAY]
+			mr.currentTileSet = values[MapTemporarySave.DATA_TILESET]
+			mts.currentTileSet_instances[map] = values[MapTemporarySave.DATA_TILESET]
 			mr.constructMap()
 			for i in range(0, len(values[MapTemporarySave.DATA_ENTITIES])):
 				args = values[MapTemporarySave.DATA_ENTITIES][i][1]
@@ -137,7 +143,8 @@ class MapTemporarySave:
 									  mts.entryPos_instances[map][str(entry)])
 
 		mr.setMapValues(mts.vbo_instances[map], mts.ebo_instances[map], mts.mapValues_instances[map],
-						mts.tilesPosition_instances[map], mts.vboCount_instances[map], mts.eboCount_instances[map])
+						mts.tilesPosition_instances[map], mts.vboCount_instances[map], mts.eboCount_instances[map],
+						mts.currentTileSet_instances[map])
 
 		ev.event = mts.event_instances[map]
 		ev.toActive = mts.toActive_instances[map]
@@ -161,6 +168,7 @@ class MapTemporarySave:
 		mts.interaction_instances[map] = mam.MapManager.interaction
 
 			# Map render
+		mts.currentTileSet_instances[map] = mr.currentTileSet
 		mts.vbo_instances[map] = mr.vbo
 		mts.ebo_instances[map] = mr.ebo
 		mts.mapValues_instances[map] = mr.mapValues

@@ -5,7 +5,7 @@ import os, json
 class MapLoading:
 
 	@staticmethod
-	def loadMap(zone, name, entry):
+	def loadMap(zone, name):
 		path = "game/resources/map/" + zone + "/" + name + ".json"
 
 		try:
@@ -20,6 +20,8 @@ class MapLoading:
 			returnValues.append(getValues["entities"][0])
 
 			returnValues.append(getValues["layers"])
+
+			returnValues.append(getValues["map"]["tileset"])
 
 			return returnValues
 		except json.decoder.JSONDecodeError:

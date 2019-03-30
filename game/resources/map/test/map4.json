@@ -2,7 +2,8 @@
     "map": {
         "zone": "test",
         "id": "map4",
-        "events": "1"
+        "events": "1",
+        "tileset" : "outside"
     },
     "layers": [
         [

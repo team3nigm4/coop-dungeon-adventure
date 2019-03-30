@@ -2,7 +2,8 @@
     "map": {
         "zone": "tuto",
         "id": "0-3-0",
-        "events": "1"
+        "events": "1",
+        "tileset" : "tuto"
     },
     "layers": [
         [
