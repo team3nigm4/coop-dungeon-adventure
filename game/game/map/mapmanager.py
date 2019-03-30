@@ -211,13 +211,13 @@ class MapManager:
 					# Collision Test
 					if math.floor(e.pos[0] * MapManager.COEF - e.halfColSize[0] * MapManager.COEF) <= position[
 						0] <= math.floor(
-							e.pos[0] * MapManager.COEF + e.halfColSize[0] * MapManager.COEF) and \
+						e.pos[0] * MapManager.COEF + e.halfColSize[0] * MapManager.COEF) and \
 							math.floor(e.pos[1] * MapManager.COEF - e.halfColSize[1] * MapManager.COEF) <= position[
 						1] <= math.floor(
 						e.pos[1] * MapManager.COEF + e.halfColSize[1] * MapManager.COEF):
 
 						if not e.type == "Player":
-							em.EntityManager.remove(e.id)
+							em.EntityManager.remove(e.entityId.id)
 						else:
 							e.applyDamage(1)
 							e.setPos(MapManager.entryPos)

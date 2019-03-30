@@ -16,7 +16,7 @@ class Player(entitycomplex.EntityComplex):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox([0.55, 0.55])
+		self.setColBox([0.49, 0.49])
 		self.setCollision(True)
 		self.playerNumber = args[Player.ARGS_PLAYER_NUMBER]
 
@@ -39,7 +39,7 @@ class Player(entitycomplex.EntityComplex):
 		self.setDrawCol(True)
 		self.colRenderer.setAttributes(self.colSize, [1, 1, 0, 0.5])
 
-		self.entityRenderer.setImagePath([0.9, 1.4], args[Player.ARGS_PLAYER_TEXTURE], [0.43, 0.27])
+		self.entityRenderer.setImagePath([0.75, 1.4], args[Player.ARGS_PLAYER_TEXTURE], [0.36, 0.25])
 		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)
 
 	def useItem(self, input):

@@ -2,6 +2,7 @@
 from game.game.map.maprender import MapRender
 import os, json
 
+
 class MapLoading:
 
 	@staticmethod
@@ -30,10 +31,10 @@ class MapLoading:
 
 	@staticmethod
 	def isMap(zone, map, entry):
-		path = "game/resources/map/" + zone + "/" + map +".json"
+		path = "game/resources/map/" + zone + "/" + map + ".json"
 		state = os.path.isfile(path)
 		if not state:
-			print("(MapLoading): the map :", map," in zone:", zone, "doesn't exists")
+			print("(MapLoading): the map :", map, " in zone:", zone, "doesn't exists")
 			return False
 		else:
 			value = json.load(open(path))

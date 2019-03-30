@@ -82,27 +82,24 @@ class MapRender:
 
 	@staticmethod
 	def loadTileSets():
+		# List of tileset
+		list = json.load(open("game/resources/textures/tiles/list.json")).copy()
+		list = list["tilesets"]
+
 		# Load json tileset files
-		MapRender.tileSets = {
-			"outside": json.load(open("game/resources/textures/tiles/outside.json")),
-			"tuto": json.load(open("game/resources/textures/tiles/tuto.json"))
-		}
-
-		MapRender.tileSetImages = {
-			"outside": texture.Texture("/tiles/outside.png"),
-			"tuto": texture.Texture("/tiles/tuto.png")
-		}
-
-		for tileset in MapRender.tileSets:
+		for tileset in list:
+			MapRender.tileSetImages.update({tileset: texture.Texture("/tiles/" + tileset + ".png")})
 			MapRender.tileSetImages[tileset].load()
+
+			MapRender.tileSets.update({tileset: json.load(open("game/resources/textures/tiles/" + tileset + ".json"))})
 			MapRender.tileSize = MapRender.tileSets[tileset]["info"]["tilesize"]
-			MapRender.tileSets[tileset]["info"]["size"] = [int(MapRender.tileSetImages[tileset].width / MapRender.tileSize),
-														   int(MapRender.tileSetImages[tileset].height / MapRender.tileSize)]
+			MapRender.tileSets[tileset]["info"]["size"] = [
+				int(MapRender.tileSetImages[tileset].width / MapRender.tileSize),
+				int(MapRender.tileSetImages[tileset].height / MapRender.tileSize)]
 			MapRender.tileSets[tileset]["id"] = []
 			for y in range(0, int(MapRender.tileSetImages[tileset].height / MapRender.tileSize)):
 				for x in range(0, int(MapRender.tileSetImages[tileset].width / MapRender.tileSize)):
 					MapRender.tileSets[tileset]["id"].append([x, y])
-
 
 	@staticmethod
 	def constructMap():
