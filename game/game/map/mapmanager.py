@@ -186,7 +186,7 @@ class MapManager:
 		MapManager.changeValues = ["null", "map0", 0]
 
 		# Force to load the first map with transition
-		MapManager.reserveChange("test", "map2", 0)
+		MapManager.reserveChange("test", "map4", 0)
 		MapManager.checkChangeMap()
 		MapManager.transitionPhase = 1
 		MapManager.update()
