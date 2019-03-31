@@ -1,0 +1,28 @@
+{
+  "reloading": {
+	"view": "camView"
+  },
+  "shaders": {
+	"box": {
+	  "files": [
+		"boxVert.glsl",
+		"boxFrag.glsl"
+	  ],
+	  "mode" : ["camView"]
+	},
+	"texture": {
+	  "files": [
+		"texVert.glsl",
+		"texFrag.glsl"
+	  ],
+	  "mode" : ["camView"]
+	},
+	"hud": {
+	  "files": [
+		"texHudVert.glsl",
+		"texHudFrag.glsl"
+	  ],
+	  "mode" : ["static"]
+	}
+  }
+}
