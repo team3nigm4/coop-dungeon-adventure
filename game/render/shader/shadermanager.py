@@ -4,6 +4,7 @@ from game.render.shader import gluniforms as glU
 from game.render.shader import shader
 from game.screen import gamemanager as gm
 from game.util import matrix4f
+import json
 
 
 class ShaderManager:
@@ -15,27 +16,35 @@ class ShaderManager:
 
 	@staticmethod
 	def init():
-		ShaderManager.shaders["box"] = shader.Shader("boxVert.glsl", "boxFrag.glsl")
-		ShaderManager.shaders["texture"] = shader.Shader("texVert.glsl", "texFrag.glsl")
-		ShaderManager.shaders["hud"] = shader.Shader("texHudVert.glsl", "texHudFrag.glsl")
+		# Load the characteristics files
+		info = json.load(open("game/resources/shader/shaders.json"))
 
-		for e in ShaderManager.shaders:
-			ShaderManager.shaders[e].load()
-			ShaderManager.shaders[e].use()
-			ShaderManager.shaders[e].addLink("projection")
-			glU.glUniformv(ShaderManager.shaders[e], "projection", gm.GameManager.cam.getProjection())
+		for e in info["reloading"]:
+			attribute = info["reloading"][e]
 
-			ShaderManager.shaders[e].addLink("view")
-			ShaderManager.shaders[e].addLink("model")
+			if attribute == "camView":
+				ShaderManager.addReloading(e, gm.GameManager.cam.getView())
 
-		ShaderManager.addReloading("view", gm.GameManager.cam.getView())
+		# Load each shader registered
+		for shad in info["shaders"]:
+			infos = info["shaders"][shad].copy()
 
-		ShaderManager.addToReload("view", "texture")
-		ShaderManager.addToReload("view", "box")
+			ShaderManager.shaders[shad] = shader.Shader(infos["files"][0],
+														infos["files"][1])
+			ShaderManager.shaders[shad].load()
+			ShaderManager.shaders[shad].use()
+			ShaderManager.shaders[shad].addLink("projection")
+			glU.glUniformv(ShaderManager.shaders[shad], "projection", gm.GameManager.cam.getProjection())
+			ShaderManager.shaders[shad].addLink("view")
+			ShaderManager.shaders[shad].addLink("model")
 
-		matrix = matrix4f.Matrix4f(True)
-		matrix.matrix[3][2] = -8.572
-		glU.glUniformv(ShaderManager.shaders["hud"], "view", matrix.matrix)
+			for reload in infos["mode"]:
+				if reload == "camView":
+					ShaderManager.addToReload("view", shad)
+				elif reload == "static":
+					matrix = matrix4f.Matrix4f(True)
+					matrix.matrix[3][2] = -8.572
+					glU.glUniformv(ShaderManager.shaders["hud"], "view", matrix.matrix)
 
 		ShaderManager.dispose()
 

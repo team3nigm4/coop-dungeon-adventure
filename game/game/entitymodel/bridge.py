@@ -124,7 +124,6 @@ class Bridge(entitycollision.EntityCollision):
 			self.counters.append([0, self.pos[1], 0])
 
 		self.state = True
-		self.setDrawCol(True)
 		self.colRenderer.updateModel(self.valueRender)
 
 	def deactivate(self):
@@ -134,5 +133,4 @@ class Bridge(entitycollision.EntityCollision):
 			self.counters.append([0, self.pos[1], 2])
 
 		self.state = False
-		self.setDrawCol(False)
 		self.colRenderer.updateModel(self.valueRender)

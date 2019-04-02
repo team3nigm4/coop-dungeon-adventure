@@ -133,10 +133,11 @@ class MapTemporarySave:
 			ev.endInit()
 			#
 			MapTemporarySave.saveValue(map)
-			loadentity.LoadEntity.setReset(False)     
+			loadentity.LoadEntity.setReset(False)
 
 		# Apply all data to managers
-		em.EntityManager.setValues(mts.entities_instances[map], mts.entitiesCol_instances[map], mts.displayLayer_instances[map])
+		em.EntityManager.setValues(mts.entities_instances[map], mts.entitiesCol_instances[map],
+								   mts.displayLayer_instances[map])
 
 		mam.MapManager.setupMapValues(mts.interaction_instances[map],
 									  mts.defaultEntry_instances[map],
@@ -155,19 +156,19 @@ class MapTemporarySave:
 	def saveValue(map):
 		mts = MapTemporarySave
 		# Save values
-			# Entity manager
+		# Entity manager
 		mts.entities_instances[map] = em.EntityManager.entities
 		mts.entitiesCol_instances[map] = em.EntityManager.entitiesCol
 		mts.displayLayer_instances[map] = em.EntityManager.displayLayer
 
-			# Event manager
+		# Event manager
 		mts.event_instances[map] = ev.event
 		mts.toActive_instances[map] = ev.toActive
 
-			# Map manager
+		# Map manager
 		mts.interaction_instances[map] = mam.MapManager.interaction
 
-			# Map render
+		# Map render
 		mts.currentTileSet_instances[map] = mr.currentTileSet
 		mts.vbo_instances[map] = mr.vbo
 		mts.ebo_instances[map] = mr.ebo
