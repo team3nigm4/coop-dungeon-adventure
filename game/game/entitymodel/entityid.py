@@ -3,10 +3,10 @@ class EntityId:
 		self.defaultId()
 		
 	def setId(self, newId):
-		if id >= 0:
+		if newId >= 0:
 			self.id = newId
 
-	def defaultId():
+	def defaultId(self):
 		self.id = -1
 
 	def getId(self):

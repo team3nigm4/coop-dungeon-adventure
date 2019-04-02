@@ -1,7 +1,5 @@
 # Entity class player, embodies one of the players
 
-import math
-
 from game.game.entityclass import entitycomplex
 
 class Arrow(entitycomplex.EntityComplex):
@@ -30,7 +28,7 @@ class Arrow(entitycomplex.EntityComplex):
 
 		self.setCollision(True)
 
-		self.entityRenderer.setImagePath([1, 1], "items/arrow.png", [0.5, 0.5])
+		self.entityRenderer.setImage([1, 1], "arrow", [0.5, 0.5])
 		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)
 
 		self.setDrawCol(True)

@@ -203,7 +203,6 @@ class MapManager:
 
 		# Check if entity with collision in the change
 		if id == MapManager.INTERACTION_SOLID and MapManager.collideTest:
-			em.EntityManager.status()
 			for i in em.EntityManager.entitiesCol:
 
 				if not em.EntityManager.entities[i.id].attributes["collision"] == 0:

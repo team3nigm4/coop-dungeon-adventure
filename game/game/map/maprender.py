@@ -1,11 +1,10 @@
 import json
 
 from game.render.shape import shape
-from game.render.texture import texture
 from game.util import matrix4f
 from game.render.shader.shadermanager import ShaderManager as sm
 from game.game.entityclass import entitymanager as em
-
+from game.render.texture.texturemanager import TextureManager as tm
 
 class MapRender:
 	GROUND = 0
@@ -17,7 +16,6 @@ class MapRender:
 	SUPP = 6
 	SUPP2 = 7
 
-	tileSetImages = {}
 	tileSets = {}
 	currentTileSet = "tuto"
 
@@ -32,7 +30,7 @@ class MapRender:
 	shapeDown = None
 
 	mapValues = [[]]
-	tilesPosition = [[]]
+	tilesPosition = [[[]]]
 
 	vbo = [[], []]
 	vboCount = [0, 0]
@@ -47,10 +45,6 @@ class MapRender:
 		# Images and json loading
 		MapRender.loadTileSets()
 
-		path_transitionImage = "/hud/transition.png"
-		MapRender.transitionImage = texture.Texture(path_transitionImage)
-		MapRender.transitionImage.load()
-
 		# Render's shapes loading
 		MapRender.shapeUp = shape.Shape("texture", True)
 		MapRender.shapeUp.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
@@ -64,7 +58,7 @@ class MapRender:
 
 		from game.render.shape import entityrenderer as er
 		MapRender.transitionShape = er.EntityRenderer()
-		MapRender.transitionShape.setImagePath([18, 12], path_transitionImage, [0, 0])
+		MapRender.transitionShape.setImage([18, 12], "transition", [0, 0])
 
 	# MapRender.transitionPos = matrix4f.Matrix4f(True)
 	# MapRender.transitionShape = shape.Shape("hud", True)
@@ -88,17 +82,15 @@ class MapRender:
 
 		# Load json tileset files
 		for tileset in list:
-			MapRender.tileSetImages.update({tileset: texture.Texture("/tiles/" + tileset + ".png")})
-			MapRender.tileSetImages[tileset].load()
-
+			curTileSet = tm.textures[tileset]
 			MapRender.tileSets.update({tileset: json.load(open("game/resources/textures/tiles/" + tileset + ".json"))})
 			MapRender.tileSize = MapRender.tileSets[tileset]["info"]["tilesize"]
 			MapRender.tileSets[tileset]["info"]["size"] = [
-				int(MapRender.tileSetImages[tileset].width / MapRender.tileSize),
-				int(MapRender.tileSetImages[tileset].height / MapRender.tileSize)]
+				int(curTileSet.width / MapRender.tileSize),
+				int(curTileSet.height / MapRender.tileSize)]
 			MapRender.tileSets[tileset]["id"] = []
-			for y in range(0, int(MapRender.tileSetImages[tileset].height / MapRender.tileSize)):
-				for x in range(0, int(MapRender.tileSetImages[tileset].width / MapRender.tileSize)):
+			for y in range(0, int(curTileSet.height / MapRender.tileSize)):
+				for x in range(0, int(curTileSet.width / MapRender.tileSize)):
 					MapRender.tileSets[tileset]["id"].append([x, y])
 
 	@staticmethod
@@ -134,13 +126,13 @@ class MapRender:
 	@staticmethod
 	def display(transition):
 		sm.updateLink("texture", "model", MapRender.model.matrix)
-		MapRender.tileSetImages[MapRender.currentTileSet].bind()
+		tm.bind(MapRender.currentTileSet)
 		MapRender.shapeDown.display()
 
 		em.EntityManager.display()
 
 		sm.updateLink("texture", "model", MapRender.model.matrix)
-		MapRender.tileSetImages[MapRender.currentTileSet].bind()
+		tm.bind(MapRender.currentTileSet)
 		MapRender.shapeUp.display()
 		# print(MapRender.transitionPos.matrix)
 		# sm.updateLink("hud", "model", MapRender.transitionPos.matrix)
@@ -376,7 +368,4 @@ class MapRender:
 	def unload():
 		MapRender.shapeDown.unload()
 		MapRender.shapeUp.unload()
-		for tileset in MapRender.tileSetImages:
-			MapRender.tileSetImages[tileset].unload()
 		MapRender.transitionShape.unload()
-		MapRender.transitionImage.unload()

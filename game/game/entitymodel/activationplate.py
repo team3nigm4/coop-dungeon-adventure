@@ -2,15 +2,14 @@
 
 from game.game.entitymodel import pressureplate
 
-from PIL import Image as img
 
 class ActivationPlate(pressureplate.PressurePlate):
 	ARGS_EVENT_ID = 3
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.images = [img.open("game/resources/textures/blocks/activation-plate-release.png"),
-					img.open("game/resources/textures/blocks/activation-plate-press.png")]
+		self.images = ["activation-mark-release",
+					"activation-mark-press"]
 
 		self.entityRenderer.setImage([1, 1], self.images[0], [0.5, 0.5])
 

@@ -35,7 +35,6 @@ class EntityDrawable(entitycollision.EntityCollision):
 			print("Error : want to set an invalid display layer (" + str(layer) + ") to", self.type, "with id", str(id))
 
 	def chargeToEntityManager(self):
-		super().chargeToEntityManager()
 		layer = self.displayLayer
 		self.displayLayer = -1
 		self.setDisplayLayer(layer)

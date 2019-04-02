@@ -13,7 +13,7 @@ class Logger:
 	def success(header, text): print('[' + '\033[92m' + header  + '\033[0m' + '] ' + text)
 
 	@staticmethod
-	def warning(header, text): print('[' + '\033[33m' + header  + '\033[0m' + '] ' + text)
+	def warning(header, text): print('[' + '\033[9 3m' + header  + '\033[0m' + '] ' + text)
 
 	@staticmethod
 	def error(header, text): print('[' + '\033[91m' + header  + '\033[0m' + '] ' + text)

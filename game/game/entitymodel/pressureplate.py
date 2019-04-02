@@ -2,15 +2,13 @@
 
 from game.game.entitymodel import toggleplate
 
-from PIL import Image as img
-
 
 class PressurePlate(toggleplate.TogglePlate):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.images = [img.open("game/resources/textures/blocks/pressure-plate-released.png"),
-					img.open("game/resources/textures/blocks/pressure-plate-press.png")]
+		self.images = ["pressure-plate-release",
+					"pressure-plate-press"]
 
 		self.entityRenderer.setImage([1, 1], self.images[0], [0.5, 0.5])
 		self.alwaysPressed = False

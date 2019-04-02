@@ -1,6 +1,6 @@
 # Contains game's managers (and camera), asks functions update (server/client) and display(client)
 
-from game.render.texture import texturemanager as textureManager
+from game.render.texture.texturemanager import TextureManager as tm
 from game.screen import camera
 from game.inputs.inputmanager import InputManager as im
 from game.render.shader.shadermanager import ShaderManager as sm
@@ -29,11 +29,9 @@ class GameManager:
 
 
 	def begin(self):
-		GameManager.texManager = textureManager.TextureManager()
-		GameManager.texManager.init()
+		tm.init()
 
 		from game.main.config import Config
-
 		im.init(Config.inputs)
 
 		GameManager.cam = camera.Camera(70.0, [0, 0, -8.572])  # Precise position of cam to render 18 * 12 tiles
@@ -42,12 +40,8 @@ class GameManager:
 	def init(self):
 		self.setCurrentScreen(GameManager.GAMESCREEN)
 
-	# if GameManager.server:
-	# 	Server.init()
 
 	def update(self):
-		# if GameManager.server:
-		# 	Server.update()
 		self.currentScreen.update()
 		im.dispose()
 		sm.dispose()
@@ -64,11 +58,9 @@ class GameManager:
 			GameManager.currentScreen = ga.GameScreen()
 
 		GameManager.currentScreen.init()
-		# if GameManager.server:
-		# 	Server.init()
 
 	def unload(self):
 		GameManager.currentScreen.unload()
-		GameManager.texManager.error.unload()
-		GameManager.texManager.endState()
 		sm.unload()
+		tm.unload()
+		tm.endState()

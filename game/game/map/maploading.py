@@ -1,6 +1,6 @@
 # Import test map
-from game.game.map.maprender import MapRender
-import os, json
+import json
+import os
 
 
 class MapLoading:

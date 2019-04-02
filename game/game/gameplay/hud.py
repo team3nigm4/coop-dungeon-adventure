@@ -1,6 +1,6 @@
 import json
 
-from game.render.texture import texture
+from game.render.texture.texturemanager import TextureManager as tm
 from game.render.shape import shape
 from game.util import matrix4f
 from game.render.shader.shadermanager import ShaderManager as sm
@@ -33,11 +33,8 @@ class Hud:
 
 	@staticmethod
 	def init():
-		path_hudSetImage = "hud/hudset.png"
 		path_hudSet = "game/resources/textures/hud/hudset.json"
 		Hud.hudSet = json.load(open(path_hudSet))
-		Hud.hudSetImage = texture.Texture(path_hudSetImage)
-		Hud.hudSetImage.load()
 
 		Hud.shape = shape.Shape("hud", True)
 		Hud.shape.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
@@ -84,7 +81,7 @@ class Hud:
 	def display():
 		sm.updateLink("hud", "model", Hud.model.matrix)
 		
-		Hud.hudSetImage.bind()
+		tm.bind("hud")
 		Hud.shape.display()
 
 	@staticmethod
@@ -180,4 +177,4 @@ class Hud:
 
 	@staticmethod
 	def unload():
-		Hud.hudSetImage.unload()
+		pass

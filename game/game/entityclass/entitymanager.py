@@ -59,7 +59,7 @@ class EntityManager:
 			EntityManager.addWithId(result[1])
 		else:
 			if not result[1] == "No Error":
-				Logger.error("LoadEntity", result[1] + "\n" + str(args))
+				Logger.error("LoadEntity", str(result[1]) + "\n" + str(args))
 
 	@staticmethod
 	def addToDisplay(layer, entityId, pos=0):
