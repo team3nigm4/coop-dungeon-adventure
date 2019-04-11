@@ -7,7 +7,7 @@ from game.util.logger import Logger
 
 
 class Texture:
-	PATH = "game/resources/textures"
+	PATH = "game/resources/textures/"
 
 	def __init__(self, path):
 		# Default values

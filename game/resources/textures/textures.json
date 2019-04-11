@@ -1,38 +1,38 @@
 {
   "textures" : {
     "blocks": {
-      "activation-block" : "/activation-block.png",
-      "activation-mark-press" : "/activation-mark-press.png",
-      "activation-mark-release" : "/activation-mark-release.png",
-      "pressure-plate-press" : "/pressure-plate-press.png",
-      "pressure-plate-release" : "/pressure-plate-release.png",
-      "sliding-block" : "/sliding-block.png",
-      "toggle-plate-press" : "/toggle-plate-press.png",
-      "toggle-plate-release" : "/toggle-plate-release.png"
+      "activation-block" : "activation-block.png",
+      "activation-mark-press" : "activation-mark-press.png",
+      "activation-mark-release" : "activation-mark-release.png",
+      "pressure-plate-press" : "pressure-plate-press.png",
+      "pressure-plate-release" : "pressure-plate-release.png",
+      "sliding-block" : "sliding-block.png",
+      "toggle-plate-press" : "toggle-plate-press.png",
+      "toggle-plate-release" : "toggle-plate-release.png"
     },
     "enemies" : {
-      "bat" : "/bat.png",
-      "mannequin" : "/mannequin.png",
-      "spider" : "/spider.png"
+      "bat" : "bat.png",
+      "mannequin" : "mannequin.png",
+      "spider" : "spider.png"
     },
     "hud" : {
-      "hud" : "/hudset.png",
-      "transition" : "/transition.png",
-      "transition-debug" : "/transition-debug.png"
+      "hud" : "hudset.png",
+      "transition" : "transition.png",
+      "transition-debug" : "transition-debug.png"
     },
     "items" : {
-      "arrow" : "/arrow.png",
-      "item-key" : "/item-key.png",
-      "item-weapon" : "/item-weapon.png"
+      "arrow" : "arrow.png",
+      "item-key" : "item-key.png",
+      "item-weapon" : "item-weapon.png"
     },
     "players" : {
-      "player-1" : "/player1.png",
-      "player-2" : "/player2.png"
+      "player-1" : "player1.png",
+      "player-2" : "player2.png"
     },
     "tiles" : {
-      "outside" : "/outside.png",
-      "tuto" : "/tuto.png"
+      "outside" : "outside.png",
+      "tuto" : "tuto.png"
     },
-    "error" : "/error.png"
+    "error" : "error.png"
   }
 }

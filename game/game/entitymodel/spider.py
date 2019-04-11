@@ -45,7 +45,7 @@ class Spider(enemy.Enemy):
 		self.targetCounter = 0
 		self.targetDir = [True, True]
 
-		self.entityRenderer.setImagePath([0.6, 0.6], "spider", [0.3, 0.3])
+		self.entityRenderer.setImage([0.6, 0.6], "spider", [0.3, 0.3])
 		self.gapDisplayPos = 0.2
 
 	def update(self):

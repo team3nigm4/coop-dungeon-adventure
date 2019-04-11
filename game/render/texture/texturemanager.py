@@ -20,7 +20,7 @@ class TextureManager:
 	def load(path, value):
 		for key in value:
 			if type(value[key]) is type(dict()):
-				TextureManager.load(path + "/" + key, value[key])
+				TextureManager.load(path + key + "/", value[key])
 			else:
 				TextureManager.textures[key] = texture.Texture(path + value[key])
 				if TextureManager.textures[key].load() == False:
