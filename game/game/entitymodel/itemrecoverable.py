@@ -32,6 +32,6 @@ class ItemRecoverable(entitydrawable.EntityDrawable):
 		if self.itemType == "Key":
 			key = "item-key"
 		else:
-			key = "item-weapon."
+			key = "item-weapon"
 
 		self.entityRenderer.setImage([0.8, 0.8], key, [0.4, 0.4])
