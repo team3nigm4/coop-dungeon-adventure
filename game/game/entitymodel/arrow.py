@@ -13,6 +13,7 @@ class Arrow(entitycomplex.EntityComplex):
 
 		self.attributes["playerBow"] = 1
 		self.direction = args[Arrow.ARGS_DIRECTION]
+
 		if self.direction == 0:
 			self.setColBox([0.4, 0.2])
 			self.speed[0] = -Arrow.SPEED
@@ -28,7 +29,7 @@ class Arrow(entitycomplex.EntityComplex):
 
 		self.setCollision(True)
 
-		self.entityRenderer.setImage([1, 1], "arrow", [0.5, 0.5])
+		self.entityRenderer.setImage([1, 1], "arrow-" + str(self.direction), [0.5, 0.5])
 		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)
 
 		self.setDrawCol(True)

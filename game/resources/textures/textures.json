@@ -21,7 +21,10 @@
       "transition-debug" : "transition-debug.png"
     },
     "items" : {
-      "arrow" : "arrow.png",
+      "arrow-0" : "arrow-left.png",
+      "arrow-1" : "arrow-up.png",
+      "arrow-2" : "arrow-right.png",
+      "arrow-3" : "arrow-down.png",
       "item-key" : "item-key.png",
       "item-weapon" : "item-weapon.png"
     },
