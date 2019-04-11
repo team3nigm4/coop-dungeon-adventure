@@ -12,8 +12,8 @@
     },
     "enemies" : {
       "bat" : "/bat.png",
-      "activation-mark-press" : "/mannequin.png",
-      "activation-mark-release" : "/spider.png"
+      "mannequin" : "/mannequin.png",
+      "spider" : "/spider.png"
     },
     "hud" : {
       "hud" : "/hudset.png",
