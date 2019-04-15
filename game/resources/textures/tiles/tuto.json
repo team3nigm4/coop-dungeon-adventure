@@ -18,6 +18,21 @@
 	  "pos" : [0, 3],
 	  "size": [2, 2],
 	  "layer" : 2
+	},
+	"door-left": {
+	  "pos" : [3, 1],
+	  "size": [1, 2],
+	  "layer": 6
+	},
+	"door-right": {
+	  "pos" : [3, 3],
+	  "size": [1, 2],
+	  "layer": 6
+	},
+	"door-open": {
+	  "pos" : [2, 2],
+	  "size": [1, 2],
+	  "layer": 6
 	}
   }
 }

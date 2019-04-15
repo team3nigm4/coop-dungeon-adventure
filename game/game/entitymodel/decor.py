@@ -11,6 +11,8 @@ class Decor(entity.Entity):
 
     def __init__(self, args):
         super().__init__(args)
+        self.pos[0] = int(self.pos[0])
+        self.pos[1] = int(self.pos[1])
         self.event = args[Decor.ARGS_EVENT]
         self.ev.addActive(self.event, self.entityId)
         self.decorDeactivate = args[Decor.ARGS_DECOR_DEACTIVATE]
