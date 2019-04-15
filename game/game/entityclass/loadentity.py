@@ -4,6 +4,7 @@ class LoadEntity:
 	from game.game.entitymodel import arrow
 	from game.game.entitymodel import bat
 	from game.game.entitymodel import bridge
+	from game.game.entitymodel import decor
 	from game.game.entitymodel import door
 	from game.game.entitymodel import itemrecoverable
 	from game.game.entitymodel import lockeddoor
@@ -21,6 +22,7 @@ class LoadEntity:
 		"Arrow": arrow.Arrow,
 		"Bat": bat.Bat,
 		"Bridge": bridge.Bridge,
+		"Decor": decor.Decor,
 		"Door": door.Door,
 		"ItemRecoverable": itemrecoverable.ItemRecoverable,
 		"LockedDoor": lockeddoor.LockedDoor,
@@ -44,6 +46,7 @@ class LoadEntity:
 		"Arrow": 0,
 		"Bat": 0,
 		"Bridge": 0,
+		"Decor": 0,
 		"Door": 0,
 		"ItemRecoverable": 1,
 		"LockedDoor": 1,

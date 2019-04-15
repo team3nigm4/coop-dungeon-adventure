@@ -1,4 +1,3 @@
-# coding=utf-8
 # Manages the current map, displays it, and performs various actions on it (collision test)
 
 import math
@@ -170,7 +169,7 @@ class MapManager:
 
 			if empty > 1:
 				if not entity.type == "Player":
-					em.EntityManager.remove(entity.id)
+					em.EntityManager.remove(entity.id, entity.type)
 				else:
 					entity.applyDamage(1)
 					entity.setPos(MapManager.entryPos)
@@ -186,7 +185,7 @@ class MapManager:
 		MapManager.changeValues = ["null", "map0", 0]
 
 		# Force to load the first map with transition
-		MapManager.reserveChange("intro", "0", 0)
+		MapManager.reserveChange("test", "map4", 0)
 		MapManager.checkChangeMap()
 		MapManager.transitionPhase = 1
 		MapManager.update()
@@ -216,7 +215,7 @@ class MapManager:
 						e.pos[1] * MapManager.COEF + e.halfColSize[1] * MapManager.COEF):
 
 						if not e.type == "Player":
-							em.EntityManager.remove(e.entityId.id)
+							em.EntityManager.remove(e.id, e.type)
 						else:
 							e.applyDamage(1)
 							e.setPos(MapManager.entryPos)

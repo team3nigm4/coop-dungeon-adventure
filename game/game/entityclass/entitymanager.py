@@ -26,6 +26,7 @@ class EntityManager:
 		"Arrow": 0,
 		"Bat": 0,
 		"Bridge": 0,
+		"Decor": 0,
 		"Door": 0,
 		"ItemRecoverable": 1,
 		"LockedDoor": 1,
