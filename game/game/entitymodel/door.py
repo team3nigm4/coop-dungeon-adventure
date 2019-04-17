@@ -25,7 +25,6 @@ class Door(entitycollision.EntityCollision):
 		if self.isEvent:
 			self.event = args[Door.ARGS_EVENT]
 			self.ev.addActive(self.event, self.entityId)
-			self.mam.setTileSize(self.pos, self.halfColSize, 1)
 			self.setCollision(True)
 		else:
 			self.setDrawCol(True)
@@ -61,11 +60,9 @@ class Door(entitycollision.EntityCollision):
 	def activate(self):
 		if not self.testCol:
 			self.setCollision(True)
-			self.mam.setTileSize(self.pos, self.halfColSize, 0)
 			self.setDrawCol(True)
 
 	def deactivate(self):
 		if self.testCol:
 			self.setCollision(False)
-			self.mam.setTileSize(self.pos, self.halfColSize, 1)
 			self.setDrawCol(False)

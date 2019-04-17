@@ -1,13 +1,13 @@
 from game.game.entityclass import entity
 from game.game.map.maprender import MapRender as mr
 
+
 class Decor(entity.Entity):
     ARGS_EVENT = 3
     ARGS_DECOR_DEACTIVATE = 4
     ARGS_LAYER_DEACTIVATE = 5
     ARGS_DECOR_ACTIVATE = 6
     ARGS_LAYER_ACTIVATE = 7
-
 
     def __init__(self, args):
         super().__init__(args)

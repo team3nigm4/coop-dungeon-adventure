@@ -28,6 +28,7 @@ class EntityManager:
 		"Bridge": 0,
 		"Decor": 0,
 		"Door": 0,
+		"InteractionSwitch": 0,
 		"ItemRecoverable": 1,
 		"LockedDoor": 1,
 		"Mannequin": 0,

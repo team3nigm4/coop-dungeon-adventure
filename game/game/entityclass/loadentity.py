@@ -6,6 +6,7 @@ class LoadEntity:
 	from game.game.entitymodel import bridge
 	from game.game.entitymodel import decor
 	from game.game.entitymodel import door
+	from game.game.entitymodel import  interactionswitch
 	from game.game.entitymodel import itemrecoverable
 	from game.game.entitymodel import lockeddoor
 	from game.game.entitymodel import mannequin
@@ -24,6 +25,7 @@ class LoadEntity:
 		"Bridge": bridge.Bridge,
 		"Decor": decor.Decor,
 		"Door": door.Door,
+		"InteractionSwitch" : interactionswitch.InteractionSwitch,
 		"ItemRecoverable": itemrecoverable.ItemRecoverable,
 		"LockedDoor": lockeddoor.LockedDoor,
 		"Mannequin": mannequin.Mannequin,
@@ -48,6 +50,7 @@ class LoadEntity:
 		"Bridge": 0,
 		"Decor": 0,
 		"Door": 0,
+		"InteractionSwitch": 0,
 		"ItemRecoverable": 1,
 		"LockedDoor": 1,
 		"Mannequin": 0,
