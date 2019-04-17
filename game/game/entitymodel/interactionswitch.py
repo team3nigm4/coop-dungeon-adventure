@@ -1,5 +1,4 @@
 from game.game.entityclass import entity
-from game.game.map.mapmanager import MapManager as mam
 
 class InteractionSwitch(entity.Entity):
 	ARGS_SIZE = 3
