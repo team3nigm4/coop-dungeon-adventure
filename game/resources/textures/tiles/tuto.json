@@ -14,25 +14,30 @@
 	  "size" : [1, 1],
 	  "layer" : 0
 	},
-	"door" : {
+	"door-up" : {
 	  "pos" : [0, 3],
 	  "size": [2, 2],
 	  "layer" : 2
 	},
+	  "door-down" : {
+	  "pos" : [0, 3],
+	  "size": [2, 2],
+	  "layer" : 4
+	},
 	"door-left": {
 	  "pos" : [3, 1],
 	  "size": [1, 2],
-	  "layer": 6
+	  "layer": 4
 	},
 	"door-right": {
 	  "pos" : [3, 3],
 	  "size": [1, 2],
-	  "layer": 6
+	  "layer": 4
 	},
 	"door-open": {
 	  "pos" : [2, 2],
 	  "size": [1, 2],
-	  "layer": 6
+	  "layer": 4
 	}
   }
 }

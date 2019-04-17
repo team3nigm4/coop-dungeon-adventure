@@ -150,25 +150,23 @@ class MapRender:
 							 tposX + 1, tposY + 1, vboCount)
 
 	@staticmethod
-	def addDecor(decor, posX, posY, layer=-1):
+	def addDecor(decor, posX, posY):
 		if decor == "delete" or decor == "null":
 			return
 
-		if layer == -1:
-			layer = MapRender.tileSets[MapRender.currentTileSet]["decor"][decor]["layer"]
+		layer = MapRender.tileSets[MapRender.currentTileSet]["decor"][decor]["layer"]
+
 		texPos = MapRender.tileSets[MapRender.currentTileSet]["decor"][decor]["pos"]
 		for y in range(MapRender.tileSets[MapRender.currentTileSet]["decor"][decor]["size"][1] - 1, -1, -1):
 			for x in range(MapRender.tileSets[MapRender.currentTileSet]["decor"][decor]["size"][0]):
 				MapRender.addTileTexPos(layer, posX + x, posY + y, texPos[0] + x, texPos[1] - y)
 
 	@staticmethod
-	def deleteDecor(oldDecor, posX, posY, layer=-1):
+	def deleteDecor(oldDecor, posX, posY):
 		if oldDecor == "delete" or oldDecor == "null":
 			return
 
-		if layer == -1:
-			layer = MapRender.tileSets[MapRender.currentTileSet]["decor"][oldDecor]["layer"]
-
+		layer = MapRender.tileSets[MapRender.currentTileSet]["decor"][oldDecor]["layer"]
 		for y in range(MapRender.tileSets[MapRender.currentTileSet]["decor"][oldDecor]["size"][1]):
 			for x in range(MapRender.tileSets[MapRender.currentTileSet]["decor"][oldDecor]["size"][0] -1, -1, -1):
 				MapRender.deleteTile(layer, posX + x, posY + y)
@@ -215,8 +213,7 @@ class MapRender:
 		if vbo == None:
 			return
 		else:
-			if vbo == len(MapRender.vbo[stage]):
-				MapRender.vboCount[stage] -=1
+			MapRender.vboCount[stage] -=1
 			MapRender.tilesPosition[floor][MapRender.tHeight - posY - 1][posX] = None
 			size = len(MapRender.ebo[stage])
 			for i in range(6):
@@ -225,7 +222,6 @@ class MapRender:
 			for i in range(20):
 				del MapRender.vbo[stage][vbo * 20 - i - 1]
 			MapRender.eboCount[stage] -= 1
-
 
 			MapRender.change[stage] = True
 			MapRender.shiftVboIndex(floor, posX, posY, -1)

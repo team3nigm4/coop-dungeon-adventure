@@ -168,7 +168,7 @@
             ["TogglePlate", [[1.5, 7.5], 0]],
             ["Tp", [[6.0, 0.5], [1.998, 0.498], "test", "map1", 1, false]],
             ["InteractionSwitch", [[5.0, 11], [2, 2], 0, 1, 0]],
-            ["Decor", [[4, 10], 0, "door", -1, "delete", -1]],
+            ["Decor", [[4, 10], 0, "door-up", "delete"]],
             ["Tp", [[5.0, 11.5], [1.998, 0.498], "test", "map3", 0, true, 0]],
             ["SpawnPoint", [[6.0, 3.375]]],
             ["SpawnPoint", [[5.0, 10.5]]]
