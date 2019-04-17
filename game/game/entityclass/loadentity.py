@@ -5,7 +5,7 @@ class LoadEntity:
 	from game.game.entitymodel import bat
 	from game.game.entitymodel import bridge
 	from game.game.entitymodel import decor
-	from game.game.entitymodel import door
+	from game.game.entitymodel import tp
 	from game.game.entitymodel import  interactionswitch
 	from game.game.entitymodel import itemrecoverable
 	from game.game.entitymodel import lockeddoor
@@ -24,7 +24,7 @@ class LoadEntity:
 		"Bat": bat.Bat,
 		"Bridge": bridge.Bridge,
 		"Decor": decor.Decor,
-		"Door": door.Door,
+		"Tp": tp.Tp,
 		"InteractionSwitch" : interactionswitch.InteractionSwitch,
 		"ItemRecoverable": itemrecoverable.ItemRecoverable,
 		"LockedDoor": lockeddoor.LockedDoor,
@@ -49,7 +49,7 @@ class LoadEntity:
 		"Bat": 0,
 		"Bridge": 0,
 		"Decor": 0,
-		"Door": 0,
+		"Tp": 0,
 		"InteractionSwitch": 0,
 		"ItemRecoverable": 1,
 		"LockedDoor": 1,

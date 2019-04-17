@@ -4,7 +4,7 @@ from game.game.entityclass import entitycollision
 from game.game.map.maprender import MapRender as mr
 
 
-class Door(entitycollision.EntityCollision):
+class Tp(entitycollision.EntityCollision):
 
 	ARGS_COL_BOX_SIZE = 3
 	ARGS_ZONE_NAME = 4
@@ -15,15 +15,15 @@ class Door(entitycollision.EntityCollision):
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox(args[Door.ARGS_COL_BOX_SIZE])
-		self.zone = args[Door.ARGS_ZONE_NAME]
-		self.map = args[Door.ARGS_MAP_ID]
-		self.entry = args[Door.ARGS_MAP_ENTRY_POINT]
+		self.setColBox(args[Tp.ARGS_COL_BOX_SIZE])
+		self.zone = args[Tp.ARGS_ZONE_NAME]
+		self.map = args[Tp.ARGS_MAP_ID]
+		self.entry = args[Tp.ARGS_MAP_ENTRY_POINT]
 
-		self.isEvent = args[Door.ARGS_IS_EVENT]
+		self.isEvent = args[Tp.ARGS_IS_EVENT]
 
 		if self.isEvent:
-			self.event = args[Door.ARGS_EVENT]
+			self.event = args[Tp.ARGS_EVENT]
 			self.ev.addActive(self.event, self.entityId)
 			self.setCollision(True)
 		else:

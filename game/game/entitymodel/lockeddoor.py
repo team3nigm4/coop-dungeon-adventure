@@ -1,6 +1,6 @@
-from game.game.entitymodel import door
+from game.game.entitymodel import tp
 
-class LockedDoor(door.Door):
+class LockedDoor(tp.Tp):
     def __init__(self, args):
         args.append(False)
         super().__init__(args)
