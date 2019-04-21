@@ -23,6 +23,7 @@ class Decor(entity.Entity):
 			if self.decorActivate == "delete":
 				mr.deleteDecor(self.decorDeactivate, self.pos[0], self.pos[1])
 			else:
+				mr.deleteDecor(self.decorDeactivate, self.pos[0], self.pos[1])
 				mr.addDecor(self.decorActivate, self.pos[0], self.pos[1])
 			self.active = True
 
@@ -31,5 +32,6 @@ class Decor(entity.Entity):
 			if self.decorDeactivate == "delete":
 				mr.deleteDecor(self.decorActivate, self.pos[0], self.pos[1])
 			else:
+				mr.deleteDecor(self.decorDeactivate, self.pos[0], self.pos[1])
 				mr.addDecor(self.decorDeactivate, self.pos[0], self.pos[1])
 			self.active = False

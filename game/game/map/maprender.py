@@ -63,7 +63,12 @@ class MapRender:
 
 	@staticmethod
 	def addTileTexPos(floor, posX, posY, texPosX, texPosY, rotate=1):
-		if floor < 3:
+		if posX < 0 or posX >= len(MapRender.mapValues[0][0]):
+			return
+
+		if posY < 0 or posY >= len(MapRender.mapValues[0]):
+			return
+		if floor <= 3:
 			stage = 0
 		else:
 			stage = 1
@@ -80,11 +85,10 @@ class MapRender:
 
 	@staticmethod
 	def addTile2(vboCount, floor, stage, posX, posY, tposX, tposY, rotate=1):
-		if posX < 0 or posX > len(MapRender.mapValues[0][0]):
+		if posX < 0 or posX >= len(MapRender.mapValues[0][0]):
 			return
 
-		if posY < 0 or posY > len(MapRender.mapValues[0]):
-			print(posX)
+		if posY < 0 or posY >= len(MapRender.mapValues[0]):
 			return
 
 		eboIndex = MapRender.eboCount[stage] * 4
@@ -186,7 +190,7 @@ class MapRender:
 		MapRender.vboCount = [0, 0]
 
 		for floor in range(8):
-			if floor < 3:
+			if floor <= 3:
 				stage = 0
 			else:
 				stage = 1
@@ -203,7 +207,13 @@ class MapRender:
 
 	@staticmethod
 	def deleteTile(floor, posX, posY):
-		if floor < 3:
+		if posX < 0 or posX >= len(MapRender.mapValues[0][0]):
+			return
+
+		if posY < 0 or posY >= len(MapRender.mapValues[0]):
+			return
+
+		if floor <= 3:
 			stage = 0
 		else:
 			stage = 1
@@ -213,7 +223,6 @@ class MapRender:
 		if vbo == None:
 			return
 		else:
-			MapRender.vboCount[stage] -=1
 			MapRender.tilesPosition[floor][MapRender.tHeight - posY - 1][posX] = None
 			size = len(MapRender.ebo[stage])
 			for i in range(6):
@@ -221,11 +230,11 @@ class MapRender:
 
 			for i in range(20):
 				del MapRender.vbo[stage][vbo * 20 - i - 1]
+			MapRender.vboCount[stage] -=1
 			MapRender.eboCount[stage] -= 1
 
 			MapRender.change[stage] = True
 			MapRender.shiftVboIndex(floor, posX, posY, -1)
-
 
 	@staticmethod
 	def display(transition):
@@ -310,19 +319,19 @@ class MapRender:
 					MapRender.tileSets[tileSet]["id"].append([x, y])
 
 	@staticmethod
-	def reserveNextVbo(layer, posX, posy):
-		if layer < 3:
+	def reserveNextVbo(layer, posX, posY):
+		if layer <= 3:
 			end = 4
 			stage = 0
 		else:
 			end = 8
 			stage = 1
 
-		posY = MapRender.tHeight - posy - 1
+		posY = MapRender.tHeight - posY - 1
 		for x in range(posX, len(MapRender.tilesPosition[layer][posY])):
 			if not MapRender.tilesPosition[layer][posY][x] == None:
 				vbo = MapRender.tilesPosition[layer][posY][x]
-				MapRender.shiftVboIndex(layer, x, posy)
+				MapRender.shiftVboIndex(layer, x, posY)
 				return vbo
 
 		for y in range(posY + 1, len(MapRender.tilesPosition[layer])):
@@ -388,7 +397,7 @@ class MapRender:
 
 	@staticmethod
 	def shiftVboIndex(layer, posX, posY, indent=1):
-		if layer < 3:
+		if layer <= 3:
 			end = 4
 		else:
 			end = 8
