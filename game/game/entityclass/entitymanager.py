@@ -204,15 +204,16 @@ class EntityManager:
 		# Unload the entity
 		EntityManager.entities[id].unload()
 
-		if id == len(EntityManager.entities) - 1:
-			del EntityManager.entities[id]
-		else:
-			EntityManager.entities[id] = entitycollision.EntityCollision(["Null", -1, [0, 0]])
+		del EntityManager.entities[id]
 
 		EntityManager.len = len(EntityManager.entities)
 		# Print the removing ?
 		if info[1]:
 			Logger.info("ENTITY MANAGER", "Remove entity n°" + str(id))
+
+		if id != len(EntityManager.entities):
+			for i in range(id, EntityManager.len):
+				EntityManager.entities[i].entityId.id -=1
 
 	@staticmethod
 	def remove(entityId, printRemove):

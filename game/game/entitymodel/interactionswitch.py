@@ -9,7 +9,9 @@ class InteractionSwitch(entity.Entity):
 	def __init__(self, args):
 		super().__init__(args)
 		self.size = args[InteractionSwitch.ARGS_SIZE]
+
 		self.halfSize = [self.size[0] / 2 - 0.001, self.size[1] / 2 - 0.01]
+
 		self.event = args[InteractionSwitch.ARGS_EVENT]
 		self.ev.addActive(self.event, self.entityId)
 		self.idActivate = args[InteractionSwitch.ARGS_INTERACTION_ID_ACTIVATE]

@@ -60,7 +60,7 @@ class Spider(enemy.Enemy):
 				di1 = mathcda.distE(self, self.em.entities[self.em.PLAYER_1])
 				di2 = mathcda.distE(self, self.em.entities[self.em.PLAYER_2])
 				if di1 < di2:
-					if  di1< Spider.DETECTION_RANGE:
+					if  di1 < Spider.DETECTION_RANGE:
 						track = self.em.PLAYER_1
 				else:
 					if  di2 < Spider.DETECTION_RANGE:

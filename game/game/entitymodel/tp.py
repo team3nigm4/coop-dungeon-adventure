@@ -25,7 +25,6 @@ class Tp(entitycollision.EntityCollision):
 		if self.isEvent:
 			self.event = args[Tp.ARGS_EVENT]
 			self.ev.addActive(self.event, self.entityId)
-			self.setCollision(True)
 		else:
 			self.setDrawCol(True)
 			self.setCollision(True)

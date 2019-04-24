@@ -27,5 +27,8 @@ class TriggerBox(entitycollision.EntityCollision):
 	def setEntityMaster(self, entityMaster):
 		self.entityMaster = entityMaster
 
+	def getMaster(self):
+		return self.entityMaster
+
 	def triggerBox(self, ent):
 		self.entity.triggerBox(ent)

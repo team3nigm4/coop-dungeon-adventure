@@ -60,6 +60,9 @@ class Arrow(entitycomplex.EntityComplex):
 	def setEntityMaster(self, entityMaster):
 		self.entityMaster = entityMaster
 
+	def getMaster(self):
+		return self.entityMaster
+
 	def triggerBox(self, ent):
 		if self.giveDamage:
 			ent.setStun(True)
