@@ -101,10 +101,9 @@ class EntityManager:
 
 	@staticmethod
 	def checkId():
-		for e in range(3, EntityManager.len):
-			idM = EntityManager.entities[e - 1].entityId.id
-			if EntityManager.entities[e].entityId.id - idM > 1:
-				EntityManager.entities[e].entityId.id = idM + 1
+		for e in range(2, EntityManager.len - 1):
+			if EntityManager.entities[e].entityId.id != e:
+				EntityManager.entities[e].setId(e)
 
 	@staticmethod
 	def clear():
