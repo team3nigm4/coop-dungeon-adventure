@@ -68,6 +68,7 @@ class MapRender:
 
 		if posY < 0 or posY >= len(MapRender.mapValues[0]):
 			return
+
 		if floor <= 3:
 			stage = 0
 		else:
@@ -76,6 +77,7 @@ class MapRender:
 		vboCount = MapRender.tilesPosition[floor][MapRender.tHeight - posY - 1][posX]
 		if vboCount == None:
 			vboCount = MapRender.reserveNextVbo(floor, posX, posY)
+			MapRender.shiftVboIndex(floor, posX, posY)
 		else:
 			MapRender.deleteTile(floor, posX, posY)
 			MapRender.shiftVboIndex(floor, posX, posY)
@@ -229,7 +231,7 @@ class MapRender:
 				del MapRender.ebo[stage][size - 1 - i]
 
 			for i in range(20):
-				del MapRender.vbo[stage][vbo * 20 - i - 1]
+				del MapRender.vbo[stage][vbo * 20]
 			MapRender.vboCount[stage] -=1
 			MapRender.eboCount[stage] -= 1
 
@@ -328,29 +330,28 @@ class MapRender:
 			stage = 1
 
 		posY = MapRender.tHeight - posY - 1
+		posX +=1
 		for x in range(posX, len(MapRender.tilesPosition[layer][posY])):
 			if not MapRender.tilesPosition[layer][posY][x] == None:
 				vbo = MapRender.tilesPosition[layer][posY][x]
-				MapRender.shiftVboIndex(layer, x, posY)
 				return vbo
 
 		for y in range(posY + 1, len(MapRender.tilesPosition[layer])):
 			for x in range(len(MapRender.tilesPosition[layer][y])):
 				if not MapRender.tilesPosition[layer][y][x] == None:
 					vbo = MapRender.tilesPosition[layer][y][x]
-					MapRender.shiftVboIndex(layer, x, y)
 					return vbo
 
 		for floor in range(layer + 1, end):
-			for y in range(posY, len(MapRender.tilesPosition[floor])):
+			for y in range(len(MapRender.tilesPosition[floor])):
 				for x in range(len(MapRender.tilesPosition[floor][y])):
 					if not MapRender.tilesPosition[floor][y][x] == None:
 						vbo = MapRender.tilesPosition[floor][y][x]
-						MapRender.shiftVboIndex(floor, x, y)
 						return vbo
 
+		vbo = MapRender.vboCount[stage]
 		MapRender.vboCount[stage] += 1
-		return MapRender.vboCount[stage]
+		return vbo
 
 	@staticmethod
 	def setMapValues(vbo, ebo, mapValue, tilesPositon, vboCount, eboCount, tileSet):
@@ -403,6 +404,7 @@ class MapRender:
 			end = 8
 
 		posY = MapRender.tHeight - posY - 1
+		posX+=1
 		for x in range(posX, len(MapRender.tilesPosition[layer][posY])):
 			if not MapRender.tilesPosition[layer][posY][x] == None:
 				MapRender.tilesPosition[layer][posY][x] += indent
@@ -413,7 +415,7 @@ class MapRender:
 					MapRender.tilesPosition[layer][y][x] += indent
 
 		for floor in range(layer + 1, end):
-			for y in range(posY, len(MapRender.tilesPosition[floor])):
+			for y in range(len(MapRender.tilesPosition[floor])):
 				for x in range(len(MapRender.tilesPosition[floor][y])):
 					if not MapRender.tilesPosition[floor][y][x] == None:
 						MapRender.tilesPosition[floor][y][x] += indent
