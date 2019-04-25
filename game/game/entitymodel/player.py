@@ -39,9 +39,9 @@ class Player(entitycomplex.EntityComplex):
 		self.colRenderer.setAttributes(self.colSize, [1, 1, 0, 0.5])
 
 		if self.playerNumber == self.em.PLAYER_1:
-			self.entityRenderer.setImage([0.80, 1.3], "player-1", [0.37, 0.20])
+			self.entityRenderer.setImage([0.80, 1.3], "player-1-3", [0.37, 0.20])
 		else:
-			self.entityRenderer.setImage([0.80, 1.3], "player-2", [0.37, 0.20])
+			self.entityRenderer.setImage([0.80, 1.3], "player-2-3", [0.37, 0.20])
 		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)
 
 	def useItem(self, input):
@@ -68,13 +68,13 @@ class Player(entitycomplex.EntityComplex):
 				self.oldWantDirection == [0, 0]):
 			# In priority up and down direction
 			if self.wantDirection[1] == 1:
-				self.direction = 1
+				self.setDirection(1)
 			elif self.wantDirection[1] == -1:
-				self.direction = 3
+				self.setDirection(3)
 			elif self.wantDirection[0] == -1:
-				self.direction = 0
+				self.setDirection(0)
 			elif self.wantDirection[0] == 1:
-				self.direction = 2
+				self.setDirection(2)
 
 		for i in range(2):
 			if self.wantDirection[i] == 0:
@@ -101,6 +101,12 @@ class Player(entitycomplex.EntityComplex):
 		self.wantDirection = [0, 0]
 
 		self.mam.checkEmpty(self)
+
+	def display(self):
+		if self.direction != self.oldDirection:
+			self.entityRenderer.setKey("player-" + str(self.playerNumber+1) + "-" + str(self.direction))
+			print("player-" + str(self.playerNumber+1) + "-" + str(self.direction))
+		super().display()
 
 	def setLife(self, newLife, death=False):
 		super().setLife(newLife, death)

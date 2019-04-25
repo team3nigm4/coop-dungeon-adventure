@@ -24,7 +24,7 @@ class EntityRenderer:
 		self.shape.setVbo(quad)
 		self.shape.setReading([3, 2])
 
-		self.texKey = "error"
+		self.setKey("error")
 		self.model = matrix4f.Matrix4f(True)
 
 	def display(self):
@@ -35,8 +35,7 @@ class EntityRenderer:
 	def setImage(self, size, key, hotPoint):
 		self.size = size
 		self.hotPoint = hotPoint
-		self.texKey = tm.isKey(key)
-		self.texKey = key
+		self.setKey(key)
 
 		size = self.size
 		quad = [0 - hotPoint[0], 0 - hotPoint[1], 0.0, 0.0, 0.0,
@@ -45,6 +44,9 @@ class EntityRenderer:
 				0 - hotPoint[0], size[1] - hotPoint[1], 0.0, 0.0, 1.0]
 
 		self.shape.setVbo(quad)
+
+	def setKey(self, key):
+		self.texKey = tm.key(key)
 
 	def updateModel(self, newPos):
 		self.model.matrix[3][0] = newPos[0]

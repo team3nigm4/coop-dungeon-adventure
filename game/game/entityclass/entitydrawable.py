@@ -12,6 +12,7 @@ class EntityDrawable(entitycollision.EntityCollision):
 		self.entityRenderer = ed.EntityRenderer()
 		self.setPos(self.pos)
 		self.direction = 0
+		self.oldDirection = 0
 		self.gapDisplayPos = 0
 
 	def display(self):
@@ -41,6 +42,9 @@ class EntityDrawable(entitycollision.EntityCollision):
 			self.em.addToDisplay(self.displayLayer, self.entityId)
 		else:
 			print("Error : want to set an invalid display layer (" + str(layer) + ") to", self.type, "with id", str(id))
+
+	def update(self):
+		self.oldDirection = self.direction
 
 	def unload(self):
 		super().unload()

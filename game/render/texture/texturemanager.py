@@ -55,5 +55,8 @@ class TextureManager:
 			Logger.info("TEXTURE MANAGER", "No remaining textures")
 
 	@staticmethod
-	def isKey(key):
-		return key in TextureManager.textures
+	def key(key):
+		if key in TextureManager.textures:
+			return key
+		else:
+			return "error"
