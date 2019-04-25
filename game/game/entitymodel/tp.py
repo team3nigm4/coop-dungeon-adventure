@@ -10,8 +10,7 @@ class Tp(entitycollision.EntityCollision):
 	ARGS_ZONE_NAME = 4
 	ARGS_MAP_ID = 5
 	ARGS_MAP_ENTRY_POINT = 6
-	ARGS_IS_EVENT = 7
-	ARGS_EVENT = 8
+	ARGS_EVENT = 7
 
 	def __init__(self, args):
 		super().__init__(args)
@@ -20,14 +19,13 @@ class Tp(entitycollision.EntityCollision):
 		self.map = args[Tp.ARGS_MAP_ID]
 		self.entry = args[Tp.ARGS_MAP_ENTRY_POINT]
 
-		self.isEvent = args[Tp.ARGS_IS_EVENT]
+		self.event = args[Tp.ARGS_EVENT]
 
-		if self.isEvent:
-			self.event = args[Tp.ARGS_EVENT]
-			self.ev.addActive(self.event, self.entityId)
-		else:
+		if self.event == -1:
 			self.setDrawCol(True)
 			self.setCollision(True)
+		else:
+			self.ev.addActive(self.event, self.entityId)
 
 		self.isTwo = False
 		self.attributes["door"] = 2

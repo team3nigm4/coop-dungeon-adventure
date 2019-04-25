@@ -176,10 +176,10 @@
             ["PressurePlate", [[7.5, 5.5], 0]],
             ["TogglePlate", [[7.5, 7.5], 0]],
             ["TogglePlate", [[1.5, 7.5], 0]],
-            ["Tp", [[6.0, 0.5], [2, 0.5], "test", "map1", 1, false]],
+            ["Tp", [[6.0, 0.5], [2, 0.5], "test", "map1", 1, -1]],
             ["InteractionSwitch", [[5.0, 11], [2, 2], 0, 1, 0]],
             ["Decor", [[3, 10], 0, "door-up", "door-up-open"]],
-            ["Tp", [[5.0, 11.5], [2, 0.5], "test", "map3", 0, true, 0]],
+            ["Tp", [[5.0, 11.5], [2, 0.5], "test", "map3", 0, 0]],
             ["SpawnPoint", [[6.0, 3.375]]],
             ["SpawnPoint", [[5.0, 10.5]]]
         ]

@@ -141,7 +141,7 @@
     "entities": [
         [
             ["LockedDoor", [[13.5, 5.0], [1, 2], 1]],
-            ["Tp", [[13.5, 5.0], [0.5, 2], "test", "map2", 0, true, 1]],
+            ["Tp", [[13.5, 5.0], [0.5, 2], "test", "map2", 0, 1]],
             ["InteractionSwitch", [[13.5, 5.0], [0.5, 2], 1, 1, 0]],
             ["Spawn", [[0, 2], 0, ["ItemRecoverable", [1.5, 4.5], "Key"]]],
             ["ActivationBlock", [[10.5, 7.5]]],
