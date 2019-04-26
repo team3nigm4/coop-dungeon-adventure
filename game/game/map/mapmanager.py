@@ -261,28 +261,28 @@ class MapManager:
 		if entryInfo[1] == "left":
 			e1.setPos([entryInfo[0][0], entryInfo[0][1] + 0.5])
 			e2.setPos([entryInfo[0][0], entryInfo[0][1] - 0.5])
-			e1.setDirection(2)
-			e2.setDirection(2)
+			e1.setDirection(0)
+			e2.setDirection(0)
 		elif entryInfo[1] == "right":
 			e1.setPos([entryInfo[0][0], entryInfo[0][1] + 0.5])
 			e2.setPos([entryInfo[0][0], entryInfo[0][1] - 0.5])
-			e1.setDirection(0)
-			e2.setDirection(0)
+			e1.setDirection(2)
+			e2.setDirection(2)
 		elif entryInfo[1] == "up":
+			e1.setPos([entryInfo[0][0] - 0.5, entryInfo[0][1]])
+			e2.setPos([entryInfo[0][0] + 0.5, entryInfo[0][1]])
+			e1.setDirection(1)
+			e2.setDirection(1)
+		elif entryInfo[1] == "down":
 			e1.setPos([entryInfo[0][0] - 0.5, entryInfo[0][1]])
 			e2.setPos([entryInfo[0][0] + 0.5, entryInfo[0][1]])
 			e1.setDirection(3)
 			e2.setDirection(3)
-		elif entryInfo[1] == "down":
-			e1.setPos([entryInfo[0][0] - 0.5, entryInfo[0][1]])
-			e2.setPos([entryInfo[0][0] + 0.5, entryInfo[0][1]])
-			e1.setDirection(1)
-			e2.setDirection(1)
 		else:
 			e1.setPos(entryInfo[0])
 			e2.setPos(entryInfo[0])
-			e1.setDirection(1)
-			e2.setDirection(1)
+			e1.setDirection(3)
+			e2.setDirection(3)
 
 		e1.speed = [0, 0]
 		e2.speed = [0, 0]
