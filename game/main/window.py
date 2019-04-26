@@ -16,6 +16,7 @@ class Window:
 	TPS = 60.0
 	TICK_TIME = SECOND / TPS
 	beginTime = 0
+	frame = 0
 
 	window = None
 
@@ -110,6 +111,8 @@ class Window:
 
 			glfw.swap_buffers(Window.window)
 			glfw.poll_events()
+			Window.frame += 1
+			Logger.setFrame(Window.frame)
 
 	@staticmethod
 	def exit():

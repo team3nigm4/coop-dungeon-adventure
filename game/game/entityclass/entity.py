@@ -2,6 +2,7 @@ from game.game.entityclass import entitymanager
 from game.game.map import eventmanager
 from game.game.map import mapmanager
 from game.game.entityclass import entityid
+from game.util import logger
 
 
 class Entity:
@@ -18,6 +19,7 @@ class Entity:
 		self.em = entitymanager.EntityManager
 		self.ev = eventmanager.EventManager
 		self.mam = mapmanager.MapManager
+		self.log = logger.Logger
 
 	def setPos(self, position):
 		self.pos = position

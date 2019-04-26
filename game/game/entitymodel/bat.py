@@ -100,4 +100,4 @@ class Bat(enemy.Enemy):
 				# This player is the new target
 				self.targetId = ent.getMaster()
 			ent.triggerBox(self)
-
+d

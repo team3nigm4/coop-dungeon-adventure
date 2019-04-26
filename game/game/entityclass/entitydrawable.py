@@ -24,6 +24,7 @@ class EntityDrawable(entitycollision.EntityCollision):
 		self.setDisplayLayer(layer)
 
 	def setDirection(self, newDirection):
+		self.oldDirection = self.direction
 		self.direction = newDirection
 
 	def setPos(self, position):
@@ -42,9 +43,6 @@ class EntityDrawable(entitycollision.EntityCollision):
 			self.em.addToDisplay(self.displayLayer, self.entityId)
 		else:
 			print("Error : want to set an invalid display layer (" + str(layer) + ") to", self.type, "with id", str(id))
-
-	def update(self):
-		self.oldDirection = self.direction
 
 	def unload(self):
 		super().unload()

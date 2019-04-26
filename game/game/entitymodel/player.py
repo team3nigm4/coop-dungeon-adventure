@@ -103,9 +103,6 @@ class Player(entitycomplex.EntityComplex):
 		self.mam.checkEmpty(self)
 
 	def display(self):
-		if self.direction != self.oldDirection:
-			self.entityRenderer.setKey("player-" + str(self.playerNumber+1) + "-" + str(self.direction))
-			print("player-" + str(self.playerNumber+1) + "-" + str(self.direction))
 		super().display()
 
 	def setLife(self, newLife, death=False):
@@ -149,3 +146,8 @@ class Player(entitycomplex.EntityComplex):
 		else:
 			from game.game.gameplay import item
 			self.item = item.Item(self, "Null")
+
+	def setDirection(self, newDirection):
+		super().setDirection(newDirection)
+		if self.direction != self.oldDirection:
+			self.entityRenderer.setKey("player-" + str(self.playerNumber+1) + "-" + str(self.direction))
