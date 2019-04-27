@@ -1,22 +1,28 @@
 class Logger:
 
-	@staticmethod
-	def log(header, text): print('[' + header + '] ' + text)
+	frame = "0"
 
 	@staticmethod
-	def format(header, text): return '[' + header + '] ' + text
+	def setFrame(frame):
+		Logger.frame = str(frame)
 
 	@staticmethod
-	def info(header, text): print('[' + '\033[96m' + header  + '\033[0m' + '] ' + text)
+	def log(header, text): print('[' + header + '] ' + '[' + Logger.frame + '] ' + text)
 
 	@staticmethod
-	def success(header, text): print('[' + '\033[92m' + header  + '\033[0m' + '] ' + text)
+	def format(header, text): return '[' + header + '] ' + '[' + Logger.frame + '] ' + text
 
 	@staticmethod
-	def warning(header, text): print('[' + '\033[33m' + header  + '\033[0m' + '] ' + text)
+	def info(header, text): print('[' + '\033[96m' + header  + '\033[0m' + '] ' + '[' + Logger.frame + '] ' + text)
 
 	@staticmethod
-	def error(header, text): print('[' + '\033[91m' + header  + '\033[0m' + '] ' + text)
+	def success(header, text): print('[' + '\033[92m' + header  + '\033[0m' + '] ' + '[' + Logger.frame + '] ' + text)
 
 	@staticmethod
-	def bold(text): print('\033[1m' + text + '\033[0m')
+	def warning(header, text): print('[' + '\033[9 3m' + header  + '\033[0m' + '] ' + '[' + Logger.frame + '] ' + text)
+
+	@staticmethod
+	def error(header, text): print('[' + '\033[91m' + header  + '\033[0m' + '] ' + '[' + Logger.frame + '] ' + text)
+
+	@staticmethod
+	def bold(text): print('[' + Logger.frame + '] ' + '\033[1m' + text + '\033[0m')

@@ -11,7 +11,7 @@ class Command:
 
 	@staticmethod
 	# 1 = functionName
-	def help(args=False):
+	def help(args="none"):
 		commandsHelp = {
 			"changeMap": "Usage: changeMap [zoneName] [mapId] [entryPoint]\n  Go to a new map (alias of cm)",
 			"cm": "Usage: cm [zoneName] [mapId] [entryPoint]\n  Go to a new map (alias of ChangeMap)",
@@ -23,7 +23,7 @@ class Command:
 			"toggleBoxes": "  Toggle the display of collision boxes",
 			"tpE": "Usage: tpE [entityIdToMove] [destinationEntityId]\n  Move an entity to another"
 		}
-		if len(args) > 1:
+		if not args == "none":
 			if args[1] in commandsHelp:
 				print("\n:::: Help for command " + args[1] + "() ::::")
 				print(commandsHelp[args[1]] + "\n")

@@ -66,6 +66,9 @@ class EntityCollision(entity.Entity):
 			elif not self.testCol and old:
 				self.em.removeToTest(self.entityId)
 
+	def colReduc(self):
+		self.setColBox([self.colSize[0] - 0.002, self.colSize[1] - 0.002])
+
 	def setPos(self, position):
 		super().setPos(position)
 		self.colRenderer.updateModel([round(self.pos[0] * 32) / 32, round(self.pos[1] * 32) / 32])

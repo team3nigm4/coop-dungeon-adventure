@@ -1,10 +1,38 @@
 {
   "info": {
-    "gap" : [0, 0],
-    "tilesize" : 32
+	"gap" : [0, 0],
+	"tilesize" : 32
   },
-  "tiles":{
-    "begin-bridge": [0, 1],
-    "bridge": [1, 1]
+  "decor":{
+	"begin-bridge": {
+	  "pos" : [1, 1],
+	  "size" : [1, 1],
+	  "layer" : 0
+	},
+	"bridge": {
+	  "pos" : [0, 1],
+	  "size" : [1, 1],
+	  "layer" : 0
+	},
+	"door-up" : {
+	  "pos" : [0, 4],
+	  "size": [4, 3],
+	  "layer" : 3
+	},
+	  "door-up-open" : {
+	  "pos" : [4, 4],
+	  "size": [4, 3],
+	  "layer" : 3
+	},
+	  "door-down" : {
+	  "pos" : [0, 4],
+	  "size": [4, 3],
+	  "layer" : 4
+	},
+	  "door-down-open" : {
+	  "pos" : [4, 4],
+	  "size": [4, 3],
+	  "layer" : 4
+	}
   }
 }

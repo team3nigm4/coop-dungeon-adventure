@@ -4,32 +4,28 @@ from game.game.entityclass import entitycollision
 from game.game.map.maprender import MapRender as mr
 
 
-class Door(entitycollision.EntityCollision):
+class Tp(entitycollision.EntityCollision):
 
 	ARGS_COL_BOX_SIZE = 3
 	ARGS_ZONE_NAME = 4
 	ARGS_MAP_ID = 5
 	ARGS_MAP_ENTRY_POINT = 6
-	ARGS_IS_EVENT = 7
-	ARGS_EVENT = 8
+	ARGS_EVENT = 7
 
 	def __init__(self, args):
 		super().__init__(args)
-		self.setColBox(args[Door.ARGS_COL_BOX_SIZE])
-		self.zone = args[Door.ARGS_ZONE_NAME]
-		self.map = args[Door.ARGS_MAP_ID]
-		self.entry = args[Door.ARGS_MAP_ENTRY_POINT]
+		self.setColBox(args[Tp.ARGS_COL_BOX_SIZE])
+		self.zone = args[Tp.ARGS_ZONE_NAME]
+		self.map = args[Tp.ARGS_MAP_ID]
+		self.entry = args[Tp.ARGS_MAP_ENTRY_POINT]
 
-		self.isEvent = args[Door.ARGS_IS_EVENT]
+		self.event = args[Tp.ARGS_EVENT]
 
-		if self.isEvent:
-			self.event = args[Door.ARGS_EVENT]
-			self.ev.addActive(self.event, self.entityId)
-			self.mam.setTileSize(self.pos, self.halfColSize, 1)
-			self.setCollision(True)
-		else:
+		if self.event == -1:
 			self.setDrawCol(True)
 			self.setCollision(True)
+		else:
+			self.ev.addActive(self.event, self.entityId)
 
 		self.isTwo = False
 		self.attributes["door"] = 2
@@ -61,11 +57,9 @@ class Door(entitycollision.EntityCollision):
 	def activate(self):
 		if not self.testCol:
 			self.setCollision(True)
-			self.mam.setTileSize(self.pos, self.halfColSize, 0)
 			self.setDrawCol(True)
 
 	def deactivate(self):
 		if self.testCol:
 			self.setCollision(False)
-			self.mam.setTileSize(self.pos, self.halfColSize, 1)
 			self.setDrawCol(False)

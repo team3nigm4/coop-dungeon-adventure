@@ -138,6 +138,7 @@ class MapTemporarySave:
 		# Apply all data to managers
 		em.EntityManager.setValues(mts.entities_instances[map], mts.entitiesCol_instances[map],
 								   mts.displayLayer_instances[map])
+		em.EntityManager.checkId()
 
 		mam.MapManager.setupMapValues(mts.interaction_instances[map],
 									  mts.defaultEntry_instances[map],
@@ -149,6 +150,7 @@ class MapTemporarySave:
 
 		ev.event = mts.event_instances[map]
 		ev.toActive = mts.toActive_instances[map]
+
 		if reset:
 			em.EntityManager.entityEffectAfterReset()
 

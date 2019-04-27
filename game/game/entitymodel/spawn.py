@@ -1,7 +1,6 @@
 from game.game.entityclass import entity
 from game.game.map.eventmanager import EventManager as ev
 from game.game.map.eventmanager import EventManager
-from game.game.map.eventmanager import EventManager
 
 class Spawn(entity.Entity):
 	ARGS_EVENT = 3

@@ -10,7 +10,6 @@ class Player(entitycomplex.EntityComplex):
 	SPEED_DECREASE = 0.025
 
 	ARGS_PLAYER_NUMBER = 3
-	ARGS_PLAYER_TEXTURE = 4
 
 	INVINCIBILITY_TIME = 90
 
@@ -39,7 +38,10 @@ class Player(entitycomplex.EntityComplex):
 		self.setDrawCol(True)
 		self.colRenderer.setAttributes(self.colSize, [1, 1, 0, 0.5])
 
-		self.entityRenderer.setImagePath([0.80, 1.3], args[Player.ARGS_PLAYER_TEXTURE], [0.37, 0.20])
+		if self.playerNumber == self.em.PLAYER_1:
+			self.entityRenderer.setImage([0.80, 1.3], "player-1-3", [0.37, 0.20])
+		else:
+			self.entityRenderer.setImage([0.80, 1.3], "player-2-3", [0.37, 0.20])
 		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)
 
 	def useItem(self, input):
@@ -66,13 +68,13 @@ class Player(entitycomplex.EntityComplex):
 				self.oldWantDirection == [0, 0]):
 			# In priority up and down direction
 			if self.wantDirection[1] == 1:
-				self.direction = 1
+				self.setDirection(1)
 			elif self.wantDirection[1] == -1:
-				self.direction = 3
+				self.setDirection(3)
 			elif self.wantDirection[0] == -1:
-				self.direction = 0
+				self.setDirection(0)
 			elif self.wantDirection[0] == 1:
-				self.direction = 2
+				self.setDirection(2)
 
 		for i in range(2):
 			if self.wantDirection[i] == 0:
@@ -99,6 +101,9 @@ class Player(entitycomplex.EntityComplex):
 		self.wantDirection = [0, 0]
 
 		self.mam.checkEmpty(self)
+
+	def display(self):
+		super().display()
 
 	def setLife(self, newLife, death=False):
 		super().setLife(newLife, death)
@@ -141,3 +146,8 @@ class Player(entitycomplex.EntityComplex):
 		else:
 			from game.game.gameplay import item
 			self.item = item.Item(self, "Null")
+
+	def setDirection(self, newDirection):
+		super().setDirection(newDirection)
+		if self.direction != self.oldDirection:
+			self.entityRenderer.setKey("player-" + str(self.playerNumber+1) + "-" + str(self.direction))

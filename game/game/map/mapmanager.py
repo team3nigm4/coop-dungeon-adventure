@@ -1,4 +1,3 @@
-# coding=utf-8
 # Manages the current map, displays it, and performs various actions on it (collision test)
 
 import math
@@ -30,7 +29,7 @@ class MapManager:
 
 	zone = "null"
 	id = "null"
-	entryPos = []
+	entryInfo = []
 	entry = 0
 	defaultEntry = 0
 
@@ -170,10 +169,10 @@ class MapManager:
 
 			if empty > 1:
 				if not entity.type == "Player":
-					em.EntityManager.remove(entity.id)
+					em.EntityManager.remove(entity.id, entity.type)
 				else:
 					entity.applyDamage(1)
-					entity.setPos(MapManager.entryPos)
+					entity.setPos(MapManager.entryInfo[0])
 					entity.setSpeed([0, 0])
 
 	@staticmethod
@@ -186,7 +185,7 @@ class MapManager:
 		MapManager.changeValues = ["null", "map0", 0]
 
 		# Force to load the first map with transition
-		MapManager.reserveChange("intro", "0", 0)
+		MapManager.reserveChange("test", "map1", 0)
 		MapManager.checkChangeMap()
 		MapManager.transitionPhase = 1
 		MapManager.update()
@@ -203,7 +202,6 @@ class MapManager:
 
 		# Check if entity with collision in the change
 		if id == MapManager.INTERACTION_SOLID and MapManager.collideTest:
-			em.EntityManager.status()
 			for i in em.EntityManager.entitiesCol:
 
 				if not em.EntityManager.entities[i.id].attributes["collision"] == 0:
@@ -217,10 +215,10 @@ class MapManager:
 						e.pos[1] * MapManager.COEF + e.halfColSize[1] * MapManager.COEF):
 
 						if not e.type == "Player":
-							em.EntityManager.remove(e.entityId.id)
+							em.EntityManager.remove(e.id, e.type)
 						else:
 							e.applyDamage(1)
-							e.setPos(MapManager.entryPos)
+							e.setPos(MapManager.entryInfo[0])
 							e.setSpeed([0, 0])
 
 	@staticmethod
@@ -245,7 +243,7 @@ class MapManager:
 			countX += 1
 
 	@staticmethod
-	def setupMapValues(interaction, defaultEntry, entryPos):
+	def setupMapValues(interaction, defaultEntry, entryInfo):
 		MapManager.interaction = interaction
 		MapManager.defaultEntry = defaultEntry
 
@@ -256,11 +254,40 @@ class MapManager:
 		MapManager.cHeight = cHeight
 
 		# Create instance of entities and place players
-		MapManager.entryPos = entryPos
-		em.EntityManager.entities[em.EntityManager.PLAYER_1].setPos(entryPos)
-		em.EntityManager.entities[em.EntityManager.PLAYER_1].speed = [0, 0]
-		em.EntityManager.entities[em.EntityManager.PLAYER_2].setPos(entryPos)
-		em.EntityManager.entities[em.EntityManager.PLAYER_2].speed = [0, 0]
+		MapManager.entryInfo = entryInfo
+		e1 = em.EntityManager.entities[em.EntityManager.PLAYER_1]
+		e2 = em.EntityManager.entities[em.EntityManager.PLAYER_2]
+
+		if entryInfo[1] == "left":
+			e1.setPos([entryInfo[0][0], entryInfo[0][1] + 0.5])
+			e2.setPos([entryInfo[0][0], entryInfo[0][1] - 0.5])
+			e1.setDirection(0)
+			e2.setDirection(0)
+		elif entryInfo[1] == "right":
+			e1.setPos([entryInfo[0][0], entryInfo[0][1] + 0.5])
+			e2.setPos([entryInfo[0][0], entryInfo[0][1] - 0.5])
+			e1.setDirection(2)
+			e2.setDirection(2)
+		elif entryInfo[1] == "up":
+			e1.setPos([entryInfo[0][0] - 0.5, entryInfo[0][1]])
+			e2.setPos([entryInfo[0][0] + 0.5, entryInfo[0][1]])
+			e1.setDirection(1)
+			e2.setDirection(1)
+		elif entryInfo[1] == "down":
+			e1.setPos([entryInfo[0][0] - 0.5, entryInfo[0][1]])
+			e2.setPos([entryInfo[0][0] + 0.5, entryInfo[0][1]])
+			e1.setDirection(3)
+			e2.setDirection(3)
+		else:
+			e1.setPos(entryInfo[0])
+			e2.setPos(entryInfo[0])
+			e1.setDirection(3)
+			e2.setDirection(3)
+
+		e1.speed = [0, 0]
+		e2.speed = [0, 0]
+
+
 
 	@staticmethod
 	def unload():

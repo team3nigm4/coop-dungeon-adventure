@@ -1,33 +1,33 @@
-from game.game.entitymodel import door
+from game.game.entityclass import entitycollision
 
-class LockedDoor(door.Door):
+class LockedDoor(entitycollision.EntityCollision):
+
+    ARGS_COL_BOX_SIZE = 3
+    ARGS_EVENT = 4
+
     def __init__(self, args):
         args.append(False)
         super().__init__(args)
-        self.attributes["key"] = 2
-        self.testCol = False
+        self.event = args[LockedDoor.ARGS_EVENT]
         self.checkState()
+
+        self.setColBox(args[LockedDoor.ARGS_COL_BOX_SIZE])
+        self.colReduc()
+
+        self.setCollision(True)
+        self.attributes["key"] = 2
+
+        self.colRenderer.setAttributes(self.colSize, [1, 0.5, 0.5, 0.5])
+        self.setDrawCol(True)
 
     def collision(self, ent):
         if ent.attributes["key"] == 1:
             ent.triggerBox(ent)
-            self.activate()
             ent.removeEm()
+            self.ev.activate(self.event)
+            self.removeEm()
 
         super().collision(ent)
 
     def checkState(self):
-        if self.testCol:
-            self.activate()
-        else:
-            self.deactivate()
-
-    def activate(self):
-        self.testCol = True
-        self.mam.setTileSize(self.pos, self.halfColSize, 0)
-        self.setDrawCol(True)
-
-    def deactivate(self):
-        self.testCol = False
-        self.mam.setTileSize(self.pos, self.halfColSize, 1)
-        self.setDrawCol(False)
+        self.ev.deactivate(self.event)

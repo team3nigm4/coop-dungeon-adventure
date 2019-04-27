@@ -1,6 +1,6 @@
 {
-  	"tilesets" : [
-  	"outside",
-  	"tuto"
+  	"tileSets" : [
+	  "outside",
+	  "tuto"
 	]
 }

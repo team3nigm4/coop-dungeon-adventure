@@ -45,7 +45,7 @@ class Spider(enemy.Enemy):
 		self.targetCounter = 0
 		self.targetDir = [True, True]
 
-		self.entityRenderer.setImagePath([0.6, 0.6], "ennemies/spider.png", [0.3, 0.3])
+		self.entityRenderer.setImage([0.6, 0.6], "spider", [0.3, 0.3])
 		self.gapDisplayPos = 0.2
 
 	def update(self):
@@ -60,7 +60,7 @@ class Spider(enemy.Enemy):
 				di1 = mathcda.distE(self, self.em.entities[self.em.PLAYER_1])
 				di2 = mathcda.distE(self, self.em.entities[self.em.PLAYER_2])
 				if di1 < di2:
-					if  di1< Spider.DETECTION_RANGE:
+					if  di1 < Spider.DETECTION_RANGE:
 						track = self.em.PLAYER_1
 				else:
 					if  di2 < Spider.DETECTION_RANGE:

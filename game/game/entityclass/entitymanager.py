@@ -26,7 +26,9 @@ class EntityManager:
 		"Arrow": 0,
 		"Bat": 0,
 		"Bridge": 0,
-		"Door": 0,
+		"Decor": 0,
+		"Tp": 0,
+		"InteractionSwitch": 0,
 		"ItemRecoverable": 1,
 		"LockedDoor": 1,
 		"Mannequin": 0,
@@ -59,7 +61,7 @@ class EntityManager:
 			EntityManager.addWithId(result[1])
 		else:
 			if not result[1] == "No Error":
-				Logger.error("LoadEntity", result[1] + "\n" + str(args))
+				Logger.error("LoadEntity", str(result[1]) + "\n" + str(args))
 
 	@staticmethod
 	def addToDisplay(layer, entityId, pos=0):
@@ -99,10 +101,9 @@ class EntityManager:
 
 	@staticmethod
 	def checkId():
-		for e in range(3, EntityManager.len):
-			idM = EntityManager.entities[e - 1].entityId.id
-			if EntityManager.entities[e].entityId.id - idM > 1:
-				EntityManager.entities[e].entityId.id = idM + 1
+		for e in range(2, EntityManager.len - 1):
+			if EntityManager.entities[e].entityId.id != e:
+				EntityManager.entities[e].setId(e)
 
 	@staticmethod
 	def clear():
@@ -202,15 +203,16 @@ class EntityManager:
 		# Unload the entity
 		EntityManager.entities[id].unload()
 
-		if id == len(EntityManager.entities) - 1:
-			del EntityManager.entities[id]
-		else:
-			EntityManager.entities[id] = entitycollision.EntityCollision(["Null", -1, [0, 0]])
+		del EntityManager.entities[id]
 
 		EntityManager.len = len(EntityManager.entities)
 		# Print the removing ?
 		if info[1]:
 			Logger.info("ENTITY MANAGER", "Remove entity n°" + str(id))
+
+		if id != len(EntityManager.entities):
+			for i in range(id, EntityManager.len):
+				EntityManager.entities[i].entityId.id -=1
 
 	@staticmethod
 	def remove(entityId, printRemove):

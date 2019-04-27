@@ -18,7 +18,7 @@ class EventManager:
 	@staticmethod
 	def endInit():
 		for i in range(len(EventManager.event)):
-			if EventManager.event[0] == 0:
+			if EventManager.event[i] == 0:
 				EventManager.activeAllEntities(i)
 			else:
 				EventManager.deactiveAllEntities(i)

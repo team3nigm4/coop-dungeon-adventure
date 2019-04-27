@@ -2,8 +2,6 @@
 
 from game.game.entityclass import entitydrawable
 
-from PIL import Image as img
-
 
 class TogglePlate(entitydrawable.EntityDrawable):
 	ARGS_EVENT_ID = 3
@@ -12,8 +10,8 @@ class TogglePlate(entitydrawable.EntityDrawable):
 		super().__init__(args)
 		self.setColBox([1, 1])
 		self.setCollision(True)
-		self.images = [img.open("game/resources/textures/blocks/toggle-plate-release.png"),
-					img.open("game/resources/textures/blocks/toggle-plate-press.png")]
+		self.images = ["toggle-plate-release",
+					"toggle-plate-press"]
 
 		self.entityRenderer.setImage([1, 1], self.images[0], [0.5, 0.5])
 
