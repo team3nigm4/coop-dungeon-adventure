@@ -8,6 +8,7 @@ import glfw
 import colorama
 
 from sys import exit
+from PIL import Image 
 
 from game.util.logger import Logger 
 from game.main.config import Config
@@ -55,6 +56,8 @@ class Window:
 			exit()
 
 		glfw.make_context_current(Window.window)
+
+		glfw.set_window_icon(Window.window, 1, Image.open("game/resources/icon.png"))
 
 		if Config.values["window"]["limFrameRate"]:
 			glfw.swap_interval(1)
