@@ -1,6 +1,7 @@
 # Import test map
 import json
 import os
+from sys import exit
 
 
 class MapLoading:

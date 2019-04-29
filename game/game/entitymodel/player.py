@@ -1,6 +1,7 @@
 # Entity class player, embodies one of the players
 
 import math
+from sys import exit
 
 from game.game.entityclass import entitycomplex
 

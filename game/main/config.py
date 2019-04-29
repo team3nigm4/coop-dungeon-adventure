@@ -1,5 +1,7 @@
 # Check, load and save the config (path)
 
+from sys import exit
+
 from game.util.logger import Logger
 
 class Config:

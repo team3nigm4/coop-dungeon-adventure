@@ -7,6 +7,8 @@ import glfw
 
 import colorama
 
+from sys import exit
+
 from game.util.logger import Logger 
 from game.main.config import Config
 
