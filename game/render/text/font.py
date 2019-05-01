@@ -140,13 +140,20 @@ class Font:
 
 		vbo = [0] * (chars * 36)
 
-		text.split("\n")
 		part = text.split("\n")
 		partAdvancement = [0] * len(part)
-		for index in range(1, len(part)):
-			partAdvancement[index] = partAdvancement[index-1]
-			partAdvancement[index] += len(part[index-1])
 
+		# Calculations and securities
+		for index in range(0, len(part)):
+			if not index == 0:
+				partAdvancement[index] = partAdvancement[index-1]
+				partAdvancement[index] += len(part[index-1])
+
+			for i in part[index]:
+				if not ord(i) in self.chars:
+					part[index] = part[index].replace(i, " ")
+
+		# Create the content of vbo
 		for index in range(len(part)):
 			sizes = []
 			for letter in part[index]:
@@ -176,7 +183,7 @@ class Font:
 				# pos Y
 				vbo[(partAdvancement[index] + letter) * 36 + 1] = -size * (index + 1) - size / 2 * (index) + halfSizeY
 				vbo[(partAdvancement[index] + letter) * 36 + 10] = vbo[(partAdvancement[index] + letter) * 36 + 1]
-				vbo[(partAdvancement[index] + letter) * 36 + 19] = -size * (index) - size / 2 * (index) + halfSizeY
+				vbo[(partAdvancement[index] + letter) * 36 + 19] = -size * index - (size / 2 * index) + halfSizeY
 				vbo[(partAdvancement[index] + letter) * 36 + 28] = vbo[(partAdvancement[index] + letter) * 36 + 19]
 
 				# texture pos X
