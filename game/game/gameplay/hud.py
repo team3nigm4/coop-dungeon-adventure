@@ -160,7 +160,7 @@ class Hud:
 		Hud.addVertice(position[0] + size[0] / 2, position[1] + size[1] / 2,
 					pos[0] + 1, pos[1], vboCount, opacity)
 
-		Hud.addVertice(position[0]- size[0]/2, position[1] + size[1]/2,
+		Hud.addVertice(position[0] - size[0]/2, position[1] + size[1]/2,
 					pos[0], pos[1], vboCount, opacity)
 
 	@staticmethod
@@ -177,4 +177,4 @@ class Hud:
 
 	@staticmethod
 	def unload():
-		pass
+		Hud.shape.unload()

@@ -4,6 +4,7 @@ from game.render.texture.texturemanager import TextureManager as tm
 from game.screen import camera
 from game.inputs.inputmanager import InputManager as im
 from game.render.shader.shadermanager import ShaderManager as sm
+from game.render.text.textmanager import TextManager as txm
 from game.util.logger import Logger
 
 
@@ -30,6 +31,7 @@ class GameManager:
 
 	def begin(self):
 		tm.init()
+		txm.init()
 
 		from game.main.config import Config
 		im.init(Config.inputs)
@@ -39,7 +41,6 @@ class GameManager:
 
 	def init(self):
 		self.setCurrentScreen(GameManager.GAMESCREEN)
-
 
 	def update(self):
 		self.currentScreen.update()

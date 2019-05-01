@@ -1,0 +1,8 @@
+{
+  "fonts" : {
+	"test": {
+		"texture" : "test-bitmap",
+		"info" : "test.fnt"
+	}
+  }
+}
