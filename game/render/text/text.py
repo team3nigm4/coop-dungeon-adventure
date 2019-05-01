@@ -75,7 +75,6 @@ class Text:
 
 		self.setColor(self.color)
 		self.shape.setEbo(self.ebo)
-		print(self.ebo,"\n", self.vbo)
 
 	def setAll(self, text, size, position, color, centering):
 		self.text = ""
