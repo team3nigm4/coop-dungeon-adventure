@@ -216,6 +216,9 @@ class EntityManager:
 
 	@staticmethod
 	def remove(entityId, printRemove):
+		for e in EntityManager.entitiesRemove:
+			if e[0] == entityId:
+				return
 		EntityManager.entitiesRemove.append([entityId, printRemove])
 
 	@staticmethod

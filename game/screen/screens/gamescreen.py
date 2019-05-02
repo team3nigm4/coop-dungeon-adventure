@@ -9,6 +9,7 @@ from game.inputs.inputmanager import InputManager as im
 from game.screen.gamemanager import GameManager as gm
 from game.screen.screens import screen
 from game.game.gameplay.hud import Hud
+from game.render.text import text
 
 
 class GameScreen(screen.Screen):
@@ -37,6 +38,13 @@ class GameScreen(screen.Screen):
 		self.controlPlay2.setEntity(em.entities[em.PLAYER_2])
 
 		gm.cam.trackEntity(em.PLAYER_1)
+
+		self.text = text.Text("pixel1")
+		self.text.setSize(0.4)
+		self.text.setColor([0.4,0.1,0.8,1])
+		self.text.setPosition([18, 0])
+		self.text.setCentering("down-right")
+		self.text.setText("CDA v.0.1")
 
 		self.inPause = False
 
@@ -80,9 +88,11 @@ class GameScreen(screen.Screen):
 	def display(self):
 		mam.display()
 		Hud.display()
+		self.text.display()
 
 	def unload(self):
 		mam.unload()
 		Hud.unload()
 		em.entities[em.PLAYER_1].unload()
 		em.entities[em.PLAYER_2].unload()
+		self.text.unload()

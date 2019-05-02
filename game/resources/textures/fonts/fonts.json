@@ -1,0 +1,16 @@
+{
+  "fonts" : {
+	  "test": {
+		  "texture" : "test-bitmap",
+		  "info" : "test.fnt"
+	  },
+	  "04b": {
+		  "texture" : "o4b-bitmap",
+		  "info": "04b.fnt"
+	  },
+	  "pixel1": {
+		  "texture" : "pixel1-bitmap",
+		  "info": "pixelfont1.fnt"
+	  }
+  }
+}

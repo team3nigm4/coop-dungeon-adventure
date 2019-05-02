@@ -15,6 +15,11 @@
 	  "mannequin" : "mannequin.png",
 	  "spider" : "spider.png"
 	},
+	  "fonts" : {
+		  "test-bitmap" : "test.png",
+		  "04b-bitmap" : "04b.png",
+		  "pixel1-bitmap" : "pixelfont1.png"
+	  },
 	"hud" : {
 	  "hud" : "hudset.png",
 	  "transition" : "transition.png",

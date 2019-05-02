@@ -44,7 +44,7 @@ class ShaderManager:
 				elif reload == "static":
 					matrix = matrix4f.Matrix4f(True)
 					matrix.matrix[3][2] = -8.572
-					glU.glUniformv(ShaderManager.shaders["hud"], "view", matrix.matrix)
+					glU.glUniformv(ShaderManager.shaders[shad], "view", matrix.matrix)
 
 		ShaderManager.dispose()
 
