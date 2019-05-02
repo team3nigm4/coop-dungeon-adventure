@@ -39,12 +39,12 @@ class GameScreen(screen.Screen):
 
 		gm.cam.trackEntity(em.PLAYER_1)
 
-		self.text = text.Text("test")
+		self.text = text.Text("pixel1")
 		self.text.setSize(0.4)
 		self.text.setColor([0.4,0.1,0.8,1])
 		self.text.setPosition([18, 0])
 		self.text.setCentering("down-right")
-		self.text.setText("Test Enaéled\nTest concluded by a success\nText enter in the BATTLE !")
+		self.text.setText("Test Enabled\nTest concluded by a success\nText enter in the BATTLE !")
 
 		self.inPause = False
 
