@@ -1,31 +1,36 @@
 # Manages key states
 
-
-from game.main.window import Window
+from game.main import window
 import glfw
 
-
 class KeyBoardManager:
-	def __init__(self):
-		self.state = [False] * 350
-		self.tempState = [False] * 350
 
-	def keyPressed(self, keyId):
-		if self.state[keyId] == True and self.tempState[keyId] == False:
+	state = [False] * 348
+	tempState = [False] * 348
+
+	beginKey = 32
+
+	@staticmethod
+	def keyPressed(keyId):
+		if KeyBoardManager.state[keyId] == True and KeyBoardManager.tempState[keyId] == False:
 			return True
 		else:
 			return False
 
-	def keyReleased(self, keyId):
-		if self.state[keyId] == False and self.tempState[keyId] == True:
+	@staticmethod
+	def keyReleased(keyId):
+		if KeyBoardManager.state[keyId] == False and KeyBoardManager.tempState[keyId] == True:
 			return True
 		else:
 			return False
 
 	@staticmethod
 	def getKey(key):
-		return glfw.get_key(Window.window, key) == 1
+		return glfw.get_key(window.Window.window, key) == 1
 
-	def dispose(self, keyId):
-		self.tempState[keyId] = self.state[keyId]
-		self.state[keyId] = KeyBoardManager.getKey(keyId)
+	@staticmethod
+	def dispose():
+
+		for key in range(KeyBoardManager.beginKey, len(KeyBoardManager.state)):
+			KeyBoardManager.tempState[key] = KeyBoardManager.state[key]
+			KeyBoardManager.state[key] = KeyBoardManager.getKey(key)

@@ -13,6 +13,7 @@ from PIL import Image
 from game.util.logger import Logger 
 from game.main.config import Config
 
+from game.screen import gamemanager as gm
 
 class Window:
 	SECOND = 1000000000
@@ -38,11 +39,8 @@ class Window:
 
 		Window.create()  # the window
 
-		from game.screen import gamemanager as gm
-		global gameManager
-		gameManager = gm.GameManager()
-		gameManager.begin()
-		gameManager.init()
+		# Init game manager
+		gm.GameManager.init()
 
 	@staticmethod
 	def create():
@@ -106,12 +104,12 @@ class Window:
 				secondTime = time.time_ns()
 
 			while lag >= Window.TICK_TIME:
-				gameManager.update()
+				gm.GameManager.update()
 
 				lag -= Window.TICK_TIME
 				ticks += 1
 
-			gameManager.display()
+			gm.GameManager.display()
 			frames += 1
 
 			glfw.swap_buffers(Window.window)
@@ -121,7 +119,7 @@ class Window:
 
 	@staticmethod
 	def exit():
-		gameManager.unload()
+		gm.GameManager.unload()
 		glfw.terminate()
 		print("")
 		Logger.info("GAME", "Closed")

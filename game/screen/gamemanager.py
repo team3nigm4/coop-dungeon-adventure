@@ -9,27 +9,17 @@ from game.util.logger import Logger
 
 
 class GameManager:
-	MENUSCREEN = 0
-	GAMESCREEN = 1
-
-	# server = True
-
 	currentScreen = None
 	cam = None
 
 	texManager = None
 	inputManager = None
 
-	# Data for games
-	serverData = [0]
-	clientData = [0]
-
-	def __init__(self):
+	@staticmethod
+	def init():
 		# Init systems
 		Logger.info("GAME MANAGER", "Created")
 
-
-	def begin(self):
 		tm.init()
 		txm.init()
 
@@ -39,28 +29,43 @@ class GameManager:
 		GameManager.cam = camera.Camera(70.0, [0, 0, -8.572])  # Precise position of cam to render 18 * 12 tiles
 		sm.init()
 
-	def init(self):
-		self.setCurrentScreen(GameManager.GAMESCREEN)
+		GameManager.setCurrentScreen("menuscreen", [True])
 
-	def update(self):
-		self.currentScreen.update()
+	@staticmethod
+	def update():
+		GameManager.currentScreen.update()
 		im.dispose()
 		sm.dispose()
 
-	def display(self):
+	@staticmethod
+	def display():
 		GameManager.currentScreen.display()
 
-	def setCurrentScreen(self, value):
-		if value == GameManager.MENUSCREEN:
-			from game.screen.screens import menuScreen as me
-			GameManager.currentScreen = me.MenuScreen()
-		if value == GameManager.GAMESCREEN:
+	@staticmethod
+	def setCurrentScreen(value, arg):
+		if not GameManager.currentScreen == None:
+			GameManager.currentScreen.unload()
+
+		if value == "menuscreen" or value == "Menuscreen" or value == "MenuScreen":
+			from game.screen.screens import menuscreen as me
+			GameManager.currentScreen = me.MenuScreen([])
+		elif value == "GameScreen" or value == "gamescreen" or value == "Gamescreen":
 			from game.screen.screens import gamescreen as ga
-			GameManager.currentScreen = ga.GameScreen()
+			if arg[0] == True:
+				import json
+				info = json.load(open("data/server/server.json"))
+				GameManager.currentScreen = ga.GameScreen([True, info["ip"], info["port"]])
+			else:
+				GameManager.currentScreen = ga.GameScreen([False])
+			# cdi-p08.cda-game.ga 34141
+			# play.cda-game.ga 34141
+			# alex.cda-game.ga
+			# localhost 34141
 
 		GameManager.currentScreen.init()
 
-	def unload(self):
+	@staticmethod
+	def unload():
 		GameManager.currentScreen.unload()
 		sm.unload()
 		tm.unload()
