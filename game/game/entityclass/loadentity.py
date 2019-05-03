@@ -8,7 +8,7 @@ class LoadEntity:
 	from game.game.entitymodel import tp
 	from game.game.entitymodel import  interactionswitch
 	from game.game.entitymodel import itemrecoverable
-	from game.game.entitymodel import lockeddoor
+	from game.game.entitymodel import padlock
 	from game.game.entitymodel import mannequin
 	from game.game.entitymodel import player
 	from game.game.entitymodel import pressureplate
@@ -27,7 +27,7 @@ class LoadEntity:
 		"Tp": tp.Tp,
 		"InteractionSwitch" : interactionswitch.InteractionSwitch,
 		"ItemRecoverable": itemrecoverable.ItemRecoverable,
-		"LockedDoor": lockeddoor.LockedDoor,
+		"Padlock": padlock.Padlock,
 		"Mannequin": mannequin.Mannequin,
 		"Player": player.Player,
 		"PressurePlate": pressureplate.PressurePlate,
@@ -52,7 +52,7 @@ class LoadEntity:
 		"Tp": 0,
 		"InteractionSwitch": 0,
 		"ItemRecoverable": 1,
-		"LockedDoor": 1,
+		"Padlock": 1,
 		"Mannequin": 0,
 		"Player": 1,
 		"PressurePlate": 0,

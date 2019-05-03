@@ -30,7 +30,7 @@ class EntityManager:
 		"Tp": 0,
 		"InteractionSwitch": 0,
 		"ItemRecoverable": 1,
-		"LockedDoor": 1,
+		"Padlock": 1,
 		"Mannequin": 0,
 		"Player": 1,
 		"PressurePlate": 0,
