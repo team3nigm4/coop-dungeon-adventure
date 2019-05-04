@@ -30,7 +30,7 @@ class Client:
 			self.conn.connect((self.ip, self.port))
 			self.me = str(self.conn.getsockname()[1])
 			self.isConnect = True
-		except Exception as e:
+		except socket.timeout as e:
 			Logger.warning("Client", "Error when connection to the server(" + str(self.ip) + ":" + str(self.port))
 			print(e)
 			self.isConnect = False
@@ -42,16 +42,25 @@ class Client:
 	def receive(self):
 		if self.isConnect:
 			try:
-				self.data = simplejson.loads(self.conn.recv(2000))
+				tempData = self.conn.recv(2000)
+				try:
+					tempData = simplejson.loads(tempData)
+					self.data = tempData
+				except:
+					pass
 			except socket.timeout as e:
-				pass
+				self.data = ""
 
 	def connectState(self):
 		return self.isConnect
 
-	def getClientId(self):
+	def getId(self):
 		return self.clientId
 
+	def getPort(self):
+		return self.me
+
 	def disconnection(self):
-		self.conn.close()
-		self.isConnect = False
+		if self.isConnect:
+			self.conn.close()
+			self.isConnect = False

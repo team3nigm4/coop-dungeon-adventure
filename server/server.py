@@ -18,7 +18,6 @@ do_reset = True
 buffer_size = 2000
 delay = 0
 clients = {}
-
 class Logger:
 	def log(text):
 		print("[" + datetime.datetime.now().strftime("%H:%M:%S") + "] " + text)
@@ -42,12 +41,11 @@ class Logger:
 		print('\033[1m' + text + '\033[0m')
 
 	def rec(text):
-		print('[← IN] ' + text)
+		print('[← IN] :')
+		print(text)
 
 	def send(text):
 		print('[→ OUT] ' + text)
-
-
 
 class Commands():
 
@@ -135,20 +133,20 @@ class CdaServer(Commands):
 			clients[clientaddr[1]] = {}
 			self.input_list.append(clientsock)
 			self.player1 = clientaddr[1]
-			self.to_send = {
-				self.player1: [0, 0, 0, 0, 0, 0, 0]
-			}
+			self.to_send[self.player1] = {
+					"touch" : [0, 0, 0, 0, 0, 0, 0, 0]
+				}
 
 		elif self.player2 == "":
-
 			clientsock, clientaddr = self.server.accept()
 			Logger.warning(clientaddr[0] + ":" + str(clientaddr[1]) + " has connected as Player 2")
 			clients[clientaddr[1]] = {}
 			self.input_list.append(clientsock)
-			self.player2 = clientaddr[0]
-			self.to_send = {
-				self.player2: [0, 0, 0, 0, 0, 0, 0]
-			}
+			self.player2 = clientaddr[1]
+
+			self.to_send[self.player2] = {
+					"touch" : [0, 0, 0, 0, 0, 0, 0, 0]
+				}
 
 		else:
 			Logger.warning("An other person want to go in our private room !!")
@@ -157,6 +155,16 @@ class CdaServer(Commands):
 		clientaddr = self.s.getpeername()
 		Logger.warning(
 			"Player#" + str(clientaddr[1]) + " (" + clientaddr[0] + ":" + str(clientaddr[1]) + ") has disconnected")
+
+		_id = self.s.getpeername()[1]
+
+		if _id == self.player1:
+			self.to_send["all"] = "disconnect"
+			self.sendTo(self.player2, self.to_send)
+		elif _id == self.player2:
+			self.to_send["all"] = "disconnect"
+			self.sendTo(self.player1, self.to_send)
+
 		del (clients[clientaddr[1]])
 		self.input_list.remove(self.s)
 
@@ -171,52 +179,80 @@ class CdaServer(Commands):
 			if clients[_id] == "wait":
 				Logger.send(str(self.to_send))
 				self.s.send(bytes(simplejson.dumps(self.to_send), 'utf-8'))
+			else:
 				if _id == self.player1:
-					self.to_send["all"] = "ingame"
+					self.to_send[self.player2]["touch"] = clients[_id]
+				else:
+					self.to_send[self.player1]["touch"] = clients[_id]
+
+				self.sendToEveryone(self.to_send)
 		else:
 			if clients[_id] == "connection":
 				if _id == self.player1 :
 					self.player1Client = self.s
 				elif _id == self.player2:
 					self.player2Client = self.s
+			elif clients[_id] == "player":
+				if _id == self.player1:
+					self.to_send[self.player1]["player"] = 0
+					self.player1Client.send(bytes(simplejson.dumps(self.to_send), 'utf-8'))
+				elif _id == self.player2:
+					self.to_send[self.player2]["player"] = 1
+					self.player2Client.send(bytes(simplejson.dumps(self.to_send), 'utf-8'))
 			elif clients[_id] == "wait":
-				self.s.send(bytes(simplejson.dumps(self.to_send), 'utf-8'))
+				if _id == self.player1:
+					self.player1_ok = True
+					if self.player2_ok:
+						self.to_send["all"] = "play"
+						del self.to_send[self.player1]["player"]
+						del self.to_send[self.player2]["player"]
+						self.gameBegin = True
+						self.sendToEveryone(self.to_send)
+				elif _id == self.player2:
+					self.player2_ok = True
+					if self.player1_ok:
+						self.to_send["all"] = "play"
+						del self.to_send[self.player1]["player"]
+						del self.to_send[self.player2]["player"]
+						self.gameBegin = True
+						self.sendToEveryone(self.to_send)
 
+	def sendToEveryone(self, text):
+		self.player1Client.send(bytes(simplejson.dumps(text), 'utf-8'))
+		self.player2Client.send(bytes(simplejson.dumps(text), 'utf-8'))
 
+	def sendTo(self, id, text):
+		if id == self.player1:
+			self.player1Client.send(bytes(simplejson.dumps(text), 'utf-8'))
+		elif id == self.player2:
+			self.player2Client.send(bytes(simplejson.dumps(text), 'utf-8'))
 
-		# self.s.send(bytes(simplejson.dumps({str(_id): {"player" : 1}}), 'utf-8'))
-		# self.s.send(bytes(simplejson.dumps({str(_id): {"player": 2}}), 'utf-8'))
-		#
-		#
+try:
+	while do_reset:
+		server = CdaServer('0.0.0.0', 34141)
 
-if __name__ == '__main__':
-	try:
-		while do_reset:
-			server = CdaServer('0.0.0.0', 34141)
+		t = Thread(target=server.main_loop)
+		t.daemon = True
+		t.start()
+		time.sleep(0.2)
+		is_running = True
 
-			t = Thread(target=server.main_loop)
-			t.daemon = True
-			t.start()
-			time.sleep(0.2)
-			is_running = True
+		while is_running:
+			line = input("")
+			tokens = line.split()
+			cmd = tokens[0].lower()
+			args = tokens[1:]
+			if hasattr(CdaServer, 'do_' + cmd):
+				getattr(CdaServer, 'do_' + cmd)(*args)
+			else:
+				Logger.error("Unknown command !")
 
-			while is_running:
-				line = input("")
-				tokens = line.split()
-				cmd = tokens[0].lower()
-				args = tokens[1:]
-				if hasattr(CdaServer, 'do_' + cmd):
-					getattr(CdaServer, 'do_' + cmd)(*args)
-				else:
-					Logger.error("Unknown command !")
+		do_reset = False
+		if reset:
+			do_reset = True
+			reset = False
 
-			do_reset = False
-			if reset:
-				do_reset = True
-				reset = False
-
-	except KeyboardInterrupt:
-		Logger.bold(
-			"\n\nThe server has been shut down with Ctrl+C. Prefer typing the 'stop' command to close it cleanly.")
-
+except KeyboardInterrupt:
+	Logger.bold(
+		"\n\nThe server has been shut down with Ctrl+C. Prefer typing the 'stop' command to close it cleanly.")
 sys.exit(1)

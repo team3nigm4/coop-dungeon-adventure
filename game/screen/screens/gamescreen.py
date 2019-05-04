@@ -25,6 +25,7 @@ class GameScreen(screen.Screen):
 		super().__init__()
 
 		self.inPause = False
+		self.mapChange = False
 		self.networkInfo = networkInfo
 
 		self.controlPlay1 = plc.PlayerController()
@@ -58,8 +59,9 @@ class GameScreen(screen.Screen):
 
 		# init network if game in multi player
 		if self.networkInfo[0]:
-			self.client = client.Client(self.networkInfo[1], str(self.networkInfo[2]))
+			self.client = client.Client(self.networkInfo[1], int(self.networkInfo[2]))
 			self.serverPause = True
+			self.isPlayer = -1
 			self.client.connection()
 
 			if self.client.connectState():
@@ -76,42 +78,78 @@ class GameScreen(screen.Screen):
 		self.text.setText("CDA v.0.1 - network:" + str(self.networkInfo[0]))
 
 	def update(self):
-
 		# Keys test
 		if im.inputPressed(im.ESCAPE):
 			from game.main.window import Window
 			Window.exit()
 
-		if self.serverPause and self.networkInfo[0]:
-			self.send("wait")
-
 		if self.networkInfo[0]:
-			self.receive()
+			self.updateMulti()
+		else:
+			self.updateLocal()
 
-		if True:
+	def updateMulti(self):
+		if self.serverPause:
+			if self.isPlayer == -1:
+				self.client.send("player")
+			else:
+				self.client.send("wait")
+		else:
+			if not self.mapChange:
+				# Update
+				self.controlPlay1.update()
+				self.controlPlay2.update()
+				if self.isPlayer == 0:
+					if not self.controlPlay1.tempInputState == self.controlPlay1.inputState:
+						self.client.send(str(self.controlPlay1.inputState))
+				else:
+					if not self.controlPlay2.tempInputState == self.controlPlay2.inputState:
+						self.client.send(str(self.controlPlay2.inputState))
+
+				em.update()
+
+				if kbm.keyPressed(290):
+					from game.game.command import Command
+					Command.command(input('\n[COMMAND] $ '))
+
+				# Dispose components
+				gm.cam.goToEntity()
+				em.dispose()
+				Hud.dispose()
+
+			mam.update()
+
+		self.client.receive()
+		self.analyseData(self.client.data)
+
+	def updateLocal(self):
+		if not self.inPause and not self.mapChange:
 			# Update
 			self.controlPlay1.update()
 			self.controlPlay2.update()
 			em.update()
 
-			if im.inputPressed(im.RESET):
+			if self.controlPlay1.inputState[0] >= 2:
 				mam.reserveChange(mam.zone, mam.id, mam.defaultEntry)
 
-			if im.inputPressed(im.ITEM2_0):
+			if kbm.keyPressed(291):
 				gm.cam.trackEntity(1 - gm.cam.entityId)
 
-			if kbm.getKey(290):
+			if kbm.keyPressed(290):
+				self.inPause = True
 				from game.game.command import Command
 				Command.command(input('\n[COMMAND] $ '))
+				self.inPause = False
 
 			# Dispose components
 			gm.cam.goToEntity()
 			em.dispose()
 			Hud.dispose()
 
-			mam.update()
 		else:
 			pass
+
+		mam.update()
 
 	def display(self):
 		mam.display()
@@ -120,25 +158,59 @@ class GameScreen(screen.Screen):
 
 	def unload(self):
 		if self.networkInfo[0]:
-			self.conn.close()
+			self.client.disconnection()
 		mam.unload()
 		Hud.unload()
 		em.entities[em.PLAYER_1].unload()
 		em.entities[em.PLAYER_2].unload()
 		self.text.unload()
 
-	def analyseData(self):
-		print(self.data)
-		if self.me in self.data:
-			if "player" in self.data[self.me]:
-				self.player = self.data[self.me]["player"]
-				gm.cam.trackEntity(self.player - 1)
-				print()
-				self.text.setText(self.text.text + "\n Player:" + str(self.player))
+	def analyseData(self, data):
+		if data == "":
+			return
 
-		if "all" in self.data:
-			if self.data["all"] == "play":
-				print("game started")
+		print(data)
+		if self.client.getPort() in data:
+			if "player" in data[self.client.getPort()]:
+				self.isPlayer = data[self.client.getPort()]["player"]
+
+				gm.cam.trackEntity(self.isPlayer)
+				self.text.setText(self.text.text + "\n Player:" + str(self.isPlayer + 1))
+
+				if self.isPlayer == 0:
+					self.controlPlay1.multi = True
+					self.controlPlay2.block = True
+				else:
+					self.controlPlay2.multi = True
+					self.controlPlay1.block = True
+
+			string = data[self.client.getPort()]["touch"]
+			if type(string) == str:
+				string = string.replace("[", "")
+				string = string.replace("]", "")
+				string = string.split(",")
+				for i in range(len(string)):
+					string[i] = int(string[i])
+			print(self.client.getPort())
+			if self.isPlayer == 0:
+				self.controlPlay2.inputState = string
+			else:
+				self.controlPlay1.inputState = string
+
+		if "all" in data:
+			if data["all"] == "play":
 				self.serverPause = False
-			elif self.data["all"] == "stop":
+			elif data["all"] == "stop":
 				self.serverPause = True
+			elif data["all"] == "disconnect":
+				self.controlPlay2.multi = False
+				self.controlPlay2.block = False
+				self.controlPlay1.multi = False
+				self.controlPlay1.block = False
+
+				self.controlPlay1.inputState = [0, 0, 0, 0, 0, 0, 0, 0]
+				self.controlPlay2.inputState = [0, 0, 0, 0, 0, 0, 0, 0]
+
+				self.client.disconnection()
+				self.networkInfo[0] = False
+				self.text.setText("CDA v.0.1 - network:" + str(self.networkInfo[0]))
