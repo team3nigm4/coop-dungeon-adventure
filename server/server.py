@@ -94,8 +94,15 @@ class CdaServer(Commands):
 		self.player1Client = None
 		self.player2Client = None
 
+		# to_send -> all = 0, playerport1, playerport2
+			# all -> play = 0, stop = 1, disconnect = 2
+			# one player -> 0 = inputs, 2 = player pos, 3 = player attribution
+
+		# players -> state = 0, info = 1
+			# state -> connection = 0, player = 1, wait = 2
+			# info -> inputs = 0, player pos = 1
 		self.to_send = {}
-		self.to_send["all"] = "stop"
+		self.to_send['0'] = 1
 
 	def main_loop(self):
 
@@ -112,7 +119,6 @@ class CdaServer(Commands):
 		Logger.warning('Waiting for players...')
 
 		while 1:
-			time.sleep(delay)
 			inputr, outputr, exceptr = select.select(self.input_list, [], [])
 			for self.s in inputr:
 				if self.s == self.server:
@@ -134,7 +140,7 @@ class CdaServer(Commands):
 			self.input_list.append(clientsock)
 			self.player1 = clientaddr[1]
 			self.to_send[self.player1] = {
-					"touch" : [0, 0, 0, 0, 0, 0, 0, 0]
+					'0' : [0, 0, 0, 0, 0, 0, 0, 0]
 				}
 
 		elif self.player2 == "":
@@ -145,7 +151,7 @@ class CdaServer(Commands):
 			self.player2 = clientaddr[1]
 
 			self.to_send[self.player2] = {
-					"touch" : [0, 0, 0, 0, 0, 0, 0, 0]
+					'0' : [0, 0, 0, 0, 0, 0, 0, 0]
 				}
 
 		else:
@@ -158,11 +164,12 @@ class CdaServer(Commands):
 
 		_id = self.s.getpeername()[1]
 
-		if _id == self.player1:
-			self.to_send["all"] = "disconnect"
+		# Send disconnect -> 2
+		if _id == self.player1 and self.player2 != "":
+			self.to_send['0'] = '2'
 			self.sendTo(self.player2, self.to_send)
-		elif _id == self.player2:
-			self.to_send["all"] = "disconnect"
+		elif _id == self.player2 and self.player1 != "":
+			self.to_send['0'] = '2'
 			self.sendTo(self.player1, self.to_send)
 
 		del (clients[clientaddr[1]])
@@ -176,52 +183,69 @@ class CdaServer(Commands):
 
 		# Create the answer
 		if self.gameBegin:
-			if clients[_id] == "wait":
+			# State of players
+			if '0' in clients[_id]:
 				Logger.send(str(self.to_send))
 				self.s.send(bytes(simplejson.dumps(self.to_send), 'utf-8'))
-			else:
-				if _id == self.player1:
-					self.to_send[self.player2]["touch"] = clients[_id]
-				else:
-					self.to_send[self.player1]["touch"] = clients[_id]
+			# information by player
+			if '1' in clients[_id]:
+				# inputs
+				if '0' in  clients[_id]['1']:
+					if _id == self.player1:
+						self.to_send[self.player2]['0'] = clients[_id]['1']['0']
+					else:
+						self.to_send[self.player1]['0'] = clients[_id]['1']['0']
+
+				if '1' in clients[_id]['1'] :
+					pass
 
 				self.sendToEveryone(self.to_send)
 		else:
-			if clients[_id] == "connection":
-				if _id == self.player1 :
-					self.player1Client = self.s
-				elif _id == self.player2:
-					self.player2Client = self.s
-			elif clients[_id] == "player":
-				if _id == self.player1:
-					self.to_send[self.player1]["player"] = 0
-					self.player1Client.send(bytes(simplejson.dumps(self.to_send), 'utf-8'))
-				elif _id == self.player2:
-					self.to_send[self.player2]["player"] = 1
-					self.player2Client.send(bytes(simplejson.dumps(self.to_send), 'utf-8'))
-			elif clients[_id] == "wait":
-				if _id == self.player1:
-					self.player1_ok = True
-					if self.player2_ok:
-						self.to_send["all"] = "play"
-						del self.to_send[self.player1]["player"]
-						del self.to_send[self.player2]["player"]
-						self.gameBegin = True
-						self.sendToEveryone(self.to_send)
-				elif _id == self.player2:
-					self.player2_ok = True
-					if self.player1_ok:
-						self.to_send["all"] = "play"
-						del self.to_send[self.player1]["player"]
-						del self.to_send[self.player2]["player"]
-						self.gameBegin = True
-						self.sendToEveryone(self.to_send)
+			if '0' in clients[_id]:
+				# Connection
+				if clients[_id]['0'] == 0:
+					if _id == self.player1 :
+						self.player1Client = self.s
+					elif _id == self.player2:
+						self.player2Client = self.s
+				# Player attribution
+				elif clients[_id]['0'] == 1:
+					if _id == self.player1:
+						self.to_send[self.player1]['3'] = 0
+						self.player1Client.send(bytes(simplejson.dumps(self.to_send), 'utf-8'))
+					elif _id == self.player2:
+						self.to_send[self.player2]['3'] = 1
+						self.player2Client.send(bytes(simplejson.dumps(self.to_send), 'utf-8'))
+				# Wait to server play
+				elif clients[_id]['0'] == 2:
+					# If both players are ok, send play -> 0
+					if _id == self.player1:
+						self.player1_ok = True
+						if self.player2_ok:
+
+							self.to_send['0'] = 0
+							del self.to_send[self.player1]['3']
+							del self.to_send[self.player2]['3']
+							self.gameBegin = True
+							self.sendToEveryone(self.to_send)
+					elif _id == self.player2:
+						self.player2_ok = True
+						if self.player1_ok:
+							self.to_send['0'] = '0'
+							del self.to_send[self.player1]['3']
+							del self.to_send[self.player2]['3']
+							self.gameBegin = True
+							self.sendToEveryone(self.to_send)
 
 	def sendToEveryone(self, text):
-		self.player1Client.send(bytes(simplejson.dumps(text), 'utf-8'))
-		self.player2Client.send(bytes(simplejson.dumps(text), 'utf-8'))
+		if self.player1Client != None:
+			self.player1Client.send(bytes(simplejson.dumps(text), 'utf-8'))
+		if self.player2Client != None:
+			self.player2Client.send(bytes(simplejson.dumps(text), 'utf-8'))
 
 	def sendTo(self, id, text):
+		if id == "":
+			return
 		if id == self.player1:
 			self.player1Client.send(bytes(simplejson.dumps(text), 'utf-8'))
 		elif id == self.player2:

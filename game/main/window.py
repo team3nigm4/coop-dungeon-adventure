@@ -15,6 +15,7 @@ from game.main.config import Config
 
 from game.screen import gamemanager as gm
 
+
 class Window:
 	SECOND = 1000000000
 	TPS = 60.0

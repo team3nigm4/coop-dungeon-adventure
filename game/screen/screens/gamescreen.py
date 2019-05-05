@@ -62,13 +62,16 @@ class GameScreen(screen.Screen):
 			self.client = client.Client(self.networkInfo[1], int(self.networkInfo[2]))
 			self.serverPause = True
 			self.isPlayer = -1
-			self.client.connection()
+			self.client.start()
 
+			import time
+			time.sleep(self.client.timeout + 0.1)
 			if self.client.connectState():
-				self.client.send("connection")
+				self.client.send({0 : 0})
 				self.client.receive()
 			else:
 				self.networkInfo[0] = False
+				self.client.disconnection()
 
 		if not self.networkInfo[0]:
 			self.inPause = False
@@ -80,8 +83,8 @@ class GameScreen(screen.Screen):
 	def update(self):
 		# Keys test
 		if im.inputPressed(im.ESCAPE):
-			from game.main.window import Window
-			Window.exit()
+			from game.screen import  gamemanager
+			gamemanager.GameManager.setCurrentScreen("MenuScreen", [True])
 
 		if self.networkInfo[0]:
 			self.updateMulti()
@@ -91,22 +94,26 @@ class GameScreen(screen.Screen):
 	def updateMulti(self):
 		if self.serverPause:
 			if self.isPlayer == -1:
-				self.client.send("player")
+				self.client.send({0 : 1})
 			else:
-				self.client.send("wait")
+				self.client.send({0 : 2})
 		else:
 			if not self.mapChange:
 				# Update
 				self.controlPlay1.update()
 				self.controlPlay2.update()
+
 				if self.isPlayer == 0:
 					if not self.controlPlay1.tempInputState == self.controlPlay1.inputState:
-						self.client.send(str(self.controlPlay1.inputState))
+						self.client.send({1 : { 0 : self.controlPlay1.inputState}})
 				else:
 					if not self.controlPlay2.tempInputState == self.controlPlay2.inputState:
-						self.client.send(str(self.controlPlay2.inputState))
+						self.client.send({1 : { 0 : self.controlPlay2.inputState}})
 
 				em.update()
+
+				if self.controlPlay1.inputState[0] >= 2 and self.controlPlay2.inputState[0] >= 2:
+					mam.reserveChange(mam.zone, mam.id, mam.defaultEntry)
 
 				if kbm.keyPressed(290):
 					from game.game.command import Command
@@ -119,7 +126,6 @@ class GameScreen(screen.Screen):
 
 			mam.update()
 
-		self.client.receive()
 		self.analyseData(self.client.data)
 
 	def updateLocal(self):
@@ -158,7 +164,7 @@ class GameScreen(screen.Screen):
 
 	def unload(self):
 		if self.networkInfo[0]:
-			self.client.disconnection()
+			self.client.end()
 		mam.unload()
 		Hud.unload()
 		em.entities[em.PLAYER_1].unload()
@@ -170,9 +176,10 @@ class GameScreen(screen.Screen):
 			return
 
 		print(data)
-		if self.client.getPort() in data:
-			if "player" in data[self.client.getPort()]:
-				self.isPlayer = data[self.client.getPort()]["player"]
+		port = self.client.getPort()
+		if port in data:
+			if '3' in data[port] and self.isPlayer == -1:
+				self.isPlayer = data[port]['3']
 
 				gm.cam.trackEntity(self.isPlayer)
 				self.text.setText(self.text.text + "\n Player:" + str(self.isPlayer + 1))
@@ -184,25 +191,25 @@ class GameScreen(screen.Screen):
 					self.controlPlay2.multi = True
 					self.controlPlay1.block = True
 
-			string = data[self.client.getPort()]["touch"]
-			if type(string) == str:
-				string = string.replace("[", "")
-				string = string.replace("]", "")
-				string = string.split(",")
-				for i in range(len(string)):
-					string[i] = int(string[i])
-			print(self.client.getPort())
-			if self.isPlayer == 0:
-				self.controlPlay2.inputState = string
-			else:
-				self.controlPlay1.inputState = string
+			if '0' in data[port]:
+				string = data[self.client.getPort()]['0']
+				if type(string) == str:
+					string = string.replace("[", "")
+					string = string.replace("]", "")
+					string = string.split(",")
+					for i in range(len(string)):
+						string[i] = int(string[i])
+				if self.isPlayer == 0:
+					self.controlPlay2.inputState = string
+				else:
+					self.controlPlay1.inputState = string
 
-		if "all" in data:
-			if data["all"] == "play":
+		if '0' in data:
+			if data['0'] == '0':
 				self.serverPause = False
-			elif data["all"] == "stop":
+			elif data['0'] == '1':
 				self.serverPause = True
-			elif data["all"] == "disconnect":
+			elif data['0'] == "2":
 				self.controlPlay2.multi = False
 				self.controlPlay2.block = False
 				self.controlPlay1.multi = False
@@ -214,3 +221,5 @@ class GameScreen(screen.Screen):
 				self.client.disconnection()
 				self.networkInfo[0] = False
 				self.text.setText("CDA v.0.1 - network:" + str(self.networkInfo[0]))
+
+		self.client.data = ""

@@ -15,6 +15,10 @@ class GameManager:
 	texManager = None
 	inputManager = None
 
+	changeScreenValue = ""
+	changeScreenArgs = []
+	wantChangeScreen = False
+
 	@staticmethod
 	def init():
 		# Init systems
@@ -29,10 +33,15 @@ class GameManager:
 		GameManager.cam = camera.Camera(70.0, [0, 0, -8.572])  # Precise position of cam to render 18 * 12 tiles
 		sm.init()
 
-		GameManager.setCurrentScreen("menuscreen", [True])
+		GameManager.changeScreenValue = "Menuscreen"
+		GameManager.changeScreenArgs = [True]
+		GameManager.createCurrentScreen()
 
 	@staticmethod
 	def update():
+		if GameManager.wantChangeScreen:
+			GameManager.createCurrentScreen()
+
 		GameManager.currentScreen.update()
 		im.dispose()
 		sm.dispose()
@@ -43,6 +52,15 @@ class GameManager:
 
 	@staticmethod
 	def setCurrentScreen(value, arg):
+		GameManager.changeScreenValue = value
+		GameManager.changeScreenArgs = arg
+		GameManager.wantChangeScreen = True
+
+	@staticmethod
+	def createCurrentScreen():
+		value = GameManager.changeScreenValue
+		arg = GameManager.changeScreenArgs
+
 		if not GameManager.currentScreen == None:
 			GameManager.currentScreen.unload()
 
@@ -63,6 +81,7 @@ class GameManager:
 			# localhost 34141
 
 		GameManager.currentScreen.init()
+		GameManager.wantChangeScreen = False
 
 	@staticmethod
 	def unload():

@@ -2,19 +2,25 @@ import socket
 import simplejson
 from game.util.logger import Logger
 
-class Client:
+from threading import Thread
+
+class Client(Thread):
 
 	def __init__(self, ip, port):
+		Thread.__init__(self)
 		self.ip = ip
 		self.port = port
-		self.setTimeout(0.005)
+		self.timeout = 0
+		self.setTimeout(0.0145)
 
 		self.isConnect = False
 		self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-		self.data = []
+		self.data = ""
 
 		self.clientId = socket.gethostbyname(socket.gethostname())
+		self.wantSend = False
+		self.loop = False
 
 	def setIp(self, ip):
 		self.ip = ip
@@ -23,9 +29,11 @@ class Client:
 		self.port = port
 
 	def setTimeout(self, time):
+		self.timeout = time
 		socket.setdefaulttimeout(time)
 
-	def connection(self):
+	def run(self):
+		self.loop = True
 		try :
 			self.conn.connect((self.ip, self.port))
 			self.me = str(self.conn.getsockname()[1])
@@ -35,9 +43,22 @@ class Client:
 			print(e)
 			self.isConnect = False
 
+		self.setTimeout(0.0145)
+		while self.loop:
+			if self.wantSend:
+				self.theadSend()
+				self.wantSend = False
+			self.receive()
+
+		self.disconnection()
+
 	def send(self, message):
+		self.wantSend = True
+		self.message = message
+
+	def theadSend(self):
 		if self.isConnect:
-			self.conn.send(bytes(simplejson.dumps(message), 'utf-8'))
+			self.conn.send(bytes(simplejson.dumps(self.message), 'utf-8'))
 
 	def receive(self):
 		if self.isConnect:
@@ -49,7 +70,7 @@ class Client:
 				except:
 					pass
 			except socket.timeout as e:
-				self.data = ""
+				pass
 
 	def connectState(self):
 		return self.isConnect
@@ -59,6 +80,9 @@ class Client:
 
 	def getPort(self):
 		return self.me
+
+	def end(self):
+		self.loop = False
 
 	def disconnection(self):
 		if self.isConnect:
