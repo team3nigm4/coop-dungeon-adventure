@@ -13,7 +13,7 @@ class Client(Thread):
 		self.ip = ip
 		self.port = port
 		self.timeout = 0
-		self.setTimeout(0.0145)
+		self.setTimeout(0.02)
 
 		self.isConnect = False
 		self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -41,11 +41,16 @@ class Client(Thread):
 			self.me = str(self.conn.getsockname()[1])
 			self.isConnect = True
 		except socket.timeout as e:
-			Logger.warning("Client", "Error when connection to the server(" + str(self.ip) + ":" + str(self.port))
+			Logger.warning("Client", "Error when connecting to the server (" + str(self.ip) + ":" + str(self.port) + ")")
+			print(e)
+			self.isConnect = False
+		except ConnectionRefusedError as e:
+			Logger.warning("Client", "Connection refused")
 			print(e)
 			self.isConnect = False
 
-		self.setTimeout(0.0145)
+
+		self.setTimeout(0.02)
 		while self.loop:
 			if self.wantSend:
 				self.theadSend()
