@@ -169,7 +169,11 @@ class GameScreen(screen.Screen):
 		Hud.unload()
 		em.entities[em.PLAYER_1].unload()
 		em.entities[em.PLAYER_2].unload()
+		em.unload()
 		self.text.unload()
+		from game.game.map.maptemporarysave import  MapTemporarySave
+		MapTemporarySave.zone = ""
+		mam.zone = ""
 
 	def analyseData(self, data):
 		if data == "":
@@ -194,6 +198,7 @@ class GameScreen(screen.Screen):
 			if '0' in data[port]:
 				string = data[self.client.getPort()]['0']
 				if type(string) == str:
+					print("this is a string")
 					string = string.replace("[", "")
 					string = string.replace("]", "")
 					string = string.split(",")

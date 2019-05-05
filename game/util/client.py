@@ -71,6 +71,8 @@ class Client(Thread):
 					pass
 			except socket.timeout as e:
 				pass
+			except OSError:
+				pass
 
 	def connectState(self):
 		return self.isConnect

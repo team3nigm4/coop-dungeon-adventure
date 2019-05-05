@@ -179,6 +179,11 @@ class EntityManager:
 	def init():
 		EntityManager.len = 0
 
+		EntityManager.entities = []
+		EntityManager.entitiesCol = []
+		EntityManager.entitiesRemove = []
+		EntityManager.displayLayer = [[], [], [], []]
+
 	@staticmethod
 	def isResetable(e):
 		type = e.type
@@ -261,7 +266,7 @@ class EntityManager:
 			ent2.collision(ent1)
 
 	@staticmethod
-	def unload(reset=False):
+	def discharge(reset=False):
 		id = 2
 		if EntityManager.len > 1:
 			for i in range(2, EntityManager.len):
@@ -271,6 +276,13 @@ class EntityManager:
 					EntityManager.entities[id].unload()
 					del EntityManager.entities[id]
 		EntityManager.len = len(EntityManager.entities)
+
+	@staticmethod
+	def unload():
+		del EntityManager.displayLayer
+		del EntityManager.entities
+		del EntityManager.entitiesCol
+		del EntityManager.entitiesRemove
 
 	@staticmethod
 	def update():
