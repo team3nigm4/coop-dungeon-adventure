@@ -1,0 +1,88 @@
+{
+  "info": {
+	"gap" : [0, 0],
+	"tilesize" : 32
+  },
+  "decor":{
+	"begin-bridge": {
+	  "pos" : [1, 11],
+	  "size" : [1, 1],
+	  "layer" : 0
+	},
+	"bridge": {
+	  "pos" : [1, 12],
+	  "size" : [1, 1],
+	  "layer" : 0
+	},
+	"door-up" : {
+	  "pos" : [1, 0],
+	  "size": [4, 2],
+	  "layer" : 3
+	},
+	  "door-up-open" : {
+	  "pos" : [5, 0],
+	  "size": [4, 2],
+	  "layer" : 3
+	},
+	  "door-down" : {
+	  "pos" : [1, 3],
+	  "size": [4, 2],
+	  "layer" : 4
+	},
+	  "door-down-open" : {
+	  "pos" : [5, 3],
+	  "size": [4, 2],
+	  "layer" : 4
+	},
+	  "door-right" : {
+	  "pos" : [10, 2],
+	  "size": [1, 3],
+	  "layer" : 1
+	},
+	  "door-right-open" : {
+	  "pos" : [12, 2],
+	  "size": [1, 3],
+	  "layer" : 1
+	},
+	  "door-right-open-up" : {
+	  "pos" : [1, 6],
+	  "size": [1, 2],
+	  "layer" : 4
+	},
+	  "door-left" : {
+	  "pos" : [9, 2],
+	  "size": [1, 3],
+	  "layer" : 1
+	},
+	  "door-left-open" : {
+	  "pos" : [11, 2],
+	  "size": [1, 3],
+	  "layer" : 1
+	},
+	  "door-left-open-up" : {
+	  "pos" : [0, 6],
+	  "size": [1, 2],
+	  "layer" : 4
+	},
+	  "door-up-open-up" : {
+	  "pos" : [5, 0],
+	  "size": [4, 1],
+	  "layer" : 4
+	},
+	  "door-up-open-down" : {
+	  "pos" : [5, 1],
+	  "size": [4, 1],
+	  "layer" : 1
+	},
+	  "door-up-up" : {
+	  "pos" : [1, 0],
+	  "size": [4, 1],
+	  "layer" : 4
+	},
+	  "door-up-down" : {
+	  "pos" : [1, 1],
+	  "size": [4, 1],
+	  "layer" : 1
+	}
+  }
+}

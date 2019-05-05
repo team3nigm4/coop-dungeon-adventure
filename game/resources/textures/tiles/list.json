@@ -1,6 +1,7 @@
 {
   	"tileSets" : [
 	  "outside",
-	  "tuto"
+	  "tuto",
+	  "inside"
 	]
 }
