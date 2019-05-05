@@ -14,7 +14,7 @@ from game.render.text import text
 from game.inputs import playercontroler as plc
 
 from game.util.logger import Logger
-
+import time
 from game.util import client
 
 
@@ -64,14 +64,13 @@ class GameScreen(screen.Screen):
 			self.isPlayer = -1
 			self.client.start()
 
-			import time
 			time.sleep(self.client.timeout + 0.1)
 			if self.client.connectState():
 				self.client.send({0 : 0})
 				self.client.receive()
 			else:
 				self.networkInfo[0] = False
-				self.client.disconnection()
+				self.client.end()
 
 		if not self.networkInfo[0]:
 			self.inPause = False
@@ -163,8 +162,6 @@ class GameScreen(screen.Screen):
 		self.text.display()
 
 	def unload(self):
-		if self.networkInfo[0]:
-			self.client.end()
 		mam.unload()
 		Hud.unload()
 		em.entities[em.PLAYER_1].unload()
@@ -175,46 +172,47 @@ class GameScreen(screen.Screen):
 		MapTemporarySave.zone = ""
 		mam.zone = ""
 
+		if self.networkInfo[0]:
+			self.client.end()
+
 	def analyseData(self, data):
 		if data == "":
 			return
 
 		print(data)
-		port = self.client.getPort()
-		if port in data:
-			if '3' in data[port] and self.isPlayer == -1:
-				self.isPlayer = data[port]['3']
+		if '3' in data and self.isPlayer == -1:
+			self.isPlayer = data['3']
 
-				gm.cam.trackEntity(self.isPlayer)
-				self.text.setText(self.text.text + "\n Player:" + str(self.isPlayer + 1))
+			gm.cam.trackEntity(self.isPlayer)
+			self.text.setText(self.text.text + "\n Player:" + str(self.isPlayer + 1))
 
-				if self.isPlayer == 0:
-					self.controlPlay1.multi = True
-					self.controlPlay2.block = True
-				else:
-					self.controlPlay2.multi = True
-					self.controlPlay1.block = True
+			if self.isPlayer == 0:
+				self.controlPlay1.multi = True
+				self.controlPlay2.block = True
+			else:
+				self.controlPlay2.multi = True
+				self.controlPlay1.block = True
 
-			if '0' in data[port]:
-				string = data[self.client.getPort()]['0']
-				if type(string) == str:
-					print("this is a string")
-					string = string.replace("[", "")
-					string = string.replace("]", "")
-					string = string.split(",")
-					for i in range(len(string)):
-						string[i] = int(string[i])
-				if self.isPlayer == 0:
-					self.controlPlay2.inputState = string
-				else:
-					self.controlPlay1.inputState = string
+		if '1' in data:
+			string = data['1']
+			if type(string) == str:
+				print("this is a string")
+				string = string.replace("[", "")
+				string = string.replace("]", "")
+				string = string.split(",")
+				for i in range(len(string)):
+					string[i] = int(string[i])
+			if self.isPlayer == 0:
+				self.controlPlay2.inputState = string
+			else:
+				self.controlPlay1.inputState = string
 
 		if '0' in data:
-			if data['0'] == '0':
+			if data['0'] == 0:
 				self.serverPause = False
-			elif data['0'] == '1':
+			elif data['0'] == 1:
 				self.serverPause = True
-			elif data['0'] == "2":
+			elif data['0'] == 2:
 				self.controlPlay2.multi = False
 				self.controlPlay2.block = False
 				self.controlPlay1.multi = False
@@ -223,7 +221,7 @@ class GameScreen(screen.Screen):
 				self.controlPlay1.inputState = [0, 0, 0, 0, 0, 0, 0, 0]
 				self.controlPlay2.inputState = [0, 0, 0, 0, 0, 0, 0, 0]
 
-				self.client.disconnection()
+				self.client.end()
 				self.networkInfo[0] = False
 				self.text.setText("CDA v.0.1 - network:" + str(self.networkInfo[0]))
 

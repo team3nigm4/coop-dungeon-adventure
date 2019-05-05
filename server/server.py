@@ -45,7 +45,8 @@ class Logger:
 		print(text)
 
 	def send(text):
-		print('[→ OUT] ' + text)
+		print('[→ OUT] :')
+		print(text)
 
 class Commands():
 
@@ -87,22 +88,19 @@ class CdaServer(Commands):
 		self.server.listen(200)
 
 		self.gameBegin = False
-		self.player1 = ""
-		self.player2 = ""
-		self.player1_ok = False
-		self.player2_ok = False
-		self.player1Client = None
-		self.player2Client = None
+		self.reset(0)
+		self.reset(1)
 
-		# to_send -> all = 0, playerport1, playerport2
-			# all -> play = 0, stop = 1, disconnect = 2
-			# one player -> 0 = inputs, 2 = player pos, 3 = player attribution
+		# to_send -> gameState = 0, inputs = 1, player pos = 2, player attrib = 3
+			# gameState -> play = 0, stop = 1, disconnect = 2
 
 		# players -> state = 0, info = 1
 			# state -> connection = 0, player = 1, wait = 2
 			# info -> inputs = 0, player pos = 1
-		self.to_send = {}
-		self.to_send['0'] = 1
+		self.to_send = [{}, {}]
+		self.to_send[0]['0'] = 1
+		self.to_send[1]['0'] = 1
+		print(self.to_send)
 
 	def main_loop(self):
 
@@ -139,9 +137,8 @@ class CdaServer(Commands):
 			clients[clientaddr[1]] = {}
 			self.input_list.append(clientsock)
 			self.player1 = clientaddr[1]
-			self.to_send[self.player1] = {
-					'0' : [0, 0, 0, 0, 0, 0, 0, 0]
-				}
+			self.to_send[0]['1'] = [0, 0, 0, 0, 0, 0, 0, 0]
+
 
 		elif self.player2 == "":
 			clientsock, clientaddr = self.server.accept()
@@ -150,9 +147,7 @@ class CdaServer(Commands):
 			self.input_list.append(clientsock)
 			self.player2 = clientaddr[1]
 
-			self.to_send[self.player2] = {
-					'0' : [0, 0, 0, 0, 0, 0, 0, 0]
-				}
+			self.to_send[1]['1'] = [0, 0, 0, 0, 0, 0, 0, 0]
 
 		else:
 			Logger.warning("An other person want to go in our private room !!")
@@ -165,12 +160,7 @@ class CdaServer(Commands):
 		_id = self.s.getpeername()[1]
 
 		# Send disconnect -> 2
-		if _id == self.player1 and self.player2 != "":
-			self.to_send['0'] = '2'
-			self.sendTo(self.player2, self.to_send)
-		elif _id == self.player2 and self.player1 != "":
-			self.to_send['0'] = '2'
-			self.sendTo(self.player1, self.to_send)
+		self.disconnection(_id)
 
 		del (clients[clientaddr[1]])
 		self.input_list.remove(self.s)
@@ -185,21 +175,24 @@ class CdaServer(Commands):
 		if self.gameBegin:
 			# State of players
 			if '0' in clients[_id]:
-				Logger.send(str(self.to_send))
-				self.s.send(bytes(simplejson.dumps(self.to_send), 'utf-8'))
+				if _id == self.player1:
+					Logger.send(self.to_send[0])
+				else:
+					Logger.send(self.to_send[1])
 			# information by player
 			if '1' in clients[_id]:
 				# inputs
 				if '0' in  clients[_id]['1']:
 					if _id == self.player1:
-						self.to_send[self.player2]['0'] = clients[_id]['1']['0']
+						self.to_send[1]['1'] = clients[_id]['1']['0']
+						self.sendTo(self.player2)
 					else:
-						self.to_send[self.player1]['0'] = clients[_id]['1']['0']
+						self.to_send[0]['1'] = clients[_id]['1']['0']
+						self.sendTo(self.player1)
 
 				if '1' in clients[_id]['1'] :
 					pass
 
-				self.sendToEveryone(self.to_send)
 		else:
 			if '0' in clients[_id]:
 				# Connection
@@ -211,11 +204,11 @@ class CdaServer(Commands):
 				# Player attribution
 				elif clients[_id]['0'] == 1:
 					if _id == self.player1:
-						self.to_send[self.player1]['3'] = 0
-						self.player1Client.send(bytes(simplejson.dumps(self.to_send), 'utf-8'))
+						self.to_send[0]['3'] = 0
+						self.sendTo(self.player1)
 					elif _id == self.player2:
-						self.to_send[self.player2]['3'] = 1
-						self.player2Client.send(bytes(simplejson.dumps(self.to_send), 'utf-8'))
+						self.to_send[1]['3'] = 1
+						self.sendTo(self.player2)
 				# Wait to server play
 				elif clients[_id]['0'] == 2:
 					# If both players are ok, send play -> 0
@@ -223,33 +216,66 @@ class CdaServer(Commands):
 						self.player1_ok = True
 						if self.player2_ok:
 
-							self.to_send['0'] = 0
-							del self.to_send[self.player1]['3']
-							del self.to_send[self.player2]['3']
+							self.to_send[0]['0'] = 0
+							self.to_send[1]['0'] = 0
+							del self.to_send[0]['3']
+							del self.to_send[1]['3']
 							self.gameBegin = True
-							self.sendToEveryone(self.to_send)
+							self.sendToEveryone()
 					elif _id == self.player2:
 						self.player2_ok = True
 						if self.player1_ok:
-							self.to_send['0'] = '0'
-							del self.to_send[self.player1]['3']
-							del self.to_send[self.player2]['3']
+							self.to_send[0]['0'] = 0
+							self.to_send[1]['0'] = 0
+							del self.to_send[0]['3']
+							del self.to_send[1]['3']
 							self.gameBegin = True
-							self.sendToEveryone(self.to_send)
+							self.sendToEveryone()
 
-	def sendToEveryone(self, text):
+	def sendToEveryone(self):
 		if self.player1Client != None:
-			self.player1Client.send(bytes(simplejson.dumps(text), 'utf-8'))
+			self.sendTo(self.player1)
 		if self.player2Client != None:
-			self.player2Client.send(bytes(simplejson.dumps(text), 'utf-8'))
+			self.sendTo(self.player2)
 
-	def sendTo(self, id, text):
+	def sendTo(self, id):
 		if id == "":
 			return
 		if id == self.player1:
-			self.player1Client.send(bytes(simplejson.dumps(text), 'utf-8'))
+			try:
+				self.player1Client.send(bytes(simplejson.dumps(self.to_send[0]), 'utf-8'))
+			except ConnectionAbortedError:
+				self.disconnection(id)
+
 		elif id == self.player2:
-			self.player2Client.send(bytes(simplejson.dumps(text), 'utf-8'))
+			try:
+				self.player2Client.send(bytes(simplejson.dumps(self.to_send[1]), 'utf-8'))
+			except ConnectionAbortedError:
+				self.disconnection(id)
+
+	def disconnection(self, id):
+		if id == self.player1 :
+			self.reset(0)
+			if self.player2 != "":
+				self.to_send[1]['0'] = 2
+				self.sendTo(self.player2)
+		elif id == self.player2:
+			self.reset(1)
+			if self.player1 != "":
+				self.to_send[0]['0'] = 2
+				self.sendTo(self.player1)
+
+	def reset(self, player):
+		if player == 0:
+			self.player1 = ""
+			self.player1Client = None
+			self.player1_ok = False
+			self.gameBegin = False
+		else:
+			self.player2 = ""
+			self.player2Client = None
+			self.player2_ok = False
+			self.gameBegin = False
 
 try:
 	while do_reset:

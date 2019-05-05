@@ -1,5 +1,7 @@
 import socket
 import simplejson
+import time
+
 from game.util.logger import Logger
 
 from threading import Thread
@@ -58,7 +60,11 @@ class Client(Thread):
 
 	def theadSend(self):
 		if self.isConnect:
-			self.conn.send(bytes(simplejson.dumps(self.message), 'utf-8'))
+			try:
+				self.conn.send(bytes(simplejson.dumps(self.message), 'utf-8'))
+			except OSError:
+				self.isConnect = False
+				self.end()
 
 	def receive(self):
 		if self.isConnect:
@@ -85,6 +91,8 @@ class Client(Thread):
 
 	def end(self):
 		self.loop = False
+		time.sleep(0.3)
+		self.join()
 
 	def disconnection(self):
 		if self.isConnect:
