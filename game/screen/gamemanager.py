@@ -22,7 +22,7 @@ class GameManager:
 	@staticmethod
 	def init():
 		# Init systems
-		Logger.info("GAME MANAGER", "Created")
+		Logger.info("GameManager", "Created")
 
 		tm.init()
 		txm.init()

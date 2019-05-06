@@ -2,6 +2,7 @@
 
 from game.game.entityclass import entitycollision
 from game.render.shape import entityrenderer as ed
+from game.util.logger import Logger
 
 
 class EntityDrawable(entitycollision.EntityCollision):
@@ -42,8 +43,8 @@ class EntityDrawable(entitycollision.EntityCollision):
 			self.displayLayer = layer
 			self.em.addToDisplay(self.displayLayer, self.entityId)
 		else:
-			print("Error : want to set an invalid display layer (" + str(layer) + ") to", self.type, "with id", str(id))
-
+			Logger.error("EnDrawable", "Invalid layer (" + str(layer) + ") for " + str(self.type) + " with id " + str(id))
+		
 	def unload(self):
 		super().unload()
 		self.entityRenderer.unload()

@@ -1,5 +1,6 @@
 # Manage every game's event
 
+from game.util.logger import Logger
 
 # noinspection PyTypeChecker
 class EventManager:
@@ -31,14 +32,14 @@ class EventManager:
 		if not entityId in EventManager.toActive[eventIndex]:
 			EventManager.toActive[eventIndex].append(entityId)
 		else:
-			print("(EventManager - addActive()) Error two entities with same id want to be place on table", eventIndex,", with id :", entityId.id)
+			Logger.error("EvManager", "Tow entities have the same ID " + str(eventIndex) + ", with id : " + str(entityId.id))
 
 	@staticmethod
 	def rem(eventIndex, entityId):
 		if entityId in EventManager.toActive[eventIndex]:
 			EventManager.toActive[eventIndex].remove(entityId)
 		else:
-			print("(EventManager - addActive()) Error want and unknown entity", eventIndex,", with id :", entityId.id)
+			Logger.error("EvManager", "Unknown entity " + str(eventIndex) + ", with id : " + str(entityId.id))
 
 	@staticmethod
 	def remove(eventIndex, entityId):

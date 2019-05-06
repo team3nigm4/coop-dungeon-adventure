@@ -32,7 +32,7 @@ class TextureManager:
 
 	@staticmethod
 	def state():
-		Logger.info("TEXTURE MANAGER", "Textures currently loaded :")
+		Logger.info("TeManager", "Textures currently loaded :")
 		print("=" * 45)
 		for key in TextureManager.textures:
 			print("Texture " + key)
@@ -49,10 +49,10 @@ class TextureManager:
 	@staticmethod
 	def endState():
 		if len(TextureManager.textures) > 0:
-			Logger.error("TEXTURE MANAGER", "Error at the end of the program ->")
+			Logger.error("TeManager", "Error at the end of the program ->")
 			TextureManager.state()
 		else:
-			Logger.info("TEXTURE MANAGER", "No remaining textures")
+			Logger.info("TeManager", "No remaining textures")
 
 	@staticmethod
 	def key(key):

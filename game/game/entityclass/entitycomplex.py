@@ -91,6 +91,6 @@ class EntityComplex(entitydrawable.EntityDrawable):
 
 	def applyDamage(self, damage, death=True):
 		if self.takeDamage:
-			Logger.info("ENTITY COMPLEX", self.type + " take " + str(damage) + " damage(s)")
+			Logger.info("EnComplex", self.type + " take " + str(damage) + " damage(s)")
 			self.setLife(self.life - damage, death)
 			self.takeDamage = False

@@ -44,7 +44,7 @@ class Texture:
 				gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST)
 				gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST)
 				gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, self.width, self.height, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, imgData)
-				Logger.info("TEXTURE +", "Texture n°" + str(self.id) + " loaded (" + self.path.replace(self.PATH, '') + ")")
+				Logger.info("Texture +", "Texture n°" + str(self.id) + " loaded (" + self.path.replace(self.PATH, '') + ")")
 				self.correctLoaded = True
 			except Exception as error:
 				gl.glDeleteTextures(self.id)
@@ -56,7 +56,7 @@ class Texture:
 
 	def error(self, error):
 		# When error, replace the current texture by the error texture
-		Logger.error("TEXTURE", "Error while loading texture n°" + str(self.id) + " (" + self.path.replace(self.PATH, '') + ')')
+		Logger.error("Texture", "Error while loading texture n°" + str(self.id) + " (" + self.path.replace(self.PATH, '') + ')')
 		Logger.bold("Error returned :")
 		print("  " + str(error) + "\n")
 
@@ -72,4 +72,4 @@ class Texture:
 			gl.glDeleteTextures(self.id)
 			self.correctLoaded = False
 			if status:
-				Logger.info("TEXTURE -", "Texture n°" + str(self.id) + " unloaded")
+				Logger.info("Texture -", "Texture n°" + str(self.id) + " unloaded")

@@ -79,7 +79,7 @@ class EntityManager:
 		if not entityId in EntityManager.entitiesCol:
 			EntityManager.entitiesCol.append(entityId)
 		else:
-			Logger.error("EntityManager", "AddToTest() Error, with " + EntityManager.entities[
+			Logger.error("EnManager", "AddToTest() Error, with " + EntityManager.entities[
 				entityId.id].type + " entity adding two same id : " + str(entityId.id))
 
 	@staticmethod
@@ -213,7 +213,7 @@ class EntityManager:
 		EntityManager.len = len(EntityManager.entities)
 		# Print the removing ?
 		if info[1]:
-			Logger.info("ENTITY MANAGER", "Remove entity n°" + str(id))
+			Logger.info("EnManager", "Remove entity n°" + str(id))
 
 		if id != len(EntityManager.entities):
 			for i in range(id, EntityManager.len):
@@ -236,14 +236,14 @@ class EntityManager:
 		if entityId in EntityManager.entitiesCol:
 			EntityManager.entitiesCol.remove(entityId)
 		else:
-			Logger.error("EntityManager", "RemoveToTest() Error " + EntityManager.entities[
+			Logger.error("EnManager", "RemoveToTest() Error " + EntityManager.entities[
 				entityId.id].type + " entity want to be remove from entityCol, id : " + str(entityId.id))
 
 	@staticmethod
 	def status():
-		Logger.info("EntityManager", "\n status with len(" + str(EntityManager.len) + ") :\n")
+		Logger.info("EnManager", "\n status with len(" + str(EntityManager.len) + ") :\n")
 		for e in EntityManager.entities:
-			Logger.info("EntityManager", "Entity" + str(e.entityId.id) + ", entityType" + e.type)
+			Logger.info("EnManager", "Entity" + str(e.entityId.id) + ", entityType" + e.type)
 
 	@staticmethod
 	def setEntities(entities):
