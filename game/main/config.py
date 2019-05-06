@@ -8,6 +8,7 @@ class Config:
 	# Default value to prevent a mistake of configs's loading
 	CONFIG_PATH = "data/config/config.json"
 	INPUTS_PATH = "data/config/inputs.json"
+	SERVER_CONFIG_PATH = "data/server.json"
 
 	debug = None
 	ratio = None
@@ -53,12 +54,37 @@ class Config:
 			Config.createDefaultInputs()
 
 	@staticmethod
+	def checkServerConfig():
+		import os, sys, json
+
+		# Verification of the existence of the "data" folder
+		path = "data"
+		if not (os.path.exists(path)) and not (os.path.isdir(path)):
+			Logger.info("Config", "Creating '%s' folder..." % path)
+			try:
+				os.mkdir(path)
+				Logger.success("Config", "Done !")
+			except OSError:
+				Logger.error("Config", "Creation of the directory %s failed" % path)
+				sys.exit()
+
+		# Verification of the existence of the server config file
+		path = Config.SERVER_CONFIG_PATH
+		if not (os.path.exists(path)):
+			Logger.info("Config", "A configuration file needs to be created to connect to the server")
+			Config.createDefaultServerConfig()
+
+	@staticmethod
 	def load():
 		Config.check()
 		Config.loadConfig()
 		Config.loadInputs()
 		Config.ratio = Config.values["window"]["width"] / Config.values["window"]["height"]
 		Config.debug = True
+
+	def loadServer():
+		Config.checkServerConfig()
+		Config.loadServerConfig()
 
 	@staticmethod
 	def createDefaultConfig(overwrite=True):
@@ -131,6 +157,16 @@ class Config:
 			Config.saveInputs()
 
 	@staticmethod
+	def createDefaultServerConfig(overwrite=True):
+		Config.server = {
+			"ip": input("[1/2] What is the IP or the domain name of the server ? "),
+			"port": input("[2/2] On which port runs the server (by default, 34141) ? ")
+		}
+
+		if overwrite:
+			Config.saveServerConfig()
+
+	@staticmethod
 	def saveConfig():
 		import json
 
@@ -155,6 +191,14 @@ class Config:
 			Logger.success("Config", "Key configuration file saved successfully !")
 
 	@staticmethod
+	def saveServerConfig():
+		import json
+
+		with open(Config.SERVER_CONFIG_PATH, 'w') as outfile:
+			json.dump(Config.server, outfile, indent="	")
+			Logger.success("Config", "Server configuration file saved successfully !")
+
+	@staticmethod
 	def loadConfig():
 		import json
 		try:
@@ -171,6 +215,13 @@ class Config:
 			Config.inputs = inputsFile
 		except json.decoder.JSONDecodeError:
 			Config.createDefaultInputs(Config.yes(Logger.format("Config", "Failed to parse the key config file ! Do you want to recreate it and delete the old one ?")))
+
+	def loadServerConfig():
+		import json
+		try:
+			Config.server = json.load(open(Config.SERVER_CONFIG_PATH))
+		except json.decoder.JSONDecodeError:
+			Config.createDefaultServerConfig(Config.yes(Logger.format("Config", "Failed to parse the server config file ! Do you want to recreate it and delete the old one ?")))
 
 	@staticmethod
 	def yes(sentence):

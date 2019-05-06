@@ -70,9 +70,9 @@ class GameManager:
 		elif value == "GameScreen" or value == "gamescreen" or value == "Gamescreen":
 			from game.screen.screens import gamescreen as ga
 			if arg[0] == True:
-				import json
-				info = json.load(open("data/server/server.json"))
-				GameManager.currentScreen = ga.GameScreen([True, info["ip"], info["port"]])
+				from game.main.config import Config
+				Config.loadServer()
+				GameManager.currentScreen = ga.GameScreen([True, Config.server["ip"], Config.server["port"]])
 			else:
 				GameManager.currentScreen = ga.GameScreen([False])
 			# cdi-p08.cda-game.ga 34141
