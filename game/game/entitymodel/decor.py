@@ -15,17 +15,17 @@ class Decor(entity.Entity):
 		self.ev.addActive(self.event, self.entityId)
 		self.decorDeactivate = args[Decor.ARGS_DECOR_DEACTIVATE]
 		self.decorActivate = args[Decor.ARGS_DECOR_ACTIVATE]
-		self.active = True
+		self.active = -1
 		self.testCol = False
 
 	def activate(self):
-		if not self.active:
+		if not self.active == 1:
 			if self.decorActivate == "delete":
 				mr.deleteDecor(self.decorDeactivate, self.pos[0], self.pos[1])
 			else:
 				mr.deleteDecor(self.decorDeactivate, self.pos[0], self.pos[1])
 				mr.addDecor(self.decorActivate, self.pos[0], self.pos[1])
-			self.active = True
+			self.active = 1
 
 	def deactivate(self):
 		if self.active:
@@ -34,4 +34,4 @@ class Decor(entity.Entity):
 			else:
 				mr.deleteDecor(self.decorDeactivate, self.pos[0], self.pos[1])
 				mr.addDecor(self.decorDeactivate, self.pos[0], self.pos[1])
-			self.active = False
+			self.active = 0

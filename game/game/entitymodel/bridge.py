@@ -102,9 +102,9 @@ class Bridge(entitycollision.EntityCollision):
 						rotation += 2
 						rotation %= 4
 
-					MapRender.addTile(0, position[0], position[1], texture, rotation)
+					MapRender.addTile(1, position[0], position[1], texture, rotation)
 				else:
-					MapRender.deleteTile(0, position[0], position[1])
+					MapRender.deleteTile(1, position[0], position[1])
 
 			else:
 				self.counters[i][0] += 1

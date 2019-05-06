@@ -52,8 +52,8 @@
 		},
 		"tiles" : {
 	 	 	"outside" : "outside.png",
-	  		"tuto" : "tuto.png"
+	 	 	"tuto" : "tuto.png",
+      "inside" : "inside.png"
 		},
 		"error" : "error.png"
   	}
-}

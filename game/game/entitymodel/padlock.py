@@ -1,6 +1,6 @@
 from game.game.entityclass import entitycollision
 
-class LockedDoor(entitycollision.EntityCollision):
+class Padlock(entitycollision.EntityCollision):
 
     ARGS_COL_BOX_SIZE = 3
     ARGS_EVENT = 4
@@ -8,10 +8,10 @@ class LockedDoor(entitycollision.EntityCollision):
     def __init__(self, args):
         args.append(False)
         super().__init__(args)
-        self.event = args[LockedDoor.ARGS_EVENT]
+        self.event = args[Padlock.ARGS_EVENT]
         self.checkState()
 
-        self.setColBox(args[LockedDoor.ARGS_COL_BOX_SIZE])
+        self.setColBox(args[Padlock.ARGS_COL_BOX_SIZE])
         self.colReduc()
 
         self.setCollision(True)
