@@ -120,20 +120,14 @@ class CdaServer(Commands):
 			inputr, outputr, exceptr = select.select(self.input_list, [], [])
 			for self.s in inputr:
 				if self.s == self.server:
-					print("Before accept")
 					self.on_accept()
-					print("After accept")
 					break
 				else:
-					print("Before not accept")
 					self.data = self.s.recv(buffer_size)
-					print("After not accept")
 				if len(self.data) == 0:
 					self.on_close()
 				else:
-					print("Before receive")
 					self.on_recv()
-					print("After receive")
 
 	def on_accept(self):
 		if self.player1 == "":
