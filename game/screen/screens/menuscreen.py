@@ -5,6 +5,9 @@ from game.screen.screens import screen
 from game.render.text import text
 from game.render.gui import button
 
+from game.render.shape import guirenderer
+from game.screen import gamemanager
+
 
 class MenuScreen(screen.Screen):
 
@@ -16,6 +19,9 @@ class MenuScreen(screen.Screen):
 		self.text.setColor([1,1,1,1])
 		self.text.setPosition([9, 10.5])
 		self.text.setText("Coop Dungeon Adventure")
+
+		self.screenTitle = guirenderer.GuiRenderer()
+		self.screenTitle.setImage([18, 12], "screentitle")
 
 		def gameLocal():
 			from game.screen import gamemanager
@@ -42,11 +48,13 @@ class MenuScreen(screen.Screen):
 			self.playMulti.update()
 
 	def display(self):
+		self.screenTitle.display()
 		self.text.display()
 		self.playLocal.display()
 		self.playMulti.display()
 
 	def unload(self):
+		self.screenTitle.unload()
 		self.text.unload()
 		self.playLocal.unload()
 		self.playMulti.unload()
