@@ -168,9 +168,6 @@ class GameScreen(screen.Screen):
 		em.entities[em.PLAYER_2].unload()
 		em.unload()
 		self.text.unload()
-		from game.game.map.maptemporarysave import  MapTemporarySave
-		MapTemporarySave.zone = ""
-		mam.zone = ""
 
 		if self.networkInfo[0]:
 			self.client.end()

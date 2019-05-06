@@ -188,9 +188,9 @@ class Font:
 
 				# texture pos X
 				vbo[(partAdvancement[index] + letter) * 36 + 3] = round(
-					self.chars[ord(part[index][letter])][Font.POS_X], 6)
+					self.chars[ord(part[index][letter])][Font.POS_X], 7)
 				vbo[(partAdvancement[index] + letter) * 36 + 12] = round(
-					self.chars[ord(part[index][letter])][Font.POS_X] + (self.chars[ord(part[index][letter])][Font.SIZE_X]), 6)
+					self.chars[ord(part[index][letter])][Font.POS_X] + (self.chars[ord(part[index][letter])][Font.SIZE_X]), 7)
 				vbo[(partAdvancement[index] + letter) * 36 + 21] = vbo[(partAdvancement[index] + letter) * 36 + 12]
 				vbo[(partAdvancement[index] + letter) * 36 + 30] = vbo[(partAdvancement[index] + letter) * 36 + 3]
 
