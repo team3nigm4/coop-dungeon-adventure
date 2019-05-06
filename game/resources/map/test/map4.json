@@ -215,7 +215,7 @@
             ["Tp", [[10.0, 0.75], [4.0, 1.5], "test", "map3", 1, -1]],
             ["SpawnPoint", [[10.0, 3.0]]],
             ["SpawnPoint", [[2.5, 8.75]]],
-            ["Tp", [[1.0, 7.75], [2.0, 2.5], "test", "map5", 0, 0]],
+            ["Tp", [[0.5, 7.75], [1.0, 2.5], "test", "map5", 0, 0]],
             ["InteractionSwitch", [[1.5, 7.75], [1.0, 1.5], 0, 1, 0]],
             ["Decor", [[1.5, 8.5], 0, "delete", "door-left-open-up"]],
             ["Decor", [[1.5, 8.5], 0, "door-left", "door-left-open"]],

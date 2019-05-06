@@ -1,6 +1,6 @@
 {
     "map": {
-        "zone": "*test",
+        "zone": "test",
         "id": "map2",
         "events": "1",
         "tileset": "inside"
@@ -204,8 +204,8 @@
             ["SlidingBlock", [[6.5, 6.5]]],
             ["SpawnPoint", [[2.5, 8.75]]],
             ["SpawnPoint", [[10.0, 12.5]]],
-            ["Tp", [[1.0, 7.75], [2.0, 2.5], "test", "map1", 1, -1]],
-            ["Tp", [[10.0, 13.75], [3.0, 2.5], "test", "map3", 0, 0]],
+            ["Tp", [[0.5, 7.75], [1.0, 2.5], "test", "map1", 1, -1]],
+            ["Tp", [[10.0, 14.0], [3.0, 2.0], "test", "map3", 0, 0]],
             ["InteractionSwitch", [[10.0, 12.5], [2.0, 1.0], 0, 1, 0]],
             ["Decor", [[8.5, 12.5], 0, "door-up-down", "door-up-open-down"]],
             ["Decor", [[8.5, 13.5], 0, "door-up-up", "door-up-open-up"]]

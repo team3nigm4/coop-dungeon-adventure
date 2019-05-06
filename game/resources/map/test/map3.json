@@ -187,11 +187,11 @@
             ["SlidingBlock", [[4.5, 5.5]]],
             ["SlidingBlock", [[4.5, 4.5]]],
             ["SpawnPoint", [[5.0, 11.5]]],
-            ["Tp", [[5.0, 12.75], [3.0, 2.5], "test", "map4", 0, 0]],
+            ["Tp", [[5.0, 13.0], [3.0, 2.0], "test", "map4", 0, 0]],
             ["InteractionSwitch", [[5.0, 11.5], [2.0, 1.0], 0, 1, 0]],
             ["Decor", [[3.5, 11.5], 0, "door-up-down", "door-up-open-down"]],
             ["Decor", [[3.5, 12.5], 0, "door-up-up", "door-up-open-up"]],
-            ["Tp", [[6.0, 0.75], [4.0, 1.5], "test", "map2", 1, -1]],
+            ["Tp", [[6.0, 0.75], [3.0, 1.5], "test", "map2", 1, -1]],
             ["SpawnPoint", [[6.0, 3.0]]]
         ]
     ]
