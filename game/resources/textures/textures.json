@@ -1,59 +1,60 @@
 {
 	"textures" : {
 		"blocks": {
-	  		"activation-block" : "activation-block.png",
-	  		"activation-mark-press" : "activation-mark-press.png",
-	  		"activation-mark-release" : "activation-mark-release.png",
-	  		"pressure-plate-press" : "pressure-plate-press.png",
-	  		"pressure-plate-release" : "pressure-plate-release.png",
+			"activation-block" : "activation-block.png",
+			"activation-mark-press" : "activation-mark-press.png",
+			"activation-mark-release" : "activation-mark-release.png",
+			"pressure-plate-press" : "pressure-plate-press.png",
+			"pressure-plate-release" : "pressure-plate-release.png",
 			"sliding-block" : "sliding-block.png",
 			"toggle-plate-press" : "toggle-plate-press.png",
 			"toggle-plate-release" : "toggle-plate-release.png"
 		},
 		"enemies" : {
-	  		"bat" : "bat.png",
-	  		"mannequin" : "mannequin.png",
-	  		"spider" : "spider.png"
+			"bat" : "bat.png",
+			"mannequin" : "mannequin.png",
+			"spider" : "spider.png"
 		},
-	  	"fonts" : {
+		"fonts" : {
 			"test-bitmap" : "test.png",
 			"04b-bitmap" : "04b.png",
 			"pixel1-bitmap" : "pixelfont1.png"
-	  	},
-	 	 "gui": {
+		},
+		 "gui": {
 			 "button-unhover" : "GUIButton.png",
 			 "button-hover" : "GUIButton-hover.png"
-	  	},
+		},
 		"hud" : {
-	  		"hud" : "hudset.png",
-	  		"transition" : "transition.png",
-	  		"transition-debug" : "transition-debug.png"
+			"hud" : "hudset.png",
+			"transition" : "transition.png",
+			"transition-debug" : "transition-debug.png"
 		},
 		"items" : {
-	  		"arrow-0" : "arrow-left.png",
-	  		"arrow-1" : "arrow-up.png",
-	  		"arrow-2" : "arrow-right.png",
-	  		"arrow-3" : "arrow-down.png",
-	  		"item-key" : "item-key.png",
-	 		 "item-weapon" : "item-weapon.png"
+			"arrow-0" : "arrow-left.png",
+			"arrow-1" : "arrow-up.png",
+			"arrow-2" : "arrow-right.png",
+			"arrow-3" : "arrow-down.png",
+			"item-key" : "item-key.png",
+			 "item-weapon" : "item-weapon.png"
 		},
 		"menus" : {
 			"screentitle" : "screentitle.png"
 		},
 		"players" : {
-	  		"player-1-0" : "player1-left.png",
+			"player-1-0" : "player1-left.png",
 			"player-1-1" : "player1-up.png",
 			"player-1-2" : "player1-right.png",
 			"player-1-3" : "player1-down.png",
-		  	"player-2-0" : "player2-left.png",
+			"player-2-0" : "player2-left.png",
 			"player-2-1" : "player2-up.png",
 			"player-2-2" : "player2-right.png",
 			"player-2-3" : "player2-down.png"
 		},
 		"tiles" : {
-	 	 	"outside" : "outside.png",
-	 	 	"tuto" : "tuto.png",
-      "inside" : "inside.png"
+			"outside" : "outside.png",
+			"tuto" : "tuto.png",
+			"inside" : "inside.png"
 		},
 		"error" : "error.png"
-  	}
+	}
+}
