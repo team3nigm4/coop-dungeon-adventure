@@ -9,7 +9,7 @@ from game.render.shape import guirenderer
 from game.screen import gamemanager
 
 
-class MenuScreen(screen.Screen):
+class CreditsScreen(screen.Screen):
 
 	def __init__(self, info):
 		super().__init__()
@@ -23,37 +23,24 @@ class MenuScreen(screen.Screen):
 		self.copyleft = text.Text("pixel1")
 		self.copyleft.setSize(0.4)
 		self.copyleft.setColor([1,1,1,1])
-		#self.copyleft.setPosition([18, 12])
 		self.copyleft.setCentering("down-left")
 		self.copyleft.setText("(C) 2019 Maxence, Alexandre & Baptiste" + " "*29 + "v.0.1")
+
+		self.credits = text.Text("pixel1")
+		self.credits.setSize(0.45)
+		self.credits.setColor([1,1,1,1])
+		self.credits.setPosition([9, 5.3])
+		self.credits.setText("Maxence Bazin\nAlexandre Boin\nBaptiste Aleci")
 
 		self.screenTitle = guirenderer.GuiRenderer()
 		self.screenTitle.setImage([18, 12], "screentitle")
 
-		def gameLocal():
+		def returnMenu():
 			from game.screen import gamemanager
-			gamemanager.GameManager.setCurrentScreen("gamescreen", [False])
-
-		def gameMulti():
-			from game.screen import gamemanager
-			gamemanager.GameManager.setCurrentScreen("gamescreen", [True])
-
-		def gameQuit():
-			from game.main.window import Window
-			Window.exit()
-
-		def gameCredits():
-			print("(C) 2019 Maxence, Alexandre & Baptiste")
-			from game.screen import gamemanager
-			gamemanager.GameManager.setCurrentScreen("creditsscreen", [True])
-
-		self.playLocal = button.Button([9, 6.5], [5, 1], "Local", gameLocal)
-
-		self.playMulti = button.Button([9, 5], [5, 1], "Mutltijoueur", gameMulti)
+			gamemanager.GameManager.setCurrentScreen("menuscreen", [False])
 		
-		self.credits = button.Button([7.7, 3.9], [2.45, 0.6], "Credits", gameCredits)
-		
-		self.quit = button.Button([10.3, 3.9], [2.45, 0.6], "Quitter", gameQuit)
+		self.returnMenu = button.Button([7.7, 3.9], [2.45, 0.6], "< Retour", returnMenu)
+
 
 	def init(self):
 		pass
@@ -64,26 +51,19 @@ class MenuScreen(screen.Screen):
 				from game.main.window import Window
 				Window.exit()
 
-			self.playLocal.update()
-			self.playMulti.update()
-			self.credits.update()
-			self.quit.update()
+			self.returnMenu.update()
 
 	def display(self):
 		self.screenTitle.display()
 		self.title.display()
 		self.copyleft.display()
-		self.playLocal.display()
-		self.playMulti.display()
 		self.credits.display()
-		self.quit.display()
+		self.returnMenu.display()
 
 	def unload(self):
 		self.screenTitle.unload()
 		self.title.unload()
 		self.copyleft.unload()
-		self.playLocal.unload()
-		self.playMulti.unload()
 		self.credits.unload()
-		self.quit.unload()
+		self.returnMenu.unload()
 
