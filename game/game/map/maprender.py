@@ -425,3 +425,7 @@ class MapRender:
 		MapRender.shapeDown.unload()
 		MapRender.shapeUp.unload()
 		MapRender.transitionShape.unload()
+
+		del MapRender.shapeDown
+		del MapRender.shapeUp
+		del MapRender.transitionShape

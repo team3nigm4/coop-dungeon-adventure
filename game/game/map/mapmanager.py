@@ -80,7 +80,7 @@ class MapManager:
 		# Default value of change value (without map change requested) is none
 		if MapManager.changeValues is not None:
 			# Prepare the transition
-			gm.GameManager.currentScreen.inPause = True
+			gm.GameManager.currentScreen.mapChange = True
 			MapManager.transition = True
 
 	@staticmethod
@@ -287,8 +287,6 @@ class MapManager:
 		e1.speed = [0, 0]
 		e2.speed = [0, 0]
 
-
-
 	@staticmethod
 	def unload():
 		mp.MapRender.unload()
@@ -302,7 +300,7 @@ class MapManager:
 				# Reset values
 				MapManager.transitionCount = 0
 				MapManager.transitionPhase = 0
-				gm.GameManager.currentScreen.inPause = False
+				gm.GameManager.currentScreen.mapChange = False
 				MapManager.transition = False
 				# Put the transition texture in Pétaouchnoque
 				mp.MapRender.setTransitionPos([999999, 999999])
