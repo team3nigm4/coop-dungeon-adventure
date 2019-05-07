@@ -27,7 +27,7 @@ class Hud:
 	ebo = []
 
 	model = matrix4f.Matrix4f(True)
-	itemName = ["", ""]
+	itemName = ["null", "null"]
 	playerLife = [0, 0]
 	playerInvincibility = [False, False]
 
@@ -54,6 +54,9 @@ class Hud:
 			Hud.ebo.append(index * 4 + 3)
 		Hud.shape.setEbo(Hud.ebo)
 
+		Hud.itemName = ["null", "null"]
+		Hud.playerLife = [0, 0]
+		Hud.playerInvincibility = [False, False]
 		Hud.loadCharacteristiques()
 		Hud.constructHud()
 
