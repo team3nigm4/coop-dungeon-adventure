@@ -18,30 +18,41 @@
 		"frame-item-2":	{
 			"pos" : [7, 0]
 		},
-		"item-bow":	{
-			"pos" : [8, 0]
-		},
-		"item-sword":	{
-			"pos" : [8, 0]
-		},
-		"item-key":	{
-			"pos" : [9, 0]
-		},
 		"dead-heart": {
-			"pos" : [10, 0]
+			"pos" : [8, 0]
 		},
 		"half-heart" : {
-			"pos" : [11, 0]
+			"pos" : [9, 0]
 		},
 		"full-heart" : {
-			"pos" : [12, 0]
+			"pos" : [10, 0]
 		},
 		"protect-heart" : {
+			"pos" : [11, 0]
+		},
+		"item-key":	{
+			"pos" : [12, 0]
+		},
+		"item-bow":	{
+			"pos" : [14, 0]
+		},
+		"item-sword":	{
 			"pos" : [13, 0]
+		},
+		"switch" : {
+			"pos" : [15, 0]
+		},
+		"portrait-interaction-1" : {
+			"pos" : [16, 0],
+			"size" : [2, 1]
+		},
+		"portrait-interaction-2" : {
+			"pos" : [18, 0],
+			"size" : [2, 1]
 		}
 	},
 	"info": {
 		"gap" : [0, 0],
-		"size" : [14, 1]
+		"size" : [21, 1]
   }
 }

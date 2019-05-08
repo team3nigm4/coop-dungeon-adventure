@@ -13,7 +13,7 @@ class ItemRecoverable(entitydrawable.EntityDrawable):
 
 		self.setType(args[ItemRecoverable.ARGS_ITEM_TYPE])
 
-		self.attributes["heavy"] = 2
+		self.attributes["interaction"] = 2
 		self.press = False
 
 	def collision(self, ent):

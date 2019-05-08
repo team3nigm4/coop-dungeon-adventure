@@ -16,6 +16,7 @@ class Padlock(entitycollision.EntityCollision):
 
         self.setCollision(True)
         self.attributes["key"] = 2
+        self.attributes["interaction"] = 2
 
         self.colRenderer.setAttributes(self.colSize, [1, 0.5, 0.5, 0.5])
         self.setDrawCol(True)
