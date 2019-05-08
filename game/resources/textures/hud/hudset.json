@@ -1,20 +1,47 @@
 {
-  "position":{
-    "dead-heart": [0, 0],
-    "half-heart": [1, 0],
-    "full-heart": [2, 0],
-    "dead-heart-save": [3, 0],
-    "half-heart-save": [4, 0],
-    "full-heart-save": [5, 0],
-    "portrait1":  [6, 0],
-    "portrait2":  [7, 0],
-    "item":       [8, 0],
-    "item-key":   [9, 0],
-    "item-bow":   [10, 0],
-    "item-sword": [11, 0]
-  },
-  "info": {
-    "gap" : [0, 0],
-    "size" : [12, 1]
+	"elements":{
+		"back":	{
+			"pos" : [0, 0],
+			"size": [2, 1]
+		},
+		"portrait-1":	{
+			"pos" : [2, 0],
+			"size": [2, 1]
+		},
+		"portrait-2":	{
+			"pos" : [4, 0],
+			"size": [2, 1]
+		},
+		"frame-item-1":	{
+			"pos" : [6, 0]
+		},
+		"frame-item-2":	{
+			"pos" : [7, 0]
+		},
+		"item-bow":	{
+			"pos" : [8, 0]
+		},
+		"item-sword":	{
+			"pos" : [8, 0]
+		},
+		"item-key":	{
+			"pos" : [9, 0]
+		},
+		"dead-heart": {
+			"pos" : [10, 0]
+		},
+		"half-heart" : {
+			"pos" : [11, 0]
+		},
+		"full-heart" : {
+			"pos" : [12, 0]
+		},
+		"protect-heart" : {
+			"pos" : [13, 0]
+		}
+	},
+	"info": {
+		"gap" : [0, 0],
+		"size" : [14, 1]
   }
 }
