@@ -4,7 +4,8 @@ from game.util import matrix4f
 
 
 class BoxRenderer:
-	def __init__(self, size, color):
+	# Shader false : box shader, shader true : box-hud shader
+	def __init__(self, size, color, shader=False):
 		self.size = size
 		self.color = color
 
@@ -16,7 +17,9 @@ class BoxRenderer:
 		indices = [0, 1, 2,
 				2, 3, 0]
 
-		self.shape = shape.Shape("box", True)
+		self.setShader(shader)
+
+		self.shape = shape.Shape(self.shaderName, True)
 		self.shape.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
 		self.shape.setEbo(indices)
 		self.shape.setVbo(quad)
@@ -25,7 +28,7 @@ class BoxRenderer:
 		self.model = matrix4f.Matrix4f(True)
 
 	def display(self):
-		sm.updateLink("box", "model", self.model.matrix)
+		sm.updateLink(self.shaderName, "model", self.model.matrix)
 		self.shape.display()
 
 	def setAttributes(self, size, color):
@@ -39,9 +42,21 @@ class BoxRenderer:
 
 		self.shape.setVbo(quad)
 
+	def setShader(self, shader):
+		self.shader = shader
+		if self.shader:
+			self.shaderName = "box-hud"
+		else:
+			self.shaderName = "box"
+
+
 	def updateModel(self, newPos):
-		self.model.matrix[3][0] = newPos[0] - self.size[0] / 2
-		self.model.matrix[3][1] = newPos[1] - self.size[1] / 2
+		if self.shader:
+			self.model.matrix[3][0] = newPos[0] - self.size[0] / 2 - 9
+			self.model.matrix[3][1] = newPos[1] - self.size[1] / 2 - 8
+		else:
+			self.model.matrix[3][0] = newPos[0] - self.size[0] / 2
+			self.model.matrix[3][1] = newPos[1] - self.size[1] / 2
 
 	def unload(self):
 		self.shape.unload()

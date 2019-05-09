@@ -10,7 +10,7 @@ class GuiRenderer:
 		self.size = [0, 0]
 		self.hotPoint = [0, 0]
 
-		quad = [0, 0, 0.0, 	0.0, 0.0, 1.0,
+		self.quad = [0, 0, 0.0, 	0.0, 0.0, 1.0,
 				1, 0, 0.0, 	1.0, 0.0, 1.0,
 				1, 1, 0.0, 	1.0, 1.0, 1.0,
 				0, 1, 0.0, 	0.0, 1.0, 1.0]
@@ -18,17 +18,17 @@ class GuiRenderer:
 		indices = [0, 1, 2,
 				2, 3, 0]
 
-		self.shape = shape.Shape("hud", True)
+		self.shape = shape.Shape("texture-hud", True)
 		self.shape.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
 		self.shape.setEbo(indices)
-		self.shape.setVbo(quad)
+		self.shape.setVbo(self.quad)
 		self.shape.setReading([3, 2, 1])
 
 		self.setKey("error")
 		self.model = matrix4f.Matrix4f(True)
 
 	def display(self):
-		sm.updateLink("hud", "model", self.model.matrix)
+		sm.updateLink("texture-hud", "model", self.model.matrix)
 		tm.bind(self.texKey)
 		self.shape.display()
 
@@ -39,12 +39,17 @@ class GuiRenderer:
 		self.setKey(key)
 
 		size = self.size
-		quad = [0 - hotPoint[0], 0 - hotPoint[1], 0.0, 0.0, 0.0, 1.0,
+		self.quad = [0 - hotPoint[0], 0 - hotPoint[1], 0.0, 0.0, 0.0, 1.0,
 				size[0] - hotPoint[0], 0 - hotPoint[1], 0.0, 1.0, 0.0, 1.0,
 				size[0] - hotPoint[0], size[1] - hotPoint[1], 0.0, 1.0, 1.0, 1.0,
 				0 - hotPoint[0], size[1] - hotPoint[1], 0.0, 0.0, 1.0, 1.0]
 
-		self.shape.setVbo(quad)
+		self.shape.setVbo(self.quad)
+
+	def setOpacity(self, opacity):
+		for i in range(4):
+			self.quad[i * 6 + 5] = opacity
+		self.shape.setVbo(self.quad)
 
 	def setKey(self, key):
 		self.texKey = tm.key(key)

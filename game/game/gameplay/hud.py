@@ -48,7 +48,7 @@ class Hud:
 		path_hudSet = "game/resources/textures/hud/hudset.json"
 		Hud.hudSet = json.load(open(path_hudSet))
 
-		Hud.shape = shape.Shape("hud", True)
+		Hud.shape = shape.Shape("texture-hud", True)
 		Hud.shape.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
 		Hud.shape.setReading([3, 2, 1])
 
@@ -116,8 +116,8 @@ class Hud:
 
 	@staticmethod
 	def display():
-		sm.updateLink("hud", "model", Hud.model.matrix)
-		
+		sm.updateLink("texture-hud", "model", Hud.model.matrix)
+
 		tm.bind("hud")
 		Hud.shape.display()
 

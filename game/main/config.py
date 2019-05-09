@@ -10,9 +10,9 @@ class Config:
 	INPUTS_PATH = "data/config/inputs.json"
 	SERVER_CONFIG_PATH = "data/server.json"
 
-	ratio = None
-	inputs = None
-	values = None
+	ratio = 0
+	inputs = {}
+	values = {}
 
 	@staticmethod
 	def check():
@@ -80,6 +80,7 @@ class Config:
 		Config.loadInputs()
 		Config.ratio = Config.values["window"]["width"] / Config.values["window"]["height"]
 
+	@staticmethod
 	def loadServer():
 		Config.checkServerConfig()
 		Config.loadServerConfig()
@@ -215,6 +216,7 @@ class Config:
 		except json.decoder.JSONDecodeError:
 			Config.createDefaultInputs(Config.yes(Logger.format("Config", "Failed to parse the key config file ! Do you want to recreate it and delete the old one ?")))
 
+	@staticmethod
 	def loadServerConfig():
 		import json
 		try:

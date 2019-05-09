@@ -1,6 +1,5 @@
 # This class performs the display and the update of the client
 
-
 from game.game.entitymodel import player as pl
 from game.game.entityclass.entitymanager import EntityManager as em
 from game.game.map.mapmanager import MapManager as mam
@@ -11,9 +10,10 @@ from game.screen.screens import screen
 from game.game.gameplay.hud import Hud
 from game.render.text import text
 
-from game.inputs import playercontroler as plc
+from game.render.shape import guirenderer
+from game.render.gui import button
 
-from game.util.logger import Logger
+from game.inputs import playercontroler as plc
 
 class GameScreen(screen.Screen):
 
@@ -21,6 +21,7 @@ class GameScreen(screen.Screen):
 		# Pre init the game
 		super().__init__()
 
+		# Init variable
 		self.inPause = False
 		self.mapChange = False
 		self.networkInfo = networkInfo
@@ -28,11 +29,38 @@ class GameScreen(screen.Screen):
 		self.controlPlay1 = plc.PlayerController()
 		self.controlPlay2 = plc.PlayerController()
 
+		# Set gameHud
 		self.text = text.Text("pixel1")
 		self.text.setSize(0.4)
 		self.text.setColor([0.4,0.1,0.8,1])
 		self.text.setPosition([17.9, 0])
 		self.text.setCentering("down-right")
+
+		# Set pauseHud
+		self.textPause = text.Text("pixel1")
+		self.textPause.setAll("Pause", 1, [9, 11], [0.9, 0.9, 0.9, 0.9], "up")
+
+		self.backPause = guirenderer.GuiRenderer()
+		self.backPause.setImage([18, 12], "transition")
+		self.backPause.setOpacity(0.3)
+		self.backPause.updateModel([9, 6])
+
+		self.bodyPause = guirenderer.GuiRenderer()
+		self.bodyPause.setImage([6, 9.2], "transition")
+		self.bodyPause.setOpacity(0.5)
+		self.bodyPause.updateModel([9, 7])
+
+		def funct1():
+			from game.screen.gamemanager import GameManager
+			GameManager.currentScreen.inPause = False
+
+		self.pauseResume = button.Button([9, 6], [3, 1], "Reprendre", funct1)
+
+		def funct2():
+			from game.screen.gamemanager import GameManager
+			GameManager.setCurrentScreen("menuscreen", ["false"])
+
+		self.pauseQuit = button.Button([9, 4], [3, 1], "Quitter", funct2)
 
 	def init(self):
 		# init the game
@@ -82,8 +110,7 @@ class GameScreen(screen.Screen):
 	def update(self):
 		# Keys test
 		if im.inputPressed(im.ESCAPE):
-			from game.screen import  gamemanager
-			gamemanager.GameManager.setCurrentScreen("MenuScreen", [True])
+			self.inPause = not self.inPause
 
 		if self.networkInfo[0]:
 			self.updateMulti()
@@ -128,7 +155,12 @@ class GameScreen(screen.Screen):
 		self.analyseData(self.client.data)
 
 	def updateLocal(self):
-		if not self.inPause and not self.mapChange:
+		if self.inPause:
+			self.pauseResume.update()
+			self.pauseQuit.update()
+		elif self.mapChange:
+			mam.update()
+		else:
 			# Update
 			self.controlPlay1.update()
 			self.controlPlay2.update()
@@ -150,15 +182,19 @@ class GameScreen(screen.Screen):
 			gm.cam.goToEntity()
 			em.dispose()
 			Hud.dispose()
-
-		else:
-			pass
-
-		mam.update()
+			mam.update()
 
 	def display(self):
 		mam.display()
 		Hud.display()
+
+		if self.inPause:
+			self.backPause.display()
+			self.bodyPause.display()
+			self.textPause.display()
+			self.pauseResume.display()
+			self.pauseQuit.display()
+
 		self.text.display()
 
 	def unload(self):
@@ -167,7 +203,13 @@ class GameScreen(screen.Screen):
 		em.entities[em.PLAYER_1].unload()
 		em.entities[em.PLAYER_2].unload()
 		em.unload()
+
 		self.text.unload()
+		self.textPause.unload()
+		self.backPause.unload()
+		self.bodyPause.unload()
+		self.pauseResume.unload()
+		self.pauseQuit.unload()
 
 		if self.networkInfo[0]:
 			self.client.end()
