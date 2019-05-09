@@ -67,9 +67,9 @@ class GameManager:
 		if value == "menuscreen" or value == "Menuscreen" or value == "MenuScreen":
 			from game.screen.screens import menuscreen as me
 			GameManager.currentScreen = me.MenuScreen([])
-		if value == "creditsscreen" or value == "Creditsscreen" or value == "CreditsScreen":
-			from game.screen.screens import creditsscreen as cr
-			GameManager.currentScreen = cr.CreditsScreen([])
+		if value == "messagescreen" or value == "Messagescreen" or value == "MessageScreen":
+			from game.screen.screens import messagescreen as cr
+			GameManager.currentScreen = cr.MessageScreen([], arg[0], arg[1])
 		elif value == "GameScreen" or value == "gamescreen" or value == "Gamescreen":
 			from game.screen.screens import gamescreen as ga
 			if arg[0] == True:

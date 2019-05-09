@@ -9,16 +9,10 @@ from game.render.shape import guirenderer
 from game.screen import gamemanager
 
 
-class CreditsScreen(screen.Screen):
+class MessageScreen(screen.Screen):
 
-	def __init__(self, info):
+	def __init__(self, info, title, message):
 		super().__init__()
-
-		self.title = text.Text("pixel1")
-		self.title.setSize(1.3)
-		self.title.setColor([1,1,1,1])
-		self.title.setPosition([9, 10.5])
-		self.title.setText("Coop Dungeon Adventure")
 
 		self.copyleft = text.Text("pixel1")
 		self.copyleft.setSize(0.4)
@@ -26,20 +20,29 @@ class CreditsScreen(screen.Screen):
 		self.copyleft.setCentering("down-left")
 		self.copyleft.setText("(C) 2019 Maxence, Alexandre & Baptiste" + " "*29 + "v.0.1")
 
-		self.credits = text.Text("pixel1")
-		self.credits.setSize(0.45)
-		self.credits.setColor([1,1,1,1])
-		self.credits.setPosition([9, 5.3])
-		self.credits.setText("Maxence Bazin\nAlexandre Boin\nBaptiste Aleci")
+		self.title = text.Text("pixel1")
+		self.title.setSize(1)
+		self.title.setColor([1,1,1,1])
+		self.title.setPosition([9, 5.1])
+		self.title.setText(title)
 
+		self.message = text.Text("pixel1")
+		self.message.setSize(0.8)
+		self.message.setColor([1,1,1,1])
+		self.message.setPosition([9, 3.8])
+		self.message.setText(message)
+
+		self.background = guirenderer.GuiRenderer()
+		self.background.setImage([18, 12], "background")
+		
 		self.screenTitle = guirenderer.GuiRenderer()
 		self.screenTitle.setImage([18, 12], "screentitle")
 
 		def returnMenu():
 			from game.screen import gamemanager
-			gamemanager.GameManager.setCurrentScreen("menuscreen", [False])
+			gamemanager.GameManager.setCurrentScreen("menuscreen", [True])
 		
-		self.returnMenu = button.Button([7.7, 3.9], [2.45, 0.6], "< Retour", returnMenu)
+		self.returnMenu = button.Button([7.7, 2.8], [2.45, 0.6], "< Retour", returnMenu)
 
 
 	def init(self):
@@ -54,16 +57,20 @@ class CreditsScreen(screen.Screen):
 			self.returnMenu.update()
 
 	def display(self):
+		self.background.display()
 		self.screenTitle.display()
 		self.title.display()
 		self.copyleft.display()
-		self.credits.display()
+		self.title.display()
+		self.message.display()
 		self.returnMenu.display()
 
 	def unload(self):
+		self.background.unload()
 		self.screenTitle.unload()
 		self.title.unload()
 		self.copyleft.unload()
-		self.credits.unload()
+		self.title.unload()
+		self.message.unload()
 		self.returnMenu.unload()
 

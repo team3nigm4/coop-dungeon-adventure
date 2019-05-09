@@ -38,6 +38,7 @@
 			 "item-weapon" : "item-weapon.png"
 		},
 		"menus" : {
+			"background" : "background.png",
 			"screentitle" : "screentitle.png"
 		},
 		"players" : {
