@@ -97,7 +97,7 @@ class Window:
 			gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
 
 			if time.time_ns() - secondTime >= Window.SECOND:
-				if Config.debug:
+				if Config.values["general"]["debug"]:
 					glfw.set_window_title(Window.window,
 										  "Coop Dungeon Adventure | FPS:" + str(frames) + "; TPS:" + str(ticks))
 				ticks = 0
