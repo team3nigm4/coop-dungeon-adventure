@@ -10,7 +10,6 @@ class Config:
 	INPUTS_PATH = "data/config/inputs.json"
 	SERVER_CONFIG_PATH = "data/server.json"
 
-	debug = None
 	ratio = None
 	inputs = None
 	values = None
@@ -80,7 +79,6 @@ class Config:
 		Config.loadConfig()
 		Config.loadInputs()
 		Config.ratio = Config.values["window"]["width"] / Config.values["window"]["height"]
-		Config.debug = True
 
 	def loadServer():
 		Config.checkServerConfig()
