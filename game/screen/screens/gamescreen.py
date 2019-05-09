@@ -100,6 +100,10 @@ class GameScreen(screen.Screen):
 				self.networkInfo[0] = False
 				self.client.end()
 
+				from game.screen.gamemanager import GameManager
+				GameManager.setCurrentScreen("messagescreen", ["Erreur", "Connexion refuse"])
+				GameManager.createCurrentScreen()
+
 		if not self.networkInfo[0]:
 			self.inPause = False
 			self.serverPause = False

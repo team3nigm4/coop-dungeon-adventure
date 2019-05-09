@@ -6,6 +6,7 @@ from game.util.logger import Logger
 
 class Config:
 	# Default value to prevent a mistake of configs's loading
+	server = []
 	CONFIG_PATH = "data/config/config.json"
 	INPUTS_PATH = "data/config/inputs.json"
 	SERVER_CONFIG_PATH = "data/server.json"
@@ -54,7 +55,7 @@ class Config:
 
 	@staticmethod
 	def checkServerConfig():
-		import os, sys, json
+		import os, sys
 
 		# Verification of the existence of the "data" folder
 		path = "data"
