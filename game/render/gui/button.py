@@ -39,7 +39,7 @@ class Button:
 			self.hover = False
 			self.size[0] /= 1.1
 			self.size[1] /= 1.1
-			self.text.setColor([0.3, 0.3, 0.3, 1])
+			self.text.setColor([0.8, 0.8, 0.8, 1])
 			self.text.setSize(self.size[0] / 8)
 			self.renderer.setImage(self.size, "button-unhover")
 
@@ -48,7 +48,7 @@ class Button:
 			self.hover = True
 			self.size[0] *= 1.1
 			self.size[1] *= 1.1
-			self.text.setColor([0.8, 0.8, 0.8, 1])
+			self.text.setColor([1, 1, 1, 1])
 			self.text.setSize(self.size[0] / 8)
 			self.renderer.setImage(self.size, "button-hover")
 
