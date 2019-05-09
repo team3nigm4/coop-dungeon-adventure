@@ -39,7 +39,6 @@ class GameManager:
 	@staticmethod
 	def update():
 		if GameManager.wantChangeScreen:
-			print("create", GameManager.changeScreenValue)
 			GameManager.createCurrentScreen()
 
 		GameManager.currentScreen.update()
@@ -52,7 +51,6 @@ class GameManager:
 
 	@staticmethod
 	def setCurrentScreen(value, arg):
-		print("wait")
 		GameManager.changeScreenValue = value
 		GameManager.changeScreenArgs = arg
 		GameManager.wantChangeScreen = True
@@ -60,7 +58,6 @@ class GameManager:
 	@staticmethod
 	def createCurrentScreen():
 		GameManager.wantChangeScreen = False
-		print("create really", GameManager.changeScreenValue)
 		value = GameManager.changeScreenValue
 		arg = GameManager.changeScreenArgs
 
