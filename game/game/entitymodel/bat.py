@@ -35,7 +35,7 @@ class Bat(enemy.Enemy):
 		self.knockback = 0.35
 		self.height = 0.8
 
-		self.entityRenderer.setImage([1, 1], "bat", [0.5, 0.5])
+		self.entityRenderer.setImage([0.95, 0.95], "bat", [0.475, 0.43])
 		self.gapDisplayPos = -1
 
 	def update(self):
@@ -90,7 +90,8 @@ class Bat(enemy.Enemy):
 				if math.fabs(self.speed[i]) > self.maxSpeed[i]:
 					self.speed[i] = self.wantDirection[i] * self.maxSpeed[i]
 
-		self.setPos([self.pos[0] + self.speed[0], self.pos[1] + self.speed[1]])
+		self.mam.checkCollisionX(self)
+		self.mam.checkCollisionY(self)
 
 	def collision(self, ent):
 		if (ent.attributes["playerSword"] == 1 and self.attributes["playerSword"] == 2) or \

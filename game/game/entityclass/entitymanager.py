@@ -177,6 +177,10 @@ class EntityManager:
 
 	@staticmethod
 	def init():
+		from game.main.config import Config
+
+		EntityManager.displayBox = Config.values["general"]["debug"]
+
 		EntityManager.len = 0
 
 		EntityManager.entities = []
