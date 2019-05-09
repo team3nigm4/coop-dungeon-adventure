@@ -17,7 +17,7 @@
 			],
 			"mode" : ["camView"]
 		},
-		"hud": {
+		"texture-hud": {
 			"files": [
 				"texHudVert.glsl",
 				"texHudFrag.glsl"
@@ -28,6 +28,13 @@
 			"files": [
 				"textHudVert.glsl",
 				"textHudFrag.glsl"
+			],
+			"mode" : ["static"]
+		},
+		"box-hud": {
+			"files" : [
+				"boxHudVert.glsl",
+				"boxHudFrag.glsl"
 			],
 			"mode" : ["static"]
 		}
