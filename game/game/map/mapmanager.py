@@ -30,7 +30,7 @@ class MapManager:
 	zone = "null"
 	id = "null"
 	entryInfo = []
-	entry = 0
+	entry = -1
 	defaultEntry = 0
 
 	changeValues = None
@@ -60,13 +60,13 @@ class MapManager:
 			mts.MapTemporarySave.newZone(zone)
 
 		# Apply values
-		test = MapManager.zone
+		zoneTemp = MapManager.zone
 		MapManager.collideTest = False
 		MapManager.zone = zone
 		MapManager.id = map
 		MapManager.entry = entry
 
-		if MapManager.exitPos == 4 and not test == "null":
+		if MapManager.exitPos == 4 and not zoneTemp == "null":
 			mts.MapTemporarySave.changeRoom(map, entry, True)
 		else:
 			mts.MapTemporarySave.changeRoom(map, entry)
@@ -181,8 +181,12 @@ class MapManager:
 
 	@staticmethod
 	def init():
+		mts.MapTemporarySave.init()
 		mp.MapRender.init()
 		MapManager.changeValues = ["null", "map0", 0]
+		MapManager.zone = "null"
+		MapManager.id = "null"
+		MapManager.entry = -1
 
 		# Force to load the first map with transition
 		MapManager.reserveChange("test", "map1", 0)

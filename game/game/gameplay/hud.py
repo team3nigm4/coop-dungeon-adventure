@@ -8,12 +8,22 @@ from game.game.entityclass import entitymanager as em
 
 
 class Hud:
-	PORTRAIT_1 = 0
-	PORTRAIT_2 = 1
-	ITEM_1 = 2
-	ITEM_2 = 3
-	HEARTHS_1 = 4
-	HEARTHS_2 = 7
+	BACK_1 = 1
+	BACK_2 = 2
+	PORTRAIT_1 = 3
+	PORTRAIT_2 = 4
+	FRAME_ITEM_1 = 5
+	FRAME_ITEM_2 = 6
+	ITEM_1 = 7
+	ITEM_2 = 8
+	HEARTHS_1 = 9
+	HEARTHS_2 = 12
+	SWITCH_1 = 15
+	SWITCH_2 = 16
+	ITEM_SWITCH_1 = 17
+	ITEM_SWITCH_2 = 18
+
+	ELEMENT_TO_DRAW = 19
 
 	VERTEX_SIZE = 4 * 6
 
@@ -27,9 +37,11 @@ class Hud:
 	ebo = []
 
 	model = matrix4f.Matrix4f(True)
-	itemName = ["", ""]
+	itemName = ["null", "null"]
+	subItemName = ["null", "null"]
 	playerLife = [0, 0]
 	playerInvincibility = [False, False]
+	playerInteraction = [False, False]
 
 	@staticmethod
 	def init():
@@ -45,7 +57,7 @@ class Hud:
 		Hud.model.matrix[3][1] -= 6
 
 		Hud.ebo = []
-		for index in range(10):
+		for index in range(Hud.ELEMENT_TO_DRAW):
 			Hud.ebo.append(index * 4)
 			Hud.ebo.append(index * 4 + 1)
 			Hud.ebo.append(index * 4 + 3)
@@ -53,6 +65,12 @@ class Hud:
 			Hud.ebo.append(index * 4 + 2)
 			Hud.ebo.append(index * 4 + 3)
 		Hud.shape.setEbo(Hud.ebo)
+
+		Hud.itemName = ["null", "null"]
+		Hud.subItemName = ["null", "null"]
+		Hud.playerLife = [0, 0]
+		Hud.playerInvincibility = [False, False]
+		Hud.playerInteraction = [False, False]
 
 		Hud.loadCharacteristiques()
 		Hud.constructHud()
@@ -64,17 +82,36 @@ class Hud:
 
 	@staticmethod
 	def constructHud():
-		Hud.vbo = [0 for a in range(Hud.VERTEX_SIZE * 10)]
+		Hud.vbo = [0 for a in range(Hud.VERTEX_SIZE * Hud.ELEMENT_TO_DRAW)]
 		Hud.itemName1 = ""
 		Hud.itemName2 = ""
 
-		Hud.initElement(Hud.hudInfo["position"]["portrait1"],
-						Hud.hudInfo["size"]["portrait1"], "portrait1",
-						Hud.PORTRAIT_1, Hud.hudInfo["opacity"]["portrait1"])
+		Hud.initElement(Hud.hudInfo["position"]["back-1"],
+						Hud.hudInfo["size"]["back-1"], "back",
+						Hud.BACK_1, Hud.hudInfo["opacity"]["back-1"])
 
-		Hud.initElement(Hud.hudInfo["position"]["portrait2"],
-						Hud.hudInfo["size"]["portrait2"], "portrait2",
-						Hud.PORTRAIT_2, Hud.hudInfo["opacity"]["portrait2"])
+
+		Hud.initElement(Hud.hudInfo["position"]["back-2"],
+						Hud.hudInfo["size"]["back-2"], "back",
+						Hud.BACK_2, Hud.hudInfo["opacity"]["back-2"])
+
+
+		Hud.initElement(Hud.hudInfo["position"]["portrait-1"],
+						Hud.hudInfo["size"]["portrait-1"], "portrait-1",
+						Hud.PORTRAIT_1, Hud.hudInfo["opacity"]["portrait-1"])
+
+		Hud.initElement(Hud.hudInfo["position"]["portrait-2"],
+						Hud.hudInfo["size"]["portrait-2"], "portrait-2",
+						Hud.PORTRAIT_2, Hud.hudInfo["opacity"]["portrait-2"])
+
+		Hud.initElement(Hud.hudInfo["position"]["frame-item-1"],
+						Hud.hudInfo["size"]["frame-item-1"],
+						"frame-item-1", Hud.FRAME_ITEM_1 , Hud.hudInfo["opacity"]["frame-item-1"])
+
+		Hud.initElement(Hud.hudInfo["position"]["frame-item-2"],
+						Hud.hudInfo["size"]["frame-item-2"],
+						"frame-item-2", Hud.FRAME_ITEM_2 , Hud.hudInfo["opacity"]["frame-item-2"], True)
+
 		Hud.dispose()
 
 	@staticmethod
@@ -88,23 +125,71 @@ class Hud:
 	def dispose():
 		ent = em.EntityManager
 		change = False
-		for i in range(2):
-			itemName = ent.entities[i].getItemName()
-			# If the item of the player change
-			if not itemName[i] == itemName:
-				if itemName == "Key":
-					itemType = "item-key"
-				elif itemName == "Weapon":
-					if ent.entities[i].item.arm:
-						itemType = "item-sword"
-					else:
-						itemType = "item-bow"
-				else:
-					itemType = "item"
 
-				Hud.initElement(Hud.hudInfo["position"]["item" + str(i + 1)],
-								Hud.hudInfo["size"]["item" + str(i + 1)],
-								itemType, 2 + i, Hud.hudInfo["opacity"]["item" + str(i + 1)])
+		itemName = [ent.entities[0].getItemName(), ent.entities[1].getItemName()]
+		for i in range(2):
+			# If the item of the player change
+			hasChange = False
+			if not Hud.itemName[0] == itemName[0] or not Hud.itemName[1] == itemName[1]:
+				hasChange = True
+
+			if itemName[i] == "Weapon":
+				if not Hud.subItemName[i] == ent.entities[i].item.arm:
+					hasChange = True
+
+			if hasChange:
+				if Hud.itemName[i] == "Weapon":
+					Hud.initElement([0, 0], [1, 1], "null", Hud.ITEM_SWITCH_1 + i, 0)
+
+					Hud.initElement([0, 0], [1, 1], "null", Hud.SWITCH_1 + i, 0)
+
+				if itemName[i] == "Null":
+					Hud.initElement([0, 0], [1, 1], "null", Hud.ITEM_1 + i, 0)
+				else:
+
+					itemType = "item-key"
+					switch = [False]
+
+					if itemName[i] == "Key":
+						itemType = "item-key"
+
+					elif itemName[i] == "Weapon":
+						if ent.entities[i].item.arm:
+							itemType = "item-sword"
+							Hud.subItemName[i] = itemType
+							if not itemName[1 - i] == "Weapon":
+								switch = [True, "item-bow"]
+							else:
+								switch = [False]
+						else:
+							itemType = "item-bow"
+							Hud.subItemName[i] = itemType
+							if not itemName[1 - i] == "Weapon":
+								switch = [True, "item-sword"]
+							else:
+								switch = [False]
+
+					if i == 0:
+						flip = False
+					else:
+						flip = True
+
+					# Display new Item
+
+					Hud.initElement(Hud.hudInfo["position"]["frame-item-" + str(i + 1)],
+									Hud.hudInfo["size"]["frame-item-" + str(i + 1)],
+									itemType, Hud.ITEM_1 + i, Hud.hudInfo["opacity"]["frame-item-" + str(i + 1)], flip)
+
+					# Display switch state if item with switch
+					if switch[0]:
+						Hud.initElement(Hud.hudInfo["position"]["switch-" + str(i + 1)],
+										Hud.hudInfo["size"]["switch"],
+										"switch", Hud.SWITCH_1 + i, Hud.hudInfo["opacity"]["switch"], flip)
+
+						Hud.initElement(Hud.hudInfo["position"]["item-switch-" + str(i + 1)],
+										Hud.hudInfo["size"]["item-switch"],
+										switch[1], Hud.ITEM_SWITCH_1 + i, Hud.hudInfo["opacity"]["item-switch"], flip)
+
 				change = True
 
 			if not ent.entities[i].life == Hud.playerLife[i]:
@@ -118,7 +203,22 @@ class Hud:
 				Hud.setHealthBar(Hud.playerLife[i], i)
 				change = True
 
+
+			if not Hud.playerInteraction[i] == ent.entities[i].getCanInteract():
+				change = True
+				Hud.playerInteraction[i] = ent.entities[i].getCanInteract()
+				if Hud.playerInteraction[i]:
+					type = "portrait-interaction-"
+				else:
+					type = "portrait-"
+				Hud.initElement(Hud.hudInfo["position"]["portrait-" + str(i + 1)],
+								Hud.hudInfo["size"]["portrait-" +  str(i + 1)], type +  str(i + 1),
+								Hud.PORTRAIT_1 + i, Hud.hudInfo["opacity"]["portrait-" +  str(i + 1)])
+
+
 		if change:
+			Hud.itemName[0] = itemName[0]
+			Hud.itemName[1] = itemName[1]
 			Hud.shape.setVbo(Hud.vbo)
 
 	@staticmethod
@@ -133,35 +233,58 @@ class Hud:
 				texture = "dead-heart"
 
 			if Hud.playerInvincibility[i]:
-				texture += "-save"
+				texture = "protect-heart"
 
-			position = Hud.hudInfo["position"]["healthBar" + str(i + 1)].copy()
-			position[0] += (Hud.hudInfo["info"]["hearthGap"] * a)  + (Hud.hudInfo["size"]["hearth"][0] * a)
+			position = Hud.hudInfo["position"]["health-bar-" + str(i + 1)].copy()
+			position[0] += (Hud.hudInfo["info"]["heart-gap"] * a)  + (Hud.hudInfo["size"]["hearth"][0] * a)
 
 			if i == 0:
 				Hud.initElement(position, Hud.hudInfo["size"]["hearth"],
-								texture, Hud.HEARTHS_1 + a, Hud.hudInfo["opacity"]["healthBar1"])
+								texture, Hud.HEARTHS_1 + a, Hud.hudInfo["opacity"]["health-bar-1"])
 			else:
 				Hud.initElement(position, Hud.hudInfo["size"]["hearth"],
-								texture, Hud.HEARTHS_2 + a, Hud.hudInfo["opacity"]["healthBar2"])
+								texture, Hud.HEARTHS_2 + a, Hud.hudInfo["opacity"]["health-bar-2"])
 
 	@staticmethod
-	def initElement(position, size, texture, vboCount, opacity):
+	def initElement(position, size, texture, vboCount, opacity, flip=False):
 		del Hud.vbo[vboCount * Hud.VERTEX_SIZE: (vboCount + 1) * Hud.VERTEX_SIZE]
 
-		pos = Hud.hudSet["position"][texture]
+		if texture == "null":
+			texPos = [0, 0]
+			texSize = [0, 0]
 
-		Hud.addVertice(position[0] - size[0] / 2, position[1] - size[1] / 2,
-					pos[0], pos[1] + 1, vboCount, opacity)
+		else:
+			texPos = Hud.hudSet["elements"][texture]["pos"]
 
-		Hud.addVertice(position[0] + size[0] / 2, position[1] - size[1] / 2,
-					pos[0] + 1, pos[1] + 1, vboCount, opacity)
+			if "size" in Hud.hudSet["elements"][texture]:
+				texSize = Hud.hudSet["elements"][texture]["size"]
+			else:
+				texSize = [1, 1]
 
-		Hud.addVertice(position[0] + size[0] / 2, position[1] + size[1] / 2,
-					pos[0] + 1, pos[1], vboCount, opacity)
+		if flip:
+			Hud.addVertice(position[0] + size[0] / 2, position[1] - size[1] / 2,
+						   texPos[0], texPos[1] + texSize[1], vboCount, opacity)
 
-		Hud.addVertice(position[0] - size[0]/2, position[1] + size[1]/2,
-					pos[0], pos[1], vboCount, opacity)
+			Hud.addVertice(position[0] - size[0] / 2, position[1] - size[1] / 2,
+						   texPos[0] + texSize[0], texPos[1] + texSize[1], vboCount, opacity)
+
+			Hud.addVertice(position[0] - size[0] / 2, position[1] + size[1] / 2,
+						   texPos[0] + texSize[0], texPos[1], vboCount, opacity)
+
+			Hud.addVertice(position[0] + size[0] / 2, position[1] + size[1] / 2,
+						   texPos[0], texPos[1], vboCount, opacity)
+		else:
+			Hud.addVertice(position[0] - size[0] / 2, position[1] - size[1] / 2,
+						   texPos[0], texPos[1] + texSize[1], vboCount, opacity)
+
+			Hud.addVertice(position[0] + size[0] / 2, position[1] - size[1] / 2,
+						   texPos[0] + texSize[0], texPos[1] + texSize[1], vboCount, opacity)
+
+			Hud.addVertice(position[0] + size[0] / 2, position[1] + size[1] / 2,
+						   texPos[0] + texSize[0], texPos[1], vboCount, opacity)
+
+			Hud.addVertice(position[0] - size[0]/2, position[1] + size[1]/2,
+						   texPos[0], texPos[1], vboCount, opacity)
 
 	@staticmethod
 	def addVertice(posX, posY, tposX, tposY, vboPos, opacity):
@@ -170,9 +293,9 @@ class Hud:
 		Hud.vbo.insert(vboPos, float(posX))
 		Hud.vbo.insert(vboPos + 1, float(posY))
 		Hud.vbo.insert(vboPos + 2, 0.0)
-		Hud.vbo.insert(vboPos + 3, round(tposX / Hud.hudSet["info"]["size"][0], 3))
+		Hud.vbo.insert(vboPos + 3, round(tposX / Hud.hudSet["info"]["size"][0], 4))
 		Hud.vbo.insert(vboPos + 4,
-							 Hud.hudSet["info"]["size"][1] - round(tposY / Hud.hudSet["info"]["size"][1], 3))
+							 Hud.hudSet["info"]["size"][1] - round(tposY / Hud.hudSet["info"]["size"][1], 4))
 		Hud.vbo.insert(vboPos + 5, opacity)
 
 	@staticmethod

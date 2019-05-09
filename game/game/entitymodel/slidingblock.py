@@ -59,6 +59,9 @@ class SlidingBlock(entitydrawable.EntityDrawable):
 
 		# If we apply the collision
 		elif ent.attributes["collision"] > 0 and (ent.attributes["collision"] != 2 or ent.inMov[0] or ent.inMov[1]):
+			if ent.type == "Player":
+				ent.setCanInteract(True)
+
 			# Just move in x
 			if ent.inMov[0] and not ent.inMov[1]:
 				tempDir = 0

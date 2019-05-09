@@ -3,3 +3,4 @@ glfw
 pillow
 pyrr
 colorama
+simplejson

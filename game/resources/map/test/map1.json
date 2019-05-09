@@ -184,7 +184,7 @@
             ["ActivationBlock", [[12.5, 9.5]]],
             ["TogglePlate", [[10.5, 4.5], 0]],
             ["TogglePlate", [[9.5, 3.5], 2]],
-            ["Spawn", [[3.5, 7.5], 0, ["ItemRecoverable", [3.5, 7.5], "Key"]]],
+            ["Spawn", [[3.5, 7.5], 0, ["ItemRecoverable", [3.5, 7.5], "Weapon"]]],
             ["SpawnPoint", [[4.5, 8.5]]],
             ["SpawnPoint", [[14.5, 7.75]]],
             ["Spawn", [[9.5, 4.5], 2, ["Mannequin", [9.5, 4.5], false, 0, 7]]],

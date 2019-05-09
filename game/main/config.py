@@ -114,7 +114,8 @@ class Config:
 
 		Config.values = {
 			"general": {
-				"language": language
+				"language": language,
+				"debug": False
 			},
 			"window": {
 				"limFrameRate": 0,

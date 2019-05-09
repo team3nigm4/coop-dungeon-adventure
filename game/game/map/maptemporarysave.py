@@ -46,6 +46,40 @@ class MapTemporarySave:
 	eboCount_instances = {}
 
 	@staticmethod
+	def init():
+		mts = MapTemporarySave
+		mts.zone = "Null"
+		mts.mapNumbers = 0
+		mts.currentMap = "None"
+		mts.oldMap = ""
+
+		mts.mapsName = []
+		mts.mapsLoad = {}
+
+		# Event manager
+		mts.toActive_instances = {}
+		mts.event_instances = {}
+
+		# Entity Manager
+		mts.entities_instances = {}
+		mts.entitiesCol_instances = {}
+		mts.displayLayer_instances = {}
+
+		# Map Manager
+		mts.entryPos_instances = {}
+		mts.interaction_instances = {}
+		mts.defaultEntry_instances = {}
+
+		# Map Render
+		mts.currentTileSet_instances = {}
+		mts.mapValues_instances = {}
+		mts.tilesPosition_instances = {}
+		mts.vbo_instances = {}
+		mts.ebo_instances = {}
+		mts.vboCount_instances = {}
+		mts.eboCount_instances = {}
+
+	@staticmethod
 	def newZone(zone):
 		mts = MapTemporarySave
 

@@ -32,9 +32,14 @@ class Player(entitycomplex.EntityComplex):
 		self.maxSpeed = Player.SPEED_MAX
 		self.invincibilityTime = Player.INVINCIBILITY_TIME
 
+		self.canInteract = False
+
 		self.weight = 1.3
 
-		self.setItem("Weapon")
+		if self.playerNumber == 0:
+			self.setItem("Key")
+		else:
+			self.setItem("Weapon")
 
 		self.setDrawCol(True)
 		self.colRenderer.setAttributes(self.colSize, [1, 1, 0, 0.5])
@@ -104,6 +109,7 @@ class Player(entitycomplex.EntityComplex):
 		self.mam.checkEmpty(self)
 
 	def display(self):
+		self.setCanInteract(False)
 		super().display()
 
 	def setLife(self, newLife, death=False):
@@ -132,10 +138,19 @@ class Player(entitycomplex.EntityComplex):
 			self.applyKnockback(ent.knockback, ent.pos)
 			self.applyDamage(ent.damage)
 
+		if ent.attributes["interaction"] == 2:
+			self.canInteract = True
+
 		super().collision(ent)
 
 	def getItemName(self):
 		return self.item.name
+
+	def setCanInteract(self, state):
+		self.canInteract = state
+
+	def getCanInteract(self):
+		return self.canInteract
 
 	def setItem(self, type):
 		if type == "Key":
