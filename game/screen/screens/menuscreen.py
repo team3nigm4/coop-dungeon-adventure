@@ -53,7 +53,7 @@ class MenuScreen(screen.Screen):
 
 		self.playMulti = button.Button([9, 4.4], [5, 1], "Mutltijoueur", gameMulti)
 		
-		self.showCreditsBtn = button.Button([7.7, 3.3], [2.45, 0.6], "Credits", toggleCredits)
+		self.showCreditsBtn = button.Button([7.7, 3.3], [2.45, 0.6], "Crédits", toggleCredits)
 
 		self.hideCreditsBtn = button.Button([7.7, 3.3], [2.45, 0.6], "< Retour", toggleCredits)
 		
