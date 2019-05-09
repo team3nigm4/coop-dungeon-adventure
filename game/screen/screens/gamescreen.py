@@ -14,9 +14,6 @@ from game.render.text import text
 from game.inputs import playercontroler as plc
 
 from game.util.logger import Logger
-import time
-from game.util import client
-
 
 class GameScreen(screen.Screen):
 
@@ -59,6 +56,9 @@ class GameScreen(screen.Screen):
 
 		# init network if game in multi player
 		if self.networkInfo[0]:
+			from game.util import client
+			import time
+			
 			self.client = client.Client(self.networkInfo[1], int(self.networkInfo[2]))
 			self.serverPause = True
 			self.isPlayer = -1
