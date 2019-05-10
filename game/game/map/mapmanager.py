@@ -12,7 +12,6 @@ from game.util import math as mathcda
 
 
 class MapManager:
-	collideTest = True
 	COEF = 2
 
 	INTERACTION_SOLID = 1
@@ -23,9 +22,11 @@ class MapManager:
 	TRANSITION_LOAD = 1
 	TRANSITION_END = 2
 
-	cWidth = None
-	cHeight = None
+	cWidth = 0
+	cHeight = 0
 	interaction = []
+
+	collideTest = True
 
 	zone = "null"
 	id = "null"
@@ -188,11 +189,16 @@ class MapManager:
 		MapManager.id = "null"
 		MapManager.entry = -1
 
+		MapManager.transition = False
+		MapManager.transitionPhase = 0
+		MapManager.transitionCount = 0
+
+		MapManager.collideTest = True
+
 		# Force to load the first map with transition
 		MapManager.reserveChange("test", "map1", 0)
 		MapManager.checkChangeMap()
 		MapManager.transitionPhase = 1
-		MapManager.update()
 
 	@staticmethod
 	def reserveChange(zone, map, entry, exitPos=4):

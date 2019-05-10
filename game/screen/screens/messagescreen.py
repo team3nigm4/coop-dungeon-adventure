@@ -11,7 +11,7 @@ from game.screen import gamemanager
 
 class MessageScreen(screen.Screen):
 
-	def __init__(self, info, title, message):
+	def __init__(self, info):
 		super().__init__()
 
 		self.copyleft = text.Text("pixel1")
@@ -24,13 +24,13 @@ class MessageScreen(screen.Screen):
 		self.title.setSize(1)
 		self.title.setColor([1,1,1,1])
 		self.title.setPosition([9, 5.1])
-		self.title.setText(title)
+		self.title.setText(info[0])
 
 		self.message = text.Text("pixel1")
 		self.message.setSize(0.8)
 		self.message.setColor([1,1,1,1])
 		self.message.setPosition([9, 3.8])
-		self.message.setText(message)
+		self.message.setText(info[1])
 
 		self.background = guirenderer.GuiRenderer()
 		self.background.setImage([18, 12], "background")
@@ -43,7 +43,6 @@ class MessageScreen(screen.Screen):
 			gamemanager.GameManager.setCurrentScreen("menuscreen", [True])
 		
 		self.returnMenu = button.Button([7.7, 2.8], [2.45, 0.6], "< Retour", returnMenu)
-
 
 	def init(self):
 		pass

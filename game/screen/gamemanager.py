@@ -33,8 +33,7 @@ class GameManager:
 		GameManager.cam = camera.Camera(70.0, [0, 0, -8.572])  # Precise position of cam to render 18 * 12 tiles
 		sm.init()
 
-		GameManager.changeScreenValue = "Menuscreen"
-		GameManager.changeScreenArgs = [True]
+		GameManager.setCurrentScreen("menuscreen", [True])
 		GameManager.createCurrentScreen()
 
 	@staticmethod
@@ -58,6 +57,7 @@ class GameManager:
 
 	@staticmethod
 	def createCurrentScreen():
+		GameManager.wantChangeScreen = False
 		value = GameManager.changeScreenValue
 		arg = GameManager.changeScreenArgs
 
@@ -66,10 +66,10 @@ class GameManager:
 
 		if value == "menuscreen" or value == "Menuscreen" or value == "MenuScreen":
 			from game.screen.screens import menuscreen as me
-			GameManager.currentScreen = me.MenuScreen([])
+			GameManager.currentScreen = me.MenuScreen(arg)
 		if value == "messagescreen" or value == "Messagescreen" or value == "MessageScreen":
 			from game.screen.screens import messagescreen as cr
-			GameManager.currentScreen = cr.MessageScreen([], arg[0], arg[1])
+			GameManager.currentScreen = cr.MessageScreen(arg)
 		elif value == "GameScreen" or value == "gamescreen" or value == "Gamescreen":
 			from game.screen.screens import gamescreen as ga
 			if arg[0] == True:
@@ -84,7 +84,6 @@ class GameManager:
 			# localhost 34141
 
 		GameManager.currentScreen.init()
-		GameManager.wantChangeScreen = False
 
 	@staticmethod
 	def unload():

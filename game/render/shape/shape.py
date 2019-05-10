@@ -13,7 +13,8 @@ class Shape:
 
 	def __init__(self, shaderID, useEBO):
 		# Instance variables
-		self.verticesNumber = None
+		self.verticesNumber = 0
+		self.indicesNumber = 0
 
 		self.shaderId = shaderID
 
@@ -99,4 +100,3 @@ class Shape:
 		if self.useEBO:
 			gl.glDeleteBuffers(1, int(self.ebo))
 		gl.glDeleteVertexArrays(1, int(self.vao))
-
