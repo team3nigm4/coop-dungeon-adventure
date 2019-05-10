@@ -80,8 +80,6 @@ class GameScreen(screen.Screen):
 		self.controlPlay2.setPlayer(em.PLAYER_2)
 		self.controlPlay2.setEntity(em.entities[em.PLAYER_2])
 
-		self.text.setText("CDA v.0.1 - network:" + str(self.networkInfo[0]))
-
 		# init network if game in multi player
 		if self.networkInfo[0]:
 			from game.util import client
@@ -108,7 +106,7 @@ class GameScreen(screen.Screen):
 			self.serverPause = False
 			gm.cam.trackEntity(em.PLAYER_1)
 
-		self.text.setText("CDA v.0.1 - network:" + str(self.networkInfo[0]))
+		self.text.setText("")
 
 	def update(self):
 		# Keys test
@@ -132,12 +130,16 @@ class GameScreen(screen.Screen):
 				self.controlPlay1.update()
 				self.controlPlay2.update()
 
-				if self.isPlayer == 0:
-					if not self.controlPlay1.tempInputState == self.controlPlay1.inputState:
-						self.client.send({1 : { 0 : self.controlPlay1.inputState}})
+				if self.inPause:
+					self.pauseResume.update()
+					self.pauseQuit.update()
 				else:
-					if not self.controlPlay2.tempInputState == self.controlPlay2.inputState:
-						self.client.send({1 : { 0 : self.controlPlay2.inputState}})
+					if self.isPlayer == 0:
+						if not self.controlPlay1.tempInputState == self.controlPlay1.inputState:
+							self.client.send({1: {0: self.controlPlay1.inputState}})
+					else:
+						if not self.controlPlay2.tempInputState == self.controlPlay2.inputState:
+							self.client.send({1: {0: self.controlPlay2.inputState}})
 
 				em.update()
 
@@ -226,7 +228,7 @@ class GameScreen(screen.Screen):
 			self.isPlayer = data['3']
 
 			gm.cam.trackEntity(self.isPlayer)
-			self.text.setText(self.text.text + "\n Player:" + str(self.isPlayer + 1))
+			self.text.setText("Player:" + str(self.isPlayer + 1))
 
 			if self.isPlayer == 0:
 				self.controlPlay1.multi = True
@@ -265,6 +267,6 @@ class GameScreen(screen.Screen):
 
 				self.client.end()
 				self.networkInfo[0] = False
-				self.text.setText("CDA v.0.1 - network:" + str(self.networkInfo[0]))
+				self.text.setText("")
 
 		self.client.data = ""

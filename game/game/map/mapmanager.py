@@ -83,6 +83,7 @@ class MapManager:
 			# Prepare the transition
 			gm.GameManager.currentScreen.mapChange = True
 			MapManager.transition = True
+			mp.MapRender.setTransitionPos([999999, 999999])
 
 	@staticmethod
 	def checkCollisionX(entity):
@@ -326,8 +327,8 @@ class MapManager:
 					if MapManager.transitionPhase == MapManager.TRANSITION_BEGIN:
 						pos = gm.GameManager.cam.pos.copy()
 						# Pos take in consideration the position of camera
-						pos[0] = -(9 + pos[0])
-						pos[1] = -(6 + pos[1])
+						pos[0] = 9
+						pos[1] = 6
 						if MapManager.exitPos == 1:
 							pos[1] += mathcda.map(MapManager.transitionCount - 0.001, 0,
 												  MapManager.TRANSITION_TIMES[
@@ -349,8 +350,8 @@ class MapManager:
 					# End
 					elif MapManager.transitionPhase == MapManager.TRANSITION_END:
 						pos = gm.GameManager.cam.pos.copy()
-						pos[0] = -(9 + pos[0])
-						pos[1] = -(6 + pos[1])
+						pos[0] = 9
+						pos[1] = 6
 						if MapManager.exitPos == 1:
 							pos[1] += mathcda.map(MapManager.transitionCount - 0.001, 0,
 												  MapManager.TRANSITION_TIMES[
@@ -376,8 +377,8 @@ class MapManager:
 
 							MapManager.changeRoom()
 							pos = gm.GameManager.cam.pos.copy()
-							pos[0] = -(9 + pos[0])
-							pos[1] = -(6 + pos[1])
+							pos[0] = 9
+							pos[1] = 6
 							mp.MapRender.setTransitionPos(pos)
 
 					MapManager.transitionCount += 1
