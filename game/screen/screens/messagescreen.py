@@ -18,7 +18,7 @@ class MessageScreen(screen.Screen):
 			gamemanager.GameManager.setCurrentScreen("menuscreen", [True])
 
 		self.copyleft = text.Text("pixel1")
-		self.copyleft.setAll("(C) 2019 Maxence, Alexandre & Baptiste" + " "*29 + "v.0.1", 0.4, [0, 0], [1, 1, 1, 1], "down-left")
+		self.copyleft.setAll("(Copyleft) 2019 Maxence, Alexandre & Baptiste" + " "*25 + "v.0.1", 0.4, [0, 0], [1, 1, 1, 1], "down-left")
 
 		self.title = text.Text("pixel1")
 		self.title.setAll(info[0], 1, [9, 5.1], [1, 1, 1, 1], "")

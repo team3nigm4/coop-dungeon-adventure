@@ -18,7 +18,7 @@ class MenuScreen(screen.Screen):
 		self.copyleft.setSize(0.4)
 		self.copyleft.setColor([1,1,1,1])
 		self.copyleft.setCentering("down-left")
-		self.copyleft.setText("(C) 2019 Maxence, Alexandre & Baptiste" + " "*29 + "v.0.1")
+		self.copyleft.setText("(Copyleft) 2019 Maxence, Alexandre & Baptiste" + " "*25 + "v.0.1")
 
 		self.credits = text.Text("pixel1")
 		self.credits.setSize(0.45)
