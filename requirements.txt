@@ -4,3 +4,4 @@ pillow
 pyrr
 colorama
 simplejson
+tkinter
