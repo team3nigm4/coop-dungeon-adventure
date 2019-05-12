@@ -50,8 +50,8 @@ class MapManager:
 		# If the room if a new map
 		if not ml.isMap(zone, map, entry):
 			if MapManager.zone == "null":
-				MapManager.changeValues[0] = "test"
-				MapManager.changeValues[1] = "map1"
+				MapManager.changeValues[0] = "intro"
+				MapManager.changeValues[1] = "hall"
 				MapManager.changeValues[2] = 0
 				MapManager.changeRoom()
 				return
@@ -197,7 +197,7 @@ class MapManager:
 		MapManager.collideTest = True
 
 		# Force to load the first map with transition
-		MapManager.reserveChange("test", "map1", 0)
+		MapManager.reserveChange("intro", "hall", 0)
 		MapManager.checkChangeMap()
 		MapManager.transitionPhase = 1
 

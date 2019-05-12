@@ -39,7 +39,8 @@ class Player(entitycomplex.EntityComplex):
 		self.weight = 1.3
 
 		if self.playerNumber == 0:
-			self.setItem("Key")
+			#self.setItem("Key")
+			self.setItem("Weapon")
 		else:
 			self.setItem("Weapon")
 

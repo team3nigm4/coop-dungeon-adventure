@@ -1,36 +1,30 @@
-# This class performs the display and the update of the client
+# Class to display a screen with a custom header and message
 
 from game.inputs.inputmanager import InputManager as im
 from game.screen.screens import screen
 from game.render.text import text
 from game.render.gui import button
-
 from game.render.shape import guirenderer
 from game.screen import gamemanager
 
-
 class MessageScreen(screen.Screen):
 
+	# Create all elements that have to be displayed
 	def __init__(self, info):
 		super().__init__()
 
+		def returnMenu(): # Function called when the return button is clicked
+			from game.screen import gamemanager
+			self.setScreen("menuscreen", [True])
+
 		self.copyleft = text.Text("pixel1")
-		self.copyleft.setSize(0.4)
-		self.copyleft.setColor([1,1,1,1])
-		self.copyleft.setCentering("down-left")
-		self.copyleft.setText("(C) 2019 Maxence, Alexandre & Baptiste" + " "*29 + "v.0.1")
+		self.copyleft.setAll("(Copyleft) 2019 Maxence, Alexandre & Baptiste" + " "*25 + "v.0.1", 0.4, [0, 0], [1, 1, 1, 1], "down-left")
 
 		self.title = text.Text("pixel1")
-		self.title.setSize(1)
-		self.title.setColor([1,1,1,1])
-		self.title.setPosition([9, 5.1])
-		self.title.setText(info[0])
+		self.title.setAll(info[0], 1, [9, 5.1], [1, 1, 1, 1], "")
 
 		self.message = text.Text("pixel1")
-		self.message.setSize(0.8)
-		self.message.setColor([1,1,1,1])
-		self.message.setPosition([9, 3.8])
-		self.message.setText(info[1])
+		self.message.setAll(info[1], 0.8, [9, 3.8], [1, 1, 1, 1], "")
 
 		self.background = guirenderer.GuiRenderer()
 		self.background.setImage([18, 12], "background")
@@ -38,10 +32,6 @@ class MessageScreen(screen.Screen):
 		self.screenTitle = guirenderer.GuiRenderer()
 		self.screenTitle.setImage([18, 12], "screentitle")
 
-		def returnMenu():
-			from game.screen import gamemanager
-			self.setScreen("menuscreen", [True])
-		
 		self.returnMenu = button.Button([7.7, 2.8], [2.45, 0.6], "< Retour", returnMenu)
 
 	def update(self):
@@ -50,23 +40,23 @@ class MessageScreen(screen.Screen):
 				from game.main.window import Window
 				Window.exit()
 
+			# Update button texture on hover
 			self.returnMenu.update()
 
+	# Display screen elements every loop turn
 	def display(self):
 		self.background.display()
 		self.screenTitle.display()
 		self.title.display()
 		self.copyleft.display()
-		self.title.display()
 		self.message.display()
 		self.returnMenu.display()
 
+	# Unload screen element when they aren't necessary anymore
 	def unload(self):
 		self.background.unload()
 		self.screenTitle.unload()
 		self.title.unload()
 		self.copyleft.unload()
-		self.title.unload()
 		self.message.unload()
 		self.returnMenu.unload()
-

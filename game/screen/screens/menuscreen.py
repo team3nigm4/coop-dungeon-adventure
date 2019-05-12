@@ -14,7 +14,7 @@ class MenuScreen(screen.Screen):
 		super().__init__()
 		
 		self.copyleft = text.Text("pixel1")
-		self.copyleft.setAll("(C) 2019 Maxence, Alexandre & Baptiste" + " " * 29 + "v.0.1", 0.4, [0, 0], [1,1,1,1], "down-left")
+		self.copyleft.setAll("(Copyleft) 2019 Maxence, Alexandre & Baptiste" + " "*25 + "v.0.1", 0.4, [0, 0], [1,1,1,1], "down-left")
 
 		self.credits = text.Text("pixel1")
 		self.credits.setAll("Maxence Bazin\nAlexandre Boin\nBaptiste Aleci",  0.45,  [9, 4.7], [1,1,1,1], "")
