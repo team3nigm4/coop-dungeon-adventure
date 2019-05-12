@@ -1,4 +1,4 @@
-# Create the texture from image
+# Create a texture from image, just a object to bind before render a box with it
 
 import OpenGL.GL as gl
 from PIL import Image as img
@@ -23,7 +23,8 @@ class Texture:
 			self.loadImage(image)
 		except Exception as error:
 			self.error(error)
-			return False
+
+		return self.correctLoaded
 
 	def loadImage(self, image):
 		try:

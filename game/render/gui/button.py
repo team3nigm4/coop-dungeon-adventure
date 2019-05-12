@@ -1,9 +1,10 @@
+# Class to create a button with its text and its action
+
 from game.render.shape import guirenderer
 from game.inputs.mousemanager import MouseManager
 from game.render.text import text
 
 class Button:
-
 	def __init__(self, pos, size, tex, function):
 		self.pos = [0,0]
 		self.size = size
@@ -12,15 +13,15 @@ class Button:
 		self.renderer = guirenderer.GuiRenderer()
 		self.renderer.setImage(self.size, "button-unhover")
 
-		self.setPos(pos)
-
 		self.hover = True
 
 		self.text = text.Text("pixel1")
 		self.isUnhover()
-		self.text.setPosition(self.pos)
+
 		self.text.setText(tex)
 		self.func = function
+
+		self.setPos(pos)
 
 	def update(self):
 		mouse = MouseManager.mousePosRelative
@@ -57,8 +58,10 @@ class Button:
 		self.text.display()
 
 	def setPos(self, pos):
+		# Re set the position of the button, and to its renderer and its text
 		self.pos = pos
 		self.renderer.updateModel(pos)
+		self.text.setPosition(self.pos)
 
 	def unload(self):
 		self.renderer.unload()

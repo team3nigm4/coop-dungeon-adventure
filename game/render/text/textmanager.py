@@ -1,4 +1,7 @@
+# Class to manage loads, manages and unloads fonts
+
 import json
+
 from game.render.text import font
 
 

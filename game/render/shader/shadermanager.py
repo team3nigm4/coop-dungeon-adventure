@@ -1,4 +1,4 @@
-# Manager every shader using by the game
+# Manager every shader using in the game
 
 from game.render.shader import gluniforms as glU
 from game.render.shader import shader
@@ -16,14 +16,14 @@ class ShaderManager:
 
 	@staticmethod
 	def init():
-		# Load the characteristics files
+		# Load characteristics files
 		info = json.load(open("game/resources/shader/shaders.json"))
 
 		for e in info["reloading"]:
 			attribute = info["reloading"][e]
 
 			if attribute == "camView":
-				ShaderManager.addReloading(e, gm.GameManager.cam.getView())
+				ShaderManager.addReloading(e, gm.GameManager.cam.getView)
 
 		# Load each shader registered
 		for shad in info["shaders"]:
@@ -48,30 +48,34 @@ class ShaderManager:
 
 		ShaderManager.dispose()
 
+	# Update an uniform variable in a shader with a matrix
 	@staticmethod
 	def updateLink(key, link, value):
 		ShaderManager.shaders[key].use()
 		glU.glUniformv(ShaderManager.shaders[key], link, value)
 
+	# Update an uniform variable in a shader with a float
 	@staticmethod
 	def updateLinkf(key, link, value):
 		ShaderManager.shaders[key].use()
 		glU.glUniformf(ShaderManager.shaders[key], link, value)
 
+	# Set a value to reload for a list of shader
+	@staticmethod
+	def addReloading(key, value):
+		ShaderManager.reloading[key] = [[], value]
+
+	# Add a shader to a reloading
 	@staticmethod
 	def addToReload(key, shader):
 		ShaderManager.reloading[key][0].append(shader)
 
 	@staticmethod
-	# value must to be a function
-	def addReloading(key, value):
-		ShaderManager.reloading[key] = [[], value]
-
-	@staticmethod
 	def dispose():
+		# Reload some value for some shaders registered in this list
 		for reload in ShaderManager.reloading:
 			for shader in ShaderManager.reloading[reload][0]:
-				ShaderManager.updateLink(shader, reload, ShaderManager.reloading[reload][1])
+				ShaderManager.updateLink(shader, reload, ShaderManager.reloading[reload][1]())
 
 	@staticmethod
 	def unload():

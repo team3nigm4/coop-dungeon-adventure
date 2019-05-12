@@ -12,6 +12,7 @@ class Shader:
 		self.shaderId = 0
 		self.links = {}
 
+	# Load both shaders part and linked them to a shader program
 	def load(self):
 		shaderId = gl.glCreateProgram()
 		vertexId = gl.glCreateShader(gl.GL_VERTEX_SHADER)

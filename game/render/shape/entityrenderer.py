@@ -1,3 +1,5 @@
+# Class to render a texture moving by the camera translation
+
 from game.render.shape import shape
 from game.render.shader.shadermanager import ShaderManager as sm
 from game.util import matrix4f
@@ -5,7 +7,6 @@ from game.render.texture.texturemanager import TextureManager as tm
 
 
 class EntityRenderer:
-
 	def __init__(self):
 		self.size = [0, 0]
 		self.hotPoint = [0, 0]
@@ -32,6 +33,7 @@ class EntityRenderer:
 		tm.bind(self.texKey)
 		self.shape.display()
 
+	# Define an image with this size, and its hot point
 	def setImage(self, size, key, hotPoint):
 		self.size = size
 		self.hotPoint = hotPoint
@@ -48,6 +50,7 @@ class EntityRenderer:
 	def setKey(self, key):
 		self.texKey = tm.key(key)
 
+	# Update the position of the renderer
 	def updateModel(self, newPos):
 		self.model.matrix[3][0] = newPos[0]
 		self.model.matrix[3][1] = newPos[1]
