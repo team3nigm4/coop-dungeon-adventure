@@ -1,3 +1,5 @@
+# Class to instance, use it to render a box
+
 from game.render.shape import shape
 from game.render.shader.shadermanager import ShaderManager as sm
 from game.util import matrix4f
@@ -31,6 +33,7 @@ class BoxRenderer:
 		sm.updateLink(self.shaderName, "model", self.model.matrix)
 		self.shape.display()
 
+	# Define the size and the color of the box render
 	def setAttributes(self, size, color):
 		self.color = color
 		self.size = size
@@ -38,7 +41,6 @@ class BoxRenderer:
 				size[0], 0, 0.0, 				self.color[0], self.color[1], self.color[2], self.color[3],
 				size[0], size[1], 0.0, 			self.color[0], self.color[1], self.color[2], self.color[3],
 				0, size[1], 0.0, 				self.color[0], self.color[1], self.color[2], self.color[3]]
-
 
 		self.shape.setVbo(quad)
 
@@ -49,7 +51,7 @@ class BoxRenderer:
 		else:
 			self.shaderName = "box"
 
-
+	# Update the position of the renderer
 	def updateModel(self, newPos):
 		if self.shader:
 			self.model.matrix[3][0] = newPos[0] - self.size[0] / 2 - 9

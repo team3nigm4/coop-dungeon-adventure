@@ -1,7 +1,9 @@
+# Class using to create a vbo and render a text
+
 from game.render.texture.texturemanager import TextureManager as tm
 
-class Font:
 
+class Font:
 	POS_X = 0
 	POS_Y = 1
 	SIZE_X = 2
@@ -12,12 +14,11 @@ class Font:
 		self.infoFile = info["info"]
 		self.sizeX = 0
 		self.sizeY = 0
-		self.charBeg = 32
-		self.charEnd = 33
 		self.numberChars = 1
 		self.chars = {}
 		self.load(self.infoFile)
 
+	# Load chars disposition with the .fn
 	def load(self, file):
 		with open(("game/resources/textures/fonts/" + file), 'r') as buffer:
 			data = buffer.read().replace('\n', " ")
@@ -81,7 +82,6 @@ class Font:
 				a += 1
 
 			charId = int(data[cursor: cursor + a])
-			self.charEnd = charId
 			self.chars[charId] = [0, 0, 0, 0]
 			cursor += a
 			a = 0
@@ -134,14 +134,16 @@ class Font:
 			cursor += a
 			a = 0
 
+	# Return the vbo
 	def constructVbo(self, text, size, centering="center"):
+		# Count lines in the text
 		line = 1 + text.count("\n")
 		chars = len(text) - line + 1
 
-		vbo = [0] * (chars * 36)
-
 		part = text.split("\n")
 		partAdvancement = [0] * len(part)
+
+		vbo = [0] * (chars * 36)
 
 		# Calculations and securities
 		for index in range(0, len(part)):
@@ -150,12 +152,14 @@ class Font:
 				partAdvancement[index] += len(part[index-1])
 
 			for i in part[index]:
+				# If the character is not taken into account in the font
 				if not ord(i) in self.chars:
 					part[index] = part[index].replace(i, " ")
 
 		# Create the content of vbo
 		for index in range(len(part)):
 			sizes = []
+
 			for letter in part[index]:
 				sizes.append(size * self.chars[ord(letter)][Font.SIZE_X] / self.chars[ord(letter)][Font.SIZE_Y])
 

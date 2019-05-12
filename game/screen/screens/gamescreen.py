@@ -96,18 +96,17 @@ class GameScreen(screen.Screen):
 			if self.client.connectState():
 				self.client.send({0 : 0})
 				self.client.receive()
-			# If the connection failed, return to the menu with messagescreen
+			# If the connection failed, return to the menu with message screen
 			else:
 				self.networkInfo[0] = False
 				self.client.end()
+				self.inPause = True
+				self.serverPause = True
 
 				from game.screen.gamemanager import GameManager
 				GameManager.setCurrentScreen("messagescreen", ["Erreur", "Connexion refusée"])
 
-		if not self.networkInfo[0]:
-			self.inPause = False
-			self.serverPause = False
-			gm.cam.trackEntity(em.PLAYER_1)
+		gm.cam.trackEntity(em.PLAYER_1)
 
 	def update(self):
 		# Keys test
@@ -119,6 +118,7 @@ class GameScreen(screen.Screen):
 		else:
 			self.updateLocal()
 
+	# Game isn't in pause when the player press escape but only when the server decide it
 	def updateMulti(self):
 		if self.serverPause:
 			if self.isPlayer == -1:
@@ -160,6 +160,7 @@ class GameScreen(screen.Screen):
 
 		self.analyseData(self.client.data)
 
+	# Game is in pause when the player press escape
 	def updateLocal(self):
 		if self.inPause:
 			self.pauseResume.update()
@@ -202,12 +203,16 @@ class GameScreen(screen.Screen):
 			self.pauseQuit.display()
 
 		self.multiPlayer.display()
-		
+
+	# Analyse the data and decide with a protocol what do.
+	# Field 0 correspond to the server state
+	# Field 1 correspond to the other player key state
+	# Field 2 is free for now
+	# Field 3 correspond to the player attribution
 	def analyseData(self, data):
 		if data == "":
 			return
 
-		print(data)
 		if '3' in data and self.isPlayer == -1:
 			self.isPlayer = data['3']
 
@@ -240,6 +245,8 @@ class GameScreen(screen.Screen):
 				self.serverPause = False
 			elif data['0'] == 1:
 				self.serverPause = True
+
+			# Server end the multi with a disconnection message
 			elif data['0'] == 2:
 				self.controlPlay2.multi = False
 				self.controlPlay2.block = False

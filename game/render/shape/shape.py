@@ -1,9 +1,9 @@
 # Create a shape as you want and manage it
 
-from game.render.shader.shadermanager import ShaderManager as sm
-
 import OpenGL.GL as gl
 import numpy
+
+from game.render.shader.shadermanager import ShaderManager as sm
 
 
 class Shape:
@@ -12,7 +12,7 @@ class Shape:
 	STREAM_STORE = gl.GL_STREAM_DRAW
 
 	def __init__(self, shaderID, useEBO):
-		# Instance variables
+		# Create variables
 		self.verticesNumber = 0
 		self.indicesNumber = 0
 

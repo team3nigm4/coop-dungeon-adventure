@@ -1,3 +1,5 @@
+# Class using to manage a text and to display it.
+
 from game.render.shape import shape
 from game.util import matrix4f
 from game.render.shader.shadermanager import ShaderManager as sm
@@ -76,7 +78,8 @@ class Text:
 
 		self.setColor(self.color)
 		self.shape.setEbo(self.ebo)
-
+	
+	# Set all characteristics directly
 	def setAll(self, text, size, position, color, centering):
 		self.text = ""
 		self.setCentering(centering)

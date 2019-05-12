@@ -10,12 +10,14 @@ class TextureManager:
 	textureInfo = {}
 	textures = {}
 
+	# Load all textures from the json before starting the game
 	@staticmethod
 	def init():
 		TextureManager.textureInfo = json.load(open("game/resources/textures/textures.json"))["textures"]
 
 		TextureManager.load("", TextureManager.textureInfo)
 
+	# Recursive method to load every textures in the texture info tree
 	@staticmethod
 	def load(path, value):
 		for key in value:
@@ -23,7 +25,7 @@ class TextureManager:
 				TextureManager.load(path + key + "/", value[key])
 			else:
 				TextureManager.textures[key] = texture.Texture(path + value[key])
-				if TextureManager.textures[key].load() == False:
+				if not TextureManager.textures[key].load():
 					del TextureManager.textures[key]
 
 	@staticmethod
@@ -44,13 +46,13 @@ class TextureManager:
 			TextureManager.textures[key].unload()
 
 		TextureManager.textures = {}
-		
+
+		# If there are still textures, the code will warn this
 		if len(TextureManager.textures) > 0:
 			Logger.error("TextureManager", "Error at the end of the program ->")
 			TextureManager.state()
 		else:
 			Logger.info("TextureManager", "No remaining textures")
-
 
 	@staticmethod
 	def key(key):

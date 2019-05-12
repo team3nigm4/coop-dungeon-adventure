@@ -1,3 +1,5 @@
+# Class to instance a texture not influenced by the camera translations
+
 from game.render.shape import shape
 from game.render.shader.shadermanager import ShaderManager as sm
 from game.util import matrix4f
@@ -5,7 +7,6 @@ from game.render.texture.texturemanager import TextureManager as tm
 
 
 class GuiRenderer:
-
 	def __init__(self):
 		self.size = [0, 0]
 		self.hotPoint = [0, 0]
@@ -32,6 +33,7 @@ class GuiRenderer:
 		tm.bind(self.texKey)
 		self.shape.display()
 
+	# Define an image with this size, the image will be centered in the renderer's position
 	def setImage(self, size, key):
 		self.size = size
 		self.hotPoint = [size[0] / 2, size[1] /2]
@@ -54,6 +56,7 @@ class GuiRenderer:
 	def setKey(self, key):
 		self.texKey = tm.key(key)
 
+	# Update the position of the renderer
 	def updateModel(self, newPos):
 		self.model.matrix[3][0] = newPos[0] - 9
 		self.model.matrix[3][1] = newPos[1] - 6
