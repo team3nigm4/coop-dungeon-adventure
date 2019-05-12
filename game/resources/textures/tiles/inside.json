@@ -5,12 +5,12 @@
   },
   "decor":{
 	"begin-bridge": {
-	  "pos" : [1, 11],
+	  "pos" : [1, 12],
 	  "size" : [1, 1],
 	  "layer" : 0
 	},
 	"bridge": {
-	  "pos" : [1, 11],
+	  "pos" : [1, 12],
 	  "size" : [1, 1],
 	  "layer" : 0
 	},
