@@ -46,3 +46,21 @@ class MapLoading:
 			except KeyError:
 				Logger.error("MapLoading", "The map : " + str(map) + " in zone: " + str(zone) + " has no entry point " + str(entry))
 				return False
+
+	@staticmethod
+	def getExitTranstition(zone, map, entry):
+		path = "game/resources/map/" + zone + "/" + map + ".json"
+
+		try:
+			getValues = json.load(open(path))["entries"][str(entry)][1]
+
+			if getValues == "left":
+				return 0
+			elif getValues == "right":
+				return 2
+			elif getValues == "up":
+				return 1
+			elif getValues == "down":
+				return 3
+		except json.decoder.JSONDecodeError:
+			return 4

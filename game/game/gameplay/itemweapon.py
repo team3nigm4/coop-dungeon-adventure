@@ -46,12 +46,14 @@ class ItemWeapon(item.Item):
 
 				self.player.em.addWithId(self.trigBox)
 				self.player.maxSpeed /= ItemWeapon.LOW_SPEED_COEF
+				self.player.setWantTexture("sword")
 
 			else:
 				from game.game.entitymodel import arrow
 				ar = arrow.Arrow(["Arrow", self.player.em.checkPlace(), [self.player.pos[0], self.player.pos[1] + 0.5], self.player.direction])
 				ar.setEntityMaster(self.player.entityId)
 				self.player.em.addWithId(ar)
+				self.player.setWantTexture("bow")
 
 			self.used = True
 
@@ -71,6 +73,7 @@ class ItemWeapon(item.Item):
 		if self.used:
 			# Sword*
 			if self.arm:
+				self.player.setWantTexture("sword")
 				if self.useCounter <= ItemWeapon.SWORD_ATTACK_TIME:
 					self.trigBox.setPos(self.triggerPos())
 					if self.useCounter == ItemWeapon.SWORD_ATTACK_TIME:
@@ -79,15 +82,18 @@ class ItemWeapon(item.Item):
 				if self.useCounter == ItemWeapon.SWORD_RELOAD_TIME:
 					self.useCounter = 0
 					self.used = False
+					self.player.setWantTexture("")
 				else:
 					self.useCounter += 1
 			# Bow
 			else:
+				self.player.setWantTexture("bow")
 				if self.useCounter < ItemWeapon.BOW_RELOAD_TIME:
 					self.useCounter += 1
 				else:
 					self.used = False
 					self.useCounter = 0
+					self.player.setWantTexture("")
 
 	def triggerPos(self):
 		if self.player.direction == 0:

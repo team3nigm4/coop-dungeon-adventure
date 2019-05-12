@@ -15,7 +15,7 @@ class MessageScreen(screen.Screen):
 
 		def returnMenu(): # Function called when the return button is clicked
 			from game.screen import gamemanager
-			gamemanager.GameManager.setCurrentScreen("menuscreen", [True])
+			self.setScreen("menuscreen", [True])
 
 		self.copyleft = text.Text("pixel1")
 		self.copyleft.setAll("(Copyleft) 2019 Maxence, Alexandre & Baptiste" + " "*25 + "v.0.1", 0.4, [0, 0], [1, 1, 1, 1], "down-left")
@@ -33,9 +33,6 @@ class MessageScreen(screen.Screen):
 		self.screenTitle.setImage([18, 12], "screentitle")
 
 		self.returnMenu = button.Button([7.7, 2.8], [2.45, 0.6], "< Retour", returnMenu)
-		
-	def init(self):
-		pass
 
 	def update(self):
 			# Keys test

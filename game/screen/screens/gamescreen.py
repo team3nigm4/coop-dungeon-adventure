@@ -1,25 +1,23 @@
-# This class performs the display and the update of the client
+# Class to update/display the game 
 
-from game.game.entitymodel import player as pl
-from game.game.entityclass.entitymanager import EntityManager as em
-from game.game.map.mapmanager import MapManager as mam
-from game.inputs.inputmanager import InputManager as im
-from game.inputs.keyboardmanager import KeyBoardManager as kbm
-from game.screen.gamemanager import GameManager as gm
+from game.game.entitymodel import player as 						pl
+from game.game.entityclass.entitymanager import EntityManager as 	em
+from game.game.map.mapmanager import MapManager as 					mam
+from game.inputs.inputmanager import InputManager as 				im
+from game.inputs.keyboardmanager import KeyBoardManager as 			kbm
+from game.screen.gamemanager import GameManager as 					gm
 from game.screen.screens import screen
 from game.game.gameplay.hud import Hud
 from game.render.text import text
-
 from game.render.shape import guirenderer
 from game.render.gui import button
+from game.inputs import playercontroler as 							plc
 
-from game.inputs import playercontroler as plc
 
 class GameScreen(screen.Screen):
-
 	def __init__(self, networkInfo):
-		# Pre init the game
 		super().__init__()
+		# Pre init the game
 
 		# Init variable
 		self.inPause = False
@@ -30,11 +28,12 @@ class GameScreen(screen.Screen):
 		self.controlPlay2 = plc.PlayerController()
 
 		# Set gameHud
-		self.text = text.Text("pixel1")
-		self.text.setSize(0.4)
-		self.text.setColor([0.4,0.1,0.8,1])
-		self.text.setPosition([17.9, 0])
-		self.text.setCentering("down-right")
+		self.multiPlayer = text.Text("pixel1")
+		self.multiPlayer.setSize(0.4)
+		self.multiPlayer.setColor([0.4,0.1,0.8,1])
+		self.multiPlayer.setPosition([17.9, 0])
+		self.multiPlayer.setCentering("down-right")
+		self.multiPlayer.setText("")
 
 		# Set pauseHud
 		self.textPause = text.Text("pixel1")
@@ -57,13 +56,13 @@ class GameScreen(screen.Screen):
 		self.pauseResume = button.Button([9, 6], [3, 1], "Reprendre", funct1)
 
 		def funct2():
-			from game.screen.gamemanager import GameManager
-			GameManager.setCurrentScreen("menuscreen", ["false"])
+			self.setScreen("menuscreen", [True])
 
 		self.pauseQuit = button.Button([9, 4], [3, 1], "Quitter", funct2)
-
+	
+	# Second Init, inits managers for the game after that gamescreen finish its init
+	# because managers can't change a gamescreen value (inPause) during its __init__
 	def init(self):
-		# init the game
 		em.init()
 
 		player1 = pl.Player(["Player", em.PLAYER_1, [0, 0], 0, "players/player1.png"])
@@ -74,28 +73,30 @@ class GameScreen(screen.Screen):
 		mam.init()
 		Hud.init()
 
+		# Attributes an entity to controllers
 		self.controlPlay1.setPlayer(em.PLAYER_1)
 		self.controlPlay1.setEntity(em.entities[em.PLAYER_1])
 
 		self.controlPlay2.setPlayer(em.PLAYER_2)
 		self.controlPlay2.setEntity(em.entities[em.PLAYER_2])
 
-		self.text.setText("CDA v.0.1 - network:" + str(self.networkInfo[0]))
-
-		# init network if game in multi player
+		# Init network and client if game's parameter networkInfo[0] is True
 		if self.networkInfo[0]:
 			from game.util import client
 			import time
 			
-			self.client = client.Client(self.networkInfo[1], int(self.networkInfo[2]))
 			self.serverPause = True
 			self.isPlayer = -1
+			
+			self.client = client.Client(self.networkInfo[1], int(self.networkInfo[2]))
 			self.client.start()
-
-			time.sleep(self.client.timeout + 0.1)
+			
+			# Wait a bit for the connection
+			time.sleep(self.client.timeout + 0.2)
 			if self.client.connectState():
 				self.client.send({0 : 0})
 				self.client.receive()
+			# If the connection failed, return to the menu with messagescreen
 			else:
 				self.networkInfo[0] = False
 				self.client.end()
@@ -107,8 +108,6 @@ class GameScreen(screen.Screen):
 			self.inPause = False
 			self.serverPause = False
 			gm.cam.trackEntity(em.PLAYER_1)
-
-		self.text.setText("CDA v.0.1 - network:" + str(self.networkInfo[0]))
 
 	def update(self):
 		# Keys test
@@ -132,12 +131,16 @@ class GameScreen(screen.Screen):
 				self.controlPlay1.update()
 				self.controlPlay2.update()
 
-				if self.isPlayer == 0:
-					if not self.controlPlay1.tempInputState == self.controlPlay1.inputState:
-						self.client.send({1 : { 0 : self.controlPlay1.inputState}})
+				if self.inPause:
+					self.pauseResume.update()
+					self.pauseQuit.update()
 				else:
-					if not self.controlPlay2.tempInputState == self.controlPlay2.inputState:
-						self.client.send({1 : { 0 : self.controlPlay2.inputState}})
+					if self.isPlayer == 0:
+						if not self.controlPlay1.tempInputState == self.controlPlay1.inputState:
+							self.client.send({1: {0: self.controlPlay1.inputState}})
+					else:
+						if not self.controlPlay2.tempInputState == self.controlPlay2.inputState:
+							self.client.send({1: {0: self.controlPlay2.inputState}})
 
 				em.update()
 
@@ -198,25 +201,8 @@ class GameScreen(screen.Screen):
 			self.pauseResume.display()
 			self.pauseQuit.display()
 
-		self.text.display()
-
-	def unload(self):
-		mam.unload()
-		Hud.unload()
-		em.entities[em.PLAYER_1].unload()
-		em.entities[em.PLAYER_2].unload()
-		em.unload()
-
-		self.text.unload()
-		self.textPause.unload()
-		self.backPause.unload()
-		self.bodyPause.unload()
-		self.pauseResume.unload()
-		self.pauseQuit.unload()
-
-		if self.networkInfo[0]:
-			self.client.end()
-
+		self.multiPlayer.display()
+		
 	def analyseData(self, data):
 		if data == "":
 			return
@@ -226,7 +212,7 @@ class GameScreen(screen.Screen):
 			self.isPlayer = data['3']
 
 			gm.cam.trackEntity(self.isPlayer)
-			self.text.setText(self.text.text + "\n Player:" + str(self.isPlayer + 1))
+			self.multiPlayer.setText("Player:" + str(self.isPlayer + 1))
 
 			if self.isPlayer == 0:
 				self.controlPlay1.multi = True
@@ -265,6 +251,23 @@ class GameScreen(screen.Screen):
 
 				self.client.end()
 				self.networkInfo[0] = False
-				self.text.setText("CDA v.0.1 - network:" + str(self.networkInfo[0]))
+				self.multiPlayer.setText("")
 
 		self.client.data = ""
+
+	def unload(self):
+		mam.unload()
+		Hud.unload()
+		em.entities[em.PLAYER_1].unload()
+		em.entities[em.PLAYER_2].unload()
+		em.unload()
+
+		self.multiPlayer.unload()
+		self.textPause.unload()
+		self.backPause.unload()
+		self.bodyPause.unload()
+		self.pauseResume.unload()
+		self.pauseQuit.unload()
+
+		if self.networkInfo[0]:
+			self.client.end()

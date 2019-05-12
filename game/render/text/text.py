@@ -3,6 +3,7 @@ from game.util import matrix4f
 from game.render.shader.shadermanager import ShaderManager as sm
 from game.render.text.textmanager import TextManager as txm
 
+
 class Text:
 
 	def __init__(self, font):
@@ -47,8 +48,8 @@ class Text:
 			self.shape.setVbo(self.vbo)
 
 	def setPosition(self, position):
-		self.model.matrix[3][0] = -9 + position[0]
-		self.model.matrix[3][1] = -6 + position[1]
+		self.model.matrix[3][0] = - 9 + position[0]
+		self.model.matrix[3][1] = - 6 + position[1]
 
 	def setSize(self, size):
 		self.size = size

@@ -5,6 +5,7 @@ from game.util import matrix4f
 from game.render.shader.shadermanager import ShaderManager as sm
 from game.game.entityclass import entitymanager as em
 from game.render.texture.texturemanager import TextureManager as tm
+from game.render.shape import guirenderer
 
 
 class MapRender:
@@ -249,10 +250,6 @@ class MapRender:
 		sm.updateLink("texture", "model", MapRender.model.matrix)
 		tm.bind(MapRender.currentTileSet)
 		MapRender.shapeUp.display()
-		# print(MapRender.transitionPos.matrix)
-		# sm.updateLink("hud", "model", MapRender.transitionPos.matrix)
-		# MapRender.transitionImage.bind()
-		# MapRender.transitionShape.display()
 		if transition:
 			MapRender.transitionShape.display()
 
@@ -283,23 +280,9 @@ class MapRender:
 		MapRender.model = matrix4f.Matrix4f(True)
 		sm.updateLink("texture", "model", MapRender.model.matrix)
 
-		from game.render.shape import entityrenderer as er
-		MapRender.transitionShape = er.EntityRenderer()
-		MapRender.transitionShape.setImage([18, 12], "transition", [0, 0])
-
-		# MapRender.transitionPos = matrix4f.Matrix4f(True)
-		# MapRender.transitionShape = shape.Shape("hud", True)
-		# MapRender.transitionShape.setStorage(shape.Shape.STATIC_STORE, shape.Shape.STATIC_STORE)
-		# quad = [0, 0, 0.0, 			0.0, 0.0, 	1.0,
-		# 		18.0, 0, 0.0, 		1.0, 0.0, 	1.0,
-		# 		18.0, 12.0, 0.0, 	1.0, 1.0, 	1.0,
-		# 		0, 12.0, 0.0, 		0.0, 1.0,  	1.0]
-		# indices = [0, 1, 2,		2, 3, 0]
-		# MapRender.transitionShape.setEbo(indices)
-		# MapRender.transitionShape.setVbo(quad)
-		# MapRender.transitionShape.setReading([3, 2, 1])
-		# MapRender.transitionPos.matrix[3][0] = -9
-		# MapRender.transitionPos.matrix[3][1] = -6
+		MapRender.transitionShape = guirenderer.GuiRenderer()
+		MapRender.transitionShape.setImage([18, 12], "transition")
+		MapRender.transitionShape.updateModel([9, 6])
 
 	@staticmethod
 	def loadTileSets():

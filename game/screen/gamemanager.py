@@ -1,37 +1,36 @@
-# Contains game's managers (and camera), asks functions update (server/client) and display(client)
+# Contains managers used in game and update/display the current screen
 
-from game.render.texture.texturemanager import TextureManager as tm
+from game.render.texture.texturemanager import TextureManager
 from game.screen import camera
-from game.inputs.inputmanager import InputManager as im
-from game.render.shader.shadermanager import ShaderManager as sm
-from game.render.text.textmanager import TextManager as txm
+from game.inputs.inputmanager import InputManager
+from game.render.shader.shadermanager import ShaderManager
+from game.render.text.textmanager import TextManager
 from game.util.logger import Logger
+from game.main.config import Config
 
 
 class GameManager:
+	# Can be gamescreen, menuscren, messagescreen
 	currentScreen = None
 	cam = None
 
 	texManager = None
 	inputManager = None
 
-	changeScreenValue = ""
+	newScreenName = ""
 	changeScreenArgs = []
 	wantChangeScreen = False
 
 	@staticmethod
 	def init():
-		# Init systems
 		Logger.info("GameManager", "Created")
-
-		tm.init()
-		txm.init()
-
-		from game.main.config import Config
-		im.init(Config.inputs)
-
-		GameManager.cam = camera.Camera(70.0, [0, 0, -8.572])  # Precise position of cam to render 18 * 12 tiles
-		sm.init()
+		
+		# Init systems
+		TextureManager.init()
+		TextManager.init()
+		InputManager.init(Config.inputs)
+		GameManager.cam = camera.Camera(70.0, [0, 0, -8.572])  # FOV 70, Precise position of cam to render 18 * 12 tiles
+		ShaderManager.init()
 
 		GameManager.setCurrentScreen("menuscreen", [True])
 		GameManager.createCurrentScreen()
@@ -42,52 +41,58 @@ class GameManager:
 			GameManager.createCurrentScreen()
 
 		GameManager.currentScreen.update()
-		im.dispose()
-		sm.dispose()
+		
+		# Dispose managers after updating the game
+		InputManager.dispose()
+		ShaderManager.dispose()
 
 	@staticmethod
 	def display():
 		GameManager.currentScreen.display()
 
 	@staticmethod
-	def setCurrentScreen(value, arg):
-		GameManager.changeScreenValue = value
-		GameManager.changeScreenArgs = arg
+	def setCurrentScreen(newName, args):
+		GameManager.newScreenName = newName
+		GameManager.changeScreenArgs = args
 		GameManager.wantChangeScreen = True
 
 	@staticmethod
 	def createCurrentScreen():
+		# Get
+		newName = GameManager.newScreenName
+		args = GameManager.changeScreenArgs
+		
+		# Reset variables
 		GameManager.wantChangeScreen = False
-		value = GameManager.changeScreenValue
-		arg = GameManager.changeScreenArgs
+		GameManager.changeScreenArgs = []
+		GameManager.newScreenName = ""
 
+		# Choose the good screen to instance
 		if not GameManager.currentScreen == None:
 			GameManager.currentScreen.unload()
 
-		if value == "menuscreen" or value == "Menuscreen" or value == "MenuScreen":
-			from game.screen.screens import menuscreen as me
-			GameManager.currentScreen = me.MenuScreen(arg)
-		if value == "messagescreen" or value == "Messagescreen" or value == "MessageScreen":
-			from game.screen.screens import messagescreen as cr
-			GameManager.currentScreen = cr.MessageScreen(arg)
-		elif value == "GameScreen" or value == "gamescreen" or value == "Gamescreen":
-			from game.screen.screens import gamescreen as ga
-			if arg[0] == True:
-				from game.main.config import Config
+		if newName == "menuscreen" or newName == "Menuscreen" or newName == "MenuScreen":
+			from game.screen.screens import menuscreen
+			
+			GameManager.currentScreen = menuscreen.MenuScreen(args)
+		elif newName == "messagescreen" or newName == "Messagescreen" or newName == "MessageScreen":
+			from game.screen.screens import messagescreen
+			
+			GameManager.currentScreen = messagescreen.MessageScreen(args)
+		elif newName == "GameScreen" or newName == "gamescreen" or newName == "Gamescreen":
+			from game.screen.screens import gamescreen
+			
+			# Load the server game (True) or the local Game (False)
+			if args[0]:
 				Config.loadServer()
-				GameManager.currentScreen = ga.GameScreen([True, Config.server["ip"], Config.server["port"]])
+				GameManager.currentScreen = gamescreen.GameScreen([True, Config.server["ip"], Config.server["port"]])
 			else:
-				GameManager.currentScreen = ga.GameScreen([False])
-			# cdi-p08.cda-game.ga 34141
-			# play.cda-game.ga 34141
-			# alex.cda-game.ga
-			# localhost 34141
+				GameManager.currentScreen = gamescreen.GameScreen([False])
 
 		GameManager.currentScreen.init()
 
 	@staticmethod
 	def unload():
 		GameManager.currentScreen.unload()
-		sm.unload()
-		tm.unload()
-		tm.endState()
+		ShaderManager.unload()
+		TextureManager.unload()

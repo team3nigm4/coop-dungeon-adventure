@@ -32,17 +32,6 @@ class Tp(entitycollision.EntityCollision):
 
 		self.colRenderer.setAttributes(self.colSize, [0.7725, 0.956, 0.258, 0.5])
 
-		if self.colSize[0] > self.colSize[1]:
-			if self.pos[1] > len(mr.tilesPosition[0]) / 2:
-				self.exitPos = 1
-			else:
-				self.exitPos = 3
-		else:
-			if self.pos[0] > len(mr.tilesPosition[0][0]) / 2:
-				self.exitPos = 2
-			else:
-				self.exitPos = 0
-
 	def update(self):
 		self.isTwo = False
 
@@ -52,7 +41,7 @@ class Tp(entitycollision.EntityCollision):
 				self.isTwo = True
 			else:
 				# Change the map with its values
-				self.mam.reserveChange(self.zone, self.map, self.entry, self.exitPos)
+				self.mam.reserveChange(self.zone, self.map, self.entry, -1)
 
 	def activate(self):
 		if not self.testCol:

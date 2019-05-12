@@ -189,6 +189,10 @@ class MapTemporarySave:
 			em.EntityManager.entityEffectAfterReset()
 
 	@staticmethod
+	def getExitTransition(zone, map, entry):
+		return ml.getExitTranstition(zone, map, entry)
+
+	@staticmethod
 	def saveValue(map):
 		mts = MapTemporarySave
 		# Save values
