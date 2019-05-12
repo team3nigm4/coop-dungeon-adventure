@@ -204,7 +204,10 @@ class MapManager:
 	@staticmethod
 	def reserveChange(zone, map, entry, exitPos=4):
 		MapManager.changeValues = [zone, map, entry]
-		MapManager.exitPos = exitPos
+		if exitPos == 4:
+			MapManager.exitPos = 4
+		else:
+			MapManager.exitPos = mts.MapTemporarySave.getExitTransition(zone, map, entry)
 
 	@staticmethod
 	# Change one bloc of the interaction map
