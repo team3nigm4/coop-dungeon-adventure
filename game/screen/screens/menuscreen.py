@@ -1,10 +1,9 @@
-# This class performs the display and the update of the client
+# Class to display the main game menu
 
 from game.inputs.inputmanager import InputManager as im
 from game.screen.screens import screen
 from game.render.text import text
 from game.render.gui import button
-
 from game.render.shape import guirenderer
 from game.screen import gamemanager
 
@@ -13,18 +12,12 @@ class MenuScreen(screen.Screen):
 
 	def __init__(self, info):
 		super().__init__()
-
+		
 		self.copyleft = text.Text("pixel1")
-		self.copyleft.setSize(0.4)
-		self.copyleft.setColor([1,1,1,1])
-		self.copyleft.setCentering("down-left")
-		self.copyleft.setText("(C) 2019 Maxence, Alexandre & Baptiste" + " "*29 + "v.0.1")
+		self.copyleft.setAll("(C) 2019 Maxence, Alexandre & Baptiste" + " " * 29 + "v.0.1", 0.4, [0, 0], [1,1,1,1], "down-left")
 
 		self.credits = text.Text("pixel1")
-		self.credits.setSize(0.45)
-		self.credits.setColor([1,1,1,1])
-		self.credits.setPosition([9, 4.7])
-		self.credits.setText("Maxence Bazin\nAlexandre Boin\nBaptiste Aleci")
+		self.credits.setAll("Maxence Bazin\nAlexandre Boin\nBaptiste Aleci",  0.45,  [9, 4.7], [1,1,1,1], "")
 
 		self.background = guirenderer.GuiRenderer()
 		self.background.setImage([18, 12], "background")
@@ -41,13 +34,12 @@ class MenuScreen(screen.Screen):
 		def gameMulti():
 			from game.screen import gamemanager
 			gamemanager.GameManager.setCurrentScreen("gamescreen", [True])
-			
 
 		def gameQuit():
 			from game.main.window import Window
 			Window.exit()
 
-		def toggleCredits(): self.showCredits^= True
+		def toggleCredits(): self.showCredits ^= True
 
 		self.playLocal = button.Button([9, 5.9], [5, 1], "Local", gameLocal)
 
@@ -59,15 +51,13 @@ class MenuScreen(screen.Screen):
 		
 		self.quit = button.Button([10.3, 3.3], [2.45, 0.6], "Quitter", gameQuit)
 
-	def init(self):
-		pass
-
 	def update(self):
-			# Keys test
+			# Exit test
 			if im.inputPressed(im.ESCAPE):
 				from game.main.window import Window
 				Window.exit()
-
+				
+			# Update buttons
 			self.playLocal.update()
 			self.playMulti.update()
 			if self.showCredits:
@@ -81,6 +71,7 @@ class MenuScreen(screen.Screen):
 		self.screenTitle.display()
 		self.copyleft.display()
 		self.quit.display()
+		
 		if self.showCredits:
 			self.credits.display()
 			self.hideCreditsBtn.display()

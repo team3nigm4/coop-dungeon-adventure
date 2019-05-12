@@ -1,28 +1,31 @@
+# This class will make a connection with a server
+
 import socket
 import simplejson
 import time
 
+from threading import Thread
+
 from game.util.logger import Logger
 
-from threading import Thread
 
 class Client(Thread):
 
 	def __init__(self, ip, port):
 		Thread.__init__(self)
+		self.data = ""
 		self.ip = ip
 		self.port = port
 		self.timeout = 0
-		self.setTimeout(0.02)
-
-		self.isConnect = False
-		self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-		self.data = ""
-
-		self.clientId = socket.gethostbyname(socket.gethostname())
+		
 		self.wantSend = False
 		self.loop = False
+		self.isConnect = False
+		
+		self.setTimeout(0.02)
+		
+		self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.clientId = socket.gethostbyname(socket.gethostname())
 
 	def setIp(self, ip):
 		self.ip = ip
@@ -51,6 +54,10 @@ class Client(Thread):
 
 
 		self.setTimeout(0.02)
+		
+		# Loop where at each time, client will see if
+		# it must send a message to the server and will try
+		# to receive data from the server
 		while self.loop:
 			if self.wantSend:
 				self.theadSend()
@@ -85,15 +92,6 @@ class Client(Thread):
 			except OSError:
 				pass
 
-	def connectState(self):
-		return self.isConnect
-
-	def getId(self):
-		return self.clientId
-
-	def getPort(self):
-		return self.me
-
 	def end(self):
 		self.loop = False
 		time.sleep(0.3)
@@ -103,3 +101,13 @@ class Client(Thread):
 		if self.isConnect:
 			self.conn.close()
 			self.isConnect = False
+			
+	
+	def connectState(self):
+		return self.isConnect
+
+	def getId(self):
+		return self.clientId
+
+	def getPort(self):
+		return self.me

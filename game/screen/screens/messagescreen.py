@@ -40,12 +40,9 @@ class MessageScreen(screen.Screen):
 
 		def returnMenu():
 			from game.screen import gamemanager
-			gamemanager.GameManager.setCurrentScreen("menuscreen", [True])
+			self.setScreen("menuscreen", [True])
 		
 		self.returnMenu = button.Button([7.7, 2.8], [2.45, 0.6], "< Retour", returnMenu)
-
-	def init(self):
-		pass
 
 	def update(self):
 			# Keys test

@@ -44,15 +44,13 @@ class TextureManager:
 			TextureManager.textures[key].unload()
 
 		TextureManager.textures = {}
-
-
-	@staticmethod
-	def endState():
+		
 		if len(TextureManager.textures) > 0:
-			Logger.error("TeManager", "Error at the end of the program ->")
+			Logger.error("TextureManager", "Error at the end of the program ->")
 			TextureManager.state()
 		else:
-			Logger.info("TeManager", "No remaining textures")
+			Logger.info("TextureManager", "No remaining textures")
+
 
 	@staticmethod
 	def key(key):

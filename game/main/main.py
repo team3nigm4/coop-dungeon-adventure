@@ -1,4 +1,4 @@
-# main file of the game
+# main file of the game, start the window
 
 from game.main.window import Window
 

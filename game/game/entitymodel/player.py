@@ -33,6 +33,8 @@ class Player(entitycomplex.EntityComplex):
 		self.invincibilityTime = Player.INVINCIBILITY_TIME
 
 		self.canInteract = False
+		self.wantTexture = ""
+		self.changeTexture = True
 
 		self.weight = 1.3
 
@@ -44,10 +46,6 @@ class Player(entitycomplex.EntityComplex):
 		self.setDrawCol(True)
 		self.colRenderer.setAttributes(self.colSize, [1, 1, 0, 0.5])
 
-		if self.playerNumber == self.em.PLAYER_1:
-			self.entityRenderer.setImage([0.80, 1.3], "player-1-3", [0.37, 0.20])
-		else:
-			self.entityRenderer.setImage([0.80, 1.3], "player-2-3", [0.37, 0.20])
 		self.setDisplayLayer(self.em.DISPLAY_MIDDLE)
 
 	def useItem(self, input):
@@ -108,9 +106,35 @@ class Player(entitycomplex.EntityComplex):
 
 		self.mam.checkEmpty(self)
 
+		if self.changeTexture:
+			if self.wantTexture == "":
+				self.entityRenderer.setImage([0.80, 2], "player-" + str(self.playerNumber + 1) + "-" + str(self.direction), [0.40, 0.625])
+			else:
+				if self.wantTexture == "sword":
+					if self.direction == 0:
+						self.entityRenderer.setImage([1.6, 2],
+													 "player-" + str(self.playerNumber + 1) + "-" + str(self.direction) + "-" + self.wantTexture,
+													 [1.2, 0.625])
+					elif self.direction == 2:
+						self.entityRenderer.setImage([1.6, 2],
+													 "player-" + str(self.playerNumber + 1) + "-" + str(self.direction) + "-" +  self.wantTexture,
+													 [0.4, 0.625])
+					else:
+						self.entityRenderer.setImage([0.80, 2],
+													 "player-" + str(self.playerNumber + 1) + "-" + str(
+														 self.direction) + "-" + self.wantTexture,
+													 [0.40, 0.625])
+				else:
+					self.entityRenderer.setImage([0.80, 2],
+												 "player-" + str(self.playerNumber + 1) + "-" + str(self.direction) + "-" +  self.wantTexture,
+												 [0.40, 0.625])
+			self.changeTexture = False
+
 	def display(self):
 		self.setCanInteract(False)
+		self.wantTexture = ""
 		super().display()
+
 
 	def setLife(self, newLife, death=False):
 		super().setLife(newLife, death)
@@ -166,4 +190,8 @@ class Player(entitycomplex.EntityComplex):
 	def setDirection(self, newDirection):
 		super().setDirection(newDirection)
 		if self.direction != self.oldDirection:
-			self.entityRenderer.setKey("player-" + str(self.playerNumber+1) + "-" + str(self.direction))
+			self.changeTexture = True
+
+	def setWantTexture(self, want):
+		self.wantTexture = want
+		self.changeTexture = True

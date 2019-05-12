@@ -1,5 +1,10 @@
+# Useful mathematic's calculations
+
 import math
 
+# Definitions to calculate distance between two positions
+
+# Normal distance
 def distP(pos1, pos2):
 	return math.sqrt((pos1[0] - pos2[0]) ** 2 + (pos1[1] - pos2[1]) ** 2)
 
@@ -21,5 +26,6 @@ def distEx(ent1, ent2):
 def distEy(ent1, ent2):
 	return distPx(ent1.pos[1], ent2.pos[1])
 
+# Find result in interval [a, b] with z in interval [x, y] 
 def map(z, x, y, a, b):
 	return (z - x) / (y - x) * (b - a) + a

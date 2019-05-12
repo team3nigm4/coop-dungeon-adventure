@@ -1,3 +1,5 @@
+# This class is mainly use for OpenGl shaders
+
 import numpy
 
 class Matrix4f:
