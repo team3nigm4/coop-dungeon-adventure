@@ -1,3 +1,5 @@
+# Class to load entity from args
+
 class LoadEntity:
 	from game.game.entitymodel import activationblock
 	from game.game.entitymodel import activationplate
@@ -37,10 +39,12 @@ class LoadEntity:
 		"TogglePlate": toggleplate.TogglePlate
 	}
 
+	# Entities that should not be instantiated
 	noError = [
 		"SpawnPoint"
 	]
 
+	# Some entity that should not be instantiated during a reset of a map
 	# reset = 0, no reset = 1
 	LIST_RESET = {
 		"ActivationBlock": 0,
@@ -65,6 +69,7 @@ class LoadEntity:
 	TO_RESET = 0
 	NO_RESET = 1
 
+	# This attribute will be change during a reset of a map
 	reset = False
 
 	@staticmethod
@@ -95,6 +100,8 @@ class LoadEntity:
 	def isResetable(arg):
 		type = arg[0]
 		count = 0
+		# Spawn can be reset, but spawn can contain an un resetable entity.
+		# Loop to test is the spawn contains this type ogf entity.
 		if type == "Spawn":
 			arg = arg[LoadEntity.entities["Spawn"].ARGS_ENTITY_INFO]
 			while type == "Spawn":

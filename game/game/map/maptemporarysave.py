@@ -83,6 +83,7 @@ class MapTemporarySave:
 	def newZone(zone):
 		mts = MapTemporarySave
 
+		mts.init()
 		import os
 		path = "game/resources/map/" + zone + "/"
 		files = os.listdir(path)

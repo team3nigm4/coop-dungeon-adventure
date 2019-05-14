@@ -187,6 +187,7 @@ class GameScreen(screen.Screen):
 
 			# Dispose components
 			gm.cam.goToEntity()
+
 			em.dispose()
 			Hud.dispose()
 			mam.update()

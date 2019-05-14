@@ -1,6 +1,8 @@
-from game.game.entityclass import entitydrawable
-from game.util.logger import Logger
+# Parent class for entities which have knockback, life, etc ...
+
 import math
+
+from game.game.entityclass import entitydrawable
 
 
 class EntityComplex(entitydrawable.EntityDrawable):
@@ -42,6 +44,7 @@ class EntityComplex(entitydrawable.EntityDrawable):
 
 	def update(self):
 		super().update()
+		# if stun, update the counter for de-stun
 		if self.stuned:
 			if self.stunCounter >= self.stunTime:
 				self.stuned = False
@@ -49,6 +52,7 @@ class EntityComplex(entitydrawable.EntityDrawable):
 			else:
 				self.stunCounter += 1
 
+		# if can't take damage, update the counter for re-take damage
 		if not self.takeDamage:
 			if self.invincibilityCounter >= self.invincibilityTime:
 				self.takeDamage = True
@@ -61,8 +65,9 @@ class EntityComplex(entitydrawable.EntityDrawable):
 
 	def dispose(self):
 		super().dispose()
+		self.oldWantDirection[0] = self.wantDirection[0]
+		self.oldWantDirection[1] = self.wantDirection[1]
 		self.wantDirection = [0, 0]
-		self.oldWantDirection = self.oldWantDirection = [0, 0]
 
 	def setLife(self, newLife, death=True):
 		self.life = newLife
@@ -74,6 +79,7 @@ class EntityComplex(entitydrawable.EntityDrawable):
 				(ent.attributes["playerBow"] == 1 and self.attributes["playerBow"] == 2):
 			ent.triggerBox(self)
 
+	# Apply the knockback to itself
 	def applyKnockback(self, knockback, pos):
 		distance = [self.pos[0] - pos[0], self.pos[1] - pos[1]]
 		hyp = math.sqrt(distance[0] * distance[0] + distance[1] * distance[1])
@@ -91,6 +97,6 @@ class EntityComplex(entitydrawable.EntityDrawable):
 
 	def applyDamage(self, damage, death=True):
 		if self.takeDamage:
-			Logger.info("EnComplex", self.type + " take " + str(damage) + " damage(s)")
+			self.log.info("EnComplex", self.type + " take " + str(damage) + " damage(s)")
 			self.setLife(self.life - damage, death)
 			self.takeDamage = False

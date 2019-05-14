@@ -1,4 +1,4 @@
-# Manage every input from the player
+# Class to manage every input from key and mouse
 
 from game.inputs.keyboardmanager import KeyBoardManager as kbm
 from game.inputs.mousemanager import MouseManager as mm
@@ -22,12 +22,12 @@ class InputManager:
 	ITEM_1 = 14
 	ITEM2_1 = 15
 	
-
 	inputs = None
 	type = None
 
 	@staticmethod
 	def init(inpt):
+		# Reservs some inputs for player inputs
 		actions = ["ECHAP", "RESET", "GO_LEFT_0", "GO_UP_0", "GO_RIGHT_0", "GO_DOWN_0", "INTERACT_0", "ITEM_0", "ITEM2_0",
 		 "GO_LEFT_1", "GO_UP_1", "GO_RIGHT_1", "GO_DOWN_1", "INTERACT_1", "ITEM_1", "ITEM2_1"]
 
@@ -58,6 +58,7 @@ class InputManager:
 		else:
 			return mm.buttonPressed(InputManager.inputs[inpt])
 
+	# Get state of each inputs iin a table
 	@staticmethod
 	def getState():
 		import math
@@ -83,5 +84,4 @@ class InputManager:
 	@staticmethod
 	def dispose():
 		kbm.dispose()
-
 		mm.dispose()

@@ -1,4 +1,4 @@
-# Manages key states
+# Class to manage key states
 
 from game.main import window
 import glfw
@@ -24,13 +24,25 @@ class KeyBoardManager:
 		else:
 			return False
 
+	# Get the state of a key
 	@staticmethod
 	def getKey(key):
-		return glfw.get_key(window.Window.window, key) == 1
+		if KeyBoardManager.beginKey <= key <= 348:
+			return KeyBoardManager.state[key]
+		else:
+			return False
 
+	# Test the state of a key in the legit range
+	@staticmethod
+	def testState(key):
+		if KeyBoardManager.beginKey <= key <= 348:
+			return glfw.get_key(window.Window.window, key) == 1
+		else:
+			return False
+
+	# Reload the state of each key possible
 	@staticmethod
 	def dispose():
-
 		for key in range(KeyBoardManager.beginKey, len(KeyBoardManager.state)):
 			KeyBoardManager.tempState[key] = KeyBoardManager.state[key]
-			KeyBoardManager.state[key] = KeyBoardManager.getKey(key)
+			KeyBoardManager.state[key] = KeyBoardManager.testState(key)

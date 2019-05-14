@@ -1,3 +1,6 @@
+# Class to contain the id of an entity, the advantage is that class is mutable
+# We don't have to redefine this id of the entity in managers if this id change for some reasons
+
 class EntityId:
 	def __init__(self):
 		self.defaultId()

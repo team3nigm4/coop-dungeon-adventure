@@ -1,11 +1,9 @@
+# Class for a bit more complex entity, parent class for every entity with interactions
+
 from game.game.entityclass import entity
 
 
 class EntityCollision(entity.Entity):
-
-	# NO_STATE = 0
-	# GIVE_STATE = 1
-	# TAKE_STATE = 2
 
 	def __init__(self, args):
 		super().__init__(args)
@@ -16,6 +14,11 @@ class EntityCollision(entity.Entity):
 		self.oldPos = self.pos
 		self.testCol = False
 
+		# NO_STATE = 0
+		# GIVE_STATE = 1
+		# ex : player has interaction to 1
+		# TAKE_STATE = 2
+		# ex: sliding block has interaction to 2
 		self.attributes = {
 			"collision": 0,
 			"door": 0,
@@ -29,6 +32,7 @@ class EntityCollision(entity.Entity):
 			"blockDamage": 0,
 		}
 
+		# Create a box renderer for every entity collision
 		from game.render.shape import boxrenderer
 		self.drawCol = False
 		color = [0.1, 0.1, 0.1, 0.4]
@@ -71,6 +75,7 @@ class EntityCollision(entity.Entity):
 
 	def setPos(self, position):
 		super().setPos(position)
+		# Also set the position of the renderer
 		self.colRenderer.updateModel([round(self.pos[0] * 32) / 32, round(self.pos[1] * 32) / 32])
 
 	def setSpeed(self, speed):
@@ -80,8 +85,4 @@ class EntityCollision(entity.Entity):
 		pass
 
 	def unload(self):
-		self.unloadToEntityManager()
-
-	def unloadToEntityManager(self):
-		if self.testCol:
-			self.em.removeToTest(self.entityId)
+		self.em.removeToTest(self.entityId)

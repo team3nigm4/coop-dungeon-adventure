@@ -1,4 +1,4 @@
-# Entity class player, embodies one of the players
+# Class of entity which are enemies of player, all of these entity is linked to an event
 
 from game.game.entityclass import entitycomplex
 
@@ -16,6 +16,7 @@ class Enemy(entitycomplex.EntityComplex):
 			self.eventID = args[Enemy.ARGS_EVENT]
 			self.ev.deactivate(self.eventID)
 
+		# Set a random color around the red for enemy's box
 		import random
 		self.setDrawCol(True)
 		self.colRenderer.setAttributes(self.colSize,
