@@ -1,4 +1,3 @@
-# coding=utf-8
 # Static class to contain the entity in a map and to manage it
 from game.game.entityclass.loadentity import LoadEntity
 from game.game.entityclass import entitycollision

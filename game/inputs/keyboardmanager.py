@@ -1,4 +1,4 @@
-# Class to manage key states
+# Static class to manage key states
 
 from game.main import window
 import glfw

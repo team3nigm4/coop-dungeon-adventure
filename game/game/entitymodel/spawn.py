@@ -1,3 +1,5 @@
+# Class of spawn which can spawn every entity, activated entity
+
 from game.game.entityclass import entity
 from game.game.map.eventmanager import EventManager as ev
 from game.game.map.eventmanager import EventManager

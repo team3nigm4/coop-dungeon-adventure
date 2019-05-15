@@ -1,4 +1,4 @@
-# Class to manage every input from key and mouse
+# Static class to manage every input from key and mouse
 
 from game.inputs.keyboardmanager import KeyBoardManager as kbm
 from game.inputs.mousemanager import MouseManager as mm

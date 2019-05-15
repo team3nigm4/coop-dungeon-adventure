@@ -1,4 +1,4 @@
-# Manages all textures to know which ones are loaded
+# Static class manages all textures to know which ones are loaded
 
 from game.render.texture import texture
 from game.util.logger import Logger

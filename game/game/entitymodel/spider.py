@@ -1,9 +1,9 @@
-# Entity class player, embodies one of the players
+# Class spider, makes random movement, monster and activator entity
+
+import random, math
 
 from game.game.entityclass import enemy
 from game.util import math as mathcda
-
-import random, math
 
 
 class Spider(enemy.Enemy):
@@ -51,14 +51,16 @@ class Spider(enemy.Enemy):
 	def update(self):
 		super().update()
 
+		# If no target
 		if self.target == None:
 			if self.targetCounter > Spider.MOVE_TIME:
 				self.targetCounter = 0
 
-				# search a target
+				# Search a target
 				track = -1
 				di1 = mathcda.distE(self, self.em.entities[self.em.PLAYER_1])
 				di2 = mathcda.distE(self, self.em.entities[self.em.PLAYER_2])
+
 				if di1 < di2:
 					if  di1 < Spider.DETECTION_RANGE:
 						track = self.em.PLAYER_1
@@ -84,6 +86,7 @@ class Spider(enemy.Enemy):
 						self.targetDir[1] = False
 
 				else:
+					# Do a random mouvement
 					angle = random.random() * math.pi * 2
 					self.target = [Spider.MOVE_RANGE * math.cos(angle) + self.pos[0], Spider.MOVE_RANGE * math.sin(angle) + self.pos[1]]
 
@@ -118,6 +121,7 @@ class Spider(enemy.Enemy):
 				self.target = None
 				self.targetCounter = 0
 
+		# Movement in x (0) and in y (1)
 		for i in range(2):
 			if self.wantDirection[i] == 0:
 				if self.speed[i] < 0:
@@ -136,5 +140,6 @@ class Spider(enemy.Enemy):
 				if math.fabs(self.speed[i]) > self.maxSpeed[i]:
 					self.speed[i] = self.wantDirection[i] * self.maxSpeed[i]
 
+		# Check collision before moving
 		self.mam.checkCollisionX(self)
 		self.mam.checkCollisionY(self)

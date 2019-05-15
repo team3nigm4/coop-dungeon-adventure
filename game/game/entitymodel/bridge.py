@@ -1,4 +1,4 @@
-# Class pressure plate
+# Class bridge, activated entity
 
 from game.game.entityclass import entitycollision
 from game.game.map.maprender import MapRender
@@ -113,9 +113,6 @@ class Bridge(entitycollision.EntityCollision):
 		if not len(toRemove) == 0:
 			for i in toRemove:
 				del self.counters[i]
-
-	def display(self):
-		pass
 
 	def activate(self):
 		if self.direction:

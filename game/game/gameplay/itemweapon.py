@@ -14,6 +14,7 @@ class ItemWeapon(item.Item):
 	# In tile
 	SWORD_KNOCKBACK = 0.10
 
+
 	SWORD_ATTACK_DAMAGE = 2
 
 	# For sword
@@ -110,13 +111,15 @@ class ItemWeapon(item.Item):
 	# Define the sword trigger box position according to the player position and direction
 	def defSwordTiggerBoxPos(self):
 		if self.player.direction == 0:
-			return [self.player.pos[0] - self.player.halfColSize[0] - self.trigBox.halfColSize[0], self.player.pos[1] + 0.3]
+			return [self.player.pos[0] - self.player.halfColSize[0] - self.swordTriggerBox.halfColSize[0],
+					self.player.pos[1] + 0.3]
 
 		elif self.player.direction == 1:
 			return [self.player.pos[0],  self.player.pos[1] + self.player.halfColSize[1] + 0.4]
 
 		elif self.player.direction == 2:
-			return [self.player.pos[0] + self.player.halfColSize[0] + self.trigBox.halfColSize[0], self.player.pos[1] + 0.3]
+			return [self.player.pos[0] + self.player.halfColSize[0] + self.swordTriggerBox.halfColSize[0],
+					self.player.pos[1] + 0.3]
 		else:
 			return [self.player.pos[0], self.player.pos[1] - self.player.halfColSize[0] - 0.31]
 

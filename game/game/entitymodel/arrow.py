@@ -1,12 +1,13 @@
-# Entity class player, embodies one of the players
+# Class arrow that player shoot with box item
 
 from game.game.entityclass import entitycomplex
 
+
 class Arrow(entitycomplex.EntityComplex):
+	ARGS_DIRECTION = 3
+
 	SPEED = 0.2
 	DAMAGE = 1
-
-	ARGS_DIRECTION = 3
 
 	def __init__(self, args):
 		super().__init__(args)
@@ -57,6 +58,7 @@ class Arrow(entitycomplex.EntityComplex):
 		if ent.attributes["collision"] == 2:
 			self.setLife(0)
 
+	# Master is an entity who creates this arrow
 	def setEntityMaster(self, entityMaster):
 		self.entityMaster = entityMaster
 

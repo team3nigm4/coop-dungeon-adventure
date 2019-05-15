@@ -1,4 +1,4 @@
-# Class pressure plate
+# Class activation plate, depend on pressure plate, activator entity
 
 from game.game.entitymodel import pressureplate
 

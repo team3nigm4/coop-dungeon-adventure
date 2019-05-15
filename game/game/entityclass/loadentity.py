@@ -1,4 +1,4 @@
-# Class to load entity from args
+# Static class to load entity from args
 
 class LoadEntity:
 	from game.game.entitymodel import activationblock

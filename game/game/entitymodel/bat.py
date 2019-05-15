@@ -1,4 +1,4 @@
-# Entity class player, embodies one of the players
+# Class of a bat which track a player, monsters and activator entity
 
 from game.game.entityclass import enemy
 from game.util import math as mathcda
@@ -40,14 +40,18 @@ class Bat(enemy.Enemy):
 
 	def update(self):
 		super().update()
-		# Target detection
+
+		# No target detected
 		if self.targetId.getId() == self.entityId.getId():
+			# If one of players enter in the detection range
 			if mathcda.distE(self, self.em.entities[self.em.PLAYER_1]) < Bat.DETECTION_RANGE:
 				self.targetId = self.em.entities[self.em.PLAYER_1].entityId
 			elif mathcda.distE(self, self.em.entities[self.em.PLAYER_2]) < Bat.DETECTION_RANGE:
 				self.targetId = self.em.entities[self.em.PLAYER_2].entityId
+		# Has already a target
 		else:
 			target = self.em.entities[self.targetId.getId()]
+			# If the target is dead
 			if target.getId() == -1:
 				self.targetId = self.entityId
 			else:
@@ -58,7 +62,7 @@ class Bat(enemy.Enemy):
 				if self.speedCounter >= 2 * math.pi:
 					self.speedCounter = 0
 
-				# Bat want to move if too far of the player
+				# Bat want to move if too far to the player
 				if mathcda.distEx(self, target) > self.maxSpeed[0]:
 					if self.pos[0] > target.pos[0]:
 						self.left(2)
@@ -90,6 +94,7 @@ class Bat(enemy.Enemy):
 				if math.fabs(self.speed[i]) > self.maxSpeed[i]:
 					self.speed[i] = self.wantDirection[i] * self.maxSpeed[i]
 
+		# Check map collision before apply these
 		self.mam.checkCollisionX(self)
 		self.mam.checkCollisionY(self)
 
@@ -98,6 +103,6 @@ class Bat(enemy.Enemy):
 				(ent.attributes["playerBow"] == 1 and self.attributes["playerBow"] == 2):
 			# If it is another player giving the damage
 			if not ent.entityId == self.targetId and ent.giveDamage:
-				# This player is the new target
+				# This player become the new target
 				self.targetId = ent.getMaster()
 			ent.triggerBox(self)

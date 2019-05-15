@@ -1,4 +1,4 @@
-# Class to manage mouse states
+# Static class to manage mouse states
 
 import glfw
 

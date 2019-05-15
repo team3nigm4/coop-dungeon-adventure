@@ -1,4 +1,4 @@
-# Class used to change rooms
+# Class used to change rooms, activated class
 
 from game.game.entityclass import entitycollision
 from game.game.map.maprender import MapRender as mr

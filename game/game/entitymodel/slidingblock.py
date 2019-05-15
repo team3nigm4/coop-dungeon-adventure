@@ -1,11 +1,10 @@
-# Class sliding block
+# Class sliding block, activator class
 
 from game.game.entityclass import entitydrawable
 
 
 class SlidingBlock(entitydrawable.EntityDrawable):
 	SPEED = 0.20
-
 	DAMAGE = 2
 
 	def __init__(self, args):

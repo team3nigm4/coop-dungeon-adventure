@@ -1,4 +1,7 @@
+# Class which changes the interaction table in Map manager when activated, so activated class
+
 from game.game.entityclass import entity
+
 
 class InteractionSwitch(entity.Entity):
 	ARGS_SIZE = 3
