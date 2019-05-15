@@ -1,4 +1,6 @@
-# Import test map
+# Static class to load infos from a map
+
+
 import json
 import os
 from sys import exit
@@ -31,6 +33,7 @@ class MapLoading:
 			Logger.error("MapLoading", "Can't load the map " + path)
 			exit()
 
+	# Check is a map exist
 	@staticmethod
 	def isMap(zone, map, entry):
 		path = "game/resources/map/" + zone + "/" + map + ".json"
@@ -47,6 +50,8 @@ class MapLoading:
 				Logger.error("MapLoading", "The map : " + str(map) + " in zone: " + str(zone) + " has no entry point " + str(entry))
 				return False
 
+	# Get the directional entry point in a map
+	# Use to set the transition and to set the direction of players when they arrived in a map
 	@staticmethod
 	def getExitTranstition(zone, map, entry):
 		path = "game/resources/map/" + zone + "/" + map + ".json"

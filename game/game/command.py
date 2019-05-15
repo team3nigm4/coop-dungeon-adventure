@@ -1,4 +1,4 @@
-# Class to apply command to the control the game
+# Class to apply command to control the game
 
 
 class Command:

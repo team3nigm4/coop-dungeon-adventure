@@ -85,4 +85,4 @@ class EntityCollision(entity.Entity):
 		pass
 
 	def unload(self):
-		self.em.removeToTest(self.entityId)
+		self.setCollision(False)

@@ -312,7 +312,7 @@ class EntityManager:
 				ent2.pos[1] + ent2.halfColSize[1] <= ent1.pos[1] - ent1.halfColSize[1]):
 			ent2.collision(ent1)
 
-	# Unload the entity, if reset don't unload un resetable entity
+	# Unload the entity, if reset don't unload un-resetable entity
 	@staticmethod
 	def discharge(reset=False):
 		id = 2

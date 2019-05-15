@@ -230,29 +230,31 @@ class Hud:
 
 	# Reconstruct the health bar
 	@staticmethod
-	def setHealthBar(newLife, i):
-		Hud.playerLife[i] = newLife
+	def setHealthBar(newLife, playerNumber):
+		Hud.playerLife[playerNumber] = newLife
+
 		# For three hearth
-		for a in range(3):
-			if Hud.playerLife[i] >= a * 2 + 2:
+		for heartIndex in range(3):
+			if Hud.playerLife[playerNumber] >= heartIndex * 2 + 2:
 				texture = "full-heart"
-			elif Hud.playerLife[i] >= a * 2 + 1:
+			elif Hud.playerLife[playerNumber] >= heartIndex * 2 + 1:
 				texture = "half-heart"
 			else:
 				texture = "dead-heart"
 
-			if Hud.playerInvincibility[i]:
+			if Hud.playerInvincibility[playerNumber]:
 				texture = "protect-heart"
 
-			position = Hud.hudInfo["position"]["health-bar-" + str(i + 1)].copy()
-			position[0] += (Hud.hudInfo["info"]["heart-gap"] * a)  + (Hud.hudInfo["size"]["hearth"][0] * a)
+			position = Hud.hudInfo["position"]["health-bar-" + str(playerNumber + 1)].copy()
+			position[0] += (Hud.hudInfo["info"]["heart-gap"] * heartIndex) + (
+						Hud.hudInfo["size"]["hearth"][0] * heartIndex)
 
-			if i == 0:
+			if playerNumber == 0:
 				Hud.constructElement(position, Hud.hudInfo["size"]["hearth"],
-									 texture, Hud.HEARTHS_1 + a, Hud.hudInfo["opacity"]["health-bar-1"])
+									 texture, Hud.HEARTHS_1 + heartIndex, Hud.hudInfo["opacity"]["health-bar-1"])
 			else:
 				Hud.constructElement(position, Hud.hudInfo["size"]["hearth"],
-									 texture, Hud.HEARTHS_2 + a, Hud.hudInfo["opacity"]["health-bar-2"])
+									 texture, Hud.HEARTHS_2 + heartIndex, Hud.hudInfo["opacity"]["health-bar-2"])
 
 	# Construct an element of the hud using OpenGL functionality
 	@staticmethod
@@ -297,7 +299,7 @@ class Hud:
 			Hud.addVertice(position[0] - size[0]/2, position[1] + size[1]/2,
 						   texPos[0], texPos[1], vboCount, opacity)
 
-	# 4 vertices for a square information of position, texture position and opacity
+	# 4 vertices for a square with information of position, texture position and opacity on each vertices
 	@staticmethod
 	def addVertice(posX, posY, tposX, tposY, vboPos, opacity):
 		vboPos *= Hud.VERTEX_SIZE
