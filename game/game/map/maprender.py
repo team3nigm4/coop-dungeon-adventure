@@ -418,7 +418,7 @@ class MapRender:
 		else:
 			# Don't move
 			cam.track[1] = False
-			cam.addVertex([0, -height / 2, 0])
+			cam.addPos([0, -height / 2, 0])
 
 		cam.goToEntity()
 		sm.dispose()
