@@ -81,6 +81,7 @@ class Player(entitycomplex.EntityComplex):
 			elif self.wantDirection[0] == 1:
 				self.setDirection(2)
 
+		# Movement in x (0) and y (1)
 		for i in range(2):
 			if self.wantDirection[i] == 0:
 				if self.speed[i] < 0:
@@ -135,7 +136,6 @@ class Player(entitycomplex.EntityComplex):
 		self.setCanInteract(False)
 		self.wantTexture = ""
 		super().display()
-
 
 	def setLife(self, newLife, death=False):
 		super().setLife(newLife, death)
@@ -193,6 +193,7 @@ class Player(entitycomplex.EntityComplex):
 		if self.direction != self.oldDirection:
 			self.changeTexture = True
 
+	# Special texture wanted
 	def setWantTexture(self, want):
 		self.wantTexture = want
 		self.changeTexture = True

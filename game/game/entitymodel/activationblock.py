@@ -1,4 +1,4 @@
-# Class sliding block
+# Class activation block, depend of sliding block, activator entity
 
 from game.game.entitymodel import slidingblock
 

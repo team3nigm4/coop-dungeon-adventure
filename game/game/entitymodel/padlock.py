@@ -1,4 +1,7 @@
+# Class padlock activated by a key, activator class
+
 from game.game.entityclass import entitycollision
+
 
 class Padlock(entitycollision.EntityCollision):
 

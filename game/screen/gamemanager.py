@@ -1,4 +1,4 @@
-# Contains managers used in game and update/display the current screen
+# Static class to contain managers used in game and update/display the current screen
 
 from game.render.texture.texturemanager import TextureManager
 from game.screen import camera

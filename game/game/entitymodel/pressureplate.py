@@ -1,4 +1,4 @@
-# Class pressure plate
+# Class pressure plate, activator class
 
 from game.game.entitymodel import toggleplate
 

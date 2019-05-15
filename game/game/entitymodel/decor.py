@@ -1,3 +1,5 @@
+# Class decor, activated entity
+
 from game.game.entityclass import entity
 from game.game.map.maprender import MapRender as mr
 

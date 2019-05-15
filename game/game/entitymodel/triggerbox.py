@@ -1,3 +1,5 @@
+# Class trigger box, only use by player and his items
+
 from game.game.entityclass import entitycollision
 
 

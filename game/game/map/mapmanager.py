@@ -1,4 +1,4 @@
-# Manages the current map, displays it, and performs various actions on it (collision test)
+# Static class to manage the current map, displays it, and performs various actions on it (collision test)
 
 import math
 
@@ -22,9 +22,9 @@ class MapManager:
 	TRANSITION_LOAD = 1
 	TRANSITION_END = 2
 
-	cWidth = 0
-	cHeight = 0
-	interaction = []
+	interaction = [[]]
+	iWidth = 0
+	iHeight = 0
 
 	collideTest = True
 
@@ -34,20 +34,21 @@ class MapManager:
 	entry = -1
 	defaultEntry = 0
 
-	changeValues = None
+	changeValues = []
 	exitPos = 4
 
 	transition = False
 	transitionPhase = 0
 	transitionCount = 0
 
+	# Change the current map
 	@staticmethod
 	def changeRoom():
 		zone = MapManager.changeValues[0]
 		map = MapManager.changeValues[1]
 		entry = MapManager.changeValues[2]
 
-		# If the room if a new map
+		# If map exists
 		if not ml.isMap(zone, map, entry):
 			if MapManager.zone == "null":
 				MapManager.changeValues[0] = "intro"
@@ -56,7 +57,7 @@ class MapManager:
 				MapManager.changeRoom()
 				return
 
-		# If a new Zone
+		# If the map is in a new zone
 		if not zone == MapManager.zone:
 			mts.MapTemporarySave.newZone(zone)
 
@@ -67,19 +68,22 @@ class MapManager:
 		MapManager.id = map
 		MapManager.entry = entry
 
+		# Map reset
 		if MapManager.exitPos == 4 and not zoneTemp == "null":
 			mts.MapTemporarySave.changeRoom(map, entry, True)
+		# Map change
 		else:
 			mts.MapTemporarySave.changeRoom(map, entry)
 
 		# Clear the game before changing
-		MapManager.changeValues = None
+		MapManager.changeValues = []
 		MapManager.collideTest = True
 
+	# Check at each frame if a map change is requested
 	@staticmethod
 	def checkChangeMap():
-		# Default value of change value (without map change requested) is none
-		if MapManager.changeValues is not None:
+		# Default value of change value (without map change requested) is []
+		if MapManager.changeValues:
 			# Prepare the transition
 			gm.GameManager.currentScreen.mapChange = True
 			MapManager.transition = True
@@ -92,21 +96,23 @@ class MapManager:
 		speed = entity.speed[0] * MapManager.COEF
 		position = [entity.pos[0] * MapManager.COEF, entity.pos[1] * MapManager.COEF]
 
+		# Next position of the player in x
 		nextPos = position[0] + speed
-		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.cWidth:
+		# If movement in the range of the map
+		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.iWidth:
 			posY = [math.floor(position[1] - colBoxSize[1] * MapManager.COEF),
 					math.floor(position[1] + colBoxSize[1] * MapManager.COEF)]
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
-				if MapManager.interaction[MapManager.cHeight - 1 - posY[0]][nextPos] == MapManager.INTERACTION_SOLID or \
-						MapManager.interaction[MapManager.cHeight - 1 - posY[1]][
+				if MapManager.interaction[MapManager.iHeight - 1 - posY[0]][nextPos] == MapManager.INTERACTION_SOLID or \
+						MapManager.interaction[MapManager.iHeight - 1 - posY[1]][
 							nextPos] == MapManager.INTERACTION_SOLID:
 					entity.setPos([nextPos / MapManager.COEF - half / MapManager.COEF - 0.001, entity.pos[1]])
 					return
 			else:
 				nextPos = math.floor(nextPos - half)
-				if MapManager.interaction[MapManager.cHeight - 1 - posY[0]][nextPos] == MapManager.INTERACTION_SOLID or \
-						MapManager.interaction[MapManager.cHeight - 1 - posY[1]][
+				if MapManager.interaction[MapManager.iHeight - 1 - posY[0]][nextPos] == MapManager.INTERACTION_SOLID or \
+						MapManager.interaction[MapManager.iHeight - 1 - posY[1]][
 							nextPos] == MapManager.INTERACTION_SOLID:
 					entity.setPos([nextPos / MapManager.COEF + 1 / MapManager.COEF + half / MapManager.COEF + 0.001,
 								   entity.pos[1]])
@@ -114,6 +120,7 @@ class MapManager:
 		else:
 			return
 
+		# Set the real position without collision
 		entity.setPos([position[0] / MapManager.COEF + speed / MapManager.COEF, entity.pos[1]])
 
 	@staticmethod
@@ -123,33 +130,37 @@ class MapManager:
 		speed = entity.speed[1] * MapManager.COEF
 		position = [entity.pos[0] * MapManager.COEF, entity.pos[1] * MapManager.COEF]
 
+		# Next position of the player in y
 		nextPos = position[1] + speed
-		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.cHeight:
+		# If movement in the range of the map
+		if math.floor(nextPos - half) >= 0 and math.floor(nextPos + half) < MapManager.iHeight:
 			posX = [math.floor(position[0] - colBoxSize[0] * MapManager.COEF),
 					math.floor(position[0] + colBoxSize[0] * MapManager.COEF)]
 
 			if speed > 0:
 				nextPos = math.floor(nextPos + half)
-				if MapManager.interaction[MapManager.cHeight - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
-						MapManager.interaction[MapManager.cHeight - 1 - nextPos][
+				if MapManager.interaction[MapManager.iHeight - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
+						MapManager.interaction[MapManager.iHeight - 1 - nextPos][
 							posX[1]] == MapManager.INTERACTION_SOLID:
 					entity.setPos([entity.pos[0], nextPos / MapManager.COEF - half / MapManager.COEF - 0.001])
 					return
 			else:
 				nextPos = math.floor(nextPos - half)
-				if MapManager.interaction[MapManager.cHeight - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
-						MapManager.interaction[MapManager.cHeight - 1 - nextPos][
+				if MapManager.interaction[MapManager.iHeight - 1 - nextPos][posX[0]] == MapManager.INTERACTION_SOLID or \
+						MapManager.interaction[MapManager.iHeight - 1 - nextPos][
 							posX[1]] == MapManager.INTERACTION_SOLID:
 					entity.setPos([entity.pos[0],
 								   nextPos / MapManager.COEF + 1 / MapManager.COEF + half / MapManager.COEF + 0.001])
 					return
 		else:
 			return
+
+		# Set the real position without collision
 		entity.setPos([entity.pos[0], position[1] / MapManager.COEF + speed / MapManager.COEF])
 
 	@staticmethod
 	def checkEmpty(entity):
-		if MapManager.interaction[MapManager.cHeight - 1 - math.floor(entity.pos[1] * MapManager.COEF)][
+		if MapManager.interaction[MapManager.iHeight - 1 - math.floor(entity.pos[1] * MapManager.COEF)][
 			math.floor(entity.pos[0] * MapManager.COEF)] == MapManager.INTERACTION_EMPTY:
 			side = [math.floor(entity.pos[0] * MapManager.COEF - entity.halfColSize[0] * MapManager.COEF),
 					math.floor(entity.pos[1] * MapManager.COEF + entity.halfColSize[1] * MapManager.COEF),
@@ -157,16 +168,16 @@ class MapManager:
 					math.floor(entity.pos[1] * MapManager.COEF - entity.halfColSize[1] * MapManager.COEF)]
 
 			empty = 0
-			if MapManager.interaction[MapManager.cHeight - 1 - side[1]][side[0]] == MapManager.INTERACTION_EMPTY:
+			if MapManager.interaction[MapManager.iHeight - 1 - side[1]][side[0]] == MapManager.INTERACTION_EMPTY:
 				empty += 1
 
-			if MapManager.interaction[MapManager.cHeight - 1 - side[1]][side[2]] == MapManager.INTERACTION_EMPTY:
+			if MapManager.interaction[MapManager.iHeight - 1 - side[1]][side[2]] == MapManager.INTERACTION_EMPTY:
 				empty += 1
 
-			if MapManager.interaction[MapManager.cHeight - 1 - side[3]][side[2]] == MapManager.INTERACTION_EMPTY:
+			if MapManager.interaction[MapManager.iHeight - 1 - side[3]][side[2]] == MapManager.INTERACTION_EMPTY:
 				empty += 1
 
-			if MapManager.interaction[MapManager.cHeight - 1 - side[3]][side[0]] == MapManager.INTERACTION_EMPTY:
+			if MapManager.interaction[MapManager.iHeight - 1 - side[3]][side[0]] == MapManager.INTERACTION_EMPTY:
 				empty += 1
 
 			if empty > 1:
@@ -212,7 +223,7 @@ class MapManager:
 	@staticmethod
 	# Change one bloc of the interaction map
 	def setTile(position, id):
-		MapManager.interaction[MapManager.cHeight - 1 - math.floor(position[1])][math.floor(position[0])] = id
+		MapManager.interaction[MapManager.iHeight - 1 - math.floor(position[1])][math.floor(position[0])] = id
 
 		# Check if entity with collision in the change
 		if id == MapManager.INTERACTION_SOLID and MapManager.collideTest:
@@ -235,6 +246,7 @@ class MapManager:
 							e.setPos(MapManager.entryInfo[0])
 							e.setSpeed([0, 0])
 
+	# Set a new id for a tile
 	@staticmethod
 	def setTileCoef(position, id):
 		MapManager.setTile([position[0] * MapManager.COEF, position[1] * MapManager.COEF], id)
@@ -256,22 +268,24 @@ class MapManager:
 			countY = 0
 			countX += 1
 
+	# MapTemporarySave send values to apply during the map changing
 	@staticmethod
 	def setupMapValues(interaction, defaultEntry, entryInfo):
 		MapManager.interaction = interaction
 		MapManager.defaultEntry = defaultEntry
 
 		# Set the size of the current map
-		cWidth = len(MapManager.interaction[0])
-		cHeight = len(MapManager.interaction)
-		MapManager.cWidth = cWidth
-		MapManager.cHeight = cHeight
+		iWidth = len(MapManager.interaction[0])
+		iHeight = len(MapManager.interaction)
+		MapManager.iWidth = iWidth
+		MapManager.iHeight = iHeight
 
 		# Create instance of entities and place players
 		MapManager.entryInfo = entryInfo
 		e1 = em.EntityManager.entities[em.EntityManager.PLAYER_1]
 		e2 = em.EntityManager.entities[em.EntityManager.PLAYER_2]
 
+		# Difference places for according to the entry direction
 		if entryInfo[1] == "left":
 			e1.setPos([entryInfo[0][0], entryInfo[0][1] + 0.5])
 			e2.setPos([entryInfo[0][0], entryInfo[0][1] - 0.5])
@@ -316,7 +330,8 @@ class MapManager:
 				MapManager.transitionPhase = 0
 				gm.GameManager.currentScreen.mapChange = False
 				MapManager.transition = False
-				# Put the transition texture in Pétaouchnoque
+
+				# Put the transition texture in Petaouchnoque
 				mp.MapRender.setTransitionPos([999999, 999999])
 			# In a phase
 			else:
@@ -337,12 +352,12 @@ class MapManager:
 												  MapManager.TRANSITION_TIMES[
 													  MapManager.transitionPhase], 0, 12) - 12
 						elif MapManager.exitPos == 3:
-							pos[1] += -mathcda.map(MapManager.transitionCount - 0.001, 0,
-												   MapManager.TRANSITION_TIMES[
+							pos[1] += - mathcda.map(MapManager.transitionCount - 0.001, 0,
+													MapManager.TRANSITION_TIMES[
 													   MapManager.transitionPhase], 0, 12) + 12
 						elif MapManager.exitPos == 0:
-							pos[0] += -mathcda.map(MapManager.transitionCount - 0.001, 0,
-												   MapManager.TRANSITION_TIMES[
+							pos[0] += - mathcda.map(MapManager.transitionCount - 0.001, 0,
+													MapManager.TRANSITION_TIMES[
 													   MapManager.transitionPhase], 0, 18) + 18
 						elif MapManager.exitPos == 2:
 							pos[0] += mathcda.map(MapManager.transitionCount - 0.001, 0,
@@ -360,12 +375,12 @@ class MapManager:
 												  MapManager.TRANSITION_TIMES[
 													  MapManager.transitionPhase], 12, 0) - 12
 						elif MapManager.exitPos == 3:
-							pos[1] += -mathcda.map(MapManager.transitionCount - 0.001, 0,
-												   MapManager.TRANSITION_TIMES[
+							pos[1] += - mathcda.map(MapManager.transitionCount - 0.001, 0,
+													MapManager.TRANSITION_TIMES[
 													   MapManager.transitionPhase], 12, 0) + 12
 						elif MapManager.exitPos == 0:
-							pos[0] += -mathcda.map(MapManager.transitionCount - 0.001, 0,
-												   MapManager.TRANSITION_TIMES[
+							pos[0] += - mathcda.map(MapManager.transitionCount - 0.001, 0,
+													MapManager.TRANSITION_TIMES[
 													   MapManager.transitionPhase], 18, 0) + 18
 						elif MapManager.exitPos == 2:
 							pos[0] += mathcda.map(MapManager.transitionCount - 0.001, 0,

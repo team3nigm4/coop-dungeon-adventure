@@ -1,3 +1,6 @@
+# Class to apply command to control the game
+
+
 class Command:
 
 	@staticmethod

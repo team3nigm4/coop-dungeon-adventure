@@ -18,7 +18,6 @@ class Window:
 	beginTime = 0
 	frame = 0
 
-
 	# Sort of id of the window
 	# We use this "id" to get the inputs state and do other things related to glfw
 	window = None

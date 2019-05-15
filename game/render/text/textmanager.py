@@ -1,4 +1,4 @@
-# Class to manage loads, manages and unloads fonts
+# Static lass to manage loads, manages and unloads fonts
 
 import json
 

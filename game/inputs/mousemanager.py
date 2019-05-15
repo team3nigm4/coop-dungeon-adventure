@@ -1,4 +1,4 @@
-# Manages mouse states
+# Static class to manage mouse states
 
 import glfw
 
@@ -13,6 +13,7 @@ class MouseManager:
 	oldMousePos = [0, 0]
 	mousePos = [0, 0]
 
+	# Position relative to the screen with (18 * 12 tiles)
 	oldMousePosRelative = [0, 0]
 	mousePosRelative = [0, 0]
 
@@ -30,10 +31,23 @@ class MouseManager:
 		else:
 			return False
 
+	# Get the state of a button
 	@staticmethod
 	def getButton(button):
-		return glfw.get_mouse_button(window.Window.window, button) == 1
+		if button < 7:
+			return MouseManager.state[button]
+		else:
+			return False
 
+	# Test the state of a button in the legit range
+	@staticmethod
+	def getState(button):
+		if button < 7:
+			return glfw.get_mouse_button(window.Window.window, button) == 1
+		else:
+			return False
+
+	# Reload the state of each button possible
 	@staticmethod
 	def dispose():
 		MouseManager.oldMousePos = MouseManager.mousePos
@@ -46,8 +60,8 @@ class MouseManager:
 
 		for key in range(len(MouseManager.state)):
 			MouseManager.tempState[key] = MouseManager.state[key]
-			MouseManager.state[key] = MouseManager.getButton(key)
-
+			MouseManager.state[key] = MouseManager.getState(key)
+	
 	@staticmethod
 	def getMousePosRelative():
 		return MouseManager.mousePosRelative

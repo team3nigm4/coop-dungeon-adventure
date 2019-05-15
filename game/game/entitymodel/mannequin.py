@@ -1,4 +1,4 @@
-# Entity class player, embodies one of the players
+# Entity class player, embodies one of the players, monsters and activator class
 
 from game.game.entityclass import enemy
 

@@ -1,3 +1,5 @@
+# Static class to save maps, load zone
+
 from game.game.map.maploading import MapLoading as ml
 from game.game.map import mapmanager as mam
 from game.game.map.eventmanager import EventManager as ev
@@ -83,6 +85,7 @@ class MapTemporarySave:
 	def newZone(zone):
 		mts = MapTemporarySave
 
+		mts.init()
 		import os
 		path = "game/resources/map/" + zone + "/"
 		files = os.listdir(path)

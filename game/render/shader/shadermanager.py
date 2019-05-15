@@ -1,4 +1,4 @@
-# Manager every shader using in the game
+# Static class to manager every shader using in the game
 
 from game.render.shader import gluniforms as glU
 from game.render.shader import shader

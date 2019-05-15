@@ -1,3 +1,5 @@
+# Static class to render the hud
+
 import json
 
 from game.render.texture.texturemanager import TextureManager as tm
@@ -75,42 +77,42 @@ class Hud:
 		Hud.loadCharacteristiques()
 		Hud.constructHud()
 
+	# Load characteristics because this document control positions and sizes of each element of hud
 	@staticmethod
 	def loadCharacteristiques():
 		path_hudInfo = "game/resources/textures/hud/hudcharacteristics.json"
 		Hud.hudInfo = json.load(open(path_hudInfo))
 
+	# Construct the hud
 	@staticmethod
 	def constructHud():
 		Hud.vbo = [0 for a in range(Hud.VERTEX_SIZE * Hud.ELEMENT_TO_DRAW)]
 		Hud.itemName1 = ""
 		Hud.itemName2 = ""
 
-		Hud.initElement(Hud.hudInfo["position"]["back-1"],
-						Hud.hudInfo["size"]["back-1"], "back",
-						Hud.BACK_1, Hud.hudInfo["opacity"]["back-1"])
+		Hud.constructElement(Hud.hudInfo["position"]["back-1"],
+							 Hud.hudInfo["size"]["back-1"], "back",
+							 Hud.BACK_1, Hud.hudInfo["opacity"]["back-1"])
 
+		Hud.constructElement(Hud.hudInfo["position"]["back-2"],
+							 Hud.hudInfo["size"]["back-2"], "back",
+							 Hud.BACK_2, Hud.hudInfo["opacity"]["back-2"])
 
-		Hud.initElement(Hud.hudInfo["position"]["back-2"],
-						Hud.hudInfo["size"]["back-2"], "back",
-						Hud.BACK_2, Hud.hudInfo["opacity"]["back-2"])
+		Hud.constructElement(Hud.hudInfo["position"]["portrait-1"],
+							 Hud.hudInfo["size"]["portrait-1"], "portrait-1",
+							 Hud.PORTRAIT_1, Hud.hudInfo["opacity"]["portrait-1"])
 
+		Hud.constructElement(Hud.hudInfo["position"]["portrait-2"],
+							 Hud.hudInfo["size"]["portrait-2"], "portrait-2",
+							 Hud.PORTRAIT_2, Hud.hudInfo["opacity"]["portrait-2"])
 
-		Hud.initElement(Hud.hudInfo["position"]["portrait-1"],
-						Hud.hudInfo["size"]["portrait-1"], "portrait-1",
-						Hud.PORTRAIT_1, Hud.hudInfo["opacity"]["portrait-1"])
+		Hud.constructElement(Hud.hudInfo["position"]["frame-item-1"],
+							 Hud.hudInfo["size"]["frame-item-1"],
+						"frame-item-1", Hud.FRAME_ITEM_1, Hud.hudInfo["opacity"]["frame-item-1"])
 
-		Hud.initElement(Hud.hudInfo["position"]["portrait-2"],
-						Hud.hudInfo["size"]["portrait-2"], "portrait-2",
-						Hud.PORTRAIT_2, Hud.hudInfo["opacity"]["portrait-2"])
-
-		Hud.initElement(Hud.hudInfo["position"]["frame-item-1"],
-						Hud.hudInfo["size"]["frame-item-1"],
-						"frame-item-1", Hud.FRAME_ITEM_1 , Hud.hudInfo["opacity"]["frame-item-1"])
-
-		Hud.initElement(Hud.hudInfo["position"]["frame-item-2"],
-						Hud.hudInfo["size"]["frame-item-2"],
-						"frame-item-2", Hud.FRAME_ITEM_2 , Hud.hudInfo["opacity"]["frame-item-2"], True)
+		Hud.constructElement(Hud.hudInfo["position"]["frame-item-2"],
+							 Hud.hudInfo["size"]["frame-item-2"],
+						"frame-item-2", Hud.FRAME_ITEM_2, Hud.hudInfo["opacity"]["frame-item-2"], True)
 
 		Hud.dispose()
 
@@ -121,14 +123,17 @@ class Hud:
 		tm.bind("hud")
 		Hud.shape.display()
 
+	# Check state game to change the hud
 	@staticmethod
 	def dispose():
 		ent = em.EntityManager
 		change = False
 
+
 		itemName = [ent.entities[0].getItemName(), ent.entities[1].getItemName()]
+		# For both players
 		for i in range(2):
-			# If the item of the player change
+			# If players change their items
 			hasChange = False
 			if not Hud.itemName[0] == itemName[0] or not Hud.itemName[1] == itemName[1]:
 				hasChange = True
@@ -139,12 +144,12 @@ class Hud:
 
 			if hasChange:
 				if Hud.itemName[i] == "Weapon":
-					Hud.initElement([0, 0], [1, 1], "null", Hud.ITEM_SWITCH_1 + i, 0)
+					Hud.constructElement([0, 0], [1, 1], "null", Hud.ITEM_SWITCH_1 + i, 0)
 
-					Hud.initElement([0, 0], [1, 1], "null", Hud.SWITCH_1 + i, 0)
+					Hud.constructElement([0, 0], [1, 1], "null", Hud.SWITCH_1 + i, 0)
 
 				if itemName[i] == "Null":
-					Hud.initElement([0, 0], [1, 1], "null", Hud.ITEM_1 + i, 0)
+					Hud.constructElement([0, 0], [1, 1], "null", Hud.ITEM_1 + i, 0)
 				else:
 
 					itemType = "item-key"
@@ -176,34 +181,36 @@ class Hud:
 
 					# Display new Item
 
-					Hud.initElement(Hud.hudInfo["position"]["frame-item-" + str(i + 1)],
-									Hud.hudInfo["size"]["frame-item-" + str(i + 1)],
-									itemType, Hud.ITEM_1 + i, Hud.hudInfo["opacity"]["frame-item-" + str(i + 1)], flip)
+					Hud.constructElement(Hud.hudInfo["position"]["frame-item-" + str(i + 1)],
+										 Hud.hudInfo["size"]["frame-item-" + str(i + 1)],
+										 itemType, Hud.ITEM_1 + i, Hud.hudInfo["opacity"]["frame-item-" + str(i + 1)], flip)
 
 					# Display switch state if item with switch
 					if switch[0]:
-						Hud.initElement(Hud.hudInfo["position"]["switch-" + str(i + 1)],
-										Hud.hudInfo["size"]["switch"],
+						Hud.constructElement(Hud.hudInfo["position"]["switch-" + str(i + 1)],
+											 Hud.hudInfo["size"]["switch"],
 										"switch", Hud.SWITCH_1 + i, Hud.hudInfo["opacity"]["switch"], flip)
 
-						Hud.initElement(Hud.hudInfo["position"]["item-switch-" + str(i + 1)],
-										Hud.hudInfo["size"]["item-switch"],
-										switch[1], Hud.ITEM_SWITCH_1 + i, Hud.hudInfo["opacity"]["item-switch"], flip)
+						Hud.constructElement(Hud.hudInfo["position"]["item-switch-" + str(i + 1)],
+											 Hud.hudInfo["size"]["item-switch"],
+											 switch[1], Hud.ITEM_SWITCH_1 + i, Hud.hudInfo["opacity"]["item-switch"], flip)
 
 				change = True
 
+			# If players life change
 			if not ent.entities[i].life == Hud.playerLife[i]:
 				if ent.entities[i].takeDamage == Hud.playerInvincibility[i]:
 					Hud.playerInvincibility[i] = not ent.entities[i].takeDamage
 				Hud.setHealthBar(ent.entities[i].life, i)
 				change = True
 
+			# If players invincibility change
 			elif ent.entities[i].takeDamage == Hud.playerInvincibility[i]:
 				Hud.playerInvincibility[i] = not ent.entities[i].takeDamage
 				Hud.setHealthBar(Hud.playerLife[i], i)
 				change = True
 
-
+			# If players interaction change
 			if not Hud.playerInteraction[i] == ent.entities[i].getCanInteract():
 				change = True
 				Hud.playerInteraction[i] = ent.entities[i].getCanInteract()
@@ -211,42 +218,47 @@ class Hud:
 					type = "portrait-interaction-"
 				else:
 					type = "portrait-"
-				Hud.initElement(Hud.hudInfo["position"]["portrait-" + str(i + 1)],
-								Hud.hudInfo["size"]["portrait-" +  str(i + 1)], type +  str(i + 1),
-								Hud.PORTRAIT_1 + i, Hud.hudInfo["opacity"]["portrait-" +  str(i + 1)])
+				Hud.constructElement(Hud.hudInfo["position"]["portrait-" + str(i + 1)],
+									 Hud.hudInfo["size"]["portrait-" +  str(i + 1)], type + str(i + 1),
+									 Hud.PORTRAIT_1 + i, Hud.hudInfo["opacity"]["portrait-" +  str(i + 1)])
 
-
+		# If there is a hud change, apply it
 		if change:
 			Hud.itemName[0] = itemName[0]
 			Hud.itemName[1] = itemName[1]
 			Hud.shape.setVbo(Hud.vbo)
 
+	# Reconstruct the health bar
 	@staticmethod
-	def setHealthBar(newLife, i):
-		Hud.playerLife[i] = newLife
-		for a in range(3):
-			if Hud.playerLife[i] >= a * 2 + 2:
+	def setHealthBar(newLife, playerNumber):
+		Hud.playerLife[playerNumber] = newLife
+
+		# For three hearth
+		for heartIndex in range(3):
+			if Hud.playerLife[playerNumber] >= heartIndex * 2 + 2:
 				texture = "full-heart"
-			elif Hud.playerLife[i] >= a * 2 + 1:
+			elif Hud.playerLife[playerNumber] >= heartIndex * 2 + 1:
 				texture = "half-heart"
 			else:
 				texture = "dead-heart"
 
-			if Hud.playerInvincibility[i]:
+			if Hud.playerInvincibility[playerNumber]:
 				texture = "protect-heart"
 
-			position = Hud.hudInfo["position"]["health-bar-" + str(i + 1)].copy()
-			position[0] += (Hud.hudInfo["info"]["heart-gap"] * a)  + (Hud.hudInfo["size"]["hearth"][0] * a)
+			position = Hud.hudInfo["position"]["health-bar-" + str(playerNumber + 1)].copy()
+			position[0] += (Hud.hudInfo["info"]["heart-gap"] * heartIndex) + (
+						Hud.hudInfo["size"]["hearth"][0] * heartIndex)
 
-			if i == 0:
-				Hud.initElement(position, Hud.hudInfo["size"]["hearth"],
-								texture, Hud.HEARTHS_1 + a, Hud.hudInfo["opacity"]["health-bar-1"])
+			if playerNumber == 0:
+				Hud.constructElement(position, Hud.hudInfo["size"]["hearth"],
+									 texture, Hud.HEARTHS_1 + heartIndex, Hud.hudInfo["opacity"]["health-bar-1"])
 			else:
-				Hud.initElement(position, Hud.hudInfo["size"]["hearth"],
-								texture, Hud.HEARTHS_2 + a, Hud.hudInfo["opacity"]["health-bar-2"])
+				Hud.constructElement(position, Hud.hudInfo["size"]["hearth"],
+									 texture, Hud.HEARTHS_2 + heartIndex, Hud.hudInfo["opacity"]["health-bar-2"])
 
+	# Construct an element of the hud using OpenGL functionality
 	@staticmethod
-	def initElement(position, size, texture, vboCount, opacity, flip=False):
+	def constructElement(position, size, texture, vboCount, opacity, flip=False):
 		del Hud.vbo[vboCount * Hud.VERTEX_SIZE: (vboCount + 1) * Hud.VERTEX_SIZE]
 
 		if texture == "null":
@@ -261,6 +273,7 @@ class Hud:
 			else:
 				texSize = [1, 1]
 
+		# Flip some elements for the other play
 		if flip:
 			Hud.addVertice(position[0] + size[0] / 2, position[1] - size[1] / 2,
 						   texPos[0], texPos[1] + texSize[1], vboCount, opacity)
@@ -286,6 +299,7 @@ class Hud:
 			Hud.addVertice(position[0] - size[0]/2, position[1] + size[1]/2,
 						   texPos[0], texPos[1], vboCount, opacity)
 
+	# 4 vertices for a square with information of position, texture position and opacity on each vertices
 	@staticmethod
 	def addVertice(posX, posY, tposX, tposY, vboPos, opacity):
 		vboPos *= Hud.VERTEX_SIZE
