@@ -2,9 +2,7 @@ Coop Dungeon Adventure
 ======================
 Un jeu d'énigmes/aventure coopératif initié par Maxence Bazin et Alexandre Boin dans le carde des projets d'ISN
 
-Présentation
-------------
-Rendez-vous sur [https://www.coop-dungeon-adventure.tk](https://www.coop-dungeon-adventure.tk) pour la présentation du projet.
+![Screentitle of Coop Dugeon Adventure](screentitle.png)
 
 Installation & Lancement
 ------------------------
@@ -12,6 +10,10 @@ Installation & Lancement
 * Afin d'installer les librairies nécessaires, lancez la commande `python -m pip install -r requirements.txt` à la racine du jeu.
 * Afin de lancer le jeu, entrez simplement la commande `python start.py` dans le dossier racine du jeu.
 * (Si ces commandes ne fonctionnent pas, essayez les commandes avec le préfixe `python3` au lieu de `python`) 
+
+Commandes de jeu
+----------------
+![Game controls of Coop Dugeon Adventure](commands.png)
 
 Contributeurs
 --------------
