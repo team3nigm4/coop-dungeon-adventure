@@ -1,6 +1,6 @@
 Coop Dungeon Adventure
 ======================
-Un jeu d'énigmes/aventure coopératif initié par Maxence Bazin et Alexandre Boin dans le carde des projets d'ISN
+Un jeu d'énigmes/aventure coopératif initié par Maxence Bazin et Alexandre Boin dans le cadre des projets d'ISN
 
 ![Screentitle of Coop Dugeon Adventure](screentitle.png)
 
@@ -13,6 +13,7 @@ Installation & Lancement
 
 Commandes de jeu
 ----------------
+
 ![Game controls of Coop Dugeon Adventure](commands.png)
 
 Contributeurs
