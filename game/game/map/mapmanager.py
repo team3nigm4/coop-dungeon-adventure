@@ -182,7 +182,7 @@ class MapManager:
 
 			if empty > 1:
 				if not entity.type == "Player":
-					em.EntityManager.remove(entity.id, entity.type)
+					em.EntityManager.remove(entity.entityId, entity.type)
 				else:
 					entity.applyDamage(1)
 					entity.setPos(MapManager.entryInfo[0])
