@@ -21,7 +21,7 @@ Un jeu d'énigmes/aventure coopératif initié par Maxence Bazin et Alexandre Bo
 - Alexandre Boin ([alexboin](https://github.com/alexboin/)) 
 <<contact@alexandre-boin.fr>>
 - Maxence Bazin ([MightyCode](https://github.com/MightyCode/)) 
-<<contact@bazin-maxence.tk>>
+<<tamalou.corp@gmail.com>>
 
 :bulb: Améliorations pour une version ultérieure
 ------------------------------------------------
